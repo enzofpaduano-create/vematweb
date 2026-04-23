@@ -1,0 +1,228 @@
+Je veux que tu recrées entièrement le site vitrine de Vemat Group dans une version beaucoup plus premium, moderne et crédible, sans faire une copie pixel-perfect du site actuel. Le but est de garder le même positionnement business, la même logique d’offre et les mêmes grandes pages, mais avec un design nettement plus haut de gamme, plus clair, plus rapide et plus convaincant commercialement.
+
+Contexte business à respecter :
+Vemat Group est un distributeur B2B d’engins de levage, d’élévation de personnel, de manutention et d’équipements de construction au Maroc et en Afrique. L’entreprise vend, loue, entretient des machines et fournit aussi des pièces détachées, du SAV et du conseil technique. Le site doit inspirer sérieux, puissance, fiabilité, présence terrain, expertise technique et dimension panafricaine.
+
+Technos souhaitées :
+- Next.js latest avec App Router
+- React
+- Tailwind CSS
+- shadcn/ui pour les composants
+- icônes Lucide
+- code propre, modulaire, maintenable
+- SEO de base bien géré
+- responsive mobile/tablette/desktop
+- animations légères et premium, pas tape-à-l’œil
+- structure prête à être branchée plus tard à un CMS ou à des données dynamiques
+
+Style visuel souhaité :
+- univers industriel premium
+- design sobre, puissant, élégant, corporate
+- fond clair avec sections alternées, beaucoup d’espace blanc
+- accents de couleur inspirés du secteur industriel : noir/anthracite/blanc + accent jaune ou orange chantier discret
+- très belle hiérarchie typographique
+- photos plein écran ou grands visuels d’engins/machines/chantiers
+- cartes produits très propres
+- inspiration : site industriel haut de gamme, pas template cheap
+- sensation de marque sérieuse, internationale, robuste
+
+Structure du site à créer :
+1. Homepage
+2. Page Grues
+3. Page Nacelles
+4. Page Élévateurs Télescopiques
+5. Page Construction
+6. Page Services
+7. Page À propos
+8. Page Contact
+
+Navigation principale :
+- Grues
+- Nacelles
+- Élévateurs Télescopiques
+- Construction
+- Services
+- À propos
+- Contact
+
+Header :
+- logo texte provisoire “VEMAT GROUP”
+- menu desktop + menu mobile propre
+- bouton CTA visible “Demander un devis”
+- éventuellement sélecteur FR / EN en UI (même si contenu initial en français)
+- header sticky élégant
+
+Footer :
+- rappel navigation
+- coordonnées
+- zone marques partenaires
+- copyright
+- liens réseaux si présents
+- style propre et corporate
+
+Contenu homepage à intégrer :
+Créer une homepage très forte commercialement avec les sections suivantes :
+
+1. Hero
+- grand titre impactant orienté B2B
+- sous-titre expliquant que Vemat Group distribue des solutions de levage, d’élévation, de manutention et de construction au Maroc et en Afrique
+- deux CTA : “Découvrir nos équipements” et “Contacter un expert”
+- grand visuel industriel ou montage de machines
+- éventuellement quelques chiffres clés mockés (ex : pays couverts, marques partenaires, catégories d’équipements, support SAV)
+
+2. Section catégories principales
+Créer 4 grandes cartes premium :
+- Grues
+- Nacelles
+- Élévateurs Télescopiques
+- Construction
+Chaque carte doit avoir :
+- image
+- titre
+- court texte
+- bouton “Découvrir”
+
+3. Section expertise / proposition de valeur
+Mettre en avant :
+- vente d’équipements
+- location courte et longue durée
+- maintenance et SAV
+- pièces détachées d’origine
+- conseil technique
+- dépannage rapide
+Présenter cela sous forme de 6 cartes ou d’une section iconographique premium
+
+4. Section marques
+Créer une section “Nos marques” ou “Marques partenaires” avec logos/tuiles stylisées pour :
+- Terex Cranes RT
+- Mecalac
+- Tadano-Demag
+- Magni
+- JLG Industries
+Prévoir une structure facilement modifiable
+
+5. Section présence géographique
+Faire une section qui met en scène la présence au Maroc et en Afrique
+- carte stylisée ou bloc visuel
+- texte institutionnel rassurant
+- ton international B2B
+
+6. Section pourquoi choisir Vemat Group
+Arguments :
+- expertise technique
+- solutions adaptées aux projets
+- réactivité
+- accompagnement client
+- service après-vente
+- équipements fiables
+
+7. CTA final
+- gros bloc de conversion
+- titre du type “Parlons de votre projet”
+- bouton devis
+- bouton contact
+
+Pages internes :
+A. Page Grues
+Créer une page catégorie premium avec hero + grille de sous-catégories.
+Sous-catégories à inclure :
+- Grues automotrices lentes
+- Grues tout-terrain
+- Grues sur chenilles
+- Grues City
+- Grues sur camion
+- Grues sur porteur
+- Grues à tour
+Prévoir des cartes de sous-catégories avec image, titre, courte description, bouton.
+
+B. Page Nacelles
+Sous-catégories à inclure :
+- Nacelles élévatrices motorisées
+- Nacelles à flèche électriques et hybrides
+- Accès à des niveaux moins élevés
+- Préparateur de commandes mobile (Stock pickers)
+Créer une présentation claire, visuelle et premium.
+
+C. Page Élévateurs Télescopiques
+Sous-catégories à inclure :
+- TH - Fixes
+- HTH - Heavy duty
+- RTH - Rotatifs
+Ajouter hero, grille, bénéfices métiers et CTA.
+
+D. Page Construction
+Sous-catégories à inclure :
+- Chargeuses
+- Chargeuses-pelleteuses
+- Compacteurs à rouleaux
+- Dumpers
+- Pelles
+Créer une page très visuelle avec logique catalogue propre.
+
+E. Page Services
+Créer une page claire avec sections distinctes pour :
+- Vente d’engins et d’équipements
+- Location courte et longue durée
+- Service après-vente complet
+- Pièces de rechange d’origine
+- Conseils techniques et solutions sur mesure
+- Dépannage et réparation
+Ajouter une section CTA pour contact commercial ou SAV.
+
+F. Page À propos
+Créer une page corporate premium avec :
+- présentation de l’entreprise
+- mission / vision / valeurs
+- positionnement en Afrique
+- expertise sectorielle
+- bloc confiance / partenaires
+- ton institutionnel mais moderne
+
+G. Page Contact
+Créer une page contact très propre avec :
+- coordonnées
+- adresse showroom :
+  Route de Bouskoura, Km 13 Route d’El Jadida, BP 20230, Casablanca - Maroc
+- téléphone fixe :
+  +212 522 65 12 13
+- mobile :
+  +212 650 14 64 64
+- horaires :
+  Lundi au Vendredi : 08:30 - 17:30
+  Samedi : 08:30 - 13:30
+- formulaire de contact moderne
+- carte ou bloc visuel localisation
+- CTA WhatsApp visuel si pertinent
+
+Exigences UX/UI :
+- excellente lisibilité
+- CTA visibles partout sans être agressifs
+- parcours simple pour demander un devis
+- composants réutilisables
+- hover states premium
+- responsive irréprochable
+- sections bien rythmées
+- design plus premium que le site actuel
+- éviter les pages surchargées
+- donner une impression de force, précision, fiabilité et professionnalisme
+
+Exigences techniques :
+- créer toutes les pages et tous les composants nécessaires
+- utiliser des données mockées structurées dans des fichiers séparés
+- prévoir un tableau de données pour catégories, sous-catégories, marques et services
+- composants réutilisables : Navbar, Footer, HeroSection, CategoryCard, ServiceCard, BrandStrip, CTASection, ContactForm
+- ajouter métadonnées SEO simples sur chaque page
+- code proprement organisé
+- pas de lorem ipsum générique si possible ; utiliser un vrai ton B2B industriel en français
+- utiliser des images placeholders élégantes si les assets finaux ne sont pas disponibles
+- préparer le projet pour pouvoir remplacer facilement textes, images et logos ensuite
+
+Livrable attendu :
+- projet Next.js complet
+- toutes les pages routées
+- UI cohérente
+- contenu de démonstration crédible
+- structure prête à être déployée
+- design premium industriel bien supérieur au site actuel
+
+Commence directement par générer l’architecture du projet, puis les composants partagés, puis les pages avec contenu mocké cohérent.

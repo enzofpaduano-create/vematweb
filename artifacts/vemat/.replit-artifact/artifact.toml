@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "Vemat Group"
+version = "1.0.0"
+id = "artifacts/vemat"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 24014
+
+[services.development]
+run = "pnpm --filter @workspace/vemat run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/vemat", "run", "build" ]
+publicDir = "artifacts/vemat/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "24014"
+BASE_PATH = "/"

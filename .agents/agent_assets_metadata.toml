@@ -1,0 +1,68 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "t8rkCAIj1ZfiKuF--e28P"
+uri = "file://artifacts/vemat/public/images/hero.png"
+type = "image"
+title = "industrial crane sunset"
+
+[[generated]]
+id = "vry98YfuV7yetDNs5LWjV"
+uri = "file://artifacts/vemat/public/images/cat-cranes.png"
+type = "image"
+title = "crane category"
+
+[[generated]]
+id = "wEacJkvc-BzIxFN9J1LIu"
+uri = "file://artifacts/vemat/public/images/cat-nacelles.png"
+type = "image"
+title = "aerial platform"
+
+[[generated]]
+id = "0bFp4t7lQSFulSu6zxdYU"
+uri = "file://artifacts/vemat/public/images/cat-telehandlers.png"
+type = "image"
+title = "telehandler"
+
+[[generated]]
+id = "yIdUooAYT-C6DURPWWoIa"
+uri = "file://artifacts/vemat/public/images/cat-construction.png"
+type = "image"
+title = "construction equipment"
+
+[[generated]]
+id = "vl2DgmSpE2aFYmOemDryd"
+uri = "file://artifacts/vemat/src/assets/images/hero-cinematic.png"
+type = "image"
+title = "cinematic hero industrial worksite crane"
+
+[[generated]]
+id = "GymWWTf1BcbzxAoyGQI_0"
+uri = "file://artifacts/vemat/src/assets/images/grues.png"
+type = "image"
+title = "crane lifting heavy load"
+
+[[generated]]
+id = "j42C6rBRetjl2YouA6Gps"
+uri = "file://artifacts/vemat/src/assets/images/nacelles.png"
+type = "image"
+title = "aerial work platform boom lift"
+
+[[generated]]
+id = "TzwRzgOC5MlhsHUMXQNfc"
+uri = "file://artifacts/vemat/src/assets/images/telescopiques.png"
+type = "image"
+title = "telehandler heavy duty forklift"
+
+[[generated]]
+id = "2NB9hZtWi1q1wOGWYHGBb"
+uri = "file://artifacts/vemat/src/assets/images/construction.png"
+type = "image"
+title = "construction machinery excavators"
+
+[[generated]]
+id = "7BtCnzB9bgJDYka9aLL3f"
+uri = "file://artifacts/vemat/src/assets/images/african-presence.png"
+type = "image"
+title = "african construction site sunset"
