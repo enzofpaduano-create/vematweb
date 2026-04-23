@@ -57,6 +57,17 @@ export const translations = {
         construction: "Construction",
       },
     },
+    catalog: {
+      title: "Notre catalogue",
+      subtitle: "Une gamme complète de modèles, sélectionnés auprès des plus grandes marques mondiales.",
+      products: "produits",
+      product: "produit",
+      models: "Modèles disponibles",
+      more: "autres modèles",
+      quote: "Demander un devis",
+      fullList: "La liste complète des modèles est disponible sur demande.",
+      contactUs: "Contactez-nous",
+    },
     categories: {
       grues: {
         title: "Grues",
@@ -299,6 +310,17 @@ export const translations = {
         elevateurs: "Telehandlers",
         construction: "Construction",
       },
+    },
+    catalog: {
+      title: "Our catalogue",
+      subtitle: "A complete range of models, sourced from the world's leading manufacturers.",
+      products: "products",
+      product: "product",
+      models: "Available models",
+      more: "more models",
+      quote: "Request a quote",
+      fullList: "The full list of models is available on request.",
+      contactUs: "Contact us",
     },
     categories: {
       grues: {

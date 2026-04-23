@@ -1,12 +1,13 @@
 import { useSEO, useScrollTop } from "@/hooks/use-seo";
 import { HeroSection } from "@/components/HeroSection";
-import { SubCategoryCard } from "@/components/SubCategoryCard";
+import { ProductCatalog } from "@/components/ProductCatalog";
 import { CTASection } from "@/components/CTASection";
 import { SectionHeader } from "@/components/SectionHeader";
 import { BrandCard } from "@/components/BrandCard";
 import { CheckCircle2 } from "lucide-react";
 import { useLang } from "@/i18n/I18nProvider";
 import { brandsForCategory } from "@/data/brands";
+import { catalog } from "@/data/products";
 import img from "@/assets/images/nacelles.png";
 
 export default function Nacelles() {
@@ -24,14 +25,10 @@ export default function Nacelles() {
         primaryCta={{ label: t("nav.devis"), href: "/contact" }}
       />
 
-      <section className="py-24 bg-white">
+      <section className="py-24 bg-zinc-50">
         <div className="container mx-auto px-4 md:px-6">
-          <SectionHeader title={t("nacelles.sectionTitle")} subtitle={t("nacelles.sectionSub")} />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {tArray("subcategories.nacelles").map((sub, index) => (
-              <SubCategoryCard key={index} index={index} title={sub} />
-            ))}
-          </div>
+          <SectionHeader title={t("catalog.title")} subtitle={t("catalog.subtitle")} />
+          <ProductCatalog subcategories={catalog.nacelles} />
         </div>
       </section>
 
