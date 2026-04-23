@@ -3,33 +3,32 @@ import { HeroSection } from "@/components/HeroSection";
 import { SubCategoryCard } from "@/components/SubCategoryCard";
 import { CTASection } from "@/components/CTASection";
 import { SectionHeader } from "@/components/SectionHeader";
-import { categories } from "@/data/categories";
-import { subcategories } from "@/data/subcategories";
+import { BrandCard } from "@/components/BrandCard";
 import { CheckCircle2 } from "lucide-react";
+import { useLang } from "@/i18n/I18nProvider";
+import { brandsForCategory } from "@/data/brands";
 import img from "@/assets/images/grues.png";
 
 export default function Grues() {
-  useSEO("Grues", "Gamme complète de grues : automotrices, tout-terrain, sur chenilles, à tour.");
+  const { t, tArray } = useLang();
+  useSEO(t("seo.grues.title"), t("seo.grues.desc"));
   useScrollTop();
-  const cat = categories.find(c => c.slug === "grues");
+  const partners = brandsForCategory("grues");
 
   return (
     <div className="min-h-screen pt-20">
       <HeroSection
-        title={cat?.title || "Grues"}
-        subtitle={cat?.description || ""}
+        title={t("categories.grues.title")}
+        subtitle={t("categories.grues.description")}
         image={img}
-        primaryCta={{ label: "Demander un devis", href: "/contact" }}
+        primaryCta={{ label: t("nav.devis"), href: "/contact" }}
       />
 
       <section className="py-24 bg-white">
         <div className="container mx-auto px-4 md:px-6">
-          <SectionHeader
-            title="Notre gamme de grues"
-            subtitle="Des capacités de levage exceptionnelles adaptées à chaque environnement de travail."
-          />
+          <SectionHeader title={t("grues.sectionTitle")} subtitle={t("grues.sectionSub")} />
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {subcategories.grues.map((sub, index) => (
+            {tArray("subcategories.grues").map((sub, index) => (
               <SubCategoryCard key={index} index={index} title={sub} />
             ))}
           </div>
@@ -40,15 +39,9 @@ export default function Grues() {
         <div className="container mx-auto px-4 md:px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
-              <SectionHeader title="La performance au sommet" />
+              <SectionHeader title={t("grues.perfTitle")} />
               <div className="space-y-6">
-                {[
-                  "Capacités de levage allant jusqu'à plus de 1000 tonnes",
-                  "Technologies de stabilisation avancées",
-                  "Systèmes de contrôle intelligents (IC-1 Plus)",
-                  "Maintenance simplifiée et télémétrie embarquée",
-                  "Conformité aux normes de sécurité internationales les plus strictes"
-                ].map((benefit, i) => (
+                {tArray("grues.benefits").map((benefit, i) => (
                   <div key={i} className="flex items-start gap-4">
                     <CheckCircle2 className="h-6 w-6 text-accent shrink-0" />
                     <p className="text-zinc-700 text-lg">{benefit}</p>
@@ -57,16 +50,32 @@ export default function Grues() {
               </div>
             </div>
             <div className="h-[500px] bg-zinc-200 relative overflow-hidden shadow-2xl">
-               <img src={img} className="w-full h-full object-cover" alt="Grues en action" />
+              <img src={img} className="w-full h-full object-cover" alt="" />
             </div>
           </div>
         </div>
       </section>
 
+      {partners.length > 0 && (
+        <section className="py-24 bg-white border-t border-zinc-200">
+          <div className="container mx-auto px-4 md:px-6">
+            <SectionHeader
+              title={partners.length > 1 ? t("brands.forCategoryPlural") : t("brands.forCategory")}
+              alignment="center"
+            />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+              {partners.map((b, i) => (
+                <BrandCard key={b.id} brand={b} index={i} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       <CTASection
-        title="Besoin d'expertise pour votre levage ?"
-        description="Nos ingénieurs vous conseillent sur la grue la plus adaptée à la configuration de votre chantier."
-        primaryCta={{ label: "Nous contacter", href: "/contact" }}
+        title={t("grues.ctaTitle")}
+        description={t("grues.ctaDesc")}
+        primaryCta={{ label: t("grues.ctaBtn"), href: "/contact" }}
       />
     </div>
   );

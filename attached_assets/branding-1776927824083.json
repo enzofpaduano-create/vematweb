@@ -1,0 +1,119 @@
+{
+  "colorScheme": "light",
+  "fonts": [
+    {
+      "family": "Helvetica Neue LT Pro",
+      "count": 7
+    },
+    {
+      "family": "Helvetica Neue",
+      "count": 7
+    },
+    {
+      "family": "Helvetica",
+      "count": 7
+    },
+    {
+      "family": "Arial",
+      "count": 7
+    },
+    {
+      "family": "sans-serif",
+      "count": 7
+    },
+    {
+      "family": "jaf-bernino-sans",
+      "count": 5
+    },
+    {
+      "family": "industry",
+      "count": 2
+    }
+  ],
+  "colors": {
+    "primary": "#011C2C",
+    "secondary": "#57C5F7",
+    "accent": "#96DBFA",
+    "background": "#FFFFFF",
+    "textPrimary": "#000000",
+    "link": "#96DBFA"
+  },
+  "typography": {
+    "fontFamilies": {
+      "primary": "jaf-bernino-sans",
+      "heading": "industry"
+    },
+    "fontStacks": {
+      "body": [
+        "jaf-bernino-sans",
+        "Helvetica Neue LT Pro",
+        "Helvetica Neue",
+        "Helvetica",
+        "Arial",
+        "sans-serif"
+      ],
+      "heading": [
+        "industry",
+        "Helvetica Neue LT Pro",
+        "Helvetica Neue",
+        "Helvetica",
+        "Arial",
+        "sans-serif"
+      ],
+      "paragraph": [
+        "jaf-bernino-sans",
+        "Helvetica Neue LT Pro",
+        "Helvetica Neue",
+        "Helvetica",
+        "Arial",
+        "sans-serif"
+      ]
+    },
+    "fontSizes": {
+      "h1": "55px",
+      "h2": "55px",
+      "body": "16px"
+    }
+  },
+  "spacing": {
+    "baseUnit": 6,
+    "borderRadius": "4px"
+  },
+  "components": {},
+  "images": {
+    "logo": null,
+    "favicon": null,
+    "ogImage": null
+  },
+  "personality": {
+    "tone": "professional",
+    "energy": "medium",
+    "targetAudience": "unknown"
+  },
+  "designSystem": {
+    "framework": "unknown",
+    "componentLibrary": ""
+  },
+  "confidence": {
+    "buttons": 0,
+    "colors": 0,
+    "overall": 0
+  },
+  "__llm_metadata": {
+    "logoSelection": {
+      "llmCalled": false,
+      "llmSucceeded": false,
+      "finalSource": "none",
+      "rawLogoSelection": {
+        "selectedLogoIndex": -1,
+        "selectedLogoReasoning": "LLM failed",
+        "confidence": 0
+      }
+    },
+    "buttonClassification": {
+      "llmCalled": false,
+      "llmSucceeded": false,
+      "error": "LLM call failed or returned fallback values"
+    }
+  }
+}

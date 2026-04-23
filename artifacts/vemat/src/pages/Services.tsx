@@ -2,18 +2,24 @@ import { useSEO, useScrollTop } from "@/hooks/use-seo";
 import { ServiceCard } from "@/components/ServiceCard";
 import { CTASection } from "@/components/CTASection";
 import { SectionHeader } from "@/components/SectionHeader";
-import { services } from "@/data/services";
+import { useLang } from "@/i18n/I18nProvider";
 
 export default function Services() {
-  useSEO("Nos Services", "Vente, location, SAV, pièces de rechange et conseils techniques pour vos équipements industriels.");
+  const { t } = useLang();
+  useSEO(t("seo.services.title"), t("seo.services.desc"));
   useScrollTop();
+
+  const services = [0, 1, 2, 3, 4, 5].map((i) => ({
+    title: t(`services.list.${i}.title`),
+    description: t(`services.list.${i}.description`),
+  }));
 
   return (
     <div className="min-h-screen pt-32 pb-20">
       <div className="container mx-auto px-4 md:px-6">
         <SectionHeader
-          title="Des services industriels de pointe"
-          subtitle="Un accompagnement complet pour garantir la continuité et l'efficacité de vos opérations à travers toute l'Afrique."
+          title={t("services.pageTitle")}
+          subtitle={t("services.pageSub")}
           alignment="center"
           className="max-w-4xl mx-auto mb-20"
         />
@@ -31,9 +37,9 @@ export default function Services() {
       </div>
 
       <CTASection
-        title="Une urgence technique ?"
-        description="Notre service après-vente est mobilisé pour intervenir rapidement sur vos chantiers."
-        primaryCta={{ label: "Contacter le SAV", href: "/contact" }}
+        title={t("services.ctaTitle")}
+        description={t("services.ctaDesc")}
+        primaryCta={{ label: t("services.ctaBtn"), href: "/contact" }}
         background="dark"
       />
     </div>

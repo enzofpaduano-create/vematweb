@@ -1,0 +1,152 @@
+{
+  "colorScheme": "light",
+  "fonts": [
+    {
+      "family": "Inter",
+      "role": "body"
+    },
+    {
+      "family": "Arial",
+      "role": "unknown"
+    },
+    {
+      "family": "Helvetica",
+      "role": "unknown"
+    },
+    {
+      "family": "Roboto",
+      "role": "unknown"
+    }
+  ],
+  "colors": {
+    "primary": "#F2A002",
+    "secondary": "#69727D",
+    "accent": "#E42100",
+    "background": "#FFFFFF",
+    "textPrimary": "#000000",
+    "link": "#D1EAFF"
+  },
+  "typography": {
+    "fontFamilies": {
+      "primary": "Inter",
+      "heading": "Inter"
+    },
+    "fontStacks": {
+      "heading": [
+        "Inter",
+        "sans-serif"
+      ],
+      "body": [
+        "Inter",
+        "sans-serif"
+      ],
+      "paragraph": [
+        "Inter",
+        "sans-serif"
+      ]
+    },
+    "fontSizes": {
+      "h1": "35.9996px",
+      "h2": "23.9988px",
+      "body": "12px"
+    }
+  },
+  "spacing": {
+    "baseUnit": 4,
+    "borderRadius": "4px"
+  },
+  "components": {
+    "input": {
+      "background": "transparent",
+      "textColor": "#000000",
+      "borderColor": null,
+      "borderRadius": "0px",
+      "borderRadiusCorners": {
+        "topLeft": "0px",
+        "topRight": "0px",
+        "bottomRight": "0px",
+        "bottomLeft": "0px"
+      },
+      "shadow": "none"
+    },
+    "buttonPrimary": {
+      "background": "#E42100",
+      "textColor": "#FFFFFF",
+      "borderRadius": "3px",
+      "borderRadiusCorners": {
+        "topLeft": "3px",
+        "topRight": "3px",
+        "bottomRight": "3px",
+        "bottomLeft": "3px"
+      },
+      "shadow": "none"
+    },
+    "buttonSecondary": {
+      "background": "#D1EAFF",
+      "textColor": "#000000",
+      "borderRadius": "0px",
+      "borderRadiusCorners": {
+        "topLeft": "0px",
+        "topRight": "0px",
+        "bottomRight": "0px",
+        "bottomLeft": "0px"
+      },
+      "shadow": "rgba(255, 255, 255, 0.64) 0px 0px 0px 0px inset"
+    }
+  },
+  "images": {
+    "logo": "https://vematgroup.com/storage/Vemat-group-logo.png",
+    "favicon": "https://vematgroup.com/storage/cropped-vematgroupltd-favicon-32x32.png",
+    "ogImage": "https://vematgroup.com/storage/Vemat-Group-LTD-Maroc-Mauritanie-Senegal-Nigeria-Tunisie-Libye-Tchad-Mali-zone-CDEAO-25.jpg",
+    "logoHref": "https://vematgroup.com/"
+  },
+  "__llm_logo_reasoning": {
+    "selectedIndex": 0,
+    "reasoning": "Selected #0 because it is visible, located in the header, and links to the homepage, which are strong indicators of the main brand logo. The source URL also matches the brand name 'Vemat Group'.",
+    "confidence": 0.9,
+    "source": "llm"
+  },
+  "__llm_button_reasoning": {
+    "primary": {
+      "index": 0,
+      "text": "Nos grues",
+      "reasoning": "Button #0 has a vibrant red/orange background (#E42100), which is a strong brand color and typically used for primary CTAs. The text 'Nos grues' suggests an action-oriented purpose, aligning with primary CTA characteristics."
+    },
+    "secondary": {
+      "index": 2,
+      "text": "chercher",
+      "reasoning": "Button #2 has a different background color (#D1EAFF) and serves as a secondary action with the text 'chercher', which is less prominent than the primary CTA."
+    },
+    "confidence": 0.95
+  },
+  "personality": {
+    "tone": "professional",
+    "energy": "medium",
+    "targetAudience": "construction and industrial sectors in Africa"
+  },
+  "designSystem": {
+    "framework": "custom",
+    "componentLibrary": ""
+  },
+  "confidence": {
+    "buttons": 0.95,
+    "colors": 0.9,
+    "overall": 0.925
+  },
+  "__llm_metadata": {
+    "logoSelection": {
+      "llmCalled": true,
+      "llmSucceeded": true,
+      "finalSource": "llm",
+      "rawLogoSelection": {
+        "selectedLogoIndex": 0,
+        "selectedLogoReasoning": "Selected #0 because it is visible, located in the header, and links to the homepage, which are strong indicators of the main brand logo. The source URL also matches the brand name 'Vemat Group'.",
+        "confidence": 0.9
+      }
+    },
+    "buttonClassification": {
+      "llmCalled": true,
+      "llmSucceeded": true
+    }
+  }
+}

@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Link } from "wouter";
-import { ArrowRight, Globe, ShieldCheck, Clock, Settings, Wrench, HardHat } from "lucide-react";
+import { ArrowRight, Globe, ShieldCheck, HardHat } from "lucide-react";
 import { useSEO, useScrollTop } from "@/hooks/use-seo";
 import { HeroSection } from "@/components/HeroSection";
 import { CategoryCard } from "@/components/CategoryCard";
@@ -10,33 +10,41 @@ import { CTASection } from "@/components/CTASection";
 import { SectionHeader } from "@/components/SectionHeader";
 import { StatBlock } from "@/components/StatBlock";
 import { categories } from "@/data/categories";
-import { services } from "@/data/services";
+import { useLang } from "@/i18n/I18nProvider";
 
 import heroImg from "@/assets/images/hero-cinematic.png";
 import africanImg from "@/assets/images/african-presence.png";
 
 export default function Home() {
-  useSEO("Accueil", "Vemat Group - Distributeur majeur d'équipements industriels et de levage au Maroc et en Afrique. Grues, nacelles, élévateurs télescopiques.");
+  const { t } = useLang();
+  useSEO(t("seo.home.title"), t("seo.home.desc"));
   useScrollTop();
+
+  const services = (
+    [0, 1, 2, 3].map((i) => ({
+      title: t(`services.list.${i}.title`),
+      description: t(`services.list.${i}.description`),
+    }))
+  );
 
   return (
     <div className="min-h-screen">
       <HeroSection
-        title="La puissance au service de vos grands projets"
-        subtitle="Distributeur exclusif des leaders mondiaux de l'équipement de levage, de manutention et de construction en Afrique."
+        title={t("home.heroTitle")}
+        subtitle={t("home.heroSubtitle")}
         image={heroImg}
-        primaryCta={{ label: "Découvrir nos équipements", href: "/grues" }}
-        secondaryCta={{ label: "Contacter un expert", href: "/contact" }}
+        primaryCta={{ label: t("home.heroPrimary"), href: "/grues" }}
+        secondaryCta={{ label: t("home.heroSecondary"), href: "/contact" }}
       />
 
       {/* Stats Section */}
       <section className="py-16 bg-zinc-950 border-t border-zinc-800">
         <div className="container mx-auto px-4 md:px-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <StatBlock value="25+" label="Pays desservis" delay={0} />
-            <StatBlock value="150+" label="Projets majeurs" delay={0.1} />
-            <StatBlock value="24/7" label="Service client" delay={0.2} />
-            <StatBlock value="5" label="Marques mondiales" delay={0.3} />
+            <StatBlock value="25+" label={t("home.statCountries")} delay={0} />
+            <StatBlock value="150+" label={t("home.statProjects")} delay={0.1} />
+            <StatBlock value="24/7" label={t("home.statSupport")} delay={0.2} />
+            <StatBlock value="5" label={t("home.statBrands")} delay={0.3} />
           </div>
         </div>
       </section>
@@ -45,8 +53,8 @@ export default function Home() {
       <section className="py-24 bg-zinc-50">
         <div className="container mx-auto px-4 md:px-6">
           <SectionHeader
-            title="Nos Équipements"
-            subtitle="Une flotte complète pour répondre aux exigences des chantiers les plus complexes."
+            title={t("home.equipmentTitle")}
+            subtitle={t("home.equipmentSubtitle")}
             alignment="center"
           />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -54,8 +62,8 @@ export default function Home() {
               <CategoryCard
                 key={category.slug}
                 index={index}
-                title={category.title}
-                description={category.description}
+                title={t(`categories.${category.tKey}.title`)}
+                description={t(`categories.${category.tKey}.description`)}
                 image={category.image}
                 href={category.href}
               />
@@ -72,16 +80,16 @@ export default function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-16">
             <div className="lg:col-span-1">
               <SectionHeader
-                title="Expertise globale 360°"
-                subtitle="De l'acquisition à la maintenance, nous vous accompagnons tout au long du cycle de vie de vos équipements pour garantir leur performance maximale."
+                title={t("home.expertiseTitle")}
+                subtitle={t("home.expertiseSubtitle")}
               />
               <Link href="/services" className="inline-flex items-center text-accent font-bold hover:text-accent/80 transition-colors">
-                <span>Voir tous nos services</span>
+                <span>{t("home.viewServices")}</span>
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </div>
             <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-6">
-              {services.slice(0, 4).map((service, index) => (
+              {services.map((service, index) => (
                 <ServiceCard
                   key={index}
                   index={index}
@@ -99,7 +107,7 @@ export default function Home() {
         <div className="absolute inset-0 z-0">
           <img
             src={africanImg}
-            alt="Présence en Afrique"
+            alt=""
             className="w-full h-full object-cover opacity-30"
           />
         </div>
@@ -112,14 +120,14 @@ export default function Home() {
               transition={{ duration: 0.6 }}
             >
               <h2 className="text-4xl md:text-5xl font-heading font-bold text-white mb-6 leading-tight">
-                Ancrage marocain, <span className="text-accent">rayonnement panafricain</span>.
+                {t("home.africaTitle")} <span className="text-accent">{t("home.africaTitleAccent")}</span>.
               </h2>
               <p className="text-xl text-zinc-300 mb-10 leading-relaxed">
-                Fort de notre base stratégique au Maroc, nous déployons notre expertise technique et notre logistique à travers tout le continent africain pour soutenir les acteurs du BTP, de l'industrie et de l'énergie.
+                {t("home.africaSubtitle")}
               </p>
               <Link href="/a-propos">
                 <button className="bg-white text-zinc-950 font-bold px-8 py-4 uppercase tracking-wide text-sm hover:bg-accent hover:text-white transition-colors">
-                  Découvrir notre vision
+                  {t("home.africaCta")}
                 </button>
               </Link>
             </motion.div>
@@ -130,12 +138,9 @@ export default function Home() {
       {/* Why Vemat */}
       <section className="py-24 bg-zinc-50">
         <div className="container mx-auto px-4 md:px-6">
-          <SectionHeader
-            title="Pourquoi choisir Vemat Group ?"
-            alignment="center"
-          />
+          <SectionHeader title={t("home.whyTitle")} alignment="center" />
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mt-16">
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -145,11 +150,11 @@ export default function Home() {
               <div className="w-20 h-20 bg-zinc-100 rounded-full flex items-center justify-center mb-6 text-accent">
                 <Globe className="h-10 w-10" />
               </div>
-              <h3 className="text-xl font-heading font-bold mb-4">Réseau International</h3>
-              <p className="text-zinc-600">Partenariats solides avec les constructeurs les plus exigeants pour vous garantir une qualité sans compromis.</p>
+              <h3 className="text-xl font-heading font-bold mb-4">{t("home.whyNetworkTitle")}</h3>
+              <p className="text-zinc-600">{t("home.whyNetworkText")}</p>
             </motion.div>
-            
-            <motion.div 
+
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -159,11 +164,11 @@ export default function Home() {
               <div className="w-20 h-20 bg-zinc-100 rounded-full flex items-center justify-center mb-6 text-accent">
                 <HardHat className="h-10 w-10" />
               </div>
-              <h3 className="text-xl font-heading font-bold mb-4">Expertise Terrain</h3>
-              <p className="text-zinc-600">Des ingénieurs et techniciens formés directement par les constructeurs, capables d'intervenir dans les conditions les plus extrêmes.</p>
+              <h3 className="text-xl font-heading font-bold mb-4">{t("home.whyExpertTitle")}</h3>
+              <p className="text-zinc-600">{t("home.whyExpertText")}</p>
             </motion.div>
 
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -173,18 +178,18 @@ export default function Home() {
               <div className="w-20 h-20 bg-zinc-100 rounded-full flex items-center justify-center mb-6 text-accent">
                 <ShieldCheck className="h-10 w-10" />
               </div>
-              <h3 className="text-xl font-heading font-bold mb-4">Fiabilité Absolue</h3>
-              <p className="text-zinc-600">Des processus stricts, un engagement sur la sécurité et la fourniture exclusive de pièces d'origine certifiées.</p>
+              <h3 className="text-xl font-heading font-bold mb-4">{t("home.whyTrustTitle")}</h3>
+              <p className="text-zinc-600">{t("home.whyTrustText")}</p>
             </motion.div>
           </div>
         </div>
       </section>
 
       <CTASection
-        title="Prêt à équiper votre prochain projet ?"
-        description="Nos experts sont à votre disposition pour analyser vos besoins et vous proposer des solutions sur mesure."
-        primaryCta={{ label: "Demander un devis", href: "/contact" }}
-        secondaryCta={{ label: "Voir notre catalogue", href: "/grues" }}
+        title={t("home.ctaTitle")}
+        description={t("home.ctaDesc")}
+        primaryCta={{ label: t("home.ctaPrimary"), href: "/contact" }}
+        secondaryCta={{ label: t("home.ctaSecondary"), href: "/grues" }}
         background="accent"
       />
     </div>

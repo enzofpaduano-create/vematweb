@@ -1,0 +1,141 @@
+{
+  "colorScheme": "light",
+  "fonts": [
+    {
+      "family": "Lexend Deca",
+      "role": "body"
+    },
+    {
+      "family": "Helvetica",
+      "role": "body"
+    },
+    {
+      "family": "Arial",
+      "role": "body"
+    }
+  ],
+  "colors": {
+    "primary": "#FFD800",
+    "secondary": "#0055A0",
+    "accent": "#FFD800",
+    "background": "#FFFFFF",
+    "textPrimary": "#333333",
+    "link": "#2E353E"
+  },
+  "typography": {
+    "fontFamilies": {
+      "primary": "Lexend Deca",
+      "heading": "Lexend Deca"
+    },
+    "fontStacks": {
+      "heading": [
+        "Lexend Deca"
+      ],
+      "body": [
+        "Lexend Deca",
+        "Helvetica",
+        "Arial",
+        "sans-serif"
+      ],
+      "paragraph": [
+        "Lexend Deca",
+        "Helvetica",
+        "Arial",
+        "sans-serif"
+      ]
+    },
+    "fontSizes": {
+      "h1": "52px",
+      "h2": "52px",
+      "body": "16px"
+    }
+  },
+  "spacing": {
+    "baseUnit": 4,
+    "borderRadius": "8px"
+  },
+  "components": {
+    "buttonPrimary": {
+      "background": "#FFD800",
+      "textColor": "#FFFFFF",
+      "borderColor": "#FFD800",
+      "borderRadius": "20px",
+      "borderRadiusCorners": {
+        "topLeft": "20px",
+        "topRight": "20px",
+        "bottomRight": "20px",
+        "bottomLeft": "20px"
+      },
+      "shadow": "none"
+    },
+    "buttonSecondary": {
+      "background": "#0055A0",
+      "textColor": "#FFFFFF",
+      "borderColor": "#0055A0",
+      "borderRadius": "20px",
+      "borderRadiusCorners": {
+        "topLeft": "20px",
+        "topRight": "20px",
+        "bottomRight": "20px",
+        "bottomLeft": "20px"
+      },
+      "shadow": "none"
+    }
+  },
+  "images": {
+    "logo": "https://mecalac.com/medias/1753108004_Mecalac_Fayat_Group.png",
+    "favicon": "https://webfactorycdn.fayat.com/build/favicon/favicon.ico",
+    "ogImage": null,
+    "logoHref": "/fr/",
+    "logoAlt": "Mecalac Group"
+  },
+  "__llm_logo_reasoning": {
+    "selectedIndex": 0,
+    "reasoning": "Selected #0 because it is visible, located in the header, and matches the brand inferred from the URL and page context ('Mecalac').",
+    "confidence": 0.9,
+    "source": "llm"
+  },
+  "__llm_button_reasoning": {
+    "primary": {
+      "index": 0,
+      "text": "Je m'inscris !",
+      "reasoning": "Button #0 ('Je m'inscris !') is selected as the primary CTA because it uses the vibrant brand color #FFD800, which is consistent with the primary brand color, and has action-oriented text indicating a sign-up action."
+    },
+    "secondary": {
+      "index": 2,
+      "text": "J'accepte",
+      "reasoning": "Button #2 ('J'accepte') is selected as the secondary button because it uses a different vibrant color (#0055A0) and serves a secondary action of acceptance, which is less prominent than signing up."
+    },
+    "confidence": 0.95
+  },
+  "personality": {
+    "tone": "professional",
+    "energy": "medium",
+    "targetAudience": "construction industry professionals"
+  },
+  "designSystem": {
+    "framework": "bootstrap",
+    "componentLibrary": ""
+  },
+  "confidence": {
+    "buttons": 0.95,
+    "colors": 0.9,
+    "overall": 0.925
+  },
+  "__llm_metadata": {
+    "logoSelection": {
+      "llmCalled": true,
+      "llmSucceeded": true,
+      "finalSource": "llm",
+      "rawLogoSelection": {
+        "selectedLogoIndex": 0,
+        "selectedLogoReasoning": "Selected #0 because it is visible, located in the header, and matches the brand inferred from the URL and page context ('Mecalac').",
+        "confidence": 0.9
+      }
+    },
+    "buttonClassification": {
+      "llmCalled": true,
+      "llmSucceeded": true
+    }
+  }
+}

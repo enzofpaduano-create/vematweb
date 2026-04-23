@@ -1,0 +1,169 @@
+{
+  "colorScheme": "light",
+  "fonts": [
+    {
+      "family": "Helvetica Neue LT",
+      "role": "body"
+    },
+    {
+      "family": "Arial",
+      "role": "body"
+    },
+    {
+      "family": "Helvetica",
+      "role": "body"
+    },
+    {
+      "family": "Noto Sans",
+      "role": "body"
+    },
+    {
+      "family": "Montserrat",
+      "role": "heading"
+    }
+  ],
+  "colors": {
+    "primary": "#004295",
+    "secondary": "#3E5674",
+    "accent": "#0089C8",
+    "background": "#FFFFFF",
+    "textPrimary": "#0089C8",
+    "link": "#0089C8"
+  },
+  "typography": {
+    "fontFamilies": {
+      "primary": "Helvetica Neue LT",
+      "heading": "Montserrat"
+    },
+    "fontStacks": {
+      "heading": [
+        "Helvetica Neue LT",
+        "Arial",
+        "Helvetica",
+        "Noto Sans",
+        "sans-serif"
+      ],
+      "body": [
+        "Montserrat",
+        "Helvetica Neue LT",
+        "Arial",
+        "Helvetica",
+        "Noto Sans",
+        "sans-serif"
+      ],
+      "paragraph": [
+        "Montserrat",
+        "Helvetica Neue LT",
+        "Arial",
+        "Helvetica",
+        "Noto Sans",
+        "sans-serif"
+      ]
+    },
+    "fontSizes": {
+      "h1": "48px",
+      "h2": "28px",
+      "body": "18px"
+    }
+  },
+  "spacing": {
+    "baseUnit": 4,
+    "borderRadius": "5px"
+  },
+  "components": {
+    "input": {
+      "background": "transparent",
+      "textColor": "#FFFFFF",
+      "borderColor": null,
+      "borderRadius": "0px",
+      "borderRadiusCorners": {
+        "topLeft": "0px",
+        "topRight": "0px",
+        "bottomRight": "0px",
+        "bottomLeft": "0px"
+      },
+      "shadow": "none"
+    },
+    "buttonPrimary": {
+      "background": "#0089C8",
+      "textColor": "#FFFFFF",
+      "borderColor": "#0089C8",
+      "borderRadius": "0px",
+      "borderRadiusCorners": {
+        "topLeft": "0px",
+        "topRight": "0px",
+        "bottomRight": "0px",
+        "bottomLeft": "0px"
+      },
+      "shadow": "none"
+    },
+    "buttonSecondary": {
+      "background": "#2A3A40",
+      "textColor": "#FFFFFF",
+      "borderRadius": "0px",
+      "borderRadiusCorners": {
+        "topLeft": "0px",
+        "topRight": "0px",
+        "bottomRight": "0px",
+        "bottomLeft": "0px"
+      },
+      "shadow": "none"
+    }
+  },
+  "images": {
+    "logo": "File saved at: attached_assets/logo.svg",
+    "favicon": "File saved at: attached_assets/favicon.png",
+    "ogImage": null,
+    "logoHref": "https://www.tadano.com/espana-y-portugal/es/",
+    "logoAlt": "Tadano"
+  },
+  "__llm_logo_reasoning": {
+    "selectedIndex": 1,
+    "reasoning": "Selected #1 because it is visible, located in the header, and matches the brand inferred from the URL and page title ('Tadano').",
+    "confidence": 0.95,
+    "source": "llm"
+  },
+  "__llm_button_reasoning": {
+    "primary": {
+      "index": 3,
+      "text": "Detalles\n                    Más información",
+      "reasoning": "Button #3 has a vibrant blue background (#0089C8) and action-oriented text ('Detalles Más información'), making it a strong candidate for the primary CTA."
+    },
+    "secondary": {
+      "index": 1,
+      "text": "Obtenga nuestras últimas actualizaciones",
+      "reasoning": "Button #1 has a different background color (#2A3A40) and serves as a secondary action ('Obtenga nuestras últimas actualizaciones'), fitting the role of a secondary button."
+    },
+    "confidence": 0.95
+  },
+  "personality": {
+    "tone": "professional",
+    "energy": "medium",
+    "targetAudience": "construction and industrial sectors"
+  },
+  "designSystem": {
+    "framework": "custom",
+    "componentLibrary": ""
+  },
+  "confidence": {
+    "buttons": 0.95,
+    "colors": 0.9,
+    "overall": 0.925
+  },
+  "__llm_metadata": {
+    "logoSelection": {
+      "llmCalled": true,
+      "llmSucceeded": true,
+      "finalSource": "llm",
+      "rawLogoSelection": {
+        "selectedLogoIndex": 1,
+        "selectedLogoReasoning": "Selected #1 because it is visible, located in the header, and matches the brand inferred from the URL and page title ('Tadano').",
+        "confidence": 0.95
+      }
+    },
+    "buttonClassification": {
+      "llmCalled": true,
+      "llmSucceeded": true
+    }
+  }
+}
