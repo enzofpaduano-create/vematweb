@@ -105,7 +105,7 @@ export default function Home() {
               width="100%"
               height="100%"
               style={{ border: 0, filter: "grayscale(0.2) contrast(1.1)" }}
-              allowFullScreen=""
+              allowFullScreen
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
               title="Vemat Location"

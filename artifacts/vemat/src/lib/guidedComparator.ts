@@ -312,7 +312,7 @@ export function buildGuidedComparatorResult(lang: Lang, answers: GuidedAnswers) 
           ? `${candidate.subtitle}. ${candidate.snippet}`
           : `${candidate.subtitle}. ${candidate.snippet}`;
 
-      return `${index + 1}. **${candidate.title}**\n${reason}\n${candidate.url}`;
+      return `${index + 1}. **${candidate.title}**\n${reason}`;
     })
     .join("\n\n");
 
@@ -327,7 +327,7 @@ export function buildGuidedComparatorResult(lang: Lang, answers: GuidedAnswers) 
       type: "product" as const,
       title: candidate.title,
       subtitle: candidate.subtitle,
-      url: candidate.url,
+      url: `/${candidate.category}/${candidate.slug}`,
       snippet: candidate.snippet,
     })),
   };

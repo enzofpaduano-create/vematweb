@@ -41,7 +41,8 @@ export function ProductBrowser({ initialSubcategories, categoryType }: ProductBr
           if (minHeight > 0) {
             const heightKey = SPEC_KEYS.HEIGHT.find(k => specs[k]);
             if (!heightKey) return false; // Hide if no height spec but filter active
-            const val = parseSpecValue(specs[heightKey]);
+            const raw = specs[heightKey];
+            const val = parseSpecValue(typeof raw === "string" ? raw : raw?.fr);
             if (val === null || val < minHeight) return false;
           }
 
@@ -49,7 +50,8 @@ export function ProductBrowser({ initialSubcategories, categoryType }: ProductBr
           if (minCapacity > 0) {
             const capKey = SPEC_KEYS.CAPACITY.find(k => specs[k]);
             if (!capKey) return false; // Hide if no capacity spec but filter active
-            const val = parseSpecValue(specs[capKey]);
+            const raw = specs[capKey];
+            const val = parseSpecValue(typeof raw === "string" ? raw : raw?.fr);
             if (val === null || val < minCapacity) return false;
           }
         } else if (minHeight > 0 || minCapacity > 0) {
