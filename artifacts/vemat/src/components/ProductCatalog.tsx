@@ -10,14 +10,16 @@ import tadanoLogo from "@/assets/brands/tadano-demag.png";
 import jlgLogo from "@/assets/brands/jlg.png";
 import magniLogo from "@/assets/brands/magni.png";
 import mecalacLogo from "@/assets/brands/mecalac.png";
+import fuchsLogo from "@/assets/brands/fuchs.svg";
 
-function getBrandLogo(brand: string): string | null {
+function getBrandLogo(brand: string): { src: string; darkBg: boolean } | null {
   const b = brand.toLowerCase();
-  if (b.includes("terex")) return terexLogo;
-  if (b.includes("tadano")) return tadanoLogo;
-  if (b.includes("jlg")) return jlgLogo;
-  if (b.includes("magni")) return magniLogo;
-  if (b.includes("mecalac")) return mecalacLogo;
+  if (b.includes("fuchs")) return { src: fuchsLogo, darkBg: true };
+  if (b.includes("terex")) return { src: terexLogo, darkBg: false };
+  if (b.includes("tadano")) return { src: tadanoLogo, darkBg: false };
+  if (b.includes("jlg")) return { src: jlgLogo, darkBg: false };
+  if (b.includes("magni")) return { src: magniLogo, darkBg: false };
+  if (b.includes("mecalac")) return { src: mecalacLogo, darkBg: false };
   return null;
 }
 
@@ -152,16 +154,20 @@ export function ProductCatalog({ subcategories }: ProductCatalogProps) {
                 )}
               </div>
               <div className="flex flex-col items-end gap-4">
-                {getBrandLogo(sub.brand) && (
-                  <div className="bg-white rounded-lg px-3 py-2 shadow-sm">
-                    <img
-                      src={getBrandLogo(sub.brand)!}
-                      alt={sub.brand}
-                      className="h-6 w-auto object-contain"
-                      draggable={false}
-                    />
-                  </div>
-                )}
+                {(() => {
+                  const logo = getBrandLogo(sub.brand);
+                  if (!logo) return null;
+                  return (
+                    <div className={`rounded-lg px-3 py-2 shadow-sm ${logo.darkBg ? "bg-zinc-800" : "bg-white"}`}>
+                      <img
+                        src={logo.src}
+                        alt={sub.brand}
+                        className="h-6 w-auto object-contain"
+                        draggable={false}
+                      />
+                    </div>
+                  );
+                })()}
                 <Link
                   href="/contact"
                   className="inline-flex items-center gap-2 bg-accent text-white px-5 py-3 text-sm font-semibold hover:bg-accent/90 transition-colors"
