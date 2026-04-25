@@ -11,6 +11,11 @@
   status = 200
 
 [[redirects]]
-  from = "/api/linkedin-sync"
+  from = "/api-linkedin-sync"
   to = "/.netlify/functions/linkedin-sync"
+  status = 200
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
   status = 200
