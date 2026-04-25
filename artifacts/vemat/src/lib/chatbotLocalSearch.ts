@@ -1,6 +1,5 @@
 import { productDetails } from "@/data/productDetails";
 import { parts } from "@/data/parts";
-import { jlgParts } from "@/data/jlgParts";
 import { blogPosts } from "@/data/blog";
 import type { Lang } from "@/i18n/translations";
 
@@ -359,7 +358,7 @@ function runCatalogSearch(query: string, lang: Lang): LocalAssistantSource[] {
     }))
   );
 
-  const partResults: SearchResult[] = [...jlgParts, ...parts].map((part) => ({
+  const partResults: SearchResult[] = [...parts].map((part) => ({
     score: score(query, `${part.brand} ${part.name}`, `${part.reference} ${part.description} ${part.subFamily || ""}`, "part"),
     source: { type: "part" as const, title: `${part.brand} ${part.name}`, subtitle: `${lang === "fr" ? "Réf." : "Ref."} ${part.reference}`, url: "/pieces-de-rechange" },
   }));
