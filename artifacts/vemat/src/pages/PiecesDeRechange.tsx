@@ -11,6 +11,7 @@ import {
   ChevronLeft,
   Layers,
   ExternalLink,
+  Warehouse,
 } from "lucide-react";
 import { useSEO, useScrollTop } from "@/hooks/use-seo";
 import { useLang } from "@/i18n/I18nProvider";
@@ -19,8 +20,9 @@ import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import jlgLogo from "@/assets/brands/jlg.png";
 import terexLogo from "@/assets/brands/terex.png";
+import vematLogo from "@/assets/vemat-logo.png";
 
-// ─── Types ──────────────────────────────────────────────────────────────────
+// ─── Types — supplier catalogs ────────────────────────────────────────────────
 
 interface CatalogProduct {
   sku: string;
@@ -51,6 +53,36 @@ interface PartsCatalog {
   totalCategories: number;
   categories: CatalogCategory[];
 }
+
+// ─── Types — Vemat stock ──────────────────────────────────────────────────────
+
+interface VematProduct {
+  sku: string;
+  title: string;
+  image: string | null;
+  quantity: number;
+  unite: string;
+  model: string;
+}
+
+interface VematFamily {
+  code: string;
+  name: string;
+  slug: string;
+  icon: string;
+  productCount: number;
+  models: string[];
+  products: VematProduct[];
+}
+
+interface VematCatalog {
+  supplier: string;
+  totalProducts: number;
+  totalFamilies: number;
+  families: VematFamily[];
+}
+
+// ─── Cart item ────────────────────────────────────────────────────────────────
 
 interface CartItem {
   sku: string;
@@ -114,7 +146,7 @@ const CATEGORY_ICONS: Record<string, string> = {
   "terex-utilities-ropes-winches-hooks": "⚓",
 };
 
-// ─── ProductCard ──────────────────────────────────────────────────────────────
+// ─── Supplier ProductCard ─────────────────────────────────────────────────────
 
 function ProductCard({
   product,
@@ -192,6 +224,85 @@ function ProductCard({
   );
 }
 
+// ─── Vemat StockCard ──────────────────────────────────────────────────────────
+
+function VematProductCard({
+  product,
+  inCart,
+  onAdd,
+  lang,
+}: {
+  product: VematProduct;
+  inCart: boolean;
+  onAdd: (p: VematProduct) => void;
+  lang: "fr" | "en";
+}) {
+  const [imgError, setImgError] = useState(false);
+
+  return (
+    <motion.div
+      layout
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="bg-white rounded-[2rem] border border-zinc-100 overflow-hidden group hover:border-amber-400/40 hover:shadow-soft transition-all duration-300 flex flex-col"
+    >
+      <div className="h-40 bg-zinc-50 flex items-center justify-center overflow-hidden relative">
+        {product.image && !imgError ? (
+          <img
+            src={product.image}
+            alt={product.title}
+            className="h-full w-full object-contain p-4 group-hover:scale-105 transition-transform duration-500"
+            onError={() => setImgError(true)}
+          />
+        ) : (
+          <img
+            src={vematLogo}
+            alt="Vemat"
+            className="h-12 w-auto object-contain opacity-20"
+          />
+        )}
+        {product.model && (
+          <span className="absolute top-2 right-2 px-2 py-0.5 bg-zinc-950/80 text-white text-[8px] font-black uppercase tracking-widest rounded-full">
+            {product.model}
+          </span>
+        )}
+      </div>
+
+      <div className="p-5 flex flex-col flex-1">
+        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-amber-600 mb-1">
+          Stock Vemat
+        </p>
+        <h3 className="text-sm font-bold text-zinc-950 leading-snug mb-2 line-clamp-2 flex-1">
+          {product.title}
+        </h3>
+        <p className="text-[10px] font-mono text-zinc-400 bg-zinc-50 px-2 py-1 rounded-lg inline-block mb-1">
+          REF: {product.sku}
+        </p>
+        <p className="text-[10px] font-semibold text-green-600 mb-4">
+          {lang === "fr" ? "En stock" : "In stock"} · {product.quantity} {product.unite}
+        </p>
+
+        <Button
+          onClick={() => onAdd(product)}
+          disabled={inCart}
+          size="sm"
+          className={`h-10 rounded-xl font-black uppercase tracking-widest text-[9px] transition-all ${
+            inCart ? "bg-zinc-100 text-zinc-400" : "bg-zinc-950 text-white hover:bg-amber-600"
+          }`}
+        >
+          {inCart ? (
+            <span className="flex items-center gap-1.5">
+              <Check className="h-3 w-3" /> Ajouté
+            </span>
+          ) : (
+            lang === "fr" ? "Demander un devis" : "Request quote"
+          )}
+        </Button>
+      </div>
+    </motion.div>
+  );
+}
+
 // ─── Page ────────────────────────────────────────────────────────────────────
 
 export default function PiecesDeRechange() {
@@ -200,13 +311,21 @@ export default function PiecesDeRechange() {
   useSEO(t("nav.pdr"), "Catalogue de pièces de rechange d'origine — Vemat Group.");
   useScrollTop();
 
+  // ── Supplier catalog state ──
   const [catalogs, setCatalogs] = useState<Record<string, PartsCatalog>>({});
   const [loading, setLoading] = useState(false);
-
   const [view, setView] = useState<"brands" | "categories" | "products">("brands");
   const [activeBrand, setActiveBrand] = useState<string | null>(null);
   const [activeCategory, setActiveCategory] = useState<CatalogCategory | null>(null);
 
+  // ── Vemat stock state ──
+  const [vematCatalog, setVematCatalog] = useState<VematCatalog | null>(null);
+  const [vematLoading, setVematLoading] = useState(false);
+  const [vematView, setVematView] = useState<"off" | "families" | "products">("off");
+  const [activeFamily, setActiveFamily] = useState<VematFamily | null>(null);
+  const [activeModel, setActiveModel] = useState<string>("all");
+
+  // ── Shared state ──
   const [search, setSearch] = useState("");
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isOrderOpen, setIsOrderOpen] = useState(false);
@@ -221,6 +340,7 @@ export default function PiecesDeRechange() {
     localStorage.setItem("vemat_cart_v2", JSON.stringify(cart));
   }, [cart]);
 
+  // ── Supplier catalog loader ──
   const loadCatalog = async (brandId: string) => {
     if (catalogs[brandId]) return;
     const brand = BRANDS.find((b) => b.id === brandId);
@@ -237,6 +357,22 @@ export default function PiecesDeRechange() {
     }
   };
 
+  // ── Vemat stock loader ──
+  const loadVematCatalog = async () => {
+    if (vematCatalog) return;
+    setVematLoading(true);
+    try {
+      const res = await fetch("/vemat-stock-catalog.json");
+      const data: VematCatalog = await res.json();
+      setVematCatalog(data);
+    } catch {
+      // silent
+    } finally {
+      setVematLoading(false);
+    }
+  };
+
+  // ── Navigation handlers ──
   const handleSelectBrand = async (brandId: string) => {
     setActiveBrand(brandId);
     setView("categories");
@@ -250,7 +386,34 @@ export default function PiecesDeRechange() {
     setSearch("");
   };
 
+  const handleOpenVemat = async () => {
+    setVematView("families");
+    setSearch("");
+    await loadVematCatalog();
+  };
+
+  const handleSelectFamily = (family: VematFamily) => {
+    setActiveFamily(family);
+    setActiveModel("all");
+    setVematView("products");
+    setSearch("");
+  };
+
   const handleBack = () => {
+    // Vemat stock navigation
+    if (vematView === "products") {
+      setVematView("families");
+      setActiveFamily(null);
+      setActiveModel("all");
+      setSearch("");
+      return;
+    }
+    if (vematView === "families") {
+      setVematView("off");
+      setSearch("");
+      return;
+    }
+    // Supplier navigation
     if (view === "products") {
       setView("categories");
       setActiveCategory(null);
@@ -263,12 +426,14 @@ export default function PiecesDeRechange() {
     }
   };
 
-  const addToCart = (product: CatalogProduct) => {
+  // ── Cart handlers ──
+  const addToCart = (product: CatalogProduct | VematProduct) => {
+    const brand = vematView !== "off" ? "Vemat Stock" : (activeBrand ?? "Unknown");
     const existing = cart.find((i) => i.sku === product.sku);
     if (existing) {
       setCart(cart.map((i) => (i.sku === product.sku ? { ...i, quantity: i.quantity + 1 } : i)));
     } else {
-      setCart([...cart, { sku: product.sku, title: product.title, brand: activeBrand ?? "Unknown", quantity: 1 }]);
+      setCart([...cart, { sku: product.sku, title: product.title, brand, quantity: 1 }]);
     }
   };
 
@@ -292,6 +457,7 @@ export default function PiecesDeRechange() {
   const activeCatalog = activeBrand ? catalogs[activeBrand] : null;
   const activeBrandConfig = BRANDS.find((b) => b.id === activeBrand);
 
+  // ── Filtered supplier data ──
   const filteredProducts = useMemo(() => {
     if (!activeCategory) return [];
     const q = search.toLowerCase();
@@ -308,6 +474,27 @@ export default function PiecesDeRechange() {
     return activeCatalog.categories.filter((c) => c.name.toLowerCase().includes(q));
   }, [activeCatalog, search]);
 
+  // ── Filtered Vemat data ──
+  const filteredFamilies = useMemo(() => {
+    if (!vematCatalog) return [];
+    const q = search.toLowerCase();
+    if (!q) return vematCatalog.families;
+    return vematCatalog.families.filter((f) => f.name.toLowerCase().includes(q) || f.code.toLowerCase().includes(q));
+  }, [vematCatalog, search]);
+
+  const filteredVematProducts = useMemo(() => {
+    if (!activeFamily) return [];
+    let prods = activeFamily.products;
+    if (activeModel !== "all") {
+      prods = prods.filter((p) => p.model === activeModel);
+    }
+    const q = search.toLowerCase();
+    if (!q) return prods;
+    return prods.filter((p) => p.title.toLowerCase().includes(q) || p.sku.toLowerCase().includes(q));
+  }, [activeFamily, activeModel, search]);
+
+  const isVemat = vematView !== "off";
+
   const copy = {
     title: lang === "fr" ? "Pièces de Rechange" : "Spare Parts",
     subtitle:
@@ -315,11 +502,15 @@ export default function PiecesDeRechange() {
         ? "Catalogue officiel de pièces d'origine. Sélectionnez une marque pour explorer les catégories."
         : "Official original parts catalog. Select a brand to browse categories.",
     searchCat: lang === "fr" ? "Rechercher une catégorie..." : "Search a category...",
+    searchFam: lang === "fr" ? "Rechercher une famille..." : "Search a family...",
     searchPart: lang === "fr" ? "Rechercher par référence ou nom..." : "Search by reference or name...",
     backToBrands: lang === "fr" ? "Retour aux marques" : "Back to brands",
     backToCats: lang === "fr" ? "Retour aux catégories" : "Back to categories",
+    backToFamilies: lang === "fr" ? "Retour aux familles" : "Back to families",
+    backToStock: lang === "fr" ? "Retour au stock" : "Back to stock",
     parts: lang === "fr" ? "pièces" : "parts",
     categories: lang === "fr" ? "catégories" : "categories",
+    families: lang === "fr" ? "familles" : "families",
     browseCategory: lang === "fr" ? "Explorer" : "Browse",
     requestQuote: lang === "fr" ? "Demander un devis" : "Request a quote",
     cartTitle: lang === "fr" ? "Votre Panier" : "Your Cart",
@@ -327,63 +518,107 @@ export default function PiecesDeRechange() {
     orderBtn: lang === "fr" ? "Commander un devis" : "Request a quote",
     loading: lang === "fr" ? "Chargement du catalogue..." : "Loading catalog...",
     comingSoon: lang === "fr" ? "Bientôt disponible" : "Coming soon",
+    allModels: lang === "fr" ? "Tous les modèles" : "All models",
+    inStock: lang === "fr" ? "en stock" : "in stock",
   };
+
+  // ── Back label ──
+  const backLabel = isVemat
+    ? vematView === "products"
+      ? copy.backToFamilies
+      : copy.backToStock
+    : view === "products"
+    ? copy.backToCats
+    : copy.backToBrands;
+
+  const showBack = isVemat ? true : view !== "brands";
 
   return (
     <div className="min-h-screen bg-zinc-50 pt-24 md:pt-32 pb-24">
       <div className="container mx-auto px-4 md:px-6">
-        {/* Header */}
+        {/* ── Header ─────────────────────────────────────────────────────────── */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-10">
           <div>
-            {view !== "brands" && (
+            {showBack && (
               <button
                 onClick={handleBack}
                 className="flex items-center gap-1.5 text-xs font-black uppercase tracking-widest text-zinc-400 hover:text-zinc-950 transition-colors mb-4"
               >
                 <ChevronLeft className="h-3.5 w-3.5" />
-                {view === "products" ? copy.backToCats : copy.backToBrands}
+                {backLabel}
               </button>
             )}
 
             <h1 className="text-3xl md:text-5xl font-heading font-extrabold text-zinc-950 tracking-tighter uppercase">
-              {view === "brands" && copy.title}
-              {view === "categories" && activeBrandConfig && (
+              {/* Supplier views */}
+              {!isVemat && view === "brands" && copy.title}
+              {!isVemat && view === "categories" && activeBrandConfig && (
                 <span className="flex items-center gap-4">
-                  <img
-                    src={activeBrandConfig.logo}
-                    alt={activeBrandConfig.id}
-                    className="h-10 object-contain"
-                  />
+                  <img src={activeBrandConfig.logo} alt={activeBrandConfig.id} className="h-10 object-contain" />
                   <span className="text-2xl md:text-4xl">
                     {lang === "fr" ? "Pièces" : "Parts"} {activeBrandConfig.id}
                   </span>
                 </span>
               )}
-              {view === "products" && activeCategory?.name}
+              {!isVemat && view === "products" && activeCategory?.name}
+
+              {/* Vemat stock views */}
+              {isVemat && vematView === "families" && (
+                <span className="flex items-center gap-3">
+                  <span className="text-amber-500">
+                    <Warehouse className="h-9 w-9" />
+                  </span>
+                  <span>Stock Vemat</span>
+                </span>
+              )}
+              {isVemat && vematView === "products" && activeFamily && (
+                <span className="flex items-center gap-3">
+                  <span className="text-2xl">{activeFamily.icon}</span>
+                  <span className="text-2xl md:text-4xl">{activeFamily.name}</span>
+                </span>
+              )}
             </h1>
 
-            {view === "brands" && (
+            {!isVemat && view === "brands" && (
               <p className="text-zinc-500 font-medium text-base mt-2 max-w-xl">{copy.subtitle}</p>
             )}
-            {view === "categories" && activeCatalog && (
+            {!isVemat && view === "categories" && activeCatalog && (
               <p className="text-zinc-500 font-medium text-sm mt-1">
                 {activeCatalog.totalProducts.toLocaleString()} {copy.parts} · {activeCatalog.totalCategories}{" "}
                 {copy.categories}
               </p>
             )}
-            {view === "products" && activeCategory && (
+            {!isVemat && view === "products" && activeCategory && (
               <p className="text-zinc-500 font-medium text-sm mt-1">
                 {activeCategory.productCount.toLocaleString()} {copy.parts}
+              </p>
+            )}
+            {isVemat && vematView === "families" && vematCatalog && (
+              <p className="text-zinc-500 font-medium text-sm mt-1">
+                {vematCatalog.totalProducts.toLocaleString()} {copy.parts} · {vematCatalog.totalFamilies}{" "}
+                {copy.families}
+              </p>
+            )}
+            {isVemat && vematView === "products" && activeFamily && (
+              <p className="text-zinc-500 font-medium text-sm mt-1">
+                {activeFamily.productCount.toLocaleString()} {copy.parts}
+                {activeFamily.models.length > 0 && ` · ${activeFamily.models.length} modèles`}
               </p>
             )}
           </div>
 
           <div className="flex items-center gap-3 w-full md:w-auto">
-            {(view === "categories" || view === "products") && (
+            {(view === "categories" || view === "products" || isVemat) && (
               <div className="relative flex-1 md:w-72">
                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400" />
                 <Input
-                  placeholder={view === "categories" ? copy.searchCat : copy.searchPart}
+                  placeholder={
+                    vematView === "families"
+                      ? copy.searchFam
+                      : view === "categories"
+                      ? copy.searchCat
+                      : copy.searchPart
+                  }
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   className="pl-11 h-12 bg-white border-zinc-200 rounded-2xl focus:ring-accent text-sm"
@@ -464,64 +699,233 @@ export default function PiecesDeRechange() {
           </div>
         </div>
 
-        {/* ── BRAND VIEW ─────────────────────────────────────────────────── */}
+        {/* ══════════════════════════════════════════════════════════════════════
+            VEMAT STOCK VIEWS
+        ══════════════════════════════════════════════════════════════════════ */}
         <AnimatePresence mode="wait">
-          {view === "brands" && (
+
+          {/* ── VEMAT: FAMILIES ─────────────────────────────────────────────── */}
+          {isVemat && vematView === "families" && (
+            <motion.div
+              key="vemat-families"
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -16 }}
+            >
+              {vematLoading ? (
+                <div className="flex flex-col items-center justify-center py-32 text-zinc-400 gap-4">
+                  <div className="h-8 w-8 border-2 border-amber-500 border-t-transparent rounded-full animate-spin" />
+                  <p className="text-sm font-bold">{copy.loading}</p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+                  {filteredFamilies.map((family) => (
+                    <button
+                      key={family.code}
+                      onClick={() => handleSelectFamily(family)}
+                      className="group bg-white rounded-[2rem] border border-zinc-100 p-5 flex flex-col items-start gap-3 hover:border-amber-400/40 hover:shadow-soft transition-all duration-300 text-left"
+                    >
+                      <span className="text-3xl">{family.icon}</span>
+                      <div className="flex-1">
+                        <h3 className="font-black text-zinc-950 text-sm leading-snug mb-0.5 group-hover:text-amber-600 transition-colors">
+                          {family.name}
+                        </h3>
+                        <p className="text-[10px] text-zinc-400 font-medium">
+                          {family.productCount.toLocaleString()} {copy.parts}
+                          {family.models.length > 0 && ` · ${family.models.length} modèles`}
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-1 text-amber-600 text-[10px] font-black uppercase tracking-widest group-hover:gap-2 transition-all">
+                        {copy.browseCategory} <ChevronRight className="h-3 w-3" />
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </motion.div>
+          )}
+
+          {/* ── VEMAT: PRODUCTS ─────────────────────────────────────────────── */}
+          {isVemat && vematView === "products" && activeFamily && (
+            <motion.div
+              key="vemat-products"
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -16 }}
+            >
+              {/* Model filter chips */}
+              {activeFamily.models.length > 0 && (
+                <div className="flex flex-wrap gap-2 mb-8">
+                  <div className="flex items-center gap-1.5 text-zinc-400 mr-2">
+                    <Layers className="h-3.5 w-3.5" />
+                    <span className="text-[10px] font-black uppercase tracking-widest">
+                      {lang === "fr" ? "Modèle machine" : "Machine model"}
+                    </span>
+                  </div>
+                  <button
+                    onClick={() => setActiveModel("all")}
+                    className={`px-3 py-1.5 rounded-full text-xs font-bold transition-colors border ${
+                      activeModel === "all"
+                        ? "bg-amber-500 text-white border-amber-500"
+                        : "bg-white border-zinc-200 text-zinc-600 hover:border-amber-400/60 hover:text-zinc-950"
+                    }`}
+                  >
+                    {copy.allModels}
+                  </button>
+                  {activeFamily.models.map((model) => (
+                    <button
+                      key={model}
+                      onClick={() => setActiveModel(model)}
+                      className={`px-3 py-1.5 rounded-full text-xs font-bold transition-colors border ${
+                        activeModel === model
+                          ? "bg-amber-500 text-white border-amber-500"
+                          : "bg-white border-zinc-200 text-zinc-600 hover:border-amber-400/60 hover:text-zinc-950"
+                      }`}
+                    >
+                      {model}
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              {filteredVematProducts.length === 0 ? (
+                <div className="flex flex-col items-center justify-center py-24 text-zinc-400 gap-4">
+                  <Package className="h-12 w-12 opacity-20" />
+                  <p className="text-sm font-bold">
+                    {search
+                      ? `Aucun résultat pour "${search}"`
+                      : lang === "fr"
+                      ? "Aucune pièce pour ce modèle"
+                      : "No parts for this model"}
+                  </p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+                  {filteredVematProducts.map((product) => (
+                    <VematProductCard
+                      key={product.sku}
+                      product={product}
+                      inCart={cart.some((i) => i.sku === product.sku)}
+                      onAdd={addToCart}
+                      lang={lang}
+                    />
+                  ))}
+                </div>
+              )}
+            </motion.div>
+          )}
+
+          {/* ══════════════════════════════════════════════════════════════════
+              SUPPLIER VIEWS
+          ══════════════════════════════════════════════════════════════════ */}
+
+          {/* ── BRAND VIEW ──────────────────────────────────────────────────── */}
+          {!isVemat && view === "brands" && (
             <motion.div
               key="brands"
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -16 }}
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+              className="space-y-8"
             >
-              {BRANDS.map((brand) => (
+              {/* STOCK VEMAT — featured card */}
+              <div>
+                <p className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-400 mb-4 flex items-center gap-2">
+                  <span className="block w-6 h-px bg-zinc-300" />
+                  {lang === "fr" ? "Notre stock" : "Our stock"}
+                </p>
                 <button
-                  key={brand.id}
-                  onClick={() => handleSelectBrand(brand.id)}
-                  className="group relative bg-white rounded-[2.5rem] border border-zinc-100 p-8 flex flex-col items-start gap-6 hover:border-accent/30 hover:shadow-soft transition-all duration-300 text-left overflow-hidden"
+                  onClick={handleOpenVemat}
+                  className="group w-full relative bg-gradient-to-br from-zinc-950 to-zinc-800 rounded-[2.5rem] border border-zinc-700 p-8 flex flex-col sm:flex-row items-start sm:items-center gap-6 hover:border-amber-500/50 hover:shadow-xl transition-all duration-300 text-left overflow-hidden"
                 >
-                  <div className="absolute top-0 right-0 w-40 h-40 bg-accent/5 rounded-full -translate-y-10 translate-x-10 group-hover:bg-accent/10 transition-colors duration-500" />
-                  <div className="h-14 flex items-center">
-                    <img
-                      src={brand.logo}
-                      alt={brand.id}
-                      className={`h-full object-contain ${brand.darkLogo ? "bg-zinc-900 p-2 rounded-lg" : ""}`}
-                    />
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="text-2xl font-heading font-extrabold text-zinc-950 tracking-tight">
-                        {brand.label}
-                      </span>
-                      <span className="px-2.5 py-0.5 bg-accent/10 text-accent text-[10px] font-black uppercase tracking-widest rounded-full border border-accent/20">
-                        Official
-                      </span>
+                  {/* glow */}
+                  <div className="absolute top-0 right-0 w-64 h-64 bg-amber-500/10 rounded-full -translate-y-20 translate-x-20 group-hover:bg-amber-500/20 transition-colors duration-500 pointer-events-none" />
+
+                  <div className="flex items-center gap-4 flex-1">
+                    <div className="h-16 w-16 bg-amber-500/20 rounded-2xl flex items-center justify-center shrink-0 group-hover:bg-amber-500/30 transition-colors">
+                      <Warehouse className="h-8 w-8 text-amber-400" />
                     </div>
-                    <p className="text-zinc-500 text-sm font-medium">{brand.description[lang]}</p>
+                    <div>
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="text-2xl font-heading font-extrabold text-white tracking-tight">
+                          Stock Vemat
+                        </span>
+                        <span className="px-2.5 py-0.5 bg-amber-500/20 text-amber-400 text-[10px] font-black uppercase tracking-widest rounded-full border border-amber-500/30">
+                          {lang === "fr" ? "En stock" : "Available"}
+                        </span>
+                      </div>
+                      <p className="text-zinc-400 text-sm font-medium">
+                        {lang === "fr"
+                          ? "2 724 pièces disponibles · 25 familles · Stock Vemat Maroc"
+                          : "2,724 parts available · 25 families · Vemat Morocco stock"}
+                      </p>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2 text-accent text-xs font-black uppercase tracking-widest mt-auto group-hover:gap-3 transition-all">
+
+                  <div className="flex items-center gap-2 text-amber-400 text-xs font-black uppercase tracking-widest group-hover:gap-3 transition-all shrink-0">
                     {copy.browseCategory}
                     <ChevronRight className="h-4 w-4" />
                   </div>
                 </button>
-              ))}
+              </div>
 
-              {COMING_SOON.map((brand) => (
-                <div
-                  key={brand}
-                  className="bg-white/50 rounded-[2.5rem] border border-dashed border-zinc-200 p-8 flex flex-col items-start gap-6 opacity-50"
-                >
-                  <div className="h-14 flex items-center">
-                    <span className="text-2xl font-heading font-extrabold text-zinc-300 tracking-tight">{brand}</span>
-                  </div>
-                  <p className="text-zinc-300 text-sm font-medium">{copy.comingSoon}</p>
+              {/* Supplier catalogs */}
+              <div>
+                <p className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-400 mb-4 flex items-center gap-2">
+                  <span className="block w-6 h-px bg-zinc-300" />
+                  {lang === "fr" ? "Catalogues fournisseurs" : "Supplier catalogs"}
+                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {BRANDS.map((brand) => (
+                    <button
+                      key={brand.id}
+                      onClick={() => handleSelectBrand(brand.id)}
+                      className="group relative bg-white rounded-[2.5rem] border border-zinc-100 p-8 flex flex-col items-start gap-6 hover:border-accent/30 hover:shadow-soft transition-all duration-300 text-left overflow-hidden"
+                    >
+                      <div className="absolute top-0 right-0 w-40 h-40 bg-accent/5 rounded-full -translate-y-10 translate-x-10 group-hover:bg-accent/10 transition-colors duration-500" />
+                      <div className="h-14 flex items-center">
+                        <img
+                          src={brand.logo}
+                          alt={brand.id}
+                          className={`h-full object-contain ${brand.darkLogo ? "bg-zinc-900 p-2 rounded-lg" : ""}`}
+                        />
+                      </div>
+                      <div>
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="text-2xl font-heading font-extrabold text-zinc-950 tracking-tight">
+                            {brand.label}
+                          </span>
+                          <span className="px-2.5 py-0.5 bg-accent/10 text-accent text-[10px] font-black uppercase tracking-widest rounded-full border border-accent/20">
+                            Official
+                          </span>
+                        </div>
+                        <p className="text-zinc-500 text-sm font-medium">{brand.description[lang]}</p>
+                      </div>
+                      <div className="flex items-center gap-2 text-accent text-xs font-black uppercase tracking-widest mt-auto group-hover:gap-3 transition-all">
+                        {copy.browseCategory}
+                        <ChevronRight className="h-4 w-4" />
+                      </div>
+                    </button>
+                  ))}
+
+                  {COMING_SOON.map((brand) => (
+                    <div
+                      key={brand}
+                      className="bg-white/50 rounded-[2.5rem] border border-dashed border-zinc-200 p-8 flex flex-col items-start gap-6 opacity-50"
+                    >
+                      <div className="h-14 flex items-center">
+                        <span className="text-2xl font-heading font-extrabold text-zinc-300 tracking-tight">{brand}</span>
+                      </div>
+                      <p className="text-zinc-300 text-sm font-medium">{copy.comingSoon}</p>
+                    </div>
+                  ))}
                 </div>
-              ))}
+              </div>
             </motion.div>
           )}
 
-          {/* ── CATEGORY VIEW ────────────────────────────────────────────── */}
-          {view === "categories" && (
+          {/* ── CATEGORY VIEW ────────────────────────────────────────────────── */}
+          {!isVemat && view === "categories" && (
             <motion.div
               key="categories"
               initial={{ opacity: 0, y: 16 }}
@@ -563,8 +967,8 @@ export default function PiecesDeRechange() {
             </motion.div>
           )}
 
-          {/* ── PRODUCT VIEW ─────────────────────────────────────────────── */}
-          {view === "products" && activeCategory && (
+          {/* ── PRODUCT VIEW ──────────────────────────────────────────────────── */}
+          {!isVemat && view === "products" && activeCategory && (
             <motion.div
               key="products"
               initial={{ opacity: 0, y: 16 }}
