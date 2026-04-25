@@ -39,7 +39,7 @@ const CONSTRUCTION_CATEGORIES = [
     slug: "pelles-de-manutention",
     title: { fr: "Pelles de\nmanutention", en: "Material Handlers" },
     brand: "Terex Fuchs",
-    image: "/images/products/7mwr/01-e9c16fcb8469.png",
+    image: "/images/products/mhl340/01-bf538a039537.jpg",
   },
 ] as const;
 

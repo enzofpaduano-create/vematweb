@@ -1,6 +1,7 @@
 import { ProductDetail } from "../types/product";
+import { fuchsProductDetails } from "./fuchsProductDetails";
 
-export const productDetails: Record<string, ProductDetail> = {
+const baseProductDetails: Record<string, ProductDetail> = {
   "1030p": {
     "id": "1030p",
     "name": "1030P",
@@ -10980,4 +10981,9 @@ export const productDetails: Record<string, ProductDetail> = {
       }
     ]
   }
+};
+
+export const productDetails: Record<string, ProductDetail> = {
+  ...baseProductDetails,
+  ...fuchsProductDetails,
 };

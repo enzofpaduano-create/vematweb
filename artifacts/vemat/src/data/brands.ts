@@ -78,6 +78,21 @@ export const brands: Brand[] = [
     },
   },
   {
+    id: "terex-fuchs",
+    name: "Terex Fuchs",
+    logo: terexLogo,
+    website: "https://www.terex.com/fuchs/fr/produits/machines-de-manutention",
+    categories: ["construction"],
+    tagline: {
+      fr: "Pelles de manutention pour recyclage, vrac et ports",
+      en: "Material handlers for recycling, bulk and port operations",
+    },
+    description: {
+      fr: "Terex Fuchs conçoit des pelles de manutention spécialisées pour la ferraille, le recyclage, les vracs, les applications portuaires et les opérations forestières. La gamme couvre des machines compactes, modulaires, portuaires et très grande capacité, avec versions diesel, électriques ou hybrides selon les modèles. Vemat Group peut ainsi proposer des solutions de manutention dédiées aux exploitations industrielles et logistiques les plus exigeantes.",
+      en: "Terex Fuchs designs specialist material handlers for scrap, recycling, bulk goods, port applications and forestry operations. The range covers compact, modular, port-oriented and very high-capacity machines, with diesel, electric or hybrid concepts depending on the model. This allows Vemat Group to offer dedicated handling solutions for the most demanding industrial and logistics operations.",
+    },
+  },
+  {
     id: "jlg",
     name: "JLG Industries",
     logo: jlgLogo,
