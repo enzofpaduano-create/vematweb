@@ -18,6 +18,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import jlgLogo from "@/assets/brands/jlg.png";
+import terexLogo from "@/assets/brands/terex.png";
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 
@@ -39,11 +40,12 @@ interface CatalogCategory {
   slug: string;
   url: string;
   productCount: number;
+  icon?: string;
   subcategories: CatalogSubcategory[];
   products: CatalogProduct[];
 }
 
-interface JLGCatalog {
+interface PartsCatalog {
   supplier: string;
   totalProducts: number;
   totalCategories: number;
@@ -57,7 +59,32 @@ interface CartItem {
   quantity: number;
 }
 
-// ─── Helpers ─────────────────────────────────────────────────────────────────
+// ─── Brand config ─────────────────────────────────────────────────────────────
+
+const BRANDS = [
+  {
+    id: "JLG",
+    label: "JLG Parts",
+    logo: jlgLogo,
+    darkLogo: false,
+    catalogUrl: "/jlg-parts-catalog.json",
+    description: { fr: "12 092 pièces d'origine · 723 catégories", en: "12,092 original parts · 723 categories" },
+    siteLabel: "JLG.com",
+  },
+  {
+    id: "Terex",
+    label: "Terex Parts",
+    logo: terexLogo,
+    darkLogo: false,
+    catalogUrl: "/terex-parts-catalog.json",
+    description: { fr: "326 pièces d'origine · 17 catégories", en: "326 original parts · 17 categories" },
+    siteLabel: "myparts.terex.com",
+  },
+];
+
+const COMING_SOON = ["Tadano", "Magni", "Mecalac"];
+
+// ─── Category icons fallback ──────────────────────────────────────────────────
 
 const CATEGORY_ICONS: Record<string, string> = {
   filters: "🔧",
@@ -68,14 +95,35 @@ const CATEGORY_ICONS: Record<string, string> = {
   "aftermarket-attachments": "🔗",
   "aftermarket-engine-parts": "🛠️",
   clearsky: "✨",
+  "terex-utilities-auger-tooling": "🔩",
+  "terex-utilities-bodies-cabs-running-gear": "🚛",
+  "terex-utilities-booms-jibs-buckets": "🏗️",
+  "terex-utilities-covers": "🛡️",
+  "tu-deals": "🏷️",
+  "terex-utilities-decals": "🎨",
+  "terex-utilities-electrical-electronics": "⚡",
+  "terex-utilities-engine-components": "⚙️",
+  "terex-utilities-fabricated-components": "🔧",
+  "terex-utilities-filters-fluids": "🧰",
+  "terex-utilities-hardware": "🔩",
+  "terex-utilities-hoses-tubes": "🔗",
+  "terex-utilities-hydraulics": "💧",
+  "terex-utilities-jacks-outriggers-ground-protection": "🦾",
+  "terex-utilities-power-train": "⚙️",
+  "terex-utilities-preventative-maintenance-parts": "🛠️",
+  "terex-utilities-ropes-winches-hooks": "⚓",
 };
+
+// ─── ProductCard ──────────────────────────────────────────────────────────────
 
 function ProductCard({
   product,
+  brand,
   inCart,
   onAdd,
 }: {
   product: CatalogProduct;
+  brand: string;
   inCart: boolean;
   onAdd: (p: CatalogProduct) => void;
 }) {
@@ -104,7 +152,7 @@ function ProductCard({
       </div>
 
       <div className="p-5 flex flex-col flex-1">
-        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-accent mb-1">JLG</p>
+        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-accent mb-1">{brand}</p>
         <h3 className="text-sm font-bold text-zinc-950 leading-snug mb-2 line-clamp-2 flex-1">
           {product.title}
         </h3>
@@ -118,9 +166,7 @@ function ProductCard({
             disabled={inCart}
             size="sm"
             className={`flex-1 h-10 rounded-xl font-black uppercase tracking-widest text-[9px] transition-all ${
-              inCart
-                ? "bg-zinc-100 text-zinc-400"
-                : "bg-zinc-950 text-white hover:bg-accent"
+              inCart ? "bg-zinc-100 text-zinc-400" : "bg-zinc-950 text-white hover:bg-accent"
             }`}
           >
             {inCart ? (
@@ -136,7 +182,7 @@ function ProductCard({
             target="_blank"
             rel="noopener noreferrer"
             className="h-10 w-10 rounded-xl border border-zinc-200 flex items-center justify-center text-zinc-400 hover:text-zinc-950 hover:border-zinc-400 transition-colors"
-            title="Voir sur JLG"
+            title={`Voir sur ${brand}`}
           >
             <ExternalLink className="h-3.5 w-3.5" />
           </a>
@@ -151,10 +197,10 @@ function ProductCard({
 export default function PiecesDeRechange() {
   const { lang } = useLang();
   const { t } = useLang();
-  useSEO(t("nav.pdr"), "Catalogue de pièces de rechange JLG d'origine — Vemat Group.");
+  useSEO(t("nav.pdr"), "Catalogue de pièces de rechange d'origine — Vemat Group.");
   useScrollTop();
 
-  const [catalog, setCatalog] = useState<JLGCatalog | null>(null);
+  const [catalogs, setCatalogs] = useState<Record<string, PartsCatalog>>({});
   const [loading, setLoading] = useState(false);
 
   const [view, setView] = useState<"brands" | "categories" | "products">("brands");
@@ -166,7 +212,6 @@ export default function PiecesDeRechange() {
   const [isOrderOpen, setIsOrderOpen] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
-  // Load cart from localStorage
   useEffect(() => {
     const saved = localStorage.getItem("vemat_cart_v2");
     if (saved) setCart(JSON.parse(saved));
@@ -176,14 +221,15 @@ export default function PiecesDeRechange() {
     localStorage.setItem("vemat_cart_v2", JSON.stringify(cart));
   }, [cart]);
 
-  // Fetch JLG catalog on demand
-  const loadJLGCatalog = async () => {
-    if (catalog) return;
+  const loadCatalog = async (brandId: string) => {
+    if (catalogs[brandId]) return;
+    const brand = BRANDS.find((b) => b.id === brandId);
+    if (!brand) return;
     setLoading(true);
     try {
-      const res = await fetch("/jlg-parts-catalog.json");
-      const data: JLGCatalog = await res.json();
-      setCatalog(data);
+      const res = await fetch(brand.catalogUrl);
+      const data: PartsCatalog = await res.json();
+      setCatalogs((prev) => ({ ...prev, [brandId]: data }));
     } catch {
       // silent
     } finally {
@@ -191,11 +237,11 @@ export default function PiecesDeRechange() {
     }
   };
 
-  const handleSelectBrand = async (brand: string) => {
-    setActiveBrand(brand);
+  const handleSelectBrand = async (brandId: string) => {
+    setActiveBrand(brandId);
     setView("categories");
     setSearch("");
-    if (brand === "JLG") await loadJLGCatalog();
+    await loadCatalog(brandId);
   };
 
   const handleSelectCategory = (cat: CatalogCategory) => {
@@ -222,14 +268,12 @@ export default function PiecesDeRechange() {
     if (existing) {
       setCart(cart.map((i) => (i.sku === product.sku ? { ...i, quantity: i.quantity + 1 } : i)));
     } else {
-      setCart([...cart, { sku: product.sku, title: product.title, brand: "JLG", quantity: 1 }]);
+      setCart([...cart, { sku: product.sku, title: product.title, brand: activeBrand ?? "Unknown", quantity: 1 }]);
     }
   };
 
   const updateQty = (sku: string, delta: number) => {
-    setCart(
-      cart.map((i) => (i.sku === sku ? { ...i, quantity: Math.max(1, i.quantity + delta) } : i)),
-    );
+    setCart(cart.map((i) => (i.sku === sku ? { ...i, quantity: Math.max(1, i.quantity + delta) } : i)));
   };
 
   const removeFromCart = (sku: string) => setCart(cart.filter((i) => i.sku !== sku));
@@ -245,6 +289,8 @@ export default function PiecesDeRechange() {
   };
 
   const totalItems = cart.reduce((s, i) => s + i.quantity, 0);
+  const activeCatalog = activeBrand ? catalogs[activeBrand] : null;
+  const activeBrandConfig = BRANDS.find((b) => b.id === activeBrand);
 
   const filteredProducts = useMemo(() => {
     if (!activeCategory) return [];
@@ -256,11 +302,11 @@ export default function PiecesDeRechange() {
   }, [activeCategory, search]);
 
   const filteredCategories = useMemo(() => {
-    if (!catalog) return [];
+    if (!activeCatalog) return [];
     const q = search.toLowerCase();
-    if (!q) return catalog.categories;
-    return catalog.categories.filter((c) => c.name.toLowerCase().includes(q));
-  }, [catalog, search]);
+    if (!q) return activeCatalog.categories;
+    return activeCatalog.categories.filter((c) => c.name.toLowerCase().includes(q));
+  }, [activeCatalog, search]);
 
   const copy = {
     title: lang === "fr" ? "Pièces de Rechange" : "Spare Parts",
@@ -289,7 +335,6 @@ export default function PiecesDeRechange() {
         {/* Header */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-10">
           <div>
-            {/* Breadcrumb */}
             {view !== "brands" && (
               <button
                 onClick={handleBack}
@@ -302,10 +347,16 @@ export default function PiecesDeRechange() {
 
             <h1 className="text-3xl md:text-5xl font-heading font-extrabold text-zinc-950 tracking-tighter uppercase">
               {view === "brands" && copy.title}
-              {view === "categories" && (
-                <span className="flex items-center gap-3">
-                  <img src={jlgLogo} alt="JLG" className="h-10 object-contain" />
-                  <span className="text-2xl md:text-4xl">Pièces JLG</span>
+              {view === "categories" && activeBrandConfig && (
+                <span className="flex items-center gap-4">
+                  <img
+                    src={activeBrandConfig.logo}
+                    alt={activeBrandConfig.id}
+                    className="h-10 object-contain"
+                  />
+                  <span className="text-2xl md:text-4xl">
+                    {lang === "fr" ? "Pièces" : "Parts"} {activeBrandConfig.id}
+                  </span>
                 </span>
               )}
               {view === "products" && activeCategory?.name}
@@ -314,9 +365,9 @@ export default function PiecesDeRechange() {
             {view === "brands" && (
               <p className="text-zinc-500 font-medium text-base mt-2 max-w-xl">{copy.subtitle}</p>
             )}
-            {view === "categories" && catalog && (
+            {view === "categories" && activeCatalog && (
               <p className="text-zinc-500 font-medium text-sm mt-1">
-                {catalog.totalProducts.toLocaleString()} {copy.parts} · {catalog.totalCategories}{" "}
+                {activeCatalog.totalProducts.toLocaleString()} {copy.parts} · {activeCatalog.totalCategories}{" "}
                 {copy.categories}
               </p>
             )}
@@ -366,16 +417,11 @@ export default function PiecesDeRechange() {
                       </div>
                     ) : (
                       cart.map((item) => (
-                        <div
-                          key={item.sku}
-                          className="p-4 bg-zinc-50 rounded-2xl border border-zinc-100"
-                        >
+                        <div key={item.sku} className="p-4 bg-zinc-50 rounded-2xl border border-zinc-100">
                           <p className="text-[10px] font-black uppercase text-accent tracking-widest mb-1">
                             {item.brand} · {item.sku}
                           </p>
-                          <p className="font-bold text-zinc-950 text-sm leading-snug mb-3">
-                            {item.title}
-                          </p>
+                          <p className="font-bold text-zinc-950 text-sm leading-snug mb-3">{item.title}</p>
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-2 bg-white border border-zinc-200 rounded-xl p-0.5">
                               <button
@@ -428,47 +474,45 @@ export default function PiecesDeRechange() {
               exit={{ opacity: 0, y: -16 }}
               className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
             >
-              {/* JLG card */}
-              <button
-                onClick={() => handleSelectBrand("JLG")}
-                className="group relative bg-white rounded-[2.5rem] border border-zinc-100 p-8 flex flex-col items-start gap-6 hover:border-accent/30 hover:shadow-soft transition-all duration-300 text-left overflow-hidden"
-              >
-                <div className="absolute top-0 right-0 w-40 h-40 bg-accent/5 rounded-full -translate-y-10 translate-x-10 group-hover:bg-accent/10 transition-colors duration-500" />
-
-                <div className="h-14 flex items-center">
-                  <img src={jlgLogo} alt="JLG" className="h-full object-contain" />
-                </div>
-
-                <div>
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="text-2xl font-heading font-extrabold text-zinc-950 tracking-tight">
-                      JLG Parts
-                    </span>
-                    <span className="px-2.5 py-0.5 bg-accent/10 text-accent text-[10px] font-black uppercase tracking-widest rounded-full border border-accent/20">
-                      Official
-                    </span>
+              {BRANDS.map((brand) => (
+                <button
+                  key={brand.id}
+                  onClick={() => handleSelectBrand(brand.id)}
+                  className="group relative bg-white rounded-[2.5rem] border border-zinc-100 p-8 flex flex-col items-start gap-6 hover:border-accent/30 hover:shadow-soft transition-all duration-300 text-left overflow-hidden"
+                >
+                  <div className="absolute top-0 right-0 w-40 h-40 bg-accent/5 rounded-full -translate-y-10 translate-x-10 group-hover:bg-accent/10 transition-colors duration-500" />
+                  <div className="h-14 flex items-center">
+                    <img
+                      src={brand.logo}
+                      alt={brand.id}
+                      className={`h-full object-contain ${brand.darkLogo ? "bg-zinc-900 p-2 rounded-lg" : ""}`}
+                    />
                   </div>
-                  <p className="text-zinc-500 text-sm font-medium">
-                    12 092 pièces d'origine · 723 catégories
-                  </p>
-                </div>
+                  <div>
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-2xl font-heading font-extrabold text-zinc-950 tracking-tight">
+                        {brand.label}
+                      </span>
+                      <span className="px-2.5 py-0.5 bg-accent/10 text-accent text-[10px] font-black uppercase tracking-widest rounded-full border border-accent/20">
+                        Official
+                      </span>
+                    </div>
+                    <p className="text-zinc-500 text-sm font-medium">{brand.description[lang]}</p>
+                  </div>
+                  <div className="flex items-center gap-2 text-accent text-xs font-black uppercase tracking-widest mt-auto group-hover:gap-3 transition-all">
+                    {copy.browseCategory}
+                    <ChevronRight className="h-4 w-4" />
+                  </div>
+                </button>
+              ))}
 
-                <div className="flex items-center gap-2 text-accent text-xs font-black uppercase tracking-widest mt-auto group-hover:gap-3 transition-all">
-                  {copy.browseCategory}
-                  <ChevronRight className="h-4 w-4" />
-                </div>
-              </button>
-
-              {/* Future brand placeholders */}
-              {["Tadano", "Terex", "Magni", "Mecalac"].map((brand) => (
+              {COMING_SOON.map((brand) => (
                 <div
                   key={brand}
                   className="bg-white/50 rounded-[2.5rem] border border-dashed border-zinc-200 p-8 flex flex-col items-start gap-6 opacity-50"
                 >
                   <div className="h-14 flex items-center">
-                    <span className="text-2xl font-heading font-extrabold text-zinc-300 tracking-tight">
-                      {brand}
-                    </span>
+                    <span className="text-2xl font-heading font-extrabold text-zinc-300 tracking-tight">{brand}</span>
                   </div>
                   <p className="text-zinc-300 text-sm font-medium">{copy.comingSoon}</p>
                 </div>
@@ -498,7 +542,7 @@ export default function PiecesDeRechange() {
                       className="group bg-white rounded-[2rem] border border-zinc-100 p-6 flex flex-col items-start gap-4 hover:border-accent/30 hover:shadow-soft transition-all duration-300 text-left"
                     >
                       <span className="text-3xl">
-                        {CATEGORY_ICONS[cat.slug] || "🔧"}
+                        {cat.icon || CATEGORY_ICONS[cat.slug] || "🔧"}
                       </span>
                       <div className="flex-1">
                         <h3 className="font-black text-zinc-950 text-base leading-snug mb-1 group-hover:text-accent transition-colors">
@@ -527,7 +571,6 @@ export default function PiecesDeRechange() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -16 }}
             >
-              {/* Subcategory chips */}
               {activeCategory.subcategories.length > 0 && (
                 <div className="flex flex-wrap gap-2 mb-8">
                   <div className="flex items-center gap-1.5 text-zinc-400 mr-2">
@@ -560,14 +603,14 @@ export default function PiecesDeRechange() {
                       <ProductCard
                         key={product.sku}
                         product={product}
+                        brand={activeBrand ?? ""}
                         inCart={cart.some((i) => i.sku === product.sku)}
                         onAdd={addToCart}
                       />
                     ))}
                   </div>
 
-                  {/* View all on JLG */}
-                  {activeCategory.productCount > 48 && (
+                  {activeCategory.productCount > 48 && activeBrandConfig && (
                     <div className="mt-10 flex justify-center">
                       <a
                         href={activeCategory.url}
@@ -575,7 +618,9 @@ export default function PiecesDeRechange() {
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-2 px-6 py-3 bg-white border border-zinc-200 rounded-2xl text-sm font-bold text-zinc-600 hover:border-accent/40 hover:text-zinc-950 transition-colors"
                       >
-                        Voir les {activeCategory.productCount.toLocaleString()} pièces sur JLG.com
+                        {lang === "fr" ? "Voir les" : "See all"}{" "}
+                        {activeCategory.productCount.toLocaleString()}{" "}
+                        {lang === "fr" ? "pièces sur" : "parts on"} {activeBrandConfig.siteLabel}
                         <ExternalLink className="h-4 w-4" />
                       </a>
                     </div>
@@ -635,15 +680,15 @@ export default function PiecesDeRechange() {
                     <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-1.5">
                         <label className="text-[10px] font-black uppercase tracking-widest text-zinc-400">
-                          Nom complet
+                          {lang === "fr" ? "Nom complet" : "Full name"}
                         </label>
                         <Input required className="h-12 bg-zinc-50 border-zinc-100 rounded-2xl" placeholder="John Doe" />
                       </div>
                       <div className="space-y-1.5">
                         <label className="text-[10px] font-black uppercase tracking-widest text-zinc-400">
-                          Société
+                          {lang === "fr" ? "Société" : "Company"}
                         </label>
-                        <Input required className="h-12 bg-zinc-50 border-zinc-100 rounded-2xl" placeholder="Votre société" />
+                        <Input required className="h-12 bg-zinc-50 border-zinc-100 rounded-2xl" placeholder={lang === "fr" ? "Votre société" : "Your company"} />
                       </div>
                     </div>
                     <div className="grid grid-cols-2 gap-4">
@@ -655,7 +700,7 @@ export default function PiecesDeRechange() {
                       </div>
                       <div className="space-y-1.5">
                         <label className="text-[10px] font-black uppercase tracking-widest text-zinc-400">
-                          Téléphone
+                          {lang === "fr" ? "Téléphone" : "Phone"}
                         </label>
                         <Input required className="h-12 bg-zinc-50 border-zinc-100 rounded-2xl" placeholder="+212 ..." />
                       </div>
@@ -664,7 +709,7 @@ export default function PiecesDeRechange() {
                       type="submit"
                       className="w-full h-14 bg-zinc-950 text-white hover:bg-accent rounded-2xl font-black uppercase tracking-[0.15em] text-xs transition-all mt-2"
                     >
-                      Envoyer ma demande
+                      {lang === "fr" ? "Envoyer ma demande" : "Send my request"}
                       <ArrowRight className="ml-3 h-4 w-4" />
                     </Button>
                   </form>

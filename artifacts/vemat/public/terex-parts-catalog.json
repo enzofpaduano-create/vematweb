@@ -1,0 +1,2133 @@
+{
+  "supplier": "Terex myParts",
+  "totalProducts": 326,
+  "totalCategories": 17,
+  "categories": [
+    {
+      "name": "Augers & Auger Tooling",
+      "slug": "terex-utilities-auger-tooling",
+      "url": "https://myparts.terex.com/augers-auger-tooling/category/terex-utilities-auger-tooling",
+      "productCount": 20,
+      "icon": "🔩",
+      "subcategories": [],
+      "products": [
+        {
+          "sku": "65340659TU",
+          "title": "TOOTH BUCKET X156 STD (15/)+13347PIN(C)",
+          "image": null,
+          "url": "https://myparts.terex.com/augers-auger-tooling/category/tooth-bucket-x156-std-15-13347pinc/product/51090627"
+        },
+        {
+          "sku": "65343300TU",
+          "title": "CLIP PUSH-ON BULLET TOOTH",
+          "image": null,
+          "url": "https://myparts.terex.com/augers-auger-tooling/category/clip-push-on-bullet-tooth/product/51090155"
+        },
+        {
+          "sku": "65354182TU",
+          "title": "SCREW FERRY CAP 3/4 -10X4-1/2",
+          "image": null,
+          "url": "https://myparts.terex.com/augers-auger-tooling/category/screw-ferry-cap-3-4-10x4-1-2/product/51095659"
+        },
+        {
+          "sku": "65385906TU",
+          "title": "COUPLER,3/4 BOLT KIT",
+          "image": null,
+          "url": "https://myparts.terex.com/augers-auger-tooling/category/coupler3-4-bolt-kit/product/59585982"
+        },
+        {
+          "sku": "T11370TU",
+          "title": "BLOCK AUG TAPER-FIT T02 TX (25/BCKT) 61070 - PKG 25 PCS PER BUCKET",
+          "image": null,
+          "url": "https://myparts.terex.com/augers-auger-tooling/category/block-aug-taper-fit-t02-tx-25-bckt-61070-pkg-25-pcs-per-bucket/product/51083403"
+        },
+        {
+          "sku": "T11376TU",
+          "title": "TOOTH TAPER T101 (25/) +TA000010 ADD TA000010 LOC:220019",
+          "image": null,
+          "url": "https://myparts.terex.com/augers-auger-tooling/category/tooth-taper-t101-25-ta000010-add-ta000010-loc-220019/product/51084502"
+        },
+        {
+          "sku": "T17318TU",
+          "title": "TOOTH BLADE TDB31 TX (25/) +T43223",
+          "image": null,
+          "url": "https://myparts.terex.com/augers-auger-tooling/category/tooth-blade-tdb31-tx-25-t43223/product/51083388"
+        },
+        {
+          "sku": "T29171TU",
+          "title": "TOOTH TX50 DIRT (25/) (+4 -A001277)",
+          "image": null,
+          "url": "https://myparts.terex.com/augers-auger-tooling/category/tooth-tx50-dirt-25-4-a001277/product/51084695"
+        },
+        {
+          "sku": "T29380TU",
+          "title": "RUBBER LOCK 1/4 DIA 70DUROMETER BLACK 1/4 (250 DIA)BUNA-N 70 DURO",
+          "image": null,
+          "url": "https://myparts.terex.com/augers-auger-tooling/category/rubber-lock-1-4-dia-70durometer-black-1-4-250-diabuna-n-70-duro/product/51085422"
+        },
+        {
+          "sku": "T29429TU",
+          "title": "TOOTH TX52 DIRT GAUGE (25/)+4 A001277",
+          "image": null,
+          "url": "https://myparts.terex.com/augers-auger-tooling/category/tooth-tx52-dirt-gauge-25-4-a001277/product/51085765"
+        },
+        {
+          "sku": "T29448TU",
+          "title": "TOOTH PENGO 35 (50/) 61064 - PKG 50 PCS PER BUCKET",
+          "image": null,
+          "url": "https://myparts.terex.com/augers-auger-tooling/category/tooth-pengo-35-50-61064-pkg-50-pcs-per-bucket/product/51085767"
+        },
+        {
+          "sku": "T29471TU",
+          "title": "BLOCK AUG CORBAR TXH10 TX (100/BCKT) 61062 - * PKG 100 PCS PER BUCKET *",
+          "image": null,
+          "url": "https://myparts.terex.com/augers-auger-tooling/category/block-aug-corbar-txh10-tx-100-bckt-61062-pkg-100-pcs-per-bucket-/product/51085760"
+        },
+        {
+          "sku": "T29941TU",
+          "title": "BLOCK AUG C10 TX(50/)(S/L)",
+          "image": null,
+          "url": "https://myparts.terex.com/augers-auger-tooling/category/block-aug-c10-tx50-s-l/product/51084530"
+        },
+        {
+          "sku": "T29945TU",
+          "title": "BLOCK AUG C87B TX (50/BOX) 61011 - C87B - PKG 40 PCS PER BUCKET",
+          "image": null,
+          "url": "https://myparts.terex.com/augers-auger-tooling/category/block-aug-c87b-tx-50-box-61011-c87b-pkg-40-pcs-per-bucket/product/51084524"
+        },
+        {
+          "sku": "T69322TU",
+          "title": "BLOCK AUG BLADE TAP3 TX (25/BCKT)",
+          "image": null,
+          "url": "https://myparts.terex.com/augers-auger-tooling/category/block-aug-blade-tap3-tx-25-bckt/product/51087695"
+        },
+        {
+          "sku": "T81517TU",
+          "title": "BOLT PLOW 7/8-9UNCX3 GR8 GRADE 8 7/8-9 UNC X 3 (QTY 90 PER BOX)",
+          "image": null,
+          "url": "https://myparts.terex.com/augers-auger-tooling/category/bolt-plow-7-8-9uncx3-gr8-grade-8-7-8-9-unc-x-3-qty-90-per-box/product/51114106"
+        },
+        {
+          "sku": "T96804TU",
+          "title": "BLOCK AUG CORBAR RJ2 TX (50/BCKT) RJ2P POCKET - PKG 50 PER BUCKET HARDNESS RC42-48",
+          "image": null,
+          "url": "https://myparts.terex.com/augers-auger-tooling/category/block-aug-corbar-rj2-tx-50-bckt-rj2p-pocket-pkg-50-per-bucket-hardness-rc42-48/product/51114841"
+        },
+        {
+          "sku": "TA000010TU",
+          "title": "NAIL HORSE SHOE RH8 (100/BOX) RH8 REGULAR HEAD- 100 PER BOX",
+          "image": null,
+          "url": "https://myparts.terex.com/augers-auger-tooling/category/nail-horse-shoe-rh8-100-box-rh8-regular-head-100-per-box/product/51113422"
+        },
+        {
+          "sku": "TA000459TU",
+          "title": "TOOTH PENGO GAUGE 37 37 GAUGE TOOTH",
+          "image": null,
+          "url": "https://myparts.terex.com/augers-auger-tooling/category/tooth-pengo-gauge-37-37-gauge-tooth/product/51114125"
+        },
+        {
+          "sku": "TA001277TU",
+          "title": "RUBBER LOCK 5/16 DIA BLACK 5/16 (313 DIA BUNA-N 70 DURO",
+          "image": null,
+          "url": "https://myparts.terex.com/augers-auger-tooling/category/rubber-lock-5-16-dia-black-5-16-313-dia-buna-n-70-duro/product/51115559"
+        }
+      ]
+    },
+    {
+      "name": "Bodies, Cabs & Running Gear",
+      "slug": "terex-utilities-bodies-cabs-running-gear",
+      "url": "https://myparts.terex.com/bodies-cabs-running-gear/category/terex-utilities-bodies-cabs-running-gear",
+      "productCount": 20,
+      "icon": "🚛",
+      "subcategories": [],
+      "products": [
+        {
+          "sku": "405364TU",
+          "title": "BACK CUSHION",
+          "image": null,
+          "url": "https://myparts.terex.com/bodies-cabs-running-gear/category/back-cushion/product/30366497"
+        },
+        {
+          "sku": "422396TU",
+          "title": "FRICTION DISK",
+          "image": null,
+          "url": "https://myparts.terex.com/bodies-cabs-running-gear/category/friction-disk/product/30377414"
+        },
+        {
+          "sku": "429424TU",
+          "title": "SPRING BRAKE",
+          "image": null,
+          "url": "https://myparts.terex.com/bodies-cabs-running-gear/category/spring-brake/product/30377879"
+        },
+        {
+          "sku": "429426TU",
+          "title": "SPRING BRAKE",
+          "image": null,
+          "url": "https://myparts.terex.com/bodies-cabs-running-gear/category/spring-brake/product/30377881"
+        },
+        {
+          "sku": "46779TU",
+          "title": "BRAKE DISC - BRADEN 21029 (M)",
+          "image": null,
+          "url": "https://myparts.terex.com/bodies-cabs-running-gear/category/brake-disc-braden-21029-m/product/30390222"
+        },
+        {
+          "sku": "596700TU",
+          "title": "RUBBER 3 X3 X100\\' RIGHT ANGLE GS-178 EXT (FENDER MATL) RUBA FENDER",
+          "image": null,
+          "url": "https://myparts.terex.com/bodies-cabs-running-gear/category/rubber-3-x3-x100-right-angle-gs-178-ext-fender-matl-ruba-fender/product/30399793"
+        },
+        {
+          "sku": "65357713TU",
+          "title": "RUBBER REINFORCED BELT STEP",
+          "image": null,
+          "url": "https://myparts.terex.com/bodies-cabs-running-gear/category/rubber-reinforced-belt-step/product/30409613"
+        },
+        {
+          "sku": "65361642TU",
+          "title": "DOOR HOLDER,RIG DCEZ-0715 ZNNB",
+          "image": null,
+          "url": "https://myparts.terex.com/bodies-cabs-running-gear/category/door-holderrig-dcez-0715-znnb/product/51098388"
+        },
+        {
+          "sku": "65380088TU",
+          "title": "RUBBER BELT STEP REINFORCED 8 L",
+          "image": null,
+          "url": "https://myparts.terex.com/bodies-cabs-running-gear/category/rubber-belt-step-reinforced-8-l/product/69385440"
+        },
+        {
+          "sku": "65393095TU",
+          "title": "BELT,CONVEYER,.50 THK REINFORCED",
+          "image": null,
+          "url": "https://myparts.terex.com/bodies-cabs-running-gear/category/beltconveyer50-thk-reinforced/product/69425762"
+        },
+        {
+          "sku": "65396739TU",
+          "title": "SIDE ACCESS BELT STEP, TOP ONLY, PC DB WHITE",
+          "image": null,
+          "url": "https://myparts.terex.com/bodies-cabs-running-gear/category/side-access-belt-step-top-only-pc-db-white/product/69876147"
+        },
+        {
+          "sku": "65397246TU",
+          "title": "DIVIDERS, PACK OF 10",
+          "image": null,
+          "url": "https://myparts.terex.com/bodies-cabs-running-gear/category/dividers-pack-of-10/product/69955132"
+        },
+        {
+          "sku": "89156TU",
+          "title": "DOOR HOLDER DOOR BRKT 1X2.25X.63",
+          "image": null,
+          "url": "https://myparts.terex.com/bodies-cabs-running-gear/category/door-holder-door-brkt-1x225x63/product/30422443"
+        },
+        {
+          "sku": "89418TU",
+          "title": "DOOR CHECK 15# ASSY (88732-ASSY)",
+          "image": null,
+          "url": "https://myparts.terex.com/bodies-cabs-running-gear/category/door-check-15-assy-88732-assy/product/30417951"
+        },
+        {
+          "sku": "89617TU",
+          "title": "DIVIDER SHELF ADJUSTABLE 30",
+          "image": null,
+          "url": "https://myparts.terex.com/bodies-cabs-running-gear/category/divider-shelf-adjustable-30/product/30418604"
+        },
+        {
+          "sku": "92497TU",
+          "title": "ROD & CLIP FOR ROTARY LATCH",
+          "image": null,
+          "url": "https://myparts.terex.com/bodies-cabs-running-gear/category/rod-clip-for-rotary-latch/product/30417441"
+        },
+        {
+          "sku": "93216TU",
+          "title": "MUD FLAP TEREX LOGO .38 X24 X18 L",
+          "image": null,
+          "url": "https://myparts.terex.com/bodies-cabs-running-gear/category/mud-flap-terex-logo-38-x24-x18-l/product/30420959"
+        },
+        {
+          "sku": "93382TU",
+          "title": "MUD FLAP TEREX LOGO .3/8X24 X30 L",
+          "image": null,
+          "url": "https://myparts.terex.com/bodies-cabs-running-gear/category/mud-flap-terex-logo-3-8x24-x30-l/product/30418696"
+        },
+        {
+          "sku": "93383TU",
+          "title": "MUD FLAP LOGO .38 X24 X36 L",
+          "image": null,
+          "url": "https://myparts.terex.com/bodies-cabs-running-gear/category/mud-flap-logo-38-x24-x36-l/product/30418697"
+        },
+        {
+          "sku": "T428260TU",
+          "title": "KIT ADJUSTER W/HARD",
+          "image": null,
+          "url": "https://myparts.terex.com/bodies-cabs-running-gear/category/kit-adjuster-w-hard/product/30380766"
+        }
+      ]
+    },
+    {
+      "name": "Booms, Jibs, & Buckets",
+      "slug": "terex-utilities-booms-jibs-buckets",
+      "url": "https://myparts.terex.com/booms-jibs-buckets/category/terex-utilities-booms-jibs-buckets",
+      "productCount": 20,
+      "icon": "🏗️",
+      "subcategories": [],
+      "products": [
+        {
+          "sku": "408072TU",
+          "title": "HANDLE LINK",
+          "image": null,
+          "url": "https://myparts.terex.com/booms-jibs-buckets/category/handle-link/product/30373929"
+        },
+        {
+          "sku": "444647TU",
+          "title": "HANDLE GRIP (BLACK)",
+          "image": null,
+          "url": "https://myparts.terex.com/booms-jibs-buckets/category/handle-grip-black/product/30384145"
+        },
+        {
+          "sku": "444648TU",
+          "title": "HANDLE GRIP (RED)",
+          "image": null,
+          "url": "https://myparts.terex.com/booms-jibs-buckets/category/handle-grip-red/product/30384146"
+        },
+        {
+          "sku": "450899TU",
+          "title": "CLAMP",
+          "image": null,
+          "url": "https://myparts.terex.com/booms-jibs-buckets/category/clamp/product/30386160"
+        },
+        {
+          "sku": "455387TU",
+          "title": "TRIGGER SINGLE STICK HANDLE",
+          "image": null,
+          "url": "https://myparts.terex.com/booms-jibs-buckets/category/trigger-single-stick-handle/product/30385617"
+        },
+        {
+          "sku": "479405TU",
+          "title": "HANDLE GRIP RED STRAIGHT",
+          "image": null,
+          "url": "https://myparts.terex.com/booms-jibs-buckets/category/handle-grip-red-straight/product/30390377"
+        },
+        {
+          "sku": "482043TU",
+          "title": "HANDLE ASSY BUCHER STEEL",
+          "image": null,
+          "url": "https://myparts.terex.com/booms-jibs-buckets/category/handle-assy-bucher-steel/product/30389795"
+        },
+        {
+          "sku": "490117TU",
+          "title": "PIPE PVC 1 1/2 SCHED 40 4.75 LONG",
+          "image": null,
+          "url": "https://myparts.terex.com/booms-jibs-buckets/category/pipe-pvc-1-1-2-sched-40-475-long/product/30394679"
+        },
+        {
+          "sku": "494634TU",
+          "title": "AEM DIGGER DERRICK SAFETY MANUAL",
+          "image": null,
+          "url": "https://myparts.terex.com/booms-jibs-buckets/category/aem-digger-derrick-safety-manual/product/30391863"
+        },
+        {
+          "sku": "494635TU",
+          "title": "AEM AERIAL DEVICE SAFETY MANUAL",
+          "image": null,
+          "url": "https://myparts.terex.com/booms-jibs-buckets/category/aem-aerial-device-safety-manual/product/30391864"
+        },
+        {
+          "sku": "613318TU",
+          "title": "STEP NON-SKID 5.15",
+          "image": null,
+          "url": "https://myparts.terex.com/booms-jibs-buckets/category/step-non-skid-515/product/41371247"
+        },
+        {
+          "sku": "65320143TU",
+          "title": "WASHER SINGLESTICK PTE7500BHL",
+          "image": null,
+          "url": "https://myparts.terex.com/booms-jibs-buckets/category/washer-singlestick-pte7500bhl/product/30404951"
+        },
+        {
+          "sku": "65396359TU",
+          "title": "ROD GUIDE",
+          "image": null,
+          "url": "https://myparts.terex.com/booms-jibs-buckets/category/rod-guide/product/69807413"
+        },
+        {
+          "sku": "72644TU",
+          "title": "HANDLE - FCR B5021",
+          "image": null,
+          "url": "https://myparts.terex.com/booms-jibs-buckets/category/handle-fcr-b5021/product/30415400"
+        },
+        {
+          "sku": "73265TU",
+          "title": "HANDLE RP BUY ONLY VERIFY BEFORE ORDERING",
+          "image": null,
+          "url": "https://myparts.terex.com/booms-jibs-buckets/category/handle-rp-buy-only-verify-before-ordering/product/30414124"
+        },
+        {
+          "sku": "73266TU",
+          "title": "HANDLE",
+          "image": null,
+          "url": "https://myparts.terex.com/booms-jibs-buckets/category/handle/product/30414126"
+        },
+        {
+          "sku": "H11098TU",
+          "title": "LINK",
+          "image": null,
+          "url": "https://myparts.terex.com/booms-jibs-buckets/category/link/product/30423033"
+        },
+        {
+          "sku": "H12036TU",
+          "title": "RING QUAD 400-112 N7002 D/L",
+          "image": null,
+          "url": "https://myparts.terex.com/booms-jibs-buckets/category/ring-quad-400-112-n7002-d-l/product/30427544"
+        },
+        {
+          "sku": "H23203TU",
+          "title": "CLAMP STAUFF LBG-3160-PP",
+          "image": null,
+          "url": "https://myparts.terex.com/booms-jibs-buckets/category/clamp-stauff-lbg-3160-pp/product/30423376"
+        },
+        {
+          "sku": "H24066TU",
+          "title": "STEP NON-SKID/PRECUT",
+          "image": null,
+          "url": "https://myparts.terex.com/booms-jibs-buckets/category/step-non-skid-precut/product/30426057"
+        }
+      ]
+    },
+    {
+      "name": "Covers",
+      "slug": "terex-utilities-covers",
+      "url": "https://myparts.terex.com/covers/category/terex-utilities-covers",
+      "productCount": 20,
+      "icon": "🛡️",
+      "subcategories": [],
+      "products": [
+        {
+          "sku": "101520TU",
+          "title": "ASSY CABLE RADIAL JACK COVER",
+          "image": null,
+          "url": "https://myparts.terex.com/covers/category/assy-cable-radial-jack-cover/product/47152830"
+        },
+        {
+          "sku": "444228TU",
+          "title": "COVER ROTATION BRACKET REAR D/L",
+          "image": null,
+          "url": "https://myparts.terex.com/covers/category/cover-rotation-bracket-rear-d-l/product/30385100"
+        },
+        {
+          "sku": "449338TU",
+          "title": "COVER",
+          "image": null,
+          "url": "https://myparts.terex.com/covers/category/cover/product/30385513"
+        },
+        {
+          "sku": "453668TU",
+          "title": "COVER OVAL FLAT CLEAR",
+          "image": null,
+          "url": "https://myparts.terex.com/covers/category/cover-oval-flat-clear/product/30384274"
+        },
+        {
+          "sku": "455992TU",
+          "title": "HANDLE COVER (YELLOW)",
+          "image": null,
+          "url": "https://myparts.terex.com/covers/category/handle-cover-yellow/product/30382107"
+        },
+        {
+          "sku": "466102TU",
+          "title": "BOOT RUBBER",
+          "image": null,
+          "url": "https://myparts.terex.com/covers/category/boot-rubber/product/30386997"
+        },
+        {
+          "sku": "472718TU",
+          "title": "COVER BASKET SHAFT",
+          "image": null,
+          "url": "https://myparts.terex.com/covers/category/cover-basket-shaft/product/30390592"
+        },
+        {
+          "sku": "476489TU",
+          "title": "HEAD COVER",
+          "image": null,
+          "url": "https://myparts.terex.com/covers/category/head-cover/product/30389684"
+        },
+        {
+          "sku": "494671TU",
+          "title": "COVER JIB POST BOTTOM",
+          "image": null,
+          "url": "https://myparts.terex.com/covers/category/cover-jib-post-bottom/product/30392182"
+        },
+        {
+          "sku": "59816TU",
+          "title": "EDGE COVER .25",
+          "image": null,
+          "url": "https://myparts.terex.com/covers/category/edge-cover-25/product/30392416"
+        },
+        {
+          "sku": "612172TU",
+          "title": "BRACKET UB COVER HDPE",
+          "image": null,
+          "url": "https://myparts.terex.com/covers/category/bracket-ub-cover-hdpe/product/30397000"
+        },
+        {
+          "sku": "65335805TU",
+          "title": "BOOT RUBBER",
+          "image": null,
+          "url": "https://myparts.terex.com/covers/category/boot-rubber/product/30402677"
+        },
+        {
+          "sku": "65342055TU",
+          "title": "BOOT LEVER BOX",
+          "image": null,
+          "url": "https://myparts.terex.com/covers/category/boot-lever-box/product/30407928"
+        },
+        {
+          "sku": "65379766TU",
+          "title": "BOOT FOR 65347309 HANDLE KIT (615191 609725 VALVES)",
+          "image": null,
+          "url": "https://myparts.terex.com/covers/category/boot-for-65347309-handle-kit-615191-609725-valves/product/46879732"
+        },
+        {
+          "sku": "68419TU",
+          "title": "WORM COVER GASKET",
+          "image": null,
+          "url": "https://myparts.terex.com/covers/category/worm-cover-gasket/product/30409384"
+        },
+        {
+          "sku": "74412TU",
+          "title": "HANDLE COVER",
+          "image": null,
+          "url": "https://myparts.terex.com/covers/category/handle-cover/product/30417041"
+        },
+        {
+          "sku": "9157993TU",
+          "title": "HOSE GUARD",
+          "image": null,
+          "url": "https://myparts.terex.com/covers/category/hose-guard/product/69286848"
+        },
+        {
+          "sku": "H20352TU",
+          "title": "BOOT NEOPRENE",
+          "image": null,
+          "url": "https://myparts.terex.com/covers/category/boot-neoprene/product/30427592"
+        },
+        {
+          "sku": "H26840TU",
+          "title": "COVER,GASKET SHAFT",
+          "image": null,
+          "url": "https://myparts.terex.com/covers/category/covergasket-shaft/product/30425775"
+        },
+        {
+          "sku": "H33469TU",
+          "title": "COVER END",
+          "image": null,
+          "url": "https://myparts.terex.com/covers/category/cover-end/product/30422827"
+        }
+      ]
+    },
+    {
+      "name": "Deals & Offers",
+      "slug": "TU-DEALS",
+      "url": "https://myparts.terex.com/deals-offers/category/TU-DEALS",
+      "productCount": 20,
+      "icon": "🏷️",
+      "subcategories": [],
+      "products": [
+        {
+          "sku": "65342401TU",
+          "title": "C10 Auger Tooth (RL09 TX) 75 BUCKET",
+          "image": null,
+          "url": "https://myparts.terex.com/deals-offers/category/c10-auger-tooth-rl09-tx-75-bucket/product/51080269"
+        },
+        {
+          "sku": "65349085TU",
+          "title": "C10 Auger Tooth (RC1LR-SN TX)",
+          "image": null,
+          "url": "https://myparts.terex.com/deals-offers/category/c10-auger-tooth-rc1lr-sn-tx/product/51093488"
+        },
+        {
+          "sku": "65349086TU",
+          "title": "C10 Auger Tooth (RC1SR-SN TX)",
+          "image": null,
+          "url": "https://myparts.terex.com/deals-offers/category/c10-auger-tooth-rc1sr-sn-tx/product/51093489"
+        },
+        {
+          "sku": "65374817TU",
+          "title": "C10 Auger Tooth (BSK23SR BTK) 50 BUCKET",
+          "image": null,
+          "url": "https://myparts.terex.com/deals-offers/category/c10-auger-tooth-bsk23sr-btk-50-bucket/product/51107352"
+        },
+        {
+          "sku": "T11376TU",
+          "title": "TOOTH TAPER T101 (25/) +TA000010 ADD TA000010 LOC:220019",
+          "image": null,
+          "url": "https://myparts.terex.com/augers-auger-tooling/category/tooth-taper-t101-25-ta000010-add-ta000010-loc-220019/product/51084502"
+        },
+        {
+          "sku": "T17318TU",
+          "title": "TOOTH BLADE TDB31 TX (25/) +T43223",
+          "image": null,
+          "url": "https://myparts.terex.com/augers-auger-tooling/category/tooth-blade-tdb31-tx-25-t43223/product/51083388"
+        },
+        {
+          "sku": "T29171TU",
+          "title": "TOOTH TX50 DIRT (25/) (+4 -A001277)",
+          "image": null,
+          "url": "https://myparts.terex.com/augers-auger-tooling/category/tooth-tx50-dirt-25-4-a001277/product/51084695"
+        },
+        {
+          "sku": "T29429TU",
+          "title": "TOOTH TX52 DIRT GAUGE (25/)+4 A001277",
+          "image": null,
+          "url": "https://myparts.terex.com/augers-auger-tooling/category/tooth-tx52-dirt-gauge-25-4-a001277/product/51085765"
+        },
+        {
+          "sku": "T29457TU",
+          "title": "TOOTH CORBAR TXCB10 (100/) +43223 61063 - 100/BUCKET",
+          "image": null,
+          "url": "https://myparts.terex.com/deals-offers/category/tooth-corbar-txcb10-100-43223-61063-100-bucket/product/51085769"
+        },
+        {
+          "sku": "T29471TU",
+          "title": "BLOCK AUG CORBAR TXH10 TX (100/BCKT) 61062 - * PKG 100 PCS PER BUCKET *",
+          "image": null,
+          "url": "https://myparts.terex.com/augers-auger-tooling/category/block-aug-corbar-txh10-tx-100-bckt-61062-pkg-100-pcs-per-bucket-/product/51085760"
+        },
+        {
+          "sku": "T29817TU",
+          "title": "TOOTH TAPER 201 (20/) +TA000010 ADD TA000010 LOC:220019 RC46-52",
+          "image": null,
+          "url": "https://myparts.terex.com/deals-offers/category/tooth-taper-201-20-ta000010-add-ta000010-loc-220019-rc46-52/product/51085927"
+        },
+        {
+          "sku": "T29900TU",
+          "title": "C20 Auger Tooth (C23 TX) 75 BUCKET",
+          "image": null,
+          "url": "https://myparts.terex.com/deals-offers/category/c20-auger-tooth-c23-tx-75-bucket/product/51083253"
+        },
+        {
+          "sku": "T29933TU",
+          "title": "TOOTH CORBAR U7L/CU7L KM (50/) 1011181 - U7L/CU7L",
+          "image": null,
+          "url": "https://myparts.terex.com/deals-offers/category/tooth-corbar-u7l-cu7l-km-50-1011181-u7l-cu7l/product/51083754"
+        },
+        {
+          "sku": "T29941TU",
+          "title": "BLOCK AUG C10 TX(50/)(S/L)",
+          "image": null,
+          "url": "https://myparts.terex.com/augers-auger-tooling/category/block-aug-c10-tx50-s-l/product/51084530"
+        },
+        {
+          "sku": "T69322TU",
+          "title": "BLOCK AUG BLADE TAP3 TX (25/BCKT)",
+          "image": null,
+          "url": "https://myparts.terex.com/augers-auger-tooling/category/block-aug-blade-tap3-tx-25-bckt/product/51087695"
+        },
+        {
+          "sku": "T96804TU",
+          "title": "BLOCK AUG CORBAR RJ2 TX (50/BCKT) RJ2P POCKET - PKG 50 PER BUCKET HARDNESS RC42-48",
+          "image": null,
+          "url": "https://myparts.terex.com/augers-auger-tooling/category/block-aug-corbar-rj2-tx-50-bckt-rj2p-pocket-pkg-50-per-bucket-hardness-rc42-48/product/51114841"
+        },
+        {
+          "sku": "TA001379TU",
+          "title": "C10 Auger Tooth(RB3SR KM) 75 BUCKET",
+          "image": null,
+          "url": "https://myparts.terex.com/deals-offers/category/c10-auger-toothrb3sr-km-75-bucket/product/51115819"
+        },
+        {
+          "sku": "TA001404TU",
+          "title": "(BOM) BLOCK AUG C10 RC10F (R/B 65377051)",
+          "image": null,
+          "url": "https://myparts.terex.com/deals-offers/category/bom-block-aug-c10-rc10f-r-b-65377051/product/51115926"
+        },
+        {
+          "sku": "TA001405TU",
+          "title": "BLOCK AUG C30 RC30F TX (25/BCKT) RC30F POCKET - PKG 25 PCS PER BUCKET HARDNESS RC45-50",
+          "image": null,
+          "url": "https://myparts.terex.com/deals-offers/category/block-aug-c30-rc30f-tx-25-bckt-rc30f-pocket-pkg-25-pcs-per-bucket-hardness-rc45-50/product/51115915"
+        },
+        {
+          "sku": "TA001407TU",
+          "title": "BLOCK AUG TAPER-FIT RST200P TX (15/BCKT) RST200P POCKET",
+          "image": null,
+          "url": "https://myparts.terex.com/deals-offers/category/block-aug-taper-fit-rst200p-tx-15-bckt-rst200p-pocket/product/51115917"
+        }
+      ]
+    },
+    {
+      "name": "Decals",
+      "slug": "terex-utilities-decals",
+      "url": "https://myparts.terex.com/decals/category/terex-utilities-decals",
+      "productCount": 20,
+      "icon": "🎨",
+      "subcategories": [],
+      "products": [
+        {
+          "sku": "419268TU",
+          "title": "DECAL OUTRIGGER DO NOT OPERATE",
+          "image": null,
+          "url": "https://myparts.terex.com/decals/category/decal-outrigger-do-not-operate/product/30373812"
+        },
+        {
+          "sku": "419269TU",
+          "title": "DECAL OUTRIGGER CRUSHING",
+          "image": null,
+          "url": "https://myparts.terex.com/decals/category/decal-outrigger-crushing/product/30373813"
+        },
+        {
+          "sku": "463602TU",
+          "title": "DECAL DANGER CONTROL CONTINUITY",
+          "image": null,
+          "url": "https://myparts.terex.com/decals/category/decal-danger-control-continuity/product/30383801"
+        },
+        {
+          "sku": "618617TU",
+          "title": "DECAL TT LIGHT AT TT",
+          "image": null,
+          "url": "https://myparts.terex.com/decals/category/decal-tt-light-at-tt/product/50798024"
+        },
+        {
+          "sku": "622232TU",
+          "title": "WARNING DECAL, PROP 65 OPERATING STATION",
+          "image": null,
+          "url": "https://myparts.terex.com/decals/category/warning-decal-prop-65-operating-station/product/54371815"
+        },
+        {
+          "sku": "65348760TU",
+          "title": "DECAL KIT",
+          "image": null,
+          "url": "https://myparts.terex.com/decals/category/decal-kit/product/30411793"
+        },
+        {
+          "sku": "93525TU",
+          "title": "DANGER DECAL",
+          "image": null,
+          "url": "https://myparts.terex.com/decals/category/danger-decal/product/30421286"
+        },
+        {
+          "sku": "H20526TU",
+          "title": "PLACARD CONT HEAD",
+          "image": null,
+          "url": "https://myparts.terex.com/decals/category/placard-cont-head/product/30423096"
+        },
+        {
+          "sku": "H21503TU",
+          "title": "DECAL, ARROW",
+          "image": null,
+          "url": "https://myparts.terex.com/decals/category/decal-arrow/product/30427291"
+        },
+        {
+          "sku": "H22451TU",
+          "title": "DECAL INSTR HYD PUMP",
+          "image": null,
+          "url": "https://myparts.terex.com/decals/category/decal-instr-hyd-pump/product/30426346"
+        },
+        {
+          "sku": "H23117TU",
+          "title": "DECAL PILOT ASSIST D/L",
+          "image": null,
+          "url": "https://myparts.terex.com/decals/category/decal-pilot-assist-d-l/product/30423058"
+        },
+        {
+          "sku": "H23451TU",
+          "title": "DECAL PINCH POINT",
+          "image": null,
+          "url": "https://myparts.terex.com/decals/category/decal-pinch-point/product/30427637"
+        },
+        {
+          "sku": "H23877TU",
+          "title": "DECAL-WARNING-OIL LEAKAGE D/L",
+          "image": null,
+          "url": "https://myparts.terex.com/decals/category/decal-warning-oil-leakage-d-l/product/30424079"
+        },
+        {
+          "sku": "H24732TU",
+          "title": "DECAL DANGER FAILURE TO D/L",
+          "image": null,
+          "url": "https://myparts.terex.com/decals/category/decal-danger-failure-to-d-l/product/30424752"
+        },
+        {
+          "sku": "H24733TU",
+          "title": "DECAL DANGER ELECTROCUTION D/L",
+          "image": null,
+          "url": "https://myparts.terex.com/decals/category/decal-danger-electrocution-d-l/product/30424753"
+        },
+        {
+          "sku": "H24734TU",
+          "title": "DECAL DANGER FALLING D/L",
+          "image": null,
+          "url": "https://myparts.terex.com/decals/category/decal-danger-falling-d-l/product/30424754"
+        },
+        {
+          "sku": "H24737TU",
+          "title": "DECAL DANGER UNTRAINED OPER D/L",
+          "image": null,
+          "url": "https://myparts.terex.com/decals/category/decal-danger-untrained-oper-d-l/product/30424756"
+        },
+        {
+          "sku": "IMT70391612",
+          "title": "DECAL",
+          "image": null,
+          "url": "https://myparts.terex.com/decals/category/decal/product/51064056"
+        },
+        {
+          "sku": "IMT70391613",
+          "title": "DECAL",
+          "image": null,
+          "url": "https://myparts.terex.com/decals/category/decal/product/51064057"
+        },
+        {
+          "sku": "T60866TU",
+          "title": "RING BACK UP- 4 5/8 ID X 4",
+          "image": null,
+          "url": "https://myparts.terex.com/decals/category/ring-back-up-4-5-8-id-x-4/product/30358421"
+        }
+      ]
+    },
+    {
+      "name": "Electrical and Electronics",
+      "slug": "terex-utilities-electrical-electronics",
+      "url": "https://myparts.terex.com/electrical-and-electronics/category/terex-utilities-electrical-electronics",
+      "productCount": 20,
+      "icon": "⚡",
+      "subcategories": [],
+      "products": [
+        {
+          "sku": "351266TU",
+          "title": "TERMINAL FLANGED SPADE #6 STUD 14-16AWG HEAT SHRINK & CRIMP BLUE",
+          "image": null,
+          "url": "https://myparts.terex.com/electrical-and-electronics/category/terminal-flanged-spade-6-stud-14-16awg-heat-shrink-crimp-blue/product/30371155"
+        },
+        {
+          "sku": "351267TU",
+          "title": "TERMINAL RING 16-14GA BLUE",
+          "image": null,
+          "url": "https://myparts.terex.com/electrical-and-electronics/category/terminal-ring-16-14ga-blue/product/30371156"
+        },
+        {
+          "sku": "351269TU",
+          "title": "TERMINAL RING 16-14 AWG",
+          "image": null,
+          "url": "https://myparts.terex.com/electrical-and-electronics/category/terminal-ring-16-14-awg/product/30371158"
+        },
+        {
+          "sku": "351287TU",
+          "title": "TERMINAL RING 14-16 AWG",
+          "image": null,
+          "url": "https://myparts.terex.com/electrical-and-electronics/category/terminal-ring-14-16-awg/product/30371160"
+        },
+        {
+          "sku": "428800TU",
+          "title": "SPADE TERMINAL",
+          "image": null,
+          "url": "https://myparts.terex.com/electrical-and-electronics/category/spade-terminal/product/30379500"
+        },
+        {
+          "sku": "454302TU",
+          "title": "SAFETY LOCK WIRE TYPE 302/304 SS .032DIA ***91 FEET = 1 ROLL",
+          "image": null,
+          "url": "https://myparts.terex.com/electrical-and-electronics/category/safety-lock-wire-type-302-304-ss-032dia-91-feet-1-roll/product/30381450"
+        },
+        {
+          "sku": "454493TU",
+          "title": "CONNECTOR TWO TERMINAL",
+          "image": null,
+          "url": "https://myparts.terex.com/electrical-and-electronics/category/connector-two-terminal/product/30382692"
+        },
+        {
+          "sku": "454494TU",
+          "title": "TERMINAL 16/14 GA 56 SERIES",
+          "image": null,
+          "url": "https://myparts.terex.com/electrical-and-electronics/category/terminal-16-14-ga-56-series/product/30382693"
+        },
+        {
+          "sku": "477748TU",
+          "title": "ORFICE .020 DIA",
+          "image": null,
+          "url": "https://myparts.terex.com/electrical-and-electronics/category/orfice-020-dia/product/30388133"
+        },
+        {
+          "sku": "490221TU",
+          "title": "DEUTSCH DT SERIES PLUG 2 PIN A POL",
+          "image": null,
+          "url": "https://myparts.terex.com/electrical-and-electronics/category/deutsch-dt-series-plug-2-pin-a-pol/product/30395001"
+        },
+        {
+          "sku": "65340302TU",
+          "title": "RESISTOR 120OHM .25 WATT",
+          "image": null,
+          "url": "https://myparts.terex.com/electrical-and-electronics/category/resistor-120ohm-25-watt/product/41833309"
+        },
+        {
+          "sku": "65394479TU",
+          "title": "BUTTON,YELLOW",
+          "image": null,
+          "url": "https://myparts.terex.com/electrical-and-electronics/category/buttonyellow/product/69585222"
+        },
+        {
+          "sku": "88908TU",
+          "title": "TERMINAL PUSH-ON .25 FEMALE",
+          "image": null,
+          "url": "https://myparts.terex.com/electrical-and-electronics/category/terminal-push-on-25-female/product/30419887"
+        },
+        {
+          "sku": "93514TU",
+          "title": "TERMINAL RING NON-INSULATED 4GA .38",
+          "image": null,
+          "url": "https://myparts.terex.com/electrical-and-electronics/category/terminal-ring-non-insulated-4ga-38/product/30425516"
+        },
+        {
+          "sku": "H26065TU",
+          "title": "SAFETY LOCK WIRE TYPE 302/304 SS (140')",
+          "image": null,
+          "url": "https://myparts.terex.com/electrical-and-electronics/category/safety-lock-wire-type-302-304-ss-140/product/30423175"
+        },
+        {
+          "sku": "H30049TU",
+          "title": "RECTIFIER SILICONE",
+          "image": null,
+          "url": "https://myparts.terex.com/electrical-and-electronics/category/rectifier-silicone/product/30425460"
+        },
+        {
+          "sku": "H32071TU",
+          "title": "TERMINAL RING 14-16AWG",
+          "image": null,
+          "url": "https://myparts.terex.com/electrical-and-electronics/category/terminal-ring-14-16awg/product/30426121"
+        },
+        {
+          "sku": "H33205TU",
+          "title": "BLOCK MODULE",
+          "image": null,
+          "url": "https://myparts.terex.com/electrical-and-electronics/category/block-module/product/30422468"
+        },
+        {
+          "sku": "T16753TU",
+          "title": "KEY WOODRUFF #15-ASA 808",
+          "image": null,
+          "url": "https://myparts.terex.com/electrical-and-electronics/category/key-woodruff-15-asa-808/product/30365173"
+        },
+        {
+          "sku": "Z1562TU",
+          "title": "FSK,CORRECT LEVELING LIMIT SWITCH MTG **CONTACT WARRANTY**",
+          "image": null,
+          "url": "https://myparts.terex.com/electrical-and-electronics/category/fskcorrect-leveling-limit-switch-mtg-contact-warranty-/product/69467033"
+        }
+      ]
+    },
+    {
+      "name": "Engine Components",
+      "slug": "terex-utilities-engine-components",
+      "url": "https://myparts.terex.com/engine-components/category/terex-utilities-engine-components",
+      "productCount": 6,
+      "icon": "⚙️",
+      "subcategories": [],
+      "products": [
+        {
+          "sku": "458899TU",
+          "title": "DEMAND THROTTLE KIT XT KUBOTA",
+          "image": null,
+          "url": "https://myparts.terex.com/engine-components/category/demand-throttle-kit-xt-kubota/product/30385944"
+        },
+        {
+          "sku": "65366727TU",
+          "title": "GRILL ENGINE COMPARTMENT 12-9-2015 MDG",
+          "image": null,
+          "url": "https://myparts.terex.com/engine-components/category/grill-engine-compartment-12-9-2015-mdg/product/30411855"
+        },
+        {
+          "sku": "65368790TU",
+          "title": "PUMP,WATER,FLOJET,1/2 PORTS",
+          "image": null,
+          "url": "https://myparts.terex.com/engine-components/category/pumpwaterflojet1-2-ports/product/69385178"
+        },
+        {
+          "sku": "65382972TU",
+          "title": "SERVICE KIT - ENGINE",
+          "image": null,
+          "url": "https://myparts.terex.com/engine-components/category/service-kit-engine/product/53571967"
+        },
+        {
+          "sku": "65396667TU",
+          "title": "EXHAUST EXTENSION PIPE",
+          "image": null,
+          "url": "https://myparts.terex.com/engine-components/category/exhaust-extension-pipe/product/69935854"
+        },
+        {
+          "sku": "T70136TU",
+          "title": "CAP ASSEMBLY F",
+          "image": null,
+          "url": "https://myparts.terex.com/engine-components/category/cap-assembly-f/product/30415314"
+        }
+      ]
+    },
+    {
+      "name": "Fabricated Components",
+      "slug": "terex-utilities-fabricated-components",
+      "url": "https://myparts.terex.com/fabricated-components/category/terex-utilities-fabricated-components",
+      "productCount": 20,
+      "icon": "🔧",
+      "subcategories": [],
+      "products": [
+        {
+          "sku": "18478TU",
+          "title": "ANGLE INDICATOR (POINTER)",
+          "image": null,
+          "url": "https://myparts.terex.com/fabricated-components/category/angle-indicator-pointer/product/30353435"
+        },
+        {
+          "sku": "32038TU",
+          "title": "END PLATE",
+          "image": null,
+          "url": "https://myparts.terex.com/fabricated-components/category/end-plate/product/30370453"
+        },
+        {
+          "sku": "401287TU",
+          "title": "STOP BLOCK",
+          "image": null,
+          "url": "https://myparts.terex.com/fabricated-components/category/stop-block/product/30369962"
+        },
+        {
+          "sku": "443796TU",
+          "title": "MOUNTING ANGLE ZINC PLATED",
+          "image": null,
+          "url": "https://myparts.terex.com/fabricated-components/category/mounting-angle-zinc-plated/product/30382252"
+        },
+        {
+          "sku": "454646TU",
+          "title": "PLATE",
+          "image": null,
+          "url": "https://myparts.terex.com/fabricated-components/category/plate/product/30384645"
+        },
+        {
+          "sku": "456186TU",
+          "title": "DUAL WELDNUT PLATE",
+          "image": null,
+          "url": "https://myparts.terex.com/fabricated-components/category/dual-weldnut-plate/product/30382701"
+        },
+        {
+          "sku": "461363TU",
+          "title": "BLOCK MOUNTING 1 X1 X.31 TAPPED",
+          "image": null,
+          "url": "https://myparts.terex.com/fabricated-components/category/block-mounting-1-x1-x31-tapped/product/47552846"
+        },
+        {
+          "sku": "481652TU",
+          "title": "AMPHENOL PLUG MTG PLATE",
+          "image": null,
+          "url": "https://myparts.terex.com/fabricated-components/category/amphenol-plug-mtg-plate/product/30390111"
+        },
+        {
+          "sku": "602019TU",
+          "title": "LINK HOSE CARRIER",
+          "image": null,
+          "url": "https://myparts.terex.com/fabricated-components/category/link-hose-carrier/product/30400166"
+        },
+        {
+          "sku": "602020TU",
+          "title": "HINGE BAR",
+          "image": null,
+          "url": "https://myparts.terex.com/fabricated-components/category/hinge-bar/product/30400167"
+        },
+        {
+          "sku": "610439TU",
+          "title": "BAR",
+          "image": null,
+          "url": "https://myparts.terex.com/fabricated-components/category/bar/product/30401857"
+        },
+        {
+          "sku": "616602TU",
+          "title": "SUPPORT PLATE LIFTLOCK",
+          "image": null,
+          "url": "https://myparts.terex.com/fabricated-components/category/support-plate-liftlock/product/54338812"
+        },
+        {
+          "sku": "620468TU",
+          "title": "PLATE",
+          "image": null,
+          "url": "https://myparts.terex.com/fabricated-components/category/plate/product/54653821"
+        },
+        {
+          "sku": "624541TU",
+          "title": "TAB",
+          "image": null,
+          "url": "https://myparts.terex.com/fabricated-components/category/tab/product/69498599"
+        },
+        {
+          "sku": "625785TU",
+          "title": "BRACKET",
+          "image": null,
+          "url": "https://myparts.terex.com/fabricated-components/category/bracket/product/69061522"
+        },
+        {
+          "sku": "65339386TU",
+          "title": "LIGHT HOUSING HORIZONAL STAINLESS STEEL",
+          "image": null,
+          "url": "https://myparts.terex.com/fabricated-components/category/light-housing-horizonal-stainless-steel/product/30409202"
+        },
+        {
+          "sku": "71451TU",
+          "title": "HOSE BRACKET",
+          "image": null,
+          "url": "https://myparts.terex.com/fabricated-components/category/hose-bracket/product/30417273"
+        },
+        {
+          "sku": "74015TU",
+          "title": "STOP",
+          "image": null,
+          "url": "https://myparts.terex.com/fabricated-components/category/stop/product/30414156"
+        },
+        {
+          "sku": "76264TU",
+          "title": "STOP .50X1.50",
+          "image": null,
+          "url": "https://myparts.terex.com/fabricated-components/category/stop-50x150/product/30417075"
+        },
+        {
+          "sku": "88952TU",
+          "title": "PLATE RECESSED STEEL",
+          "image": null,
+          "url": "https://myparts.terex.com/fabricated-components/category/plate-recessed-steel/product/30420828"
+        }
+      ]
+    },
+    {
+      "name": "Filters & Fluids",
+      "slug": "terex-utilities-filters-fluids",
+      "url": "https://myparts.terex.com/filters-fluids/category/terex-utilities-filters-fluids",
+      "productCount": 20,
+      "icon": "🧰",
+      "subcategories": [],
+      "products": [
+        {
+          "sku": "65325153TU",
+          "title": "FILTER,FUEL",
+          "image": null,
+          "url": "https://myparts.terex.com/filters-fluids/category/filterfuel/product/51074087"
+        },
+        {
+          "sku": "65332803TU",
+          "title": "GASKET,HYDRAULIC FILTER USE W/",
+          "image": null,
+          "url": "https://myparts.terex.com/filters-fluids/category/gaskethydraulic-filter-use-w-/product/51079314"
+        },
+        {
+          "sku": "65351701TU",
+          "title": "FILTER,OIL",
+          "image": null,
+          "url": "https://myparts.terex.com/filters-fluids/category/filteroil/product/51093115"
+        },
+        {
+          "sku": "J000220DFS",
+          "title": "CLAMP GUIL",
+          "image": null,
+          "url": "https://myparts.terex.com/filters-fluids/category/clamp-guil/product/61085073"
+        },
+        {
+          "sku": "P017858DFS",
+          "title": "WING NUT",
+          "image": null,
+          "url": "https://myparts.terex.com/filters-fluids/category/wing-nut/product/56692530"
+        },
+        {
+          "sku": "P100091DFS",
+          "title": "CAP",
+          "image": null,
+          "url": "https://myparts.terex.com/filters-fluids/category/cap/product/56692549"
+        },
+        {
+          "sku": "P160125DFS",
+          "title": "O-RING, BYPASS VALVE SEAL",
+          "image": null,
+          "url": "https://myparts.terex.com/filters-fluids/category/o-ring-bypass-valve-seal/product/56694007"
+        },
+        {
+          "sku": "P162005DFS",
+          "title": "O-RING, HYDRAULIC",
+          "image": null,
+          "url": "https://myparts.terex.com/filters-fluids/category/o-ring-hydraulic/product/56694044"
+        },
+        {
+          "sku": "P170894DFS",
+          "title": "GASKET, HYDRAULIC",
+          "image": null,
+          "url": "https://myparts.terex.com/filters-fluids/category/gasket-hydraulic/product/56694363"
+        },
+        {
+          "sku": "P173382DFS",
+          "title": "O-RING, HYDRAULIC",
+          "image": null,
+          "url": "https://myparts.terex.com/filters-fluids/category/o-ring-hydraulic/product/56694626"
+        },
+        {
+          "sku": "P502135DFS",
+          "title": "FUEL FILTER, CARTRIDGE",
+          "image": null,
+          "url": "https://myparts.terex.com/filters-fluids/category/fuel-filter-cartridge/product/56694993"
+        },
+        {
+          "sku": "P562460DFS",
+          "title": "NUT, HYDRAULIC",
+          "image": null,
+          "url": "https://myparts.terex.com/filters-fluids/category/nut-hydraulic/product/56696805"
+        },
+        {
+          "sku": "P563335DFS",
+          "title": "GASKET, HYDRAULIC",
+          "image": null,
+          "url": "https://myparts.terex.com/filters-fluids/category/gasket-hydraulic/product/56697100"
+        },
+        {
+          "sku": "P563955DFS",
+          "title": "SEAL",
+          "image": null,
+          "url": "https://myparts.terex.com/filters-fluids/category/seal/product/56697147"
+        },
+        {
+          "sku": "P563956DFS",
+          "title": "SEAL",
+          "image": null,
+          "url": "https://myparts.terex.com/filters-fluids/category/seal/product/56697148"
+        },
+        {
+          "sku": "P567861DFS",
+          "title": "TEST SAMPLE BOTTLES",
+          "image": null,
+          "url": "https://myparts.terex.com/filters-fluids/category/test-sample-bottles/product/56697689"
+        },
+        {
+          "sku": "P567865DFS",
+          "title": "TEST ANALYSIS CARDS; PACK OF 1 (ONE)",
+          "image": null,
+          "url": "https://myparts.terex.com/filters-fluids/category/test-analysis-cards-pack-of-1-one/product/56697692"
+        },
+        {
+          "sku": "T20144TU",
+          "title": "O RING COVER FILTER FUNK",
+          "image": null,
+          "url": "https://myparts.terex.com/filters-fluids/category/o-ring-cover-filter-funk/product/30351244"
+        },
+        {
+          "sku": "T30945TU",
+          "title": "O RING FILTER ROSAEN 2361",
+          "image": null,
+          "url": "https://myparts.terex.com/filters-fluids/category/o-ring-filter-rosaen-2361/product/51085426"
+        },
+        {
+          "sku": "T42391TU",
+          "title": "O RING CHARGE FILTER AND",
+          "image": null,
+          "url": "https://myparts.terex.com/filters-fluids/category/o-ring-charge-filter-and/product/51088042"
+        }
+      ]
+    },
+    {
+      "name": "Hardware",
+      "slug": "terex-utilities-hardware",
+      "url": "https://myparts.terex.com/hardware/category/terex-utilities-hardware",
+      "productCount": 20,
+      "icon": "🔩",
+      "subcategories": [],
+      "products": [
+        {
+          "sku": "10193TU",
+          "title": "O RING",
+          "image": null,
+          "url": "https://myparts.terex.com/hardware/category/o-ring/product/30364513"
+        },
+        {
+          "sku": "10357TU",
+          "title": "WASHER,LOCK",
+          "image": null,
+          "url": "https://myparts.terex.com/hardware/category/washerlock/product/30364992"
+        },
+        {
+          "sku": "10493TU",
+          "title": "HBOLT 0.25 - 20 X 0.50 X 0.50 GR5 ZP",
+          "image": null,
+          "url": "https://myparts.terex.com/hardware/category/hbolt-025-20-x-050-x-050-gr5-zp/product/30364776"
+        },
+        {
+          "sku": "10553TU",
+          "title": "REGULAR LW 0.25 ZP",
+          "image": null,
+          "url": "https://myparts.terex.com/hardware/category/regular-lw-025-zp/product/30366037"
+        },
+        {
+          "sku": "33108TU",
+          "title": "WASHER FLT 10 CUT",
+          "image": null,
+          "url": "https://myparts.terex.com/hardware/category/washer-flt-10-cut/product/30368255"
+        },
+        {
+          "sku": "350723TU",
+          "title": "6 FLAT WASHER",
+          "image": null,
+          "url": "https://myparts.terex.com/hardware/category/6-flat-washer/product/53529811"
+        },
+        {
+          "sku": "36666TU",
+          "title": "SL-RHMS #10-32X.50 X.50 ZP",
+          "image": null,
+          "url": "https://myparts.terex.com/hardware/category/sl-rhms-10-32x50-x50-zp/product/30369933"
+        },
+        {
+          "sku": "408080TU",
+          "title": "RETAINING CLIP",
+          "image": null,
+          "url": "https://myparts.terex.com/hardware/category/retaining-clip/product/30373935"
+        },
+        {
+          "sku": "421106TU",
+          "title": "SL-RHMS #10-24X.75 X.75 ZP",
+          "image": null,
+          "url": "https://myparts.terex.com/hardware/category/sl-rhms-10-24x75-x75-zp/product/30375789"
+        },
+        {
+          "sku": "46902TU",
+          "title": "10-32 X 1 1/4 SRHMS",
+          "image": null,
+          "url": "https://myparts.terex.com/hardware/category/10-32-x-1-1-4-srhms/product/30388620"
+        },
+        {
+          "sku": "58985TU",
+          "title": "8-32 NC X 5/8 SL STL RHMS",
+          "image": null,
+          "url": "https://myparts.terex.com/hardware/category/8-32-nc-x-5-8-sl-stl-rhms/product/30395909"
+        },
+        {
+          "sku": "633217TU",
+          "title": "SCREW BHSCS 1/4-20NC X .50 SS",
+          "image": null,
+          "url": "https://myparts.terex.com/hardware/category/screw-bhscs-1-4-20nc-x-50-ss/product/69377295"
+        },
+        {
+          "sku": "65306211TU",
+          "title": "CR-PHMS #8-32X1 X1 ZP",
+          "image": null,
+          "url": "https://myparts.terex.com/hardware/category/cr-phms-8-32x1-x1-zp/product/69248725"
+        },
+        {
+          "sku": "65367518TU",
+          "title": "BOLT(DEWEZE)",
+          "image": null,
+          "url": "https://myparts.terex.com/hardware/category/boltdeweze/product/51104563"
+        },
+        {
+          "sku": "65367798TU",
+          "title": "SET SCREW,SHCS,4-40X.25 LONG/93042",
+          "image": null,
+          "url": "https://myparts.terex.com/hardware/category/set-screwshcs4-40x25-long-93042/product/51105776"
+        },
+        {
+          "sku": "65379450TU",
+          "title": "PMS #8-32X3/8 SS GR18-8 FILLISTER HEAD 4/25/18 BC",
+          "image": null,
+          "url": "https://myparts.terex.com/hardware/category/pms-8-32x3-8-ss-gr18-8-fillister-head-4-25-18-bc/product/60264050"
+        },
+        {
+          "sku": "71040TU",
+          "title": "HOLE PLUG .50 DIA PLASTIC",
+          "image": null,
+          "url": "https://myparts.terex.com/hardware/category/hole-plug-50-dia-plastic/product/30413420"
+        },
+        {
+          "sku": "SS10614TU",
+          "title": "WSHR FLT 1/4 STD STAINLESS STEEL",
+          "image": null,
+          "url": "https://myparts.terex.com/hardware/category/wshr-flt-1-4-std-stainless-steel/product/69388920"
+        },
+        {
+          "sku": "SS11258TU",
+          "title": "1/4-20UNC X .75 HHCS GR5 SS",
+          "image": null,
+          "url": "https://myparts.terex.com/hardware/category/1-4-20unc-x-75-hhcs-gr5-ss/product/69388915"
+        },
+        {
+          "sku": "T42627TU",
+          "title": "(BOM)WASHER FLAT(RB-10839) 0.500 TYPE A -STD",
+          "image": null,
+          "url": "https://myparts.terex.com/hardware/category/bomwasher-flatrb-10839-0500-type-a-std/product/30354487"
+        }
+      ]
+    },
+    {
+      "name": "Hoses & Tubes",
+      "slug": "terex-utilities-hoses-tubes",
+      "url": "https://myparts.terex.com/hoses-tubes/category/terex-utilities-hoses-tubes",
+      "productCount": 20,
+      "icon": "🔗",
+      "subcategories": [],
+      "products": [
+        {
+          "sku": "10617TU",
+          "title": ".125-27 NPT STR LUBE FTG",
+          "image": null,
+          "url": "https://myparts.terex.com/hoses-tubes/category/125-27-npt-str-lube-ftg/product/30365250"
+        },
+        {
+          "sku": "11837TU",
+          "title": "FITTING 06MB",
+          "image": null,
+          "url": "https://myparts.terex.com/hoses-tubes/category/fitting-06mb/product/30365324"
+        },
+        {
+          "sku": "12093TU",
+          "title": "FITTING 04MP",
+          "image": null,
+          "url": "https://myparts.terex.com/hoses-tubes/category/fitting-04mp/product/30365320"
+        },
+        {
+          "sku": "12293TU",
+          "title": "FITTING 10FJ-TNUT",
+          "image": null,
+          "url": "https://myparts.terex.com/hoses-tubes/category/fitting-10fj-tnut/product/30364387"
+        },
+        {
+          "sku": "12294TU",
+          "title": "5/8 TUBE SLEEVE",
+          "image": null,
+          "url": "https://myparts.terex.com/hoses-tubes/category/5-8-tube-sleeve/product/30364389"
+        },
+        {
+          "sku": "15885TU",
+          "title": "FITTING 08FJ TUBE NUT",
+          "image": null,
+          "url": "https://myparts.terex.com/hoses-tubes/category/fitting-08fj-tube-nut/product/30364868"
+        },
+        {
+          "sku": "15924TU",
+          "title": "FITTING 06FJ-TNUT",
+          "image": null,
+          "url": "https://myparts.terex.com/hoses-tubes/category/fitting-06fj-tnut/product/30364486"
+        },
+        {
+          "sku": "15942TU",
+          "title": "TUBE SLEEVE 1/4",
+          "image": null,
+          "url": "https://myparts.terex.com/hoses-tubes/category/tube-sleeve-1-4/product/30363970"
+        },
+        {
+          "sku": "19340TU",
+          "title": "FITTING 04MB",
+          "image": null,
+          "url": "https://myparts.terex.com/hoses-tubes/category/fitting-04mb/product/30353428"
+        },
+        {
+          "sku": "29661TU",
+          "title": "FITTING GREASE .25-28NF STRAIGHT",
+          "image": null,
+          "url": "https://myparts.terex.com/hoses-tubes/category/fitting-grease-25-28nf-straight/product/30370413"
+        },
+        {
+          "sku": "60638TU",
+          "title": "CAPLUG 1/8NPT",
+          "image": null,
+          "url": "https://myparts.terex.com/hoses-tubes/category/caplug-1-8npt/product/30398561"
+        },
+        {
+          "sku": "65332262TU",
+          "title": "FITTING,PLUG 6MJIC",
+          "image": null,
+          "url": "https://myparts.terex.com/hoses-tubes/category/fittingplug-6mjic/product/51079892"
+        },
+        {
+          "sku": "74532TU",
+          "title": "LUBE FITTING",
+          "image": null,
+          "url": "https://myparts.terex.com/hoses-tubes/category/lube-fitting/product/30414762"
+        },
+        {
+          "sku": "88474TU",
+          "title": "CLAMP HOSE RUBBERIZED .63",
+          "image": null,
+          "url": "https://myparts.terex.com/hoses-tubes/category/clamp-hose-rubberized-63/product/30421802"
+        },
+        {
+          "sku": "88821TU",
+          "title": "CLAMP INSULATED TUBING .38",
+          "image": null,
+          "url": "https://myparts.terex.com/hoses-tubes/category/clamp-insulated-tubing-38/product/68473213"
+        },
+        {
+          "sku": "88933TU",
+          "title": "CLAMP TUBE INSULATED .88 ID",
+          "image": null,
+          "url": "https://myparts.terex.com/hoses-tubes/category/clamp-tube-insulated-88-id/product/30419877"
+        },
+        {
+          "sku": "90614TU",
+          "title": "FITTING 06MB",
+          "image": null,
+          "url": "https://myparts.terex.com/hoses-tubes/category/fitting-06mb/product/30419910"
+        },
+        {
+          "sku": "H14230TU",
+          "title": "TUBING 5/32X3/32 1C-156-01 500 FT SPOOL",
+          "image": null,
+          "url": "https://myparts.terex.com/hoses-tubes/category/tubing-5-32x3-32-1c-156-01-500-ft-spool/product/30425654"
+        },
+        {
+          "sku": "H15777TU",
+          "title": "TUBING NYLAFLOW 1/4",
+          "image": null,
+          "url": "https://myparts.terex.com/hoses-tubes/category/tubing-nylaflow-1-4/product/30423664"
+        },
+        {
+          "sku": "H26067TU",
+          "title": "TUBING TEMFLEX (5/16)",
+          "image": null,
+          "url": "https://myparts.terex.com/hoses-tubes/category/tubing-temflex-5-16/product/30423177"
+        }
+      ]
+    },
+    {
+      "name": "Hydraulics",
+      "slug": "terex-utilities-hydraulics",
+      "url": "https://myparts.terex.com/hydraulics/category/terex-utilities-hydraulics",
+      "productCount": 20,
+      "icon": "💧",
+      "subcategories": [],
+      "products": [
+        {
+          "sku": "12315TU",
+          "title": "WIPER",
+          "image": null,
+          "url": "https://myparts.terex.com/hydraulics/category/wiper/product/30364602"
+        },
+        {
+          "sku": "405058TU",
+          "title": "BYPASS PLUG",
+          "image": null,
+          "url": "https://myparts.terex.com/hydraulics/category/bypass-plug/product/30366518"
+        },
+        {
+          "sku": "418842TU",
+          "title": "PISTON WEAR RING D/L",
+          "image": null,
+          "url": "https://myparts.terex.com/hydraulics/category/piston-wear-ring-d-l/product/30375406"
+        },
+        {
+          "sku": "432286TU",
+          "title": "SPACER",
+          "image": null,
+          "url": "https://myparts.terex.com/hydraulics/category/spacer/product/30379813"
+        },
+        {
+          "sku": "447963TU",
+          "title": "OIL EYE",
+          "image": null,
+          "url": "https://myparts.terex.com/hydraulics/category/oil-eye/product/30386483"
+        },
+        {
+          "sku": "454365TU",
+          "title": "MOUNTING FOOT V10 VALVE",
+          "image": null,
+          "url": "https://myparts.terex.com/hydraulics/category/mounting-foot-v10-valve/product/30383323"
+        },
+        {
+          "sku": "463678TU",
+          "title": "THREADED ROD",
+          "image": null,
+          "url": "https://myparts.terex.com/hydraulics/category/threaded-rod/product/30387965"
+        },
+        {
+          "sku": "46720TU",
+          "title": "CHECK VALVE",
+          "image": null,
+          "url": "https://myparts.terex.com/hydraulics/category/check-valve/product/30387048"
+        },
+        {
+          "sku": "472143TU",
+          "title": "CHECK BALL (1/4 IN.)",
+          "image": null,
+          "url": "https://myparts.terex.com/hydraulics/category/check-ball-1-4-in/product/30388373"
+        },
+        {
+          "sku": "487436TU",
+          "title": "LEVER W/NON-DECAL KNOB HYDRO D3M",
+          "image": null,
+          "url": "https://myparts.terex.com/hydraulics/category/lever-w-non-decal-knob-hydro-d3m/product/30390809"
+        },
+        {
+          "sku": "49256TU",
+          "title": "BREATHER VALVE",
+          "image": null,
+          "url": "https://myparts.terex.com/hydraulics/category/breather-valve/product/30396325"
+        },
+        {
+          "sku": "612367TU",
+          "title": "LEVER BENT W/NON-DECAL KNOB HYDRO D3M",
+          "image": null,
+          "url": "https://myparts.terex.com/hydraulics/category/lever-bent-w-non-decal-knob-hydro-d3m/product/33036752"
+        },
+        {
+          "sku": "612615TU",
+          "title": "MOUNT VALVE ACTUATOR",
+          "image": null,
+          "url": "https://myparts.terex.com/hydraulics/category/mount-valve-actuator/product/46366481"
+        },
+        {
+          "sku": "614605TU",
+          "title": "PLUG",
+          "image": null,
+          "url": "https://myparts.terex.com/hydraulics/category/plug/product/69979923"
+        },
+        {
+          "sku": "614616TU",
+          "title": "SLEEVE",
+          "image": null,
+          "url": "https://myparts.terex.com/hydraulics/category/sleeve/product/36356939"
+        },
+        {
+          "sku": "65352264TU",
+          "title": "DUST CAP",
+          "image": null,
+          "url": "https://myparts.terex.com/hydraulics/category/dust-cap/product/46299523"
+        },
+        {
+          "sku": "78011TU",
+          "title": "ADJUST CABLE SOCKET",
+          "image": null,
+          "url": "https://myparts.terex.com/hydraulics/category/adjust-cable-socket/product/30413577"
+        },
+        {
+          "sku": "H11650TU",
+          "title": "SOCKET",
+          "image": null,
+          "url": "https://myparts.terex.com/hydraulics/category/socket/product/30427232"
+        },
+        {
+          "sku": "H15925TU",
+          "title": "GUIDE SPRING (MRP DIR LINK) D/L",
+          "image": null,
+          "url": "https://myparts.terex.com/hydraulics/category/guide-spring-mrp-dir-link-d-l/product/30423677"
+        },
+        {
+          "sku": "H18741TU",
+          "title": "BACKUP RING NF-110 FOR 18627 D/L",
+          "image": null,
+          "url": "https://myparts.terex.com/hydraulics/category/backup-ring-nf-110-for-18627-d-l/product/30423735"
+        }
+      ]
+    },
+    {
+      "name": "Jacks, Outriggers & Ground Protection",
+      "slug": "terex-utilities-jacks-outriggers-ground-protection",
+      "url": "https://myparts.terex.com/jacks-outriggers-ground-protection/category/terex-utilities-jacks-outriggers-ground-protection",
+      "productCount": 20,
+      "icon": "🦾",
+      "subcategories": [],
+      "products": [
+        {
+          "sku": "65307674TU",
+          "title": "OR PAD PLASTIC 18 X18 X1 TEREX LOGO",
+          "image": null,
+          "url": "https://myparts.terex.com/jacks-outriggers-ground-protection/category/or-pad-plastic-18-x18-x1-terex-logo/product/30402064"
+        },
+        {
+          "sku": "65332404TU",
+          "title": "OUTRIGGER PAD,E Z HAULER",
+          "image": null,
+          "url": "https://myparts.terex.com/jacks-outriggers-ground-protection/category/outrigger-pade-z-hauler/product/51079134"
+        },
+        {
+          "sku": "65338277TU",
+          "title": "OUTRIGGER PAD 24 X24 X3 UNPAINTED",
+          "image": null,
+          "url": "https://myparts.terex.com/jacks-outriggers-ground-protection/category/outrigger-pad-24-x24-x3-unpainted/product/39267853"
+        },
+        {
+          "sku": "65341596TU",
+          "title": "PAD OUTRIGGER 22X22X2-1/4 BLACK**SOLD BY THE PAIR**",
+          "image": null,
+          "url": "https://myparts.terex.com/jacks-outriggers-ground-protection/category/pad-outrigger-22x22x2-1-4-black-sold-by-the-pair-/product/30408279"
+        },
+        {
+          "sku": "65366300TU",
+          "title": "OUTRIGGER PAD,PLASTIC,24X24X.5",
+          "image": null,
+          "url": "https://myparts.terex.com/jacks-outriggers-ground-protection/category/outrigger-padplastic24x24x5/product/51102192"
+        },
+        {
+          "sku": "65366407TU",
+          "title": "AlturnaMAT Ground Protection - Black (2'x4')",
+          "image": null,
+          "url": "https://myparts.terex.com/jacks-outriggers-ground-protection/category/alturnamat-ground-protection-black-2x4/product/51105972"
+        },
+        {
+          "sku": "65366796TU",
+          "title": "PAD O/R POLY DICA TEREX LOGO 1 X22 X24",
+          "image": null,
+          "url": "https://myparts.terex.com/jacks-outriggers-ground-protection/category/pad-o-r-poly-dica-terex-logo-1-x22-x24/product/33978587"
+        },
+        {
+          "sku": "65374398TU",
+          "title": "OUTRIGGER GUARD",
+          "image": null,
+          "url": "https://myparts.terex.com/jacks-outriggers-ground-protection/category/outrigger-guard/product/69391538"
+        },
+        {
+          "sku": "65375261TU",
+          "title": "OR PAD HI-VIZ YELLOW 18 X18 X1 TEREX LO",
+          "image": null,
+          "url": "https://myparts.terex.com/jacks-outriggers-ground-protection/category/or-pad-hi-viz-yellow-18-x18-x1-terex-lo/product/39193810"
+        },
+        {
+          "sku": "65380763TU",
+          "title": "OUTRIGGER PAD,ORANGE/TEREX LOGO 24X24X1",
+          "image": null,
+          "url": "https://myparts.terex.com/jacks-outriggers-ground-protection/category/outrigger-padorange-terex-logo-24x24x1/product/51106692"
+        },
+        {
+          "sku": "65384387TU",
+          "title": "OUTRIGGER PAD 24 X 24 WOOD",
+          "image": null,
+          "url": "https://myparts.terex.com/jacks-outriggers-ground-protection/category/outrigger-pad-24-x-24-wood/product/56608918"
+        },
+        {
+          "sku": "65385680TU",
+          "title": "AlturnaMAT Ground Protection - Clear (2'x6')",
+          "image": null,
+          "url": "https://myparts.terex.com/jacks-outriggers-ground-protection/category/alturnamat-ground-protection-clear-2x6/product/59256973"
+        },
+        {
+          "sku": "65385688TU",
+          "title": "TrakMat Ground Protection - Black (22x96)",
+          "image": null,
+          "url": "https://myparts.terex.com/jacks-outriggers-ground-protection/category/trakmat-ground-protection-black-22x96/product/59256981"
+        },
+        {
+          "sku": "65385691TU",
+          "title": "VersaMAT Ground Protection - Black (2'x4')",
+          "image": null,
+          "url": "https://myparts.terex.com/jacks-outriggers-ground-protection/category/versamat-ground-protection-black-2x4/product/59256984"
+        },
+        {
+          "sku": "65386919TU",
+          "title": "OUTRIGGER PAD,COPE PLASTICS 24 X 24 X 1",
+          "image": null,
+          "url": "https://myparts.terex.com/jacks-outriggers-ground-protection/category/outrigger-padcope-plastics-24-x-24-x-1/product/60527038"
+        },
+        {
+          "sku": "88363TU",
+          "title": "OUTRIGGER PAD PLYWOOD LAMINATED 24 X2",
+          "image": null,
+          "url": "https://myparts.terex.com/jacks-outriggers-ground-protection/category/outrigger-pad-plywood-laminated-24-x2/product/30420803"
+        },
+        {
+          "sku": "89798TU",
+          "title": "OR PAD WOOD 18 X18 X2.25",
+          "image": null,
+          "url": "https://myparts.terex.com/jacks-outriggers-ground-protection/category/or-pad-wood-18-x18-x225/product/30419902"
+        },
+        {
+          "sku": "93456TU",
+          "title": "OR PAD PLASTIC 24 X24 X1 TEREX LOGO",
+          "image": null,
+          "url": "https://myparts.terex.com/jacks-outriggers-ground-protection/category/or-pad-plastic-24-x24-x1-terex-logo/product/30418713"
+        },
+        {
+          "sku": "H22766TU",
+          "title": "DETENT",
+          "image": null,
+          "url": "https://myparts.terex.com/jacks-outriggers-ground-protection/category/detent/product/30425015"
+        },
+        {
+          "sku": "Q877TU",
+          "title": "18 X 18 OUTRIGGER PAD TO BE S/L",
+          "image": null,
+          "url": "https://myparts.terex.com/jacks-outriggers-ground-protection/category/18-x-18-outrigger-pad-to-be-s-l/product/51083301"
+        }
+      ]
+    },
+    {
+      "name": "Power Train",
+      "slug": "terex-utilities-power-train",
+      "url": "https://myparts.terex.com/power-train/category/terex-utilities-power-train",
+      "productCount": 20,
+      "icon": "⚙️",
+      "subcategories": [],
+      "products": [
+        {
+          "sku": "13389TU",
+          "title": "YOKE END",
+          "image": null,
+          "url": "https://myparts.terex.com/power-train/category/yoke-end/product/30363396"
+        },
+        {
+          "sku": "408427TU",
+          "title": "SHANK-LOCK",
+          "image": null,
+          "url": "https://myparts.terex.com/power-train/category/shank-lock/product/30372334"
+        },
+        {
+          "sku": "412506TU",
+          "title": "SHAFT",
+          "image": null,
+          "url": "https://myparts.terex.com/power-train/category/shaft/product/30375304"
+        },
+        {
+          "sku": "417114TU",
+          "title": "PLANET WASHER",
+          "image": null,
+          "url": "https://myparts.terex.com/power-train/category/planet-washer/product/30371223"
+        },
+        {
+          "sku": "417803TU",
+          "title": "BREATHER",
+          "image": null,
+          "url": "https://myparts.terex.com/power-train/category/breather/product/30371242"
+        },
+        {
+          "sku": "466287TU",
+          "title": "SHAFT ENABLING V10 MOD",
+          "image": null,
+          "url": "https://myparts.terex.com/power-train/category/shaft-enabling-v10-mod/product/30387702"
+        },
+        {
+          "sku": "473026TU",
+          "title": "SHEAVE PIN TUBE",
+          "image": null,
+          "url": "https://myparts.terex.com/power-train/category/sheave-pin-tube/product/30391564"
+        },
+        {
+          "sku": "496844TU",
+          "title": "SPACER GEARBOX",
+          "image": null,
+          "url": "https://myparts.terex.com/power-train/category/spacer-gearbox/product/30394434"
+        },
+        {
+          "sku": "55369TU",
+          "title": "THRUST BRG",
+          "image": null,
+          "url": "https://myparts.terex.com/power-train/category/thrust-brg/product/30394923"
+        },
+        {
+          "sku": "65320199TU",
+          "title": "GASKET,PTO,8 BOLT,.0020",
+          "image": null,
+          "url": "https://myparts.terex.com/power-train/category/gasketpto8-bolt0020/product/30404962"
+        },
+        {
+          "sku": "65333583TU",
+          "title": "FITTING, ORIFICE, ELBOW, MUNCIE",
+          "image": null,
+          "url": "https://myparts.terex.com/power-train/category/fitting-orifice-elbow-muncie/product/51079779"
+        },
+        {
+          "sku": "65333957TU",
+          "title": "CABLE-PTO",
+          "image": null,
+          "url": "https://myparts.terex.com/power-train/category/cable-pto/product/30406789"
+        },
+        {
+          "sku": "65363405TU",
+          "title": "TEE,PTO",
+          "image": null,
+          "url": "https://myparts.terex.com/power-train/category/teepto/product/51098292"
+        },
+        {
+          "sku": "65363571TU",
+          "title": "ADAPTER,PTO PLATE",
+          "image": null,
+          "url": "https://myparts.terex.com/power-train/category/adapterpto-plate/product/51102780"
+        },
+        {
+          "sku": "65364026TU",
+          "title": "ADAPTER,PTO",
+          "image": null,
+          "url": "https://myparts.terex.com/power-train/category/adapterpto/product/51103262"
+        },
+        {
+          "sku": "65368190TU",
+          "title": "PTO,MUNCIE,CS6S SERIES",
+          "image": null,
+          "url": "https://myparts.terex.com/power-train/category/ptomunciecs6s-series/product/51103940"
+        },
+        {
+          "sku": "65384863TU",
+          "title": "ADAPTOR 90",
+          "image": null,
+          "url": "https://myparts.terex.com/power-train/category/adaptor-90/product/57313921"
+        },
+        {
+          "sku": "72827TU",
+          "title": "SHAFT",
+          "image": null,
+          "url": "https://myparts.terex.com/power-train/category/shaft/product/30416674"
+        },
+        {
+          "sku": "86285TU",
+          "title": "U-JOINT",
+          "image": null,
+          "url": "https://myparts.terex.com/power-train/category/u-joint/product/30419187"
+        },
+        {
+          "sku": "94990TU",
+          "title": "CS20 SERIES PTO GASKET",
+          "image": null,
+          "url": "https://myparts.terex.com/power-train/category/cs20-series-pto-gasket/product/51110150"
+        }
+      ]
+    },
+    {
+      "name": "Preventative Maintenance Parts",
+      "slug": "terex-utilities-preventative-maintenance-parts",
+      "url": "https://myparts.terex.com/preventative-maintenance-parts/category/terex-utilities-preventative-maintenance-parts",
+      "productCount": 20,
+      "icon": "🛠️",
+      "subcategories": [],
+      "products": [
+        {
+          "sku": "16880TU",
+          "title": "THRUST BEARING/WASHER",
+          "image": null,
+          "url": "https://myparts.terex.com/preventative-maintenance-parts/category/thrust-bearing-washer/product/30352533"
+        },
+        {
+          "sku": "30166TU",
+          "title": "THRUST BEARING",
+          "image": null,
+          "url": "https://myparts.terex.com/preventative-maintenance-parts/category/thrust-bearing/product/30371077"
+        },
+        {
+          "sku": "403059TU",
+          "title": "SLEEVE BEARING",
+          "image": null,
+          "url": "https://myparts.terex.com/preventative-maintenance-parts/category/sleeve-bearing/product/30370968"
+        },
+        {
+          "sku": "41038TU",
+          "title": "THRUST BEARING",
+          "image": null,
+          "url": "https://myparts.terex.com/preventative-maintenance-parts/category/thrust-bearing/product/30374959"
+        },
+        {
+          "sku": "420706TU",
+          "title": "RUBBER PAD",
+          "image": null,
+          "url": "https://myparts.terex.com/preventative-maintenance-parts/category/rubber-pad/product/30372238"
+        },
+        {
+          "sku": "435924TU",
+          "title": "ROLLER",
+          "image": null,
+          "url": "https://myparts.terex.com/preventative-maintenance-parts/category/roller/product/30381168"
+        },
+        {
+          "sku": "440874TU",
+          "title": "BUSHING OILITE SLEEVE",
+          "image": null,
+          "url": "https://myparts.terex.com/preventative-maintenance-parts/category/bushing-oilite-sleeve/product/30382851"
+        },
+        {
+          "sku": "493980TU",
+          "title": "(BOM)MACH BUSHING (RB-30166)",
+          "image": null,
+          "url": "https://myparts.terex.com/preventative-maintenance-parts/category/bommach-bushing-rb-30166/product/30391845"
+        },
+        {
+          "sku": "56395TU",
+          "title": "BUSHING",
+          "image": null,
+          "url": "https://myparts.terex.com/preventative-maintenance-parts/category/bushing/product/30392672"
+        },
+        {
+          "sku": "58129TU",
+          "title": "BUSHING",
+          "image": null,
+          "url": "https://myparts.terex.com/preventative-maintenance-parts/category/bushing/product/30394642"
+        },
+        {
+          "sku": "79663TU",
+          "title": "THRUST BEARING",
+          "image": null,
+          "url": "https://myparts.terex.com/preventative-maintenance-parts/category/thrust-bearing/product/30417454"
+        },
+        {
+          "sku": "83723TU",
+          "title": "MACHINE BUSHING",
+          "image": null,
+          "url": "https://myparts.terex.com/preventative-maintenance-parts/category/machine-bushing/product/30419475"
+        },
+        {
+          "sku": "83725TU",
+          "title": "MACHINERY BUSHING 1.75 ID 2.50 OD 18 GA HARDNESS CERTIFICATION REQ",
+          "image": null,
+          "url": "https://myparts.terex.com/preventative-maintenance-parts/category/machinery-bushing-175-id-250-od-18-ga-hardness-certification-req/product/30420421"
+        },
+        {
+          "sku": "84995TU",
+          "title": "MACHINERY BUSHING",
+          "image": null,
+          "url": "https://myparts.terex.com/preventative-maintenance-parts/category/machinery-bushing/product/30418204"
+        },
+        {
+          "sku": "H14039TU",
+          "title": "PACKING U (5715-70) AN6226-24 D/L",
+          "image": null,
+          "url": "https://myparts.terex.com/preventative-maintenance-parts/category/packing-u-5715-70-an6226-24-d-l/product/30425320"
+        },
+        {
+          "sku": "H23019TU",
+          "title": "CLAMP 2-HALVES LNG4190/190PP",
+          "image": null,
+          "url": "https://myparts.terex.com/preventative-maintenance-parts/category/clamp-2-halves-lng4190-190pp/product/30425986"
+        },
+        {
+          "sku": "H31862TU",
+          "title": "CABLE COAXIAL #8259 58 A/U",
+          "image": null,
+          "url": "https://myparts.terex.com/preventative-maintenance-parts/category/cable-coaxial-8259-58-a-u/product/30426116"
+        },
+        {
+          "sku": "IMT72063034",
+          "title": "BUSHING",
+          "image": null,
+          "url": "https://myparts.terex.com/preventative-maintenance-parts/category/bushing/product/51062207"
+        },
+        {
+          "sku": "P910014TU",
+          "title": "CABLE 22/2 GREY VINYL SHIELDED INTECOM",
+          "image": null,
+          "url": "https://myparts.terex.com/preventative-maintenance-parts/category/cable-22-2-grey-vinyl-shielded-intecom/product/30429472"
+        },
+        {
+          "sku": "T421176TU",
+          "title": "BUSHING STEEL 1.50ID X2.25 OD X .048 650",
+          "image": null,
+          "url": "https://myparts.terex.com/preventative-maintenance-parts/category/bushing-steel-150id-x225-od-x-048-650/product/30373569"
+        }
+      ]
+    },
+    {
+      "name": "Ropes, Winches & Hooks",
+      "slug": "terex-utilities-ropes-winches-hooks",
+      "url": "https://myparts.terex.com/ropes-winches-hooks/category/terex-utilities-ropes-winches-hooks",
+      "productCount": 20,
+      "icon": "⚓",
+      "subcategories": [],
+      "products": [
+        {
+          "sku": "400150TU",
+          "title": "KEY RD END (SA H33922)",
+          "image": null,
+          "url": "https://myparts.terex.com/ropes-winches-hooks/category/key-rd-end-sa-h33922/product/30368374"
+        },
+        {
+          "sku": "419600TU",
+          "title": "PROTECTOR",
+          "image": null,
+          "url": "https://myparts.terex.com/ropes-winches-hooks/category/protector/product/30375123"
+        },
+        {
+          "sku": "427823TU",
+          "title": "BACKUP RING",
+          "image": null,
+          "url": "https://myparts.terex.com/ropes-winches-hooks/category/backup-ring/product/30381041"
+        },
+        {
+          "sku": "478521TU",
+          "title": "PRESSURE PLATE 10-5-05 DA R/P",
+          "image": null,
+          "url": "https://myparts.terex.com/ropes-winches-hooks/category/pressure-plate-10-5-05-da-r-p/product/30390342"
+        },
+        {
+          "sku": "483289TU",
+          "title": "LANYARD HOOK",
+          "image": null,
+          "url": "https://myparts.terex.com/ropes-winches-hooks/category/lanyard-hook/product/30387884"
+        },
+        {
+          "sku": "60100TU",
+          "title": "ROPE GUIDE",
+          "image": null,
+          "url": "https://myparts.terex.com/ropes-winches-hooks/category/rope-guide/product/30400820"
+        },
+        {
+          "sku": "60101TU",
+          "title": "LUG",
+          "image": null,
+          "url": "https://myparts.terex.com/ropes-winches-hooks/category/lug/product/30400822"
+        },
+        {
+          "sku": "62686TU",
+          "title": "AIR VALVE PRESSURE PROTECT",
+          "image": null,
+          "url": "https://myparts.terex.com/ropes-winches-hooks/category/air-valve-pressure-protect/product/30398635"
+        },
+        {
+          "sku": "65322918TU",
+          "title": "SAFTEY LATCH,BP100 PINTLE HOOK",
+          "image": null,
+          "url": "https://myparts.terex.com/ropes-winches-hooks/category/saftey-latchbp100-pintle-hook/product/30404049"
+        },
+        {
+          "sku": "65323686TU",
+          "title": "PLATE STATOR",
+          "image": null,
+          "url": "https://myparts.terex.com/ropes-winches-hooks/category/plate-stator/product/30402826"
+        },
+        {
+          "sku": "65344737TU",
+          "title": "MINI LK HOOK 90DEG W/ROD BUSHING",
+          "image": null,
+          "url": "https://myparts.terex.com/ropes-winches-hooks/category/mini-lk-hook-90deg-w-rod-bushing/product/30409897"
+        },
+        {
+          "sku": "65395221TU",
+          "title": "SPRING PIN,WINCH",
+          "image": null,
+          "url": "https://myparts.terex.com/ropes-winches-hooks/category/spring-pinwinch/product/69676226"
+        },
+        {
+          "sku": "71388TU",
+          "title": "ROPE GUIDE",
+          "image": null,
+          "url": "https://myparts.terex.com/ropes-winches-hooks/category/rope-guide/product/30416943"
+        },
+        {
+          "sku": "73575TU",
+          "title": "FRICTION DISC. - BRADEN",
+          "image": null,
+          "url": "https://myparts.terex.com/ropes-winches-hooks/category/friction-disc-braden/product/30417028"
+        },
+        {
+          "sku": "73589TU",
+          "title": "RELIEF VALVE - BRADEN",
+          "image": null,
+          "url": "https://myparts.terex.com/ropes-winches-hooks/category/relief-valve-braden/product/30412198"
+        },
+        {
+          "sku": "73632TU",
+          "title": "ROPE GUIDE",
+          "image": null,
+          "url": "https://myparts.terex.com/ropes-winches-hooks/category/rope-guide/product/30412213"
+        },
+        {
+          "sku": "BRD27321TU",
+          "title": "DISC",
+          "image": null,
+          "url": "https://myparts.terex.com/ropes-winches-hooks/category/disc/product/51041789"
+        },
+        {
+          "sku": "T17797TU",
+          "title": "CLAMP WIRE ROPE",
+          "image": null,
+          "url": "https://myparts.terex.com/ropes-winches-hooks/category/clamp-wire-rope/product/30350982"
+        },
+        {
+          "sku": "T17801TU",
+          "title": "THIMBLE 7/16 C",
+          "image": null,
+          "url": "https://myparts.terex.com/ropes-winches-hooks/category/thimble-7-16-c/product/30363746"
+        },
+        {
+          "sku": "T19657TU",
+          "title": "CABLE ROPE WIRE 7/16 X BULK 6 X 37 FIBER CORE",
+          "image": null,
+          "url": "https://myparts.terex.com/ropes-winches-hooks/category/cable-rope-wire-7-16-x-bulk-6-x-37-fiber-core/product/30350298"
+        }
+      ]
+    }
+  ]
+}
