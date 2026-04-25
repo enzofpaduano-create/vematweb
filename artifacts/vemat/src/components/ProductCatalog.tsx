@@ -53,15 +53,20 @@ const SPEC_GROUPS = [
     label: { fr: "Capacité plateforme", en: "Platform Capacity" },
     keys: ["Platform Capacity Unrestricted", "Capacité max. plateforme"],
   },
-  // Construction — machine weight
+  // All — machine weight (Fuchs: "Poids de service sans équipements")
   {
     label: { fr: "Poids machine", en: "Machine Weight" },
-    keys: ["Poids en ordre de marche", "Poids de la machine"],
+    keys: ["Poids de service sans équipements", "Poids en ordre de marche", "Poids de la machine"],
   },
-  // Construction — max reach
+  // All — max reach (Fuchs: "Portée", Construction: "Portée maximum")
   {
     label: { fr: "Portée max.", en: "Max Reach" },
-    keys: ["Portée maximum"],
+    keys: ["Portée", "Portée maximum"],
+  },
+  // Fuchs — engine power
+  {
+    label: { fr: "Puissance moteur", en: "Engine Power" },
+    keys: ["Puissance du moteur UE-niveau V"],
   },
   // Construction loaders — tipping load
   {
@@ -72,17 +77,36 @@ const SPEC_GROUPS = [
 
 function getTopSpecs(slug: string, lang: "fr" | "en"): Array<{ label: string; value: string }> {
   const details = productDetails[slug];
-  if (!details?.specifications) return [];
-  const specs = details.specifications as Record<string, string>;
+  if (!details) return [];
+
   const result: Array<{ label: string; value: string }> = [];
-  for (const group of SPEC_GROUPS) {
-    for (const key of group.keys) {
-      if (specs[key]) {
-        result.push({ label: group.label[lang], value: specs[key] });
-        break;
+
+  if (details.specifications) {
+    const specs = details.specifications;
+    for (const group of SPEC_GROUPS) {
+      if (result.length >= 3) break;
+      for (const key of group.keys) {
+        const raw = specs[key];
+        if (raw) {
+          const value = typeof raw === "string" ? raw : (raw[lang] || raw.fr);
+          result.push({ label: group.label[lang], value });
+          break;
+        }
       }
     }
   }
+
+  // Fallback: fill remaining slots with bilingual features
+  if (result.length < 3 && details.features) {
+    const featureList = Array.isArray(details.features)
+      ? details.features
+      : (details.features[lang] || details.features.fr || []);
+    const needed = 3 - result.length;
+    featureList.slice(0, needed).forEach((f) => {
+      result.push({ label: lang === "fr" ? "Caractéristique" : "Feature", value: f });
+    });
+  }
+
   return result.slice(0, 3);
 }
 
