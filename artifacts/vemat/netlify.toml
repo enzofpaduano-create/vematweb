@@ -1,9 +1,9 @@
 [build]
-  command = "pnpm build"
-  publish = "dist"
+  command = "pnpm --filter @workspace/vemat build"
+  publish = "artifacts/vemat/dist"
 
 [functions]
-  directory = "netlify/functions"
+  directory = "artifacts/vemat/netlify/functions"
 
 [[redirects]]
   from = "/api/chat"
