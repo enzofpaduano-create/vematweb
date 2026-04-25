@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Link } from "wouter";
-import { ArrowRight, Globe, ShieldCheck, HardHat } from "lucide-react";
+import { ArrowRight, Globe, ShieldCheck, HardHat, MapPin } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { useSEO, useScrollTop } from "@/hooks/use-seo";
 import { HeroSection } from "@/components/HeroSection";
 import { CategoryCard } from "@/components/CategoryCard";
@@ -9,10 +10,13 @@ import { BrandStrip } from "@/components/BrandStrip";
 import { CTASection } from "@/components/CTASection";
 import { SectionHeader } from "@/components/SectionHeader";
 import { StatBlock } from "@/components/StatBlock";
+import { OfficesSection } from "@/components/OfficesSection";
 import { categories } from "@/data/categories";
 import { useLang } from "@/i18n/I18nProvider";
+import { Testimonials } from "@/components/Testimonials";
+import { heroSlides } from "@/data/heroSlides";
+import { BlogTicker } from "@/components/BlogTicker";
 
-import heroImg from "@/assets/images/hero-cinematic.png";
 import africanImg from "@/assets/images/african-presence.png";
 
 export default function Home() {
@@ -32,16 +36,20 @@ export default function Home() {
       <HeroSection
         title={t("home.heroTitle")}
         subtitle={t("home.heroSubtitle")}
-        image={heroImg}
+        images={heroSlides}
+        intervalMs={5000}
+        eyebrow={t("home.heroEyebrow")}
         primaryCta={{ label: t("home.heroPrimary"), href: "/grues" }}
         secondaryCta={{ label: t("home.heroSecondary"), href: "/contact" }}
       />
+
+      <BlogTicker />
 
       {/* Stats Section */}
       <section className="py-16 bg-zinc-950 border-t border-zinc-800">
         <div className="container mx-auto px-4 md:px-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <StatBlock value="25+" label={t("home.statCountries")} delay={0} />
+            <StatBlock value="10+" label={t("home.statCountries")} delay={0} />
             <StatBlock value="150+" label={t("home.statProjects")} delay={0.1} />
             <StatBlock value="24/7" label={t("home.statSupport")} delay={0.2} />
             <StatBlock value="5" label={t("home.statBrands")} delay={0.3} />
@@ -74,6 +82,55 @@ export default function Home() {
 
       <BrandStrip />
 
+      <OfficesSection />
+
+      {/* Maps Section */}
+      <section className="py-24 bg-white">
+        <div className="container mx-auto px-4 md:px-6">
+          <SectionHeader
+            title={t("home.mapTitle")}
+            subtitle={t("home.mapSub")}
+            alignment="center"
+          />
+          
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1, ease: "easeOut" }}
+            className="relative h-[500px] md:h-[600px] rounded-[3rem] overflow-hidden shadow-2xl border border-zinc-100 group"
+          >
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3327.098854486264!2d-7.7059007!3d33.4988051!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xda62b8f3182b7b7%3A0x24a8382e0dcf197a!2sVemat!5e0!3m2!1sfr!2ses!4v1776970279331!5m2!1sfr!2ses"
+              width="100%"
+              height="100%"
+              style={{ border: 0, filter: "grayscale(0.2) contrast(1.1)" }}
+              allowFullScreen=""
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="Vemat Location"
+              className="absolute inset-0"
+            ></iframe>
+            
+            <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/20 via-transparent to-transparent pointer-events-none" />
+            
+            <div className="absolute bottom-8 left-1/2 -translate-x-1/2">
+              <motion.a
+                href="https://www.google.es/maps/place/Vemat/@33.4988051,-7.7059007,17z/data=!4m15!1m8!3m7!1s0xda62b88d3d82e8d:0xff07a03e55b31821!2sVEMAT,+Maroc!3b1!8m2!3d33.4988362!4d-7.7034864!16s%2Fg%2F11b8tj4nvh!3m5!1s0xda62b8f3182b7b7:0x24a8382e0dcf197a!8m2!3d33.499145!4d-7.7040357!16s%2Fg%2F11ddwx4mn_?entry=ttu"
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ scale: 1.05, y: -5 }}
+                whileTap={{ scale: 0.95 }}
+                className="inline-flex items-center gap-4 bg-white text-zinc-950 px-10 py-5 rounded-full font-black uppercase tracking-[0.2em] text-xs shadow-2xl hover:bg-accent hover:text-white transition-all duration-300 pointer-events-auto"
+              >
+                <MapPin className="h-4 w-4" />
+                {t("home.mapButton")}
+              </motion.a>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
       {/* Value Props / Services */}
       <section className="py-24 bg-white">
         <div className="container mx-auto px-4 md:px-6">
@@ -103,94 +160,85 @@ export default function Home() {
       </section>
 
       {/* African Presence */}
-      <section className="relative py-32 bg-zinc-950 overflow-hidden">
-        <div className="absolute inset-0 z-0">
+      <section className="relative py-48 bg-zinc-950 overflow-hidden">
+        <motion.div 
+          initial={{ scale: 1.2, opacity: 0 }}
+          whileInView={{ scale: 1, opacity: 0.4 }}
+          transition={{ duration: 2, ease: "easeOut" }}
+          className="absolute inset-0 z-0"
+        >
           <img
             src={africanImg}
             alt=""
-            className="w-full h-full object-cover opacity-30"
+            className="w-full h-full object-cover"
           />
-        </div>
+        </motion.div>
+        <div className="absolute inset-0 bg-gradient-to-r from-zinc-950 via-zinc-950/80 to-transparent z-1" />
+        
         <div className="container relative z-10 mx-auto px-4 md:px-6">
           <div className="max-w-3xl">
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
+              transition={{ duration: 1, ease: "easeOut" }}
             >
-              <h2 className="text-4xl md:text-5xl font-heading font-bold text-white mb-6 leading-tight">
-                {t("home.africaTitle")} <span className="text-accent">{t("home.africaTitleAccent")}</span>.
+              <h2 className="text-3xl md:text-7xl font-heading font-extrabold text-white mb-8 leading-tight tracking-tighter">
+                {t("home.africaTitle")} <span className="text-accent underline decoration-accent/30 underline-offset-8">{t("home.africaTitleAccent")}</span>.
               </h2>
-              <p className="text-xl text-zinc-300 mb-10 leading-relaxed">
+              <p className="text-lg md:text-2xl text-zinc-400 mb-12 leading-relaxed font-medium">
                 {t("home.africaSubtitle")}
               </p>
               <Link href="/a-propos">
-                <button className="bg-white text-zinc-950 font-bold px-8 py-4 uppercase tracking-wide text-sm hover:bg-accent hover:text-white transition-colors">
+                <Button size="lg" className="bg-white text-zinc-950 hover:bg-accent hover:text-white rounded-full font-extrabold px-10 h-16 uppercase tracking-widest transition-all duration-300 hover:scale-105">
                   {t("home.africaCta")}
-                </button>
+                </Button>
               </Link>
             </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Why Vemat */}
-      <section className="py-24 bg-zinc-50">
+      {/* Why Vemat - Refined Grid */}
+      <section className="py-32 bg-white relative">
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-zinc-200 to-transparent" />
         <div className="container mx-auto px-4 md:px-6">
           <SectionHeader title={t("home.whyTitle")} alignment="center" />
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mt-16">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              className="text-center flex flex-col items-center"
-            >
-              <div className="w-20 h-20 bg-zinc-100 rounded-full flex items-center justify-center mb-6 text-accent">
-                <Globe className="h-10 w-10" />
-              </div>
-              <h3 className="text-xl font-heading font-bold mb-4">{t("home.whyNetworkTitle")}</h3>
-              <p className="text-zinc-600">{t("home.whyNetworkText")}</p>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="text-center flex flex-col items-center"
-            >
-              <div className="w-20 h-20 bg-zinc-100 rounded-full flex items-center justify-center mb-6 text-accent">
-                <HardHat className="h-10 w-10" />
-              </div>
-              <h3 className="text-xl font-heading font-bold mb-4">{t("home.whyExpertTitle")}</h3>
-              <p className="text-zinc-600">{t("home.whyExpertText")}</p>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              className="text-center flex flex-col items-center"
-            >
-              <div className="w-20 h-20 bg-zinc-100 rounded-full flex items-center justify-center mb-6 text-accent">
-                <ShieldCheck className="h-10 w-10" />
-              </div>
-              <h3 className="text-xl font-heading font-bold mb-4">{t("home.whyTrustTitle")}</h3>
-              <p className="text-zinc-600">{t("home.whyTrustText")}</p>
-            </motion.div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mt-20">
+            {[
+              { icon: Globe, title: t("home.whyNetworkTitle"), text: t("home.whyNetworkText"), delay: 0.1 },
+              { icon: HardHat, title: t("home.whyExpertTitle"), text: t("home.whyExpertText"), delay: 0.2 },
+              { icon: ShieldCheck, title: t("home.whyTrustTitle"), text: t("home.whyTrustText"), delay: 0.3 }
+            ].map((item, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: item.delay, ease: "easeOut" }}
+                className="group p-10 rounded-3xl border border-zinc-100 hover:border-accent/20 transition-all duration-500 hover:shadow-soft"
+              >
+                <div className="w-16 h-16 bg-zinc-50 rounded-2xl flex items-center justify-center mb-8 text-zinc-950 group-hover:bg-accent group-hover:text-white transition-all duration-500 shadow-sm">
+                  <item.icon className="h-8 w-8" />
+                </div>
+                <h3 className="text-2xl font-heading font-extrabold mb-5 tracking-tight group-hover:text-accent transition-colors">
+                  {item.title}
+                </h3>
+                <p className="text-zinc-500 leading-relaxed font-medium">
+                  {item.text}
+                </p>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
 
+      <Testimonials />
       <CTASection
         title={t("home.ctaTitle")}
         description={t("home.ctaDesc")}
         primaryCta={{ label: t("home.ctaPrimary"), href: "/contact" }}
         secondaryCta={{ label: t("home.ctaSecondary"), href: "/grues" }}
-        background="accent"
       />
     </div>
   );

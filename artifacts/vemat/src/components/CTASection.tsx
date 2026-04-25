@@ -32,7 +32,7 @@ export function CTASection({ title, description, primaryCta, secondaryCta, backg
             <Link href={primaryCta.href}>
               <Button 
                 size="lg" 
-                className={`rounded-none font-bold px-8 h-14 text-base w-full sm:w-auto ${
+                className={`rounded-full font-black uppercase tracking-widest px-10 h-16 text-[10px] md:text-xs w-full sm:w-auto shadow-gold transition-all duration-300 hover:scale-105 ${
                   isDark 
                     ? "bg-accent text-accent-foreground hover:bg-accent/90" 
                     : "bg-zinc-950 text-white hover:bg-zinc-900"
@@ -46,7 +46,7 @@ export function CTASection({ title, description, primaryCta, secondaryCta, backg
                 <Button 
                   size="lg" 
                   variant="outline" 
-                  className={`rounded-none font-bold px-8 h-14 text-base w-full sm:w-auto bg-transparent ${
+                  className={`rounded-full font-black uppercase tracking-widest px-10 h-16 text-[10px] md:text-xs w-full sm:w-auto bg-transparent transition-all duration-300 hover:scale-105 ${
                     isDark 
                       ? "border-white text-white hover:bg-white hover:text-zinc-950" 
                       : "border-zinc-950 text-zinc-950 hover:bg-zinc-950 hover:text-white"

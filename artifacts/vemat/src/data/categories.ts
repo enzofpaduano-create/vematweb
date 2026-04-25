@@ -1,26 +1,31 @@
+import gruesImg from "@/assets/images/grues.jpg";
+import nacellesImg from "@/assets/images/nacelles.jpg";
+import telescopiquesImg from "@/assets/images/telescopiques.jpg";
+import constructionImg from "@/assets/images/construction.jpg";
+
 export const categories = [
   {
     slug: "grues",
     tKey: "grues",
     href: "/grues",
-    image: "/src/assets/images/grues.png",
+    image: gruesImg,
   },
   {
     slug: "nacelles",
     tKey: "nacelles",
     href: "/nacelles",
-    image: "/src/assets/images/nacelles.png",
+    image: nacellesImg,
   },
   {
     slug: "elevateurs-telescopiques",
     tKey: "elevateurs",
     href: "/elevateurs-telescopiques",
-    image: "/src/assets/images/telescopiques.png",
+    image: telescopiquesImg,
   },
   {
     slug: "construction",
     tKey: "construction",
     href: "/construction",
-    image: "/src/assets/images/construction.png",
+    image: constructionImg,
   },
 ] as const;

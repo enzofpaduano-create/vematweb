@@ -3,6 +3,88 @@ import { ArrowRight, Package } from "lucide-react";
 import { Link } from "wouter";
 import type { SubCategory } from "@/data/products";
 import { useLang } from "@/i18n/I18nProvider";
+import { productDetails } from "@/data/productDetails";
+import { toMetric } from "@/lib/units";
+import terexLogo from "@/assets/brands/terex.png";
+import tadanoLogo from "@/assets/brands/tadano-demag.png";
+import jlgLogo from "@/assets/brands/jlg.png";
+import magniLogo from "@/assets/brands/magni.png";
+import mecalacLogo from "@/assets/brands/mecalac.png";
+
+function getBrandLogo(brand: string): string | null {
+  const b = brand.toLowerCase();
+  if (b.includes("terex")) return terexLogo;
+  if (b.includes("tadano")) return tadanoLogo;
+  if (b.includes("jlg")) return jlgLogo;
+  if (b.includes("magni")) return magniLogo;
+  if (b.includes("mecalac")) return mecalacLogo;
+  return null;
+}
+
+// Priority spec groups — first matching key wins per group; first 3 matches are shown
+const SPEC_GROUPS = [
+  // Cranes — capacity
+  {
+    label: { fr: "Capacité max.", en: "Max Capacity" },
+    keys: ["Capacité max.", "Capacité nominale", "Max Capacity", "Capacité de levage", "Charge maximale"],
+  },
+  // Cranes — boom length
+  {
+    label: { fr: "Longueur flèche", en: "Boom Length" },
+    keys: ["Longueur max. de la flèche principale", "Longueur flèche principale", "Max Jib Length", "Longueur de flèche"],
+  },
+  // Cranes — hook height / reach
+  {
+    label: { fr: "Portée / Hauteur", en: "Reach / Height" },
+    keys: ["Hauteur de tête max.", "Portée max.", "Capacity at Max Radius", "Hauteur max. crochet"],
+  },
+  // Nacelles — platform height
+  {
+    label: { fr: "Hauteur max.", en: "Platform Height" },
+    keys: ["Hauteur max. plateforme"],
+  },
+  // Nacelles — horizontal outreach
+  {
+    label: { fr: "Portée horizontale", en: "Horizontal Outreach" },
+    keys: ["Max Working Outreach", "Horizontal Outreach"],
+  },
+  // Nacelles / access — platform capacity (weight)
+  {
+    label: { fr: "Capacité plateforme", en: "Platform Capacity" },
+    keys: ["Platform Capacity Unrestricted", "Capacité max. plateforme"],
+  },
+  // Construction — machine weight
+  {
+    label: { fr: "Poids machine", en: "Machine Weight" },
+    keys: ["Poids en ordre de marche", "Poids de la machine"],
+  },
+  // Construction — max reach
+  {
+    label: { fr: "Portée max.", en: "Max Reach" },
+    keys: ["Portée maximum"],
+  },
+  // Construction loaders — tipping load
+  {
+    label: { fr: "Charge de basculement", en: "Tipping Load" },
+    keys: ["Charge de basculement châssis droit"],
+  },
+];
+
+function getTopSpecs(slug: string, lang: "fr" | "en"): Array<{ label: string; value: string }> {
+  const details = productDetails[slug];
+  if (!details?.specifications) return [];
+  const specs = details.specifications as Record<string, string>;
+  const result: Array<{ label: string; value: string }> = [];
+  for (const group of SPEC_GROUPS) {
+    for (const key of group.keys) {
+      if (specs[key]) {
+        result.push({ label: group.label[lang], value: specs[key] });
+        break;
+      }
+    }
+  }
+  return result.slice(0, 3);
+}
 
 interface ProductCatalogProps {
   subcategories: SubCategory[];
@@ -20,7 +102,8 @@ export function ProductCatalog({ subcategories }: ProductCatalogProps) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 0.5, delay: index * 0.05 }}
-          className="bg-white border border-zinc-200 overflow-hidden"
+          id={sub.slug}
+          className="bg-white border border-zinc-200 overflow-hidden scroll-mt-28"
           data-testid={`subcategory-${sub.slug}`}
         >
           <div className="border-b border-zinc-200 bg-gradient-to-r from-zinc-950 to-zinc-800 text-white p-6 md:p-8">
@@ -44,14 +127,26 @@ export function ProductCatalog({ subcategories }: ProductCatalogProps) {
                   </p>
                 )}
               </div>
-              <Link
-                href="/contact"
-                className="inline-flex items-center gap-2 bg-accent text-white px-5 py-3 text-sm font-semibold hover:bg-accent/90 transition-colors"
-                data-testid={`button-quote-${sub.slug}`}
-              >
-                {t("catalog.quote")}
-                <ArrowRight className="h-4 w-4" />
-              </Link>
+              <div className="flex flex-col items-end gap-4">
+                {getBrandLogo(sub.brand) && (
+                  <div className="bg-white rounded-lg px-3 py-2 shadow-sm">
+                    <img
+                      src={getBrandLogo(sub.brand)!}
+                      alt={sub.brand}
+                      className="h-6 w-auto object-contain"
+                      draggable={false}
+                    />
+                  </div>
+                )}
+                <Link
+                  href="/contact"
+                  className="inline-flex items-center gap-2 bg-accent text-white px-5 py-3 text-sm font-semibold hover:bg-accent/90 transition-colors"
+                  data-testid={`button-quote-${sub.slug}`}
+                >
+                  {t("catalog.quote")}
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </div>
             </div>
           </div>
 
@@ -61,18 +156,57 @@ export function ProductCatalog({ subcategories }: ProductCatalogProps) {
                 {t("catalog.models")}
               </h4>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-                {sub.models.map((model) => (
-                  <div
-                    key={model.name}
-                    className="group flex items-center gap-2 border border-zinc-200 bg-zinc-50 px-3 py-3 hover:border-accent hover:bg-white transition-colors"
-                    data-testid={`model-${model.name}`}
-                  >
-                    <Package className="h-4 w-4 text-accent shrink-0" />
-                    <span className="font-mono text-sm font-semibold text-zinc-900 truncate">
-                      {model.name}
-                    </span>
-                  </div>
-                ))}
+                {sub.models.map((model) => {
+                  const specs = model.slug ? getTopSpecs(model.slug, lang) : [];
+                  const hasSpecs = specs.length > 0;
+
+                  return model.slug ? (
+                    <Link
+                      key={model.name}
+                      href={`/produit/${model.slug}`}
+                      className="group relative flex flex-col border border-zinc-200 bg-white hover:border-accent hover:bg-zinc-950 transition-all duration-300 cursor-pointer shadow-sm hover:shadow-xl"
+                      data-testid={`model-${model.name}`}
+                    >
+                      {/* Model name row */}
+                      <div className="flex items-center gap-3 px-4 py-4">
+                        <Package className="h-5 w-5 text-accent shrink-0 group-hover:scale-110 transition-transform duration-300" />
+                        <span className="font-mono text-sm font-bold text-zinc-900 group-hover:text-white truncate transition-colors duration-300">
+                          {model.name}
+                        </span>
+                        <ArrowRight className="h-4 w-4 text-accent ml-auto opacity-0 group-hover:opacity-100 transform translate-x-3 group-hover:translate-x-0 transition-all duration-300" />
+                      </div>
+
+                      {/* Expandable specs */}
+                      {hasSpecs && (
+                        <div className="overflow-hidden max-h-0 group-hover:max-h-40 transition-all duration-500 ease-out delay-200">
+                          <div className="border-t border-zinc-800 mx-4 pt-3 pb-4 space-y-2.5">
+                            {specs.map((s) => (
+                              <div key={s.label}>
+                                <p className="text-[8px] font-black uppercase tracking-[0.2em] text-zinc-500 mb-0.5">
+                                  {s.label}
+                                </p>
+                                <p className="text-xs font-extrabold text-white leading-tight">
+                                  {toMetric(s.value)}
+                                </p>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </Link>
+                  ) : (
+                    <div
+                      key={model.name}
+                      className="group flex items-center gap-2 border border-zinc-200 bg-zinc-50 px-3 py-3 hover:border-zinc-300 transition-colors"
+                      data-testid={`model-${model.name}`}
+                    >
+                      <Package className="h-4 w-4 text-zinc-400 shrink-0" />
+                      <span className="font-mono text-sm font-semibold text-zinc-900 truncate">
+                        {model.name}
+                      </span>
+                    </div>
+                  );
+                })}
                 {sub.models.length < sub.totalCount && (
                   <Link
                     href="/contact"

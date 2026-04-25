@@ -7,6 +7,8 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import { I18nProvider } from "@/i18n/I18nProvider";
+import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
+import { VematAssistant } from "@/components/VematAssistant";
 
 import Home from "@/pages/Home";
 import Grues from "@/pages/Grues";
@@ -16,13 +18,17 @@ import Construction from "@/pages/Construction";
 import Services from "@/pages/Services";
 import APropos from "@/pages/APropos";
 import Contact from "@/pages/Contact";
+import PiecesDeRechange from "@/pages/PiecesDeRechange";
+import Blog from "@/pages/Blog";
+import Article from "@/pages/Article";
+import ProductPage from "@/pages/ProductPage";
 import NotFound from "@/pages/not-found";
 
 const queryClient = new QueryClient();
 
 function Router() {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex min-h-screen flex-col overflow-x-hidden">
       <ScrollToTop />
       <Navbar />
       <main className="flex-grow">
@@ -33,12 +39,18 @@ function Router() {
           <Route path="/elevateurs-telescopiques" component={ElevateursTelescopiques} />
           <Route path="/construction" component={Construction} />
           <Route path="/services" component={Services} />
+          <Route path="/pieces-de-rechange" component={PiecesDeRechange} />
+          <Route path="/blog" component={Blog} />
+          <Route path="/blog/:slug" component={Article} />
           <Route path="/a-propos" component={APropos} />
           <Route path="/contact" component={Contact} />
+          <Route path="/produit/:slug" component={ProductPage} />
           <Route component={NotFound} />
         </Switch>
       </main>
       <Footer />
+      <VematAssistant />
+      <FloatingWhatsApp />
     </div>
   );
 }

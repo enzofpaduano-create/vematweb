@@ -1,0 +1,41 @@
+
+> @workspace/vemat@0.0.0 build
+> vite build --config vite.config.ts
+
+vite v7.3.2 building client environment for production...
+transforming...
+src/components/ui/tooltip.tsx (2:0): Error when using sourcemap for reporting an error: Can't resolve original location of error.
+src/components/ui/sheet.tsx (2:0): Error when using sourcemap for reporting an error: Can't resolve original location of error.
+src/components/ui/select.tsx (2:0): Error when using sourcemap for reporting an error: Can't resolve original location of error.
+src/components/ui/label.tsx (2:0): Error when using sourcemap for reporting an error: Can't resolve original location of error.
+✓ 2297 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/public/index.html                                0.81 kB │ gzip:   0.45 kB
+dist/public/assets/domenico-BbaeWORQ.jpg             30.59 kB
+dist/public/assets/conseil-DXUkd_z9.jpg              58.51 kB
+dist/public/assets/telescopiques-S9yilVAr.jpg       122.36 kB
+dist/public/assets/vente-B-WY86MC.jpg               128.74 kB
+dist/public/assets/vemat-logo-q8tootBT.png          164.51 kB
+dist/public/assets/jlg-C4M2Uyb0.png                 166.32 kB
+dist/public/assets/terex-BOnSZClH.png               181.21 kB
+dist/public/assets/mecalac-CJXGnZmt.png             186.63 kB
+dist/public/assets/tadano-demag-CCkEJoxZ.png        212.07 kB
+dist/public/assets/grues-D9CvreNo.jpg               224.83 kB
+dist/public/assets/sav-DjDwk0uf.png                 247.11 kB
+dist/public/assets/magni-CwyJyjih.png               300.03 kB
+dist/public/assets/construction-DpY3ri5a.jpg        400.30 kB
+dist/public/assets/depannage-BNVI8duk.jpg           660.29 kB
+dist/public/assets/pieces-BlYIr-5m.jpg              707.37 kB
+dist/public/assets/hero-cinematic-BBOI-rKf.png    1,384.00 kB
+dist/public/assets/african-presence-Xu1nqIiL.png  1,475.84 kB
+dist/public/assets/location-Ds3O7H0C.jpg          1,481.63 kB
+dist/public/assets/westchase-logo-C-JucVII.png    2,146.30 kB
+dist/public/assets/index-CG0023Ms.css               158.65 kB │ gzip:  23.47 kB
+dist/public/assets/index-CgxbAkVg.js              1,574.89 kB │ gzip: 356.27 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 5.39s
