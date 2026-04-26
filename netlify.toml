@@ -1,5 +1,5 @@
 [build]
-  command = "cd artifacts/vemat && npm install --legacy-peer-deps && npm run build"
+  command = "pnpm --filter @workspace/vemat build"
   publish = "artifacts/vemat/dist/public"
 
 [build.environment]
