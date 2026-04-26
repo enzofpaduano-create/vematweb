@@ -152,13 +152,16 @@ function ProductCard({
   brand,
   inCart,
   onAdd,
+  onImageClick,
 }: {
   product: CatalogProduct;
   brand: string;
   inCart: boolean;
   onAdd: (p: CatalogProduct) => void;
+  onImageClick: (src: string) => void;
 }) {
   const [imgError, setImgError] = useState(false);
+  const hasImg = !!(product.image && !imgError);
 
   return (
     <motion.div
@@ -167,14 +170,22 @@ function ProductCard({
       animate={{ opacity: 1, y: 0 }}
       className="bg-white rounded-[2rem] border border-zinc-100 overflow-hidden group hover:border-accent/30 hover:shadow-soft transition-all duration-300 flex flex-col"
     >
-      <div className="h-40 bg-zinc-50 flex items-center justify-center overflow-hidden">
-        {product.image && !imgError ? (
-          <img
-            src={product.image}
-            alt={product.title}
-            className="h-full w-full object-contain p-4 group-hover:scale-105 transition-transform duration-500"
-            onError={() => setImgError(true)}
-          />
+      <div
+        className={`h-40 bg-zinc-50 flex items-center justify-center overflow-hidden relative ${hasImg ? "cursor-zoom-in" : ""}`}
+        onClick={() => hasImg && onImageClick(product.image!)}
+      >
+        {hasImg ? (
+          <>
+            <img
+              src={product.image!}
+              alt={product.title}
+              className="h-full w-full object-contain p-4 group-hover:scale-105 transition-transform duration-500"
+              onError={() => setImgError(true)}
+            />
+            <div className="absolute inset-0 bg-zinc-950/0 group-hover:bg-zinc-950/10 transition-colors duration-300 flex items-center justify-center">
+              <Search className="h-5 w-5 text-white opacity-0 group-hover:opacity-100 drop-shadow transition-opacity duration-300" />
+            </div>
+          </>
         ) : (
           <div className="flex flex-col items-center gap-2 text-zinc-300">
             <Package className="h-10 w-10" />
@@ -230,13 +241,16 @@ function VematProductCard({
   inCart,
   onAdd,
   lang,
+  onImageClick,
 }: {
   product: VematProduct;
   inCart: boolean;
   onAdd: (p: VematProduct) => void;
   lang: "fr" | "en";
+  onImageClick: (src: string) => void;
 }) {
   const [imgError, setImgError] = useState(false);
+  const hasImg = !!(product.image && !imgError);
 
   return (
     <motion.div
@@ -245,20 +259,24 @@ function VematProductCard({
       animate={{ opacity: 1, y: 0 }}
       className="bg-white rounded-[2rem] border border-zinc-100 overflow-hidden group hover:border-amber-400/40 hover:shadow-soft transition-all duration-300 flex flex-col"
     >
-      <div className="h-40 bg-zinc-50 flex items-center justify-center overflow-hidden relative">
-        {product.image && !imgError ? (
-          <img
-            src={product.image}
-            alt={product.title}
-            className="h-full w-full object-contain p-4 group-hover:scale-105 transition-transform duration-500"
-            onError={() => setImgError(true)}
-          />
+      <div
+        className={`h-40 bg-zinc-50 flex items-center justify-center overflow-hidden relative ${hasImg ? "cursor-zoom-in" : ""}`}
+        onClick={() => hasImg && onImageClick(product.image!)}
+      >
+        {hasImg ? (
+          <>
+            <img
+              src={product.image!}
+              alt={product.title}
+              className="h-full w-full object-contain p-4 group-hover:scale-105 transition-transform duration-500"
+              onError={() => setImgError(true)}
+            />
+            <div className="absolute inset-0 bg-zinc-950/0 group-hover:bg-zinc-950/10 transition-colors duration-300 flex items-center justify-center">
+              <Search className="h-5 w-5 text-white opacity-0 group-hover:opacity-100 drop-shadow transition-opacity duration-300" />
+            </div>
+          </>
         ) : (
-          <img
-            src={vematLogo}
-            alt="Vemat"
-            className="h-12 w-auto object-contain opacity-20"
-          />
+          <img src={vematLogo} alt="Vemat" className="h-12 w-auto object-contain opacity-20" />
         )}
         {product.model && (
           <span className="absolute top-2 right-2 px-2 py-0.5 bg-zinc-950/80 text-white text-[8px] font-black uppercase tracking-widest rounded-full">
@@ -329,6 +347,9 @@ export default function PiecesDeRechange() {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isOrderOpen, setIsOrderOpen] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+
+  // ── Lightbox ──
+  const [lightboxSrc, setLightboxSrc] = useState<string | null>(null);
 
   // ── Global search state ──
   const [globalQuery, setGlobalQuery] = useState("");
@@ -894,6 +915,7 @@ export default function PiecesDeRechange() {
                       inCart={cart.some((i) => i.sku === product.sku)}
                       onAdd={addToCart}
                       lang={lang}
+                      onImageClick={setLightboxSrc}
                     />
                   ))}
                 </div>
@@ -1161,6 +1183,7 @@ export default function PiecesDeRechange() {
                         brand={activeBrand ?? ""}
                         inCart={cart.some((i) => i.sku === product.sku)}
                         onAdd={addToCart}
+                        onImageClick={setLightboxSrc}
                       />
                     ))}
                   </div>
@@ -1186,6 +1209,37 @@ export default function PiecesDeRechange() {
           )}
         </AnimatePresence>
       </div>
+
+      {/* ── LIGHTBOX ────────────────────────────────────────────────────────── */}
+      <AnimatePresence>
+        {lightboxSrc && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[70] flex items-center justify-center p-4 md:p-10"
+            onClick={() => setLightboxSrc(null)}
+          >
+            <div className="absolute inset-0 bg-zinc-950/90 backdrop-blur-md" />
+            <button
+              onClick={() => setLightboxSrc(null)}
+              className="absolute top-5 right-5 z-10 p-2 text-white/60 hover:text-white transition-colors"
+            >
+              <X className="h-7 w-7" />
+            </button>
+            <motion.img
+              initial={{ opacity: 0, scale: 0.92 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.92 }}
+              transition={{ duration: 0.2 }}
+              src={lightboxSrc}
+              alt=""
+              className="relative z-10 max-h-full max-w-full object-contain rounded-2xl shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* ── CHECKOUT MODAL ──────────────────────────────────────────────────── */}
       <AnimatePresence>
