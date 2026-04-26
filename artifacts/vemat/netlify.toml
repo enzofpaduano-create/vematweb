@@ -14,3 +14,8 @@
   from = "/api/linkedin-sync"
   to = "/.netlify/functions/linkedin-sync"
   status = 200
+
+[[redirects]]
+  from = "/api/update-stock"
+  to = "/.netlify/functions/update-stock"
+  status = 200
