@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
+import { useLocation } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Search,
@@ -323,6 +324,7 @@ function VematProductCard({
 // ─── Page ────────────────────────────────────────────────────────────────────
 
 export default function PiecesDeRechange() {
+  const [, navigate] = useLocation();
   const { lang } = useLang();
   const { t } = useLang();
   useSEO(t("nav.pdr"), "Catalogue de pièces de rechange d'origine — Vemat Group.");
@@ -346,7 +348,6 @@ export default function PiecesDeRechange() {
   const [search, setSearch] = useState("");
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isOrderOpen, setIsOrderOpen] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
 
   // ── Lightbox ──
   const [lightboxSrc, setLightboxSrc] = useState<string | null>(null);
@@ -483,14 +484,10 @@ export default function PiecesDeRechange() {
 
   const removeFromCart = (sku: string) => setCart(cart.filter((i) => i.sku !== sku));
 
-  const handleOrderSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSuccess(true);
-    setTimeout(() => {
-      setIsSuccess(false);
-      setIsOrderOpen(false);
-      setCart([]);
-    }, 3000);
+  const handleSendToPortal = () => {
+    localStorage.setItem("vemat_devis_cart", JSON.stringify(cart));
+    setIsOrderOpen(false);
+    navigate("/espace-client/commandes/nouvelle");
   };
 
   const totalItems = cart.reduce((s, i) => s + i.quantity, 0);
@@ -1256,74 +1253,48 @@ export default function PiecesDeRechange() {
               initial={{ opacity: 0, scale: 0.95, y: 16 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 16 }}
-              className="relative w-full max-w-xl bg-white rounded-[2.5rem] p-8 sm:p-12 shadow-2xl overflow-hidden"
+              className="relative w-full max-w-lg bg-white rounded-[2.5rem] p-8 shadow-2xl overflow-hidden"
             >
-              {isSuccess ? (
-                <div className="text-center py-10">
-                  <div className="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center text-white mx-auto mb-6 shadow-xl shadow-green-500/20">
-                    <Check className="h-10 w-10" />
+              <button
+                onClick={() => setIsOrderOpen(false)}
+                className="absolute top-6 right-6 p-2 text-zinc-400 hover:text-zinc-950 transition-colors"
+              >
+                <X className="h-5 w-5" />
+              </button>
+              <h2 className="text-2xl font-heading font-extrabold text-zinc-950 mb-1 tracking-tighter uppercase">
+                {lang === "fr" ? "Finaliser la demande" : "Finalize request"}
+              </h2>
+              <p className="text-zinc-500 mb-6 font-medium text-sm">
+                {cart.length} référence{cart.length > 1 ? "s" : ""} · {totalItems} article{totalItems > 1 ? "s" : ""}
+              </p>
+
+              {/* Cart summary */}
+              <div className="bg-zinc-50 rounded-2xl border border-zinc-100 divide-y divide-zinc-100 mb-6 max-h-52 overflow-y-auto">
+                {cart.map((item) => (
+                  <div key={item.sku} className="flex items-center justify-between px-4 py-3 gap-3">
+                    <div className="flex-1 min-w-0">
+                      <p className="text-[10px] font-black uppercase text-accent tracking-widest">{item.brand}</p>
+                      <p className="text-sm font-semibold text-zinc-900 truncate">{item.title}</p>
+                      <p className="text-[10px] font-mono text-zinc-400">{item.sku}</p>
+                    </div>
+                    <span className="text-xs font-black text-zinc-700 bg-zinc-200 px-2 py-0.5 rounded-full shrink-0">×{item.quantity}</span>
                   </div>
-                  <h2 className="text-3xl font-heading font-extrabold text-zinc-950 mb-3 tracking-tighter uppercase">
-                    Demande Envoyée !
-                  </h2>
-                  <p className="text-zinc-500 font-medium">
-                    Notre équipe PDR va analyser votre panier et vous envoyer un devis officiel rapidement.
-                  </p>
-                </div>
-              ) : (
-                <>
-                  <button
-                    onClick={() => setIsOrderOpen(false)}
-                    className="absolute top-6 right-6 p-2 text-zinc-400 hover:text-zinc-950 transition-colors"
-                  >
-                    <X className="h-5 w-5" />
-                  </button>
-                  <h2 className="text-2xl font-heading font-extrabold text-zinc-950 mb-1 tracking-tighter uppercase">
-                    Finaliser la demande
-                  </h2>
-                  <p className="text-zinc-500 mb-8 font-medium text-sm">
-                    {cart.length} référence{cart.length > 1 ? "s" : ""} sélectionnée
-                    {cart.length > 1 ? "s" : ""}. Nous vous envoyons le devis officiel.
-                  </p>
-                  <form onSubmit={handleOrderSubmit} className="space-y-4">
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="space-y-1.5">
-                        <label className="text-[10px] font-black uppercase tracking-widest text-zinc-400">
-                          {lang === "fr" ? "Nom complet" : "Full name"}
-                        </label>
-                        <Input required className="h-12 bg-zinc-50 border-zinc-100 rounded-2xl" placeholder="John Doe" />
-                      </div>
-                      <div className="space-y-1.5">
-                        <label className="text-[10px] font-black uppercase tracking-widest text-zinc-400">
-                          {lang === "fr" ? "Société" : "Company"}
-                        </label>
-                        <Input required className="h-12 bg-zinc-50 border-zinc-100 rounded-2xl" placeholder={lang === "fr" ? "Votre société" : "Your company"} />
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="space-y-1.5">
-                        <label className="text-[10px] font-black uppercase tracking-widest text-zinc-400">
-                          Email
-                        </label>
-                        <Input required type="email" className="h-12 bg-zinc-50 border-zinc-100 rounded-2xl" placeholder="john@company.com" />
-                      </div>
-                      <div className="space-y-1.5">
-                        <label className="text-[10px] font-black uppercase tracking-widest text-zinc-400">
-                          {lang === "fr" ? "Téléphone" : "Phone"}
-                        </label>
-                        <Input required className="h-12 bg-zinc-50 border-zinc-100 rounded-2xl" placeholder="+212 ..." />
-                      </div>
-                    </div>
-                    <Button
-                      type="submit"
-                      className="w-full h-14 bg-zinc-950 text-white hover:bg-accent rounded-2xl font-black uppercase tracking-[0.15em] text-xs transition-all mt-2"
-                    >
-                      {lang === "fr" ? "Envoyer ma demande" : "Send my request"}
-                      <ArrowRight className="ml-3 h-4 w-4" />
-                    </Button>
-                  </form>
-                </>
-              )}
+                ))}
+              </div>
+
+              <Button
+                onClick={handleSendToPortal}
+                className="w-full h-14 bg-zinc-950 text-white hover:bg-accent rounded-2xl font-black uppercase tracking-[0.15em] text-xs transition-all"
+              >
+                {lang === "fr" ? "Continuer dans mon Espace Client" : "Continue in my Client Portal"}
+                <ArrowRight className="ml-3 h-4 w-4" />
+              </Button>
+              <p className="text-center text-xs text-zinc-400 mt-4">
+                {lang === "fr" ? "Vous serez redirigé vers votre espace client. " : "You'll be redirected to your client portal. "}
+                <a href="/espace-vemat" className="text-accent font-semibold hover:underline">
+                  {lang === "fr" ? "Se connecter →" : "Sign in →"}
+                </a>
+              </p>
             </motion.div>
           </div>
         )}

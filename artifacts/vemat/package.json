@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --config vite.config.ts --host 0.0.0.0",
+    "dev:v2": "vite --config vite.config.ts --host 0.0.0.0 --port 5174",
     "build": "vite build --config vite.config.ts",
     "serve": "vite preview --config vite.config.ts --host 0.0.0.0",
     "typecheck": "tsc -p tsconfig.json --noEmit"
@@ -77,6 +78,7 @@
     "zod": "catalog:"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.104.1",
     "@types/d3-geo": "^3.1.0",
     "@types/react-simple-maps": "^3.0.6",
     "@types/topojson-client": "^3.1.5",

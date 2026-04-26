@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
-import { Menu, Phone, Mail } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { Menu, Phone, Mail, LayoutGrid } from "lucide-react";
 import { Button } from "./ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 import { useLang } from "@/i18n/I18nProvider";
@@ -35,8 +34,8 @@ export function Navbar() {
   const LangSwitch = ({ dark = false }: { dark?: boolean }) => (
     <div
       className={`inline-flex items-center overflow-hidden rounded-full border transition-all duration-300 ${
-        dark 
-          ? "border-zinc-200 bg-white/50 backdrop-blur-sm" 
+        dark
+          ? "border-zinc-200 bg-white/50 backdrop-blur-sm"
           : "border-white/20 bg-white/10 backdrop-blur-md"
       }`}
     >
@@ -63,13 +62,11 @@ export function Navbar() {
   );
 
   return (
-    <header 
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 px-4 md:px-8 pt-4 pointer-events-none`}
-    >
-      <div 
+    <header className="fixed top-0 left-0 right-0 z-50 transition-all duration-700 px-4 md:px-8 pt-4 pointer-events-none">
+      <div
         className={`w-full transition-all duration-700 pointer-events-auto ${
-          isScrolled 
-            ? "bg-white/70 backdrop-blur-xl border border-zinc-200/50 py-3 px-5 xl:px-6 rounded-full shadow-2xl" 
+          isScrolled
+            ? "bg-white/70 backdrop-blur-xl border border-zinc-200/50 py-3 px-5 xl:px-6 rounded-full shadow-2xl"
             : "bg-transparent py-4 px-0"
         }`}
       >
@@ -80,8 +77,8 @@ export function Navbar() {
                 src={vematLogo}
                 alt="Vemat Group"
                 className={`h-10 md:h-12 w-auto object-contain transition-all duration-700 ${
-                  isScrolled 
-                    ? "brightness-0" 
+                  isScrolled
+                    ? "brightness-0"
                     : "brightness-0 invert drop-shadow-[0_0_15px_rgba(255,255,255,0.5)]"
                 }`}
               />
@@ -109,11 +106,11 @@ export function Navbar() {
               ))}
             </ul>
 
-            <div className="flex shrink-0 items-center gap-3 xl:gap-6 border-l border-zinc-200/50 pl-3 xl:pl-6">
-              <a 
-                href="https://www.linkedin.com/company/vemat-group-ltd/posts/?feedView=all" 
-                target="_blank" 
-                rel="noopener noreferrer" 
+            <div className="flex shrink-0 items-center gap-3 xl:gap-4 border-l border-zinc-200/50 pl-3 xl:pl-6">
+              <a
+                href="https://www.linkedin.com/company/vemat-group-ltd/posts/?feedView=all"
+                target="_blank"
+                rel="noopener noreferrer"
                 className={`transition-all duration-300 hover:text-accent hover:scale-110 ${isScrolled ? "text-zinc-400" : "text-white/70"}`}
               >
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
@@ -121,6 +118,17 @@ export function Navbar() {
                 </svg>
               </a>
               <LangSwitch dark={isScrolled} />
+
+              {/* Portail Vemat */}
+              <Link
+                href="/espace-vemat"
+                className={`flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[11px] font-bold transition-all hover:border-accent hover:text-accent ${
+                  isScrolled ? "border-zinc-300 text-zinc-600" : "border-white/30 text-white/80"
+                }`}
+              >
+                <LayoutGrid className="w-3.5 h-3.5" />
+                <span className="hidden xl:inline">Portail</span>
+              </Link>
             </div>
           </nav>
 
@@ -153,6 +161,16 @@ export function Navbar() {
 
                   <div className="mt-12">
                     <LangSwitch dark />
+                  </div>
+
+                  <div className="mt-8">
+                    <Link
+                      href="/espace-vemat"
+                      className="flex items-center gap-2 text-sm font-bold text-zinc-700 hover:text-accent transition-colors"
+                    >
+                      <LayoutGrid className="w-4 h-4" />
+                      Portail Vemat
+                    </Link>
                   </div>
 
                   <div className="mt-auto pb-12 space-y-6">

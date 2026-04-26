@@ -1,0 +1,315 @@
+import { useEffect, useState, useMemo } from "react";
+import { Plus, X, Check, Pencil, Trash2, TrendingUp, Search, Upload, FileText, Download } from "lucide-react";
+import { CommercialLayout } from "./CommercialLayout";
+import { useCommercialAuth } from "@/contexts/CommercialAuthContext";
+import { supabaseCommercial } from "@/lib/supabase";
+import type { CommercialSale, SaleStatus } from "@/lib/database.types";
+import { catalog } from "@/data/products";
+
+const CATEGORY_LABELS: Record<string, string> = {
+  grues: "Grues", nacelles: "Nacelles & Plateformes", elevateurs: "Élévateurs Télescopiques", construction: "Construction",
+};
+
+const ALL_MACHINES = Object.entries(catalog).flatMap(([cat, subcats]) =>
+  subcats.flatMap((sub) => sub.models.map((m) => ({ brand: m.brand, model: m.name, category: cat, categoryLabel: CATEGORY_LABELS[cat] ?? cat, sub: sub.title.fr })))
+);
+
+const SALE_STATUSES: { value: SaleStatus; label: string; color: string }[] = [
+  { value: "devis",        label: "Devis",           color: "text-zinc-400 bg-zinc-800 border-zinc-700" },
+  { value: "bon_commande", label: "Bon de commande", color: "text-blue-400 bg-blue-500/10 border-blue-500/20" },
+  { value: "facture",      label: "Facturé",          color: "text-orange-400 bg-orange-500/10 border-orange-500/20" },
+  { value: "paye",         label: "Payé",             color: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20" },
+];
+
+const emptyForm = () => ({ client_name: "", machine_brand: "", machine_model: "", machine_category: "", quantity: 1, invoice_amount: "", invoice_date: "", status: "devis" as SaleStatus, notes: "" });
+
+function generateRef() { return `VNT-${new Date().getFullYear()}-${String(Math.floor(Math.random() * 9000) + 1000)}`; }
+
+export default function CommercialVentes() {
+  const { commercial } = useCommercialAuth();
+  const [sales, setSales] = useState<CommercialSale[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [showForm, setShowForm] = useState(false);
+  const [editSale, setEditSale] = useState<CommercialSale | null>(null);
+  const [form, setForm] = useState(emptyForm());
+  const [machineSearch, setMachineSearch] = useState("");
+  const [showMachineList, setShowMachineList] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [fileToUpload, setFileToUpload] = useState<File | null>(null);
+
+  const load = async () => {
+    if (!commercial) return;
+    setLoading(true);
+    const { data } = await supabaseCommercial.from("commercial_sales")
+      .select("*").eq("commercial_id", commercial.id).order("created_at", { ascending: false });
+    setSales(data ?? []);
+    setLoading(false);
+  };
+
+  useEffect(() => { load(); }, [commercial]);
+
+  const filteredMachines = useMemo(() => {
+    if (!machineSearch.trim()) return ALL_MACHINES.slice(0, 20);
+    const q = machineSearch.toLowerCase();
+    return ALL_MACHINES.filter((m) => m.brand.toLowerCase().includes(q) || m.model.toLowerCase().includes(q) || m.categoryLabel.toLowerCase().includes(q)).slice(0, 30);
+  }, [machineSearch]);
+
+  const openCreate = () => { setEditSale(null); setForm(emptyForm()); setMachineSearch(""); setFileToUpload(null); setShowForm(true); };
+  const openEdit = (s: CommercialSale) => {
+    setEditSale(s);
+    setForm({ client_name: s.client_name, machine_brand: s.machine_brand ?? "", machine_model: s.machine_model ?? "", machine_category: s.machine_category ?? "", quantity: s.quantity, invoice_amount: s.invoice_amount ? String(s.invoice_amount) : "", invoice_date: s.invoice_date ?? "", status: s.status, notes: s.notes ?? "" });
+    setMachineSearch(s.machine_model ? `${s.machine_brand} ${s.machine_model}` : "");
+    setFileToUpload(null);
+    setShowForm(true);
+  };
+
+  const selectMachine = (m: typeof ALL_MACHINES[0]) => {
+    setForm((f) => ({ ...f, machine_brand: m.brand, machine_model: m.model, machine_category: m.category }));
+    setMachineSearch(`${m.brand} ${m.model}`);
+    setShowMachineList(false);
+  };
+
+  const handleSave = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!commercial || !form.client_name) return;
+    setSaving(true);
+    let fileUrl = editSale?.invoice_file_url ?? null;
+    if (fileToUpload) {
+      const path = `invoices/${commercial.id}/${Date.now()}_${fileToUpload.name}`;
+      const { data: up } = await supabaseCommercial.storage.from("commercial-invoices").upload(path, fileToUpload, { upsert: true });
+      if (up) fileUrl = up.path;
+    }
+    const payload: Partial<CommercialSale> = {
+      commercial_id: commercial.id,
+      client_name: form.client_name,
+      machine_brand: form.machine_brand || null,
+      machine_model: form.machine_model || null,
+      machine_category: form.machine_category || null,
+      quantity: form.quantity,
+      invoice_amount: form.invoice_amount ? Number(form.invoice_amount) : null,
+      invoice_date: form.invoice_date || null,
+      invoice_file_url: fileUrl,
+      status: form.status,
+      notes: form.notes || null,
+    };
+    if (editSale) {
+      await supabaseCommercial.from("commercial_sales").update(payload).eq("id", editSale.id);
+    } else {
+      await supabaseCommercial.from("commercial_sales").insert({ ...payload, reference: generateRef() });
+    }
+    setSaving(false);
+    setShowForm(false);
+    setEditSale(null);
+    load();
+  };
+
+  const handleDelete = async (s: CommercialSale) => {
+    if (!confirm("Supprimer cette vente ?")) return;
+    await supabaseCommercial.from("commercial_sales").delete().eq("id", s.id);
+    setShowForm(false);
+    load();
+  };
+
+  const openInvoice = async (s: CommercialSale) => {
+    if (!s.invoice_file_url) return;
+    const { data } = await supabaseCommercial.storage.from("commercial-invoices").createSignedUrl(s.invoice_file_url, 3600);
+    if (data?.signedUrl) window.open(data.signedUrl, "_blank");
+  };
+
+  const filtered = statusFilter === "all" ? sales : sales.filter((s) => s.status === statusFilter);
+  const totalCA = sales.filter((s) => ["facture", "paye"].includes(s.status)).reduce((sum, s) => sum + (s.invoice_amount ?? 0), 0);
+
+  return (
+    <CommercialLayout>
+      <div className="p-8">
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h1 className="text-2xl font-black text-white">Ventes machines</h1>
+            <p className="text-zinc-500 text-sm mt-0.5">
+              {sales.length} vente{sales.length !== 1 ? "s" : ""} · CA facturé : {totalCA > 0 ? `${totalCA.toLocaleString("fr-FR")} MAD` : "—"}
+            </p>
+          </div>
+          <button onClick={openCreate}
+            className="flex items-center gap-2 bg-sky-600 hover:bg-sky-500 text-white font-bold text-sm px-4 py-2.5 rounded-lg transition-colors">
+            <Plus className="w-4 h-4" /> Nouvelle vente
+          </button>
+        </div>
+
+        {/* Status filter */}
+        <div className="flex items-center gap-2 mb-5">
+          {[{ value: "all", label: "Toutes" }, ...SALE_STATUSES].map((s) => (
+            <button key={s.value} onClick={() => setStatusFilter(s.value)}
+              className={`text-xs font-bold px-3 py-1.5 rounded-lg border transition-colors ${statusFilter === s.value ? "bg-sky-600 border-sky-600 text-white" : "border-zinc-700 text-zinc-400 hover:border-zinc-600"}`}>
+              {s.label}
+            </button>
+          ))}
+        </div>
+
+        {loading ? (
+          <div className="space-y-2">{Array.from({ length: 5 }).map((_, i) => <div key={i} className="h-20 bg-zinc-900 border border-zinc-800 rounded-xl animate-pulse" />)}</div>
+        ) : filtered.length === 0 ? (
+          <div className="bg-zinc-900 border border-zinc-800 rounded-xl py-16 text-center">
+            <TrendingUp className="w-10 h-10 text-zinc-700 mx-auto mb-3" />
+            <p className="text-zinc-500 text-sm">Aucune vente</p>
+          </div>
+        ) : (
+          <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-zinc-800">
+                  <th className="text-left px-5 py-3 text-xs font-bold text-zinc-500 uppercase tracking-wider">Réf.</th>
+                  <th className="text-left px-5 py-3 text-xs font-bold text-zinc-500 uppercase tracking-wider">Client</th>
+                  <th className="text-left px-5 py-3 text-xs font-bold text-zinc-500 uppercase tracking-wider">Machine</th>
+                  <th className="text-left px-5 py-3 text-xs font-bold text-zinc-500 uppercase tracking-wider">Montant</th>
+                  <th className="text-left px-5 py-3 text-xs font-bold text-zinc-500 uppercase tracking-wider">Date</th>
+                  <th className="text-left px-5 py-3 text-xs font-bold text-zinc-500 uppercase tracking-wider">Statut</th>
+                  <th className="px-5 py-3" />
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-zinc-800">
+                {filtered.map((s) => {
+                  const st = SALE_STATUSES.find((x) => x.value === s.status) ?? SALE_STATUSES[0];
+                  return (
+                    <tr key={s.id} className="hover:bg-zinc-800/40 transition-colors">
+                      <td className="px-5 py-4 font-mono text-xs text-zinc-400">{s.reference ?? "—"}</td>
+                      <td className="px-5 py-4 font-semibold text-white">{s.client_name}</td>
+                      <td className="px-5 py-4 text-zinc-400">{[s.machine_brand, s.machine_model].filter(Boolean).join(" ") || "—"}</td>
+                      <td className="px-5 py-4 font-bold text-white">{s.invoice_amount ? `${s.invoice_amount.toLocaleString("fr-FR")} MAD` : "—"}</td>
+                      <td className="px-5 py-4 text-zinc-400 text-xs">{s.invoice_date ? new Date(s.invoice_date + "T00:00:00").toLocaleDateString("fr-FR") : "—"}</td>
+                      <td className="px-5 py-4">
+                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${st.color}`}>{st.label}</span>
+                      </td>
+                      <td className="px-5 py-4">
+                        <div className="flex items-center gap-2">
+                          {s.invoice_file_url && (
+                            <button onClick={() => openInvoice(s)} className="text-zinc-600 hover:text-sky-400 transition-colors p-1" title="Télécharger la facture">
+                              <Download className="w-3.5 h-3.5" />
+                            </button>
+                          )}
+                          <button onClick={() => openEdit(s)} className="text-zinc-600 hover:text-zinc-300 transition-colors p-1">
+                            <Pencil className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+
+      {/* Sale form modal */}
+      {showForm && (
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
+          <div className="bg-zinc-900 border border-zinc-700 rounded-2xl shadow-2xl w-full max-w-lg max-h-[92vh] overflow-y-auto">
+            <div className="flex items-center justify-between p-6 border-b border-zinc-800 sticky top-0 bg-zinc-900 z-10">
+              <h3 className="font-black text-white">{editSale ? "Modifier la vente" : "Nouvelle vente"}</h3>
+              <button onClick={() => { setShowForm(false); setEditSale(null); }} className="text-zinc-500 hover:text-white"><X className="w-5 h-5" /></button>
+            </div>
+            <form onSubmit={handleSave} className="p-6 space-y-4">
+              {/* Machine search */}
+              <div>
+                <label className="block text-xs font-bold text-zinc-400 uppercase tracking-wide mb-1.5">Machine vendue</label>
+                <div className="relative">
+                  <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-zinc-500" />
+                  <input
+                    value={machineSearch}
+                    onChange={(e) => { setMachineSearch(e.target.value); setShowMachineList(true); setForm((f) => ({ ...f, machine_brand: "", machine_model: "", machine_category: "" })); }}
+                    onFocus={() => setShowMachineList(true)}
+                    placeholder="Rechercher une machine (JLG, Tadano, Mecalac…)"
+                    className="w-full bg-zinc-800 border border-zinc-700 rounded-lg pl-9 pr-3.5 py-2.5 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-sky-500"
+                  />
+                  {showMachineList && filteredMachines.length > 0 && (
+                    <div className="absolute top-full mt-1 left-0 right-0 bg-zinc-800 border border-zinc-700 rounded-xl shadow-2xl z-20 max-h-52 overflow-y-auto">
+                      {filteredMachines.map((m, i) => (
+                        <button key={i} type="button" onMouseDown={() => selectMachine(m)}
+                          className="w-full text-left px-3.5 py-2.5 hover:bg-zinc-700 transition-colors flex items-center justify-between gap-3">
+                          <div>
+                            <p className="text-sm font-semibold text-white">{m.brand} {m.model}</p>
+                            <p className="text-xs text-zinc-500">{m.categoryLabel}</p>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+                {form.machine_brand && (
+                  <p className="text-xs text-sky-400 mt-1.5">✓ {form.machine_brand} {form.machine_model} · {CATEGORY_LABELS[form.machine_category] ?? form.machine_category}</p>
+                )}
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-zinc-400 uppercase tracking-wide mb-1.5">Client / Acheteur *</label>
+                <input value={form.client_name} onChange={(e) => setForm((f) => ({ ...f, client_name: e.target.value }))} required
+                  placeholder="Société ou nom du client" className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-sky-500" />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-bold text-zinc-400 uppercase tracking-wide mb-1.5">Montant facturé (MAD)</label>
+                  <input type="number" value={form.invoice_amount} onChange={(e) => setForm((f) => ({ ...f, invoice_amount: e.target.value }))}
+                    placeholder="0" min={0} className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-sky-500" />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-zinc-400 uppercase tracking-wide mb-1.5">Date de facturation</label>
+                  <input type="date" value={form.invoice_date} onChange={(e) => setForm((f) => ({ ...f, invoice_date: e.target.value }))}
+                    className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-sky-500" />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-bold text-zinc-400 uppercase tracking-wide mb-1.5">Quantité</label>
+                  <input type="number" value={form.quantity} onChange={(e) => setForm((f) => ({ ...f, quantity: Number(e.target.value) }))}
+                    min={1} className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-sky-500" />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-zinc-400 uppercase tracking-wide mb-1.5">Statut</label>
+                  <select value={form.status} onChange={(e) => setForm((f) => ({ ...f, status: e.target.value as SaleStatus }))}
+                    className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-sky-500">
+                    {SALE_STATUSES.map((s) => <option key={s.value} value={s.value}>{s.label}</option>)}
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-zinc-400 uppercase tracking-wide mb-1.5">Facture / Document</label>
+                <label className="flex items-center gap-3 bg-zinc-800 border border-dashed border-zinc-600 hover:border-sky-500 rounded-lg px-4 py-3 cursor-pointer transition-colors">
+                  <Upload className="w-4 h-4 text-zinc-500" />
+                  <span className="text-sm text-zinc-400">{fileToUpload ? fileToUpload.name : editSale?.invoice_file_url ? "Remplacer le fichier" : "Ajouter un fichier (PDF, image)"}</span>
+                  <input type="file" accept=".pdf,.jpg,.jpeg,.png" className="hidden" onChange={(e) => setFileToUpload(e.target.files?.[0] ?? null)} />
+                </label>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-zinc-400 uppercase tracking-wide mb-1.5">Notes</label>
+                <textarea value={form.notes} onChange={(e) => setForm((f) => ({ ...f, notes: e.target.value }))} rows={2}
+                  placeholder="Conditions, remarques…" className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-sky-500 resize-none" />
+              </div>
+
+              <div className="flex gap-3 pt-1">
+                {editSale && (
+                  <button type="button" onClick={() => handleDelete(editSale)}
+                    className="flex items-center gap-1.5 text-xs font-bold text-red-400 border border-red-500/30 hover:bg-red-500/10 px-3 py-2 rounded-lg transition-colors">
+                    <Trash2 className="w-3.5 h-3.5" /> Supprimer
+                  </button>
+                )}
+                <button type="button" onClick={() => { setShowForm(false); setEditSale(null); }}
+                  className="flex-1 border border-zinc-700 text-zinc-400 font-bold py-2.5 rounded-xl hover:bg-zinc-800 transition-colors text-sm">
+                  Annuler
+                </button>
+                <button type="submit" disabled={saving}
+                  className="flex-1 flex items-center justify-center gap-2 bg-sky-600 hover:bg-sky-500 text-white font-black py-2.5 rounded-xl transition-colors disabled:opacity-60 text-sm">
+                  <Check className="w-4 h-4" /> {saving ? "..." : "Enregistrer"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+    </CommercialLayout>
+  );
+}
