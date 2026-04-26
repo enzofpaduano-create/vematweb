@@ -1,7 +1,6 @@
 [build]
-  base    = "artifacts/vemat"
-  command = "npm install && npm run build"
-  publish = "dist/public"
+  command = "cd artifacts/vemat && npm install --legacy-peer-deps && npm run build"
+  publish = "artifacts/vemat/dist/public"
 
 [build.environment]
   NODE_VERSION = "20"
