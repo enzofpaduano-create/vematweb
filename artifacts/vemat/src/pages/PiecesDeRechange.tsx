@@ -11,7 +11,6 @@ import {
   ChevronLeft,
   Layers,
   ExternalLink,
-  Warehouse,
 } from "lucide-react";
 import { useSEO, useScrollTop } from "@/hooks/use-seo";
 import { useLang } from "@/i18n/I18nProvider";
@@ -331,6 +330,11 @@ export default function PiecesDeRechange() {
   const [isOrderOpen, setIsOrderOpen] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
+  // ── Global search state ──
+  const [globalQuery, setGlobalQuery] = useState("");
+  const [globalOpen, setGlobalOpen] = useState(false);
+  const [allCatalogsLoading, setAllCatalogsLoading] = useState(false);
+
   useEffect(() => {
     const saved = localStorage.getItem("vemat_cart_v2");
     if (saved) setCart(JSON.parse(saved));
@@ -339,6 +343,21 @@ export default function PiecesDeRechange() {
   useEffect(() => {
     localStorage.setItem("vemat_cart_v2", JSON.stringify(cart));
   }, [cart]);
+
+  // Load all catalogs silently when global search starts
+  useEffect(() => {
+    if (!globalQuery.trim()) return;
+    const loadAll = async () => {
+      setAllCatalogsLoading(true);
+      await Promise.all([
+        loadVematCatalog(),
+        ...BRANDS.map((b) => loadCatalog(b.id)),
+      ]);
+      setAllCatalogsLoading(false);
+    };
+    loadAll();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [globalQuery]);
 
   // ── Supplier catalog loader ──
   const loadCatalog = async (brandId: string) => {
@@ -495,6 +514,75 @@ export default function PiecesDeRechange() {
 
   const isVemat = vematView !== "off";
 
+  // ── Global search results ──────────────────────────────────────────────────
+  interface GlobalResult {
+    source: "vemat" | "JLG" | "Terex";
+    sku: string;
+    title: string;
+    subtitle: string;
+    family?: VematFamily;
+    category?: CatalogCategory;
+  }
+
+  const globalResults = useMemo((): GlobalResult[] => {
+    const q = globalQuery.trim().toLowerCase();
+    if (q.length < 2) return [];
+    const results: GlobalResult[] = [];
+
+    // Vemat stock
+    if (vematCatalog) {
+      for (const family of vematCatalog.families) {
+        for (const prod of family.products) {
+          if (
+            prod.title.toLowerCase().includes(q) ||
+            prod.sku.toLowerCase().includes(q) ||
+            (prod.model ?? "").toLowerCase().includes(q)
+          ) {
+            results.push({ source: "vemat", sku: prod.sku, title: prod.title, subtitle: family.name, family });
+            if (results.filter((r) => r.source === "vemat").length >= 5) break;
+          }
+        }
+        if (results.filter((r) => r.source === "vemat").length >= 5) break;
+      }
+    }
+
+    // Supplier catalogs
+    for (const brandId of ["JLG", "Terex"] as const) {
+      const catalog = catalogs[brandId];
+      if (!catalog) continue;
+      let count = 0;
+      outer: for (const cat of catalog.categories) {
+        for (const prod of cat.products) {
+          if (prod.title.toLowerCase().includes(q) || prod.sku.toLowerCase().includes(q)) {
+            results.push({ source: brandId, sku: prod.sku, title: prod.title, subtitle: cat.name, category: cat });
+            count++;
+            if (count >= 5) break outer;
+          }
+        }
+      }
+    }
+
+    return results;
+  }, [globalQuery, vematCatalog, catalogs]);
+
+  const handleGlobalResult = async (result: GlobalResult) => {
+    setGlobalQuery("");
+    setGlobalOpen(false);
+    if (result.source === "vemat") {
+      await loadVematCatalog();
+      setVematView("products");
+      setActiveFamily(result.family!);
+      setActiveModel("all");
+      setSearch(result.sku);
+    } else {
+      await loadCatalog(result.source);
+      setActiveBrand(result.source);
+      setView("products");
+      setActiveCategory(result.category!);
+      setSearch(result.sku);
+    }
+  };
+
   const copy = {
     title: lang === "fr" ? "Pièces de Rechange" : "Spare Parts",
     subtitle:
@@ -565,9 +653,7 @@ export default function PiecesDeRechange() {
               {/* Vemat stock views */}
               {isVemat && vematView === "families" && (
                 <span className="flex items-center gap-3">
-                  <span className="text-amber-500">
-                    <Warehouse className="h-9 w-9" />
-                  </span>
+                  <img src={vematLogo} alt="Vemat" className="h-9 w-auto object-contain" />
                   <span>Stock Vemat</span>
                 </span>
               )}
@@ -828,6 +914,71 @@ export default function PiecesDeRechange() {
               exit={{ opacity: 0, y: -16 }}
               className="space-y-8"
             >
+              {/* ── Global search bar ─────────────────────────────────────────── */}
+              <div className="relative">
+                <div className="relative">
+                  <Search className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 text-zinc-400 pointer-events-none" />
+                  <input
+                    type="text"
+                    value={globalQuery}
+                    onChange={(e) => { setGlobalQuery(e.target.value); setGlobalOpen(true); }}
+                    onFocus={() => setGlobalOpen(true)}
+                    onBlur={() => setTimeout(() => setGlobalOpen(false), 150)}
+                    placeholder={lang === "fr" ? "Rechercher une pièce, une référence, un modèle..." : "Search a part, reference, or model..."}
+                    className="w-full h-14 pl-14 pr-6 bg-white border border-zinc-200 rounded-2xl text-sm font-medium text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent shadow-sm"
+                  />
+                  {allCatalogsLoading && (
+                    <div className="absolute right-5 top-1/2 -translate-y-1/2 h-4 w-4 border-2 border-accent border-t-transparent rounded-full animate-spin" />
+                  )}
+                </div>
+
+                {/* Results dropdown */}
+                {globalOpen && globalQuery.trim().length >= 2 && (
+                  <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-zinc-200 rounded-2xl shadow-xl z-50 overflow-hidden max-h-96 overflow-y-auto">
+                    {globalResults.length === 0 ? (
+                      <div className="flex items-center gap-3 p-5 text-zinc-400">
+                        <Package className="h-4 w-4 shrink-0" />
+                        <p className="text-sm font-medium">
+                          {allCatalogsLoading
+                            ? (lang === "fr" ? "Recherche en cours..." : "Searching...")
+                            : (lang === "fr" ? "Aucun résultat" : "No results")}
+                        </p>
+                      </div>
+                    ) : (
+                      <>
+                        {(["vemat", "JLG", "Terex"] as const).map((src) => {
+                          const group = globalResults.filter((r) => r.source === src);
+                          if (!group.length) return null;
+                          const label = src === "vemat" ? "Stock Vemat" : `${src} Parts`;
+                          const color = src === "vemat" ? "text-amber-600" : "text-accent";
+                          return (
+                            <div key={src}>
+                              <p className={`px-5 pt-4 pb-1 text-[10px] font-black uppercase tracking-widest ${color}`}>
+                                {label}
+                              </p>
+                              {group.map((r) => (
+                                <button
+                                  key={r.sku}
+                                  onMouseDown={() => handleGlobalResult(r)}
+                                  className="w-full flex items-start gap-3 px-5 py-3 hover:bg-zinc-50 transition-colors text-left"
+                                >
+                                  <Package className="h-4 w-4 text-zinc-300 shrink-0 mt-0.5" />
+                                  <div className="flex-1 min-w-0">
+                                    <p className="text-sm font-semibold text-zinc-900 truncate">{r.title}</p>
+                                    <p className="text-[10px] text-zinc-400 font-mono">{r.sku} · {r.subtitle}</p>
+                                  </div>
+                                  <ChevronRight className="h-3.5 w-3.5 text-zinc-300 shrink-0 mt-0.5" />
+                                </button>
+                              ))}
+                            </div>
+                          );
+                        })}
+                      </>
+                    )}
+                  </div>
+                )}
+              </div>
+
               {/* STOCK VEMAT — featured card */}
               <div>
                 <p className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-400 mb-4 flex items-center gap-2">
@@ -842,8 +993,8 @@ export default function PiecesDeRechange() {
                   <div className="absolute top-0 right-0 w-64 h-64 bg-amber-500/10 rounded-full -translate-y-20 translate-x-20 group-hover:bg-amber-500/20 transition-colors duration-500 pointer-events-none" />
 
                   <div className="flex items-center gap-4 flex-1">
-                    <div className="h-16 w-16 bg-amber-500/20 rounded-2xl flex items-center justify-center shrink-0 group-hover:bg-amber-500/30 transition-colors">
-                      <Warehouse className="h-8 w-8 text-amber-400" />
+                    <div className="h-16 w-16 bg-white/10 rounded-2xl flex items-center justify-center shrink-0 group-hover:bg-white/20 transition-colors p-2">
+                      <img src={vematLogo} alt="Vemat" className="h-full w-full object-contain" style={{ filter: "brightness(0) invert(1)" }} />
                     </div>
                     <div>
                       <div className="flex items-center gap-2 mb-1">
