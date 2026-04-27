@@ -20,6 +20,7 @@ export interface Database {
           city: string | null;
           country: string;
           phone: string | null;
+          email: string | null;
           created_at: string;
         };
         Insert: Omit<Database["public"]["Tables"]["companies"]["Row"], "id" | "created_at"> & { id?: string };
@@ -66,6 +67,12 @@ export interface Database {
           notes: string | null;
           quote_pdf_url: string | null;
           quote_amount: number | null;
+          payment_date: string | null;
+          payment_proof_url: string | null;
+          bl_url: string | null;
+          delivery_date: string | null;
+          carrier: string | null;
+          tracking_number: string | null;
           created_by: string | null;
           created_at: string;
           updated_at: string;
@@ -199,6 +206,8 @@ export type CommercialMeetingReport = {
   summary: string | null;
   outcome: "positif" | "neutre" | "negatif" | "a_recontacter" | null;
   next_step: string | null;
+  validated_by_dg: boolean;
+  dg_comment: string | null;
   created_at: string;
 };
 
@@ -244,11 +253,13 @@ export type PublicDevisRequest = {
   product_brand: string | null;
   product_model: string | null;
   quantity: number;
+  cart_items: Array<{ sku: string; title: string; brand: string; quantity: number }> | null;
   location: string | null;
   desired_date: string | null;
   notes: string | null;
   status: FormDevisStatus;
   converted_to_order_id: string | null;
+  converted_to_sale_id: string | null;
   created_at: string;
 };
 
@@ -263,9 +274,11 @@ export type PublicInterventionRequest = {
   machine_brand: string | null;
   machine_model: string | null;
   machine_serial: string | null;
+  machine_year: string | null;
   problem_description: string;
   urgency: InterventionUrgency;
   location: string;
+  attachments: string[];
   status: FormInterventionStatus;
   converted_to_repair_id: string | null;
   created_at: string;

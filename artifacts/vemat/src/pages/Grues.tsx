@@ -18,12 +18,6 @@ const CRANE_CATEGORIES = [
     image: "/images/products/trt-35/01-02a98a378dcf.jpg",
   },
   {
-    slug: "grues-automotrices-lentes-tadano",
-    title: { fr: "Automotrices lentes\n(Tadano)", en: "Tadano Rough\nTerrain Cranes" },
-    brand: "Tadano",
-    image: "/images/products/gr-800ex/01-46d1ec3f2f33.jpg",
-  },
-  {
     slug: "grues-tout-terrain",
     title: { fr: "Tout-terrain", en: "All Terrain\nCranes" },
     brand: "Tadano",
@@ -88,12 +82,12 @@ export default function Grues() {
             <span className="block w-8 h-px bg-accent" />
             {lang === "fr" ? "Parcourir par catégorie" : "Browse by category"}
           </p>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 md:gap-4">
+          <div className="flex flex-wrap justify-center gap-3 md:gap-4">
             {CRANE_CATEGORIES.map((cat) => (
               <button
                 key={cat.slug}
                 onClick={() => handleCategoryClick(cat.slug)}
-                className="group relative h-44 md:h-56 overflow-hidden rounded-2xl text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                className="group relative h-44 md:h-56 overflow-hidden rounded-2xl text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-accent w-[calc(50%-6px)] sm:w-[calc(25%-9px)] md:w-[calc(25%-12px)]"
               >
                 <img
                   src={cat.image}

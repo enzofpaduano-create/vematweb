@@ -1,14 +1,15 @@
 import { Check, Clock } from "lucide-react";
-import { ORDER_STATUSES, REPAIR_STATUSES } from "@/lib/database.types";
 import type { OrderStatus, RepairStatus } from "@/lib/database.types";
+import { useLang } from "@/i18n/I18nProvider";
 
 const ORDER_FLOW: OrderStatus[] = ["en_traitement", "devis_envoye", "commande_payee", "en_livraison", "livree"];
 const REPAIR_FLOW: RepairStatus[] = ["en_attente", "planifiee", "en_cours", "terminee"];
 
-function Timeline({ steps, currentStatus, statuses }: {
+function Timeline({ steps, currentStatus, labels, cancelledLabel }: {
   steps: string[];
   currentStatus: string;
-  statuses: { value: string; label: string }[];
+  labels: Record<string, string>;
+  cancelledLabel: string;
 }) {
   const currentIdx = steps.indexOf(currentStatus);
   const isCancelled = currentStatus === "annulee";
@@ -18,7 +19,7 @@ function Timeline({ steps, currentStatus, statuses }: {
       {steps.map((step, i) => {
         const done = i < currentIdx;
         const active = i === currentIdx && !isCancelled;
-        const label = statuses.find((s) => s.value === step)?.label ?? step;
+        const label = labels[step] ?? step;
         return (
           <div key={step} className="flex items-center min-w-0">
             <div className="flex flex-col items-center">
@@ -40,16 +41,45 @@ function Timeline({ steps, currentStatus, statuses }: {
         );
       })}
       {isCancelled && (
-        <span className="ml-4 mt-1 text-xs font-semibold text-red-500 self-start">Annulée</span>
+        <span className="ml-4 mt-1 text-xs font-semibold text-red-500 self-start">{cancelledLabel}</span>
       )}
     </div>
   );
 }
 
 export function OrderTimeline({ status }: { status: OrderStatus }) {
-  return <Timeline steps={ORDER_FLOW} currentStatus={status} statuses={ORDER_STATUSES} />;
+  const { t } = useLang();
+  const labels: Record<string, string> = {
+    en_traitement: t("portal.orders.statusLabels.en_traitement"),
+    devis_envoye:  t("portal.orders.statusLabels.devis_envoye"),
+    commande_payee: t("portal.orders.statusLabels.commande_payee"),
+    en_livraison:  t("portal.orders.statusLabels.en_livraison"),
+    livree:        t("portal.orders.statusLabels.livree"),
+  };
+  return (
+    <Timeline
+      steps={ORDER_FLOW}
+      currentStatus={status}
+      labels={labels}
+      cancelledLabel={t("portal.orders.statusLabels.annulee")}
+    />
+  );
 }
 
 export function RepairTimeline({ status }: { status: RepairStatus }) {
-  return <Timeline steps={REPAIR_FLOW} currentStatus={status} statuses={REPAIR_STATUSES} />;
+  const { t } = useLang();
+  const labels: Record<string, string> = {
+    en_attente: t("portal.repairs.statusWaiting"),
+    planifiee:  t("portal.repairs.statusPlanned"),
+    en_cours:   t("portal.repairs.statusOngoing"),
+    terminee:   t("portal.repairs.statusDone"),
+  };
+  return (
+    <Timeline
+      steps={REPAIR_FLOW}
+      currentStatus={status}
+      labels={labels}
+      cancelledLabel={t("portal.repairs.statusCancelled")}
+    />
+  );
 }

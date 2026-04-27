@@ -49,31 +49,6 @@ export const catalog: Record<CategorySlug, SubCategory[]> = {
       ],
     },
     {
-      slug: "grues-automotrices-lentes-tadano",
-      brand: "Tadano Rough Terrain",
-      title: {
-        fr: "Grues automotrices lentes (Tadano)",
-        en: "Tadano Rough Terrain Cranes",
-      },
-      description: {
-        fr: "Performance et fiabilité japonaises pour les terrains difficiles.",
-        en: "Japanese performance and reliability for tough terrains.",
-      },
-      totalCount: 10,
-      models: [
-        { name: "GR-300EX", brand: "Tadano", slug: "gr-300ex"},
-        {name: "GR-500EXS", brand: "Tadano", slug: "gr-500exs"},
-        {name: "GR-500EXL", brand: "Tadano", slug: "gr-500exl"},
-        {name: "GR-600EX", brand: "Tadano", slug: "gr-600ex"},
-        {name: "GR-700EX-4", brand: "Tadano", slug: "gr-700ex-4"},
-        {name: "GR-800EX", brand: "Tadano", slug: "gr-800ex"},
-        {name: "GR-900EX-4", brand: "Tadano", slug: "gr-900ex-4"},
-        {name: "GR-1000EX-4", brand: "Tadano", slug: "gr-1000ex-4"},
-        {name: "GR-1100EX", brand: "Tadano", slug: "gr-1100ex"},
-        {name: "GR-1450EX", brand: "Tadano", slug: "gr-1450ex" }
-      ],
-    },
-    {
       slug: "grues-tout-terrain",
       brand: "Tadano",
       title: { fr: "Grues tout-terrain", en: "All Terrain Cranes" },

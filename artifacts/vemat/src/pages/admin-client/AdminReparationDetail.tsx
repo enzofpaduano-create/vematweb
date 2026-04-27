@@ -8,6 +8,7 @@ import { RepairTimeline } from "@/components/espace-client/StatusTimeline";
 import { supabaseAdmin } from "@/lib/supabase";
 import type { RepairRequest, Company, Chantier, Technician, RepairStatus } from "@/lib/database.types";
 import { REPAIR_STATUSES } from "@/lib/database.types";
+import { useLang } from "@/i18n/I18nProvider";
 
 interface ChecklistItem { id: string; label: string; done: boolean; }
 interface ReportPart { id: string; reference: string; description: string; quantity: number; }
@@ -16,6 +17,7 @@ interface VematCatalog { families: { products: { sku: string; title: string }[] 
 interface SupplierCatalog { supplier: string; categories: { products: { sku: string; title: string }[] }[] }
 
 export default function AdminReparationDetail() {
+  const { lang, t } = useLang();
   const { id } = useParams<{ id: string }>();
   const [repair, setRepair] = useState<RepairRequest | null>(null);
   const [company, setCompany] = useState<Company | null>(null);
@@ -23,6 +25,7 @@ export default function AdminReparationDetail() {
   const [technicians, setTechnicians] = useState<Technician[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
   const [form, setForm] = useState({
     status: "en_attente" as RepairStatus,
     technician_id: "",
@@ -49,7 +52,7 @@ export default function AdminReparationDetail() {
     Promise.all([
       supabaseAdmin.from("repair_requests").select("*, companies(*)").eq("id", id!).single(),
       supabaseAdmin.from("technicians").select("*").order("name"),
-    ]).then(([r, t]) => {
+    ]).then(([r, techData]) => {
       const rep = r.data as (RepairRequest & { companies?: Company }) | null;
       if (rep) {
         setRepair(rep);
@@ -66,7 +69,7 @@ export default function AdminReparationDetail() {
           supabaseAdmin.from("chantiers").select("*").eq("id", rep.chantier_id).single().then(({ data }) => setChantier(data));
         }
       }
-      setTechnicians(t.data ?? []);
+      setTechnicians(techData.data ?? []);
       setLoading(false);
     });
   };
@@ -75,17 +78,19 @@ export default function AdminReparationDetail() {
   const handleSave = async () => {
     if (!repair) return;
     setSaving(true);
+    setSaveError(null);
     const oldStatus = repair.status;
     const completedDate = form.status === "terminee" && !repair.completed_date
       ? new Date().toISOString().split("T")[0]
       : repair.completed_date;
-    await supabaseAdmin.from("repair_requests").update({
+    const { error } = await supabaseAdmin.from("repair_requests").update({
       status: form.status,
       technician_id: form.technician_id || null,
       scheduled_date: form.scheduled_date || null,
       technician_notes: form.technician_notes || null,
       completed_date: completedDate,
     }).eq("id", repair.id);
+    if (error) { setSaving(false); setSaveError(error.message); return; }
     if (oldStatus !== form.status) {
       await supabaseAdmin.from("status_history").insert({
         entity_type: "reparation", entity_id: repair.id,
@@ -201,7 +206,7 @@ export default function AdminReparationDetail() {
 
   const printReport = () => {
     if (!repair) return;
-    const tech = technicians.find((t) => t.id === repair.technician_id);
+    const tech = technicians.find((tech) => tech.id === repair.technician_id);
     const parts = (repair.report_parts as unknown as ReportPart[] | null)?.filter((p) => p.description) ?? [];
     const w = window.open("", "_blank", "width=900,height=1100");
     if (!w) return;
@@ -344,13 +349,13 @@ export default function AdminReparationDetail() {
     (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>) =>
       setForm((f) => ({ ...f, [k]: e.target.value }));
 
-  if (loading) return <AdminGuard><AdminLayout><div className="p-8 text-zinc-400">Chargement...</div></AdminLayout></AdminGuard>;
-  if (!repair) return <AdminGuard><AdminLayout><div className="p-8 text-zinc-400">Réparation introuvable.</div></AdminLayout></AdminGuard>;
+  if (loading) return <AdminGuard><AdminLayout><div className="p-8 text-zinc-400">{t("portal.common.loading")}</div></AdminLayout></AdminGuard>;
+  if (!repair) return <AdminGuard><AdminLayout><div className="p-8 text-zinc-400">{t("portal.admin.repairNotFound")}</div></AdminLayout></AdminGuard>;
 
   const reportParts_ = (repair.report_parts as unknown as ReportPart[] | null)?.filter((p) => p.description) ?? [];
   const hasReport = !!repair.report_submitted_at;
   const isLocked = !!repair.report_locked;
-  const tech = technicians.find((t) => t.id === repair.technician_id);
+  const tech = technicians.find((tech) => tech.id === repair.technician_id);
 
   const lockReport = async () => {
     await supabaseAdmin.from("repair_requests").update({ report_locked: true }).eq("id", repair.id);
@@ -363,7 +368,7 @@ export default function AdminReparationDetail() {
         <div className="p-8 max-w-4xl">
           <Link href="/espace-manager/reparations"
             className="flex items-center gap-1.5 text-sm text-zinc-500 hover:text-zinc-900 mb-6 transition-colors">
-            <ArrowLeft className="w-4 h-4" /> Retour
+            <ArrowLeft className="w-4 h-4" /> {t("portal.common.back")}
           </Link>
 
           <div className="flex items-start justify-between mb-6">
@@ -371,29 +376,29 @@ export default function AdminReparationDetail() {
               <div className="flex items-center gap-3">
                 <h1 className="text-2xl font-black text-zinc-900">{repair.reference}</h1>
                 {repair.priority === "urgente" && (
-                  <span className="text-xs font-black bg-red-100 text-red-600 px-2.5 py-1 rounded-full uppercase tracking-wider">Urgente</span>
+                  <span className="text-xs font-black bg-red-100 text-red-600 px-2.5 py-1 rounded-full uppercase tracking-wider">{t("portal.dashboard.urgent")}</span>
                 )}
               </div>
               <p className="text-zinc-500 text-sm mt-1">
-                {company?.name} · {new Date(repair.created_at).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" })}
+                {company?.name} · {new Date(repair.created_at).toLocaleDateString(lang === "fr" ? "fr-FR" : "en-GB", { day: "numeric", month: "long", year: "numeric" })}
               </p>
             </div>
             <div className="flex items-center gap-3">
               {hasReport && (
                 <button onClick={printReport}
                   className="flex items-center gap-2 border border-zinc-200 text-zinc-600 hover:bg-zinc-50 font-semibold text-sm px-4 py-2 rounded-lg transition-colors">
-                  <Printer className="w-4 h-4" /> Télécharger le rapport
+                  <Printer className="w-4 h-4" /> {t("portal.admin.downloadReport")}
                 </button>
               )}
               {hasReport && !isLocked && (
                 <button onClick={lockReport}
                   className="flex items-center gap-2 bg-zinc-900 text-white font-bold text-sm px-4 py-2 rounded-lg hover:bg-zinc-700 transition-colors">
-                  <CheckCircle2 className="w-4 h-4" /> Clôturer la mission
+                  <CheckCircle2 className="w-4 h-4" /> {t("portal.admin.closeMission")}
                 </button>
               )}
               {isLocked && (
                 <span className="flex items-center gap-1.5 text-xs font-black text-zinc-500 border border-zinc-200 px-3 py-2 rounded-lg">
-                  <CheckCircle2 className="w-3.5 h-3.5" /> Mission clôturée
+                  <CheckCircle2 className="w-3.5 h-3.5" /> {t("portal.admin.missionClosed")}
                 </span>
               )}
               <RepairStatusBadge status={repair.status} />
@@ -402,23 +407,23 @@ export default function AdminReparationDetail() {
 
           {/* Timeline */}
           <div className="bg-white rounded-xl border border-zinc-100 p-6 mb-5">
-            <h2 className="text-xs font-black uppercase tracking-wider text-zinc-500 mb-5">Avancement</h2>
+            <h2 className="text-xs font-black uppercase tracking-wider text-zinc-500 mb-5">{t("portal.admin.progress")}</h2>
             <RepairTimeline status={form.status} />
           </div>
 
           {/* Admin controls */}
           <div className="bg-white rounded-xl border border-zinc-200 p-6 mb-5">
-            <h2 className="text-xs font-black uppercase tracking-wider text-zinc-500 mb-4">Gestion de l'intervention</h2>
+            <h2 className="text-xs font-black uppercase tracking-wider text-zinc-500 mb-4">{t("portal.admin.interventionManagement")}</h2>
             <div className="grid grid-cols-2 gap-4 mb-4">
               <div>
-                <label className="block text-xs font-bold text-zinc-600 uppercase tracking-wide mb-1.5">Statut</label>
+                <label className="block text-xs font-bold text-zinc-600 uppercase tracking-wide mb-1.5">{t("portal.commercial_page.formStatus")}</label>
                 <select value={form.status} onChange={set("status")}
                   className="w-full border border-zinc-200 rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:border-accent">
                   {REPAIR_STATUSES.map((s) => <option key={s.value} value={s.value}>{s.label}</option>)}
                 </select>
               </div>
               <div>
-                <label className="block text-xs font-bold text-zinc-600 uppercase tracking-wide mb-1.5">Date d'intervention</label>
+                <label className="block text-xs font-bold text-zinc-600 uppercase tracking-wide mb-1.5">{t("portal.admin.interventionDate")}</label>
                 <input type="date" value={form.scheduled_date} onChange={set("scheduled_date")}
                   className="w-full border border-zinc-200 rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:border-accent" />
               </div>
@@ -426,34 +431,35 @@ export default function AdminReparationDetail() {
 
             {/* Tech assignment */}
             <div className="mb-4">
-              <label className="block text-xs font-bold text-zinc-600 uppercase tracking-wide mb-2">Technicien assigné</label>
+              <label className="block text-xs font-bold text-zinc-600 uppercase tracking-wide mb-2">{t("portal.admin.assignedTechnician")}</label>
               <div className="flex flex-wrap gap-3">
-                {technicians.map((t) => (
-                  <button key={t.id} type="button" onClick={() => setForm((f) => ({ ...f, technician_id: t.id }))}
-                    className={`flex items-center gap-2 border-2 rounded-xl px-4 py-3 transition-all ${form.technician_id === t.id ? "border-accent bg-accent/5" : "border-zinc-200 hover:border-zinc-300"}`}>
-                    <div className="w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold" style={{ backgroundColor: t.color }}>
-                      {t.name.split(" ").map((w) => w[0]).join("")}
+                {technicians.map((tech) => (
+                  <button key={tech.id} type="button" onClick={() => setForm((f) => ({ ...f, technician_id: tech.id }))}
+                    className={`flex items-center gap-2 border-2 rounded-xl px-4 py-3 transition-all ${form.technician_id === tech.id ? "border-accent bg-accent/5" : "border-zinc-200 hover:border-zinc-300"}`}>
+                    <div className="w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold" style={{ backgroundColor: tech.color }}>
+                      {tech.name.split(" ").map((w) => w[0]).join("")}
                     </div>
-                    <span className="text-sm font-semibold text-zinc-700">{t.name}</span>
+                    <span className="text-sm font-semibold text-zinc-700">{tech.name}</span>
                   </button>
                 ))}
                 <button type="button" onClick={() => setForm((f) => ({ ...f, technician_id: "" }))}
                   className={`border-2 rounded-xl px-4 py-3 text-sm font-semibold transition-all ${!form.technician_id ? "border-zinc-900 bg-zinc-50 text-zinc-700" : "border-zinc-200 text-zinc-400 hover:border-zinc-300"}`}>
-                  Aucun
+                  {t("portal.common.none")}
                 </button>
               </div>
             </div>
 
             <div className="mb-4">
-              <label className="block text-xs font-bold text-zinc-600 uppercase tracking-wide mb-1.5">Notes pour le client</label>
+              <label className="block text-xs font-bold text-zinc-600 uppercase tracking-wide mb-1.5">{t("portal.admin.clientNotes")}</label>
               <textarea value={form.technician_notes} onChange={set("technician_notes")} rows={3}
-                placeholder="Compte-rendu visible par le client..."
+                placeholder={t("portal.admin.clientNotesPlaceholder")}
                 className="w-full border border-zinc-200 rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:border-accent resize-none" />
             </div>
 
+            {saveError && <p className="mb-3 text-xs text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">{saveError}</p>}
             <button onClick={handleSave} disabled={saving}
               className="flex items-center gap-2 bg-accent text-accent-foreground font-bold text-sm px-5 py-2.5 rounded-lg hover:bg-accent/90 transition-colors disabled:opacity-60">
-              <Save className="w-4 h-4" />{saving ? "Enregistrement..." : "Enregistrer"}
+              <Save className="w-4 h-4" />{saving ? t("portal.common.saving") : t("portal.common.save")}
             </button>
           </div>
 
@@ -461,12 +467,12 @@ export default function AdminReparationDetail() {
           <div className="bg-white rounded-xl border border-zinc-100 p-6 mb-5">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xs font-black uppercase tracking-wider text-zinc-500">
-                Checklist technicien
+                {t("portal.admin.techChecklist")}
               </h2>
               {checklist.length > 0 && (
                 <span className="text-xs text-zinc-400">
-                  {checklist.filter((i) => i.done).length}/{checklist.length} complétés
-                  {savingChecklist && <span className="ml-2 text-zinc-300">Sauvegarde...</span>}
+                  {checklist.filter((i) => i.done).length}/{checklist.length} {t("portal.admin.completed")}
+                  {savingChecklist && <span className="ml-2 text-zinc-300">{t("portal.common.saving")}...</span>}
                 </span>
               )}
             </div>
@@ -495,11 +501,11 @@ export default function AdminReparationDetail() {
             <div className="flex gap-2">
               <input value={newItem} onChange={(e) => setNewItem(e.target.value)}
                 onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); addChecklistItem(); } }}
-                placeholder="Ex: Vérifier le niveau d'huile..."
+                placeholder={t("portal.admin.checklistPlaceholder")}
                 className="flex-1 border border-zinc-200 rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:border-accent" />
               <button type="button" onClick={addChecklistItem} disabled={!newItem.trim()}
                 className="flex items-center gap-1.5 bg-zinc-900 text-white font-bold text-sm px-4 py-2.5 rounded-lg hover:bg-zinc-700 transition-colors disabled:opacity-40">
-                <Plus className="w-4 h-4" /> Ajouter
+                <Plus className="w-4 h-4" /> {t("portal.common.add")}
               </button>
             </div>
           </div>
@@ -508,10 +514,10 @@ export default function AdminReparationDetail() {
           <div className="bg-white rounded-xl border border-zinc-100 p-6 mb-5">
             <div className="flex items-center justify-between mb-4">
               <div>
-                <h2 className="text-xs font-black uppercase tracking-wider text-zinc-500">Pièces à préparer</h2>
-                <p className="text-xs text-zinc-400 mt-0.5">Visible par le technicien avant son départ</p>
+                <h2 className="text-xs font-black uppercase tracking-wider text-zinc-500">{t("portal.admin.partsToPrepare")}</h2>
+                <p className="text-xs text-zinc-400 mt-0.5">{t("portal.admin.partsToPrepareHint")}</p>
               </div>
-              {savingParts && <span className="text-xs text-zinc-400">Sauvegarde...</span>}
+              {savingParts && <span className="text-xs text-zinc-400">{t("portal.common.saving")}...</span>}
             </div>
 
             {/* Search input */}
@@ -524,7 +530,7 @@ export default function AdminReparationDetail() {
                 onFocus={() => { if (partResults.length > 0) setShowPartDropdown(true); }}
                 onBlur={() => setTimeout(() => setShowPartDropdown(false), 150)}
                 onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); if (partResults.length > 0) selectPartFromCatalog(partResults[0]); else addManualPart(); } }}
-                placeholder="Chercher une référence ou un nom de pièce..."
+                placeholder={t("portal.admin.searchPartPlaceholder")}
                 className="w-full border border-zinc-200 rounded-lg pl-10 pr-4 py-2.5 text-sm focus:outline-none focus:border-accent"
               />
               {showPartDropdown && (
@@ -548,7 +554,7 @@ export default function AdminReparationDetail() {
                       className="w-full flex items-center gap-3 px-4 py-3 hover:bg-zinc-50 transition-colors text-left border-t border-zinc-100"
                     >
                       <Plus className="w-4 h-4 text-accent shrink-0" />
-                      <span className="text-sm font-semibold text-accent">Ajouter manuellement "{partSearch.trim()}"</span>
+                      <span className="text-sm font-semibold text-accent">{t("portal.admin.addManually")} "{partSearch.trim()}"</span>
                     </button>
                   )}
                 </div>
@@ -561,9 +567,9 @@ export default function AdminReparationDetail() {
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="bg-zinc-50">
-                      <th className="text-left px-4 py-2.5 text-xs font-black uppercase text-zinc-400 tracking-wide">Référence</th>
-                      <th className="text-left px-4 py-2.5 text-xs font-black uppercase text-zinc-400 tracking-wide">Désignation</th>
-                      <th className="text-right px-4 py-2.5 text-xs font-black uppercase text-zinc-400 tracking-wide w-20">Qté</th>
+                      <th className="text-left px-4 py-2.5 text-xs font-black uppercase text-zinc-400 tracking-wide">{t("portal.admin.reference")}</th>
+                      <th className="text-left px-4 py-2.5 text-xs font-black uppercase text-zinc-400 tracking-wide">{t("portal.admin.designation")}</th>
+                      <th className="text-right px-4 py-2.5 text-xs font-black uppercase text-zinc-400 tracking-wide w-20">{t("portal.common.qty")}</th>
                       <th className="w-10" />
                     </tr>
                   </thead>
@@ -581,7 +587,7 @@ export default function AdminReparationDetail() {
                           <input
                             value={p.description}
                             onChange={(e) => updateManagerPart(p.id, "description", e.target.value)}
-                            placeholder="Désignation..."
+                            placeholder={t("portal.admin.designationPlaceholder")}
                             className="text-sm text-zinc-800 w-full bg-transparent border-b border-transparent focus:border-zinc-300 focus:outline-none"
                           />
                         </td>
@@ -607,7 +613,7 @@ export default function AdminReparationDetail() {
             )}
 
             {managerParts.length === 0 && (
-              <p className="text-xs text-zinc-400 text-center py-4">Aucune pièce ajoutée · Tapez une référence pour rechercher dans le catalogue</p>
+              <p className="text-xs text-zinc-400 text-center py-4">{t("portal.admin.noPartsAdded")}</p>
             )}
           </div>
 
@@ -617,18 +623,18 @@ export default function AdminReparationDetail() {
               <div className={`px-6 py-4 border-b border-zinc-100 flex items-center justify-between ${isLocked ? "bg-zinc-50" : "bg-emerald-50"}`}>
                 <div className="flex items-center gap-2">
                   <FileText className={`w-4 h-4 ${isLocked ? "text-zinc-500" : "text-emerald-600"}`} />
-                  <h2 className="text-sm font-black text-zinc-900">Rapport d'intervention</h2>
+                  <h2 className="text-sm font-black text-zinc-900">{t("portal.admin.interventionReport")}</h2>
                   {isLocked && (
-                    <span className="text-[10px] font-black uppercase tracking-wider text-zinc-500 bg-zinc-200 px-2 py-0.5 rounded-full">Clôturé</span>
+                    <span className="text-[10px] font-black uppercase tracking-wider text-zinc-500 bg-zinc-200 px-2 py-0.5 rounded-full">{t("portal.admin.closed")}</span>
                   )}
                 </div>
                 <div className="flex items-center gap-3">
                   <span className="text-xs text-zinc-400">
-                    {new Date(repair.report_submitted_at!).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric", hour: "2-digit", minute: "2-digit" })}
+                    {new Date(repair.report_submitted_at!).toLocaleDateString(lang === "fr" ? "fr-FR" : "en-GB", { day: "numeric", month: "long", year: "numeric", hour: "2-digit", minute: "2-digit" })}
                   </span>
                   <button onClick={printReport}
                     className="flex items-center gap-1.5 text-xs font-bold text-emerald-700 hover:text-emerald-900 transition-colors">
-                    <Printer className="w-3.5 h-3.5" /> Imprimer
+                    <Printer className="w-3.5 h-3.5" /> {t("portal.admin.print")}
                   </button>
                 </div>
               </div>
@@ -647,7 +653,7 @@ export default function AdminReparationDetail() {
                   {repair.report_hours && (
                     <div className="flex items-center gap-1.5 text-sm">
                       <Clock className="w-4 h-4 text-zinc-400" />
-                      <span className="text-zinc-500">Durée :</span>
+                      <span className="text-zinc-500">{t("portal.admin.duration")} :</span>
                       <span className="font-bold text-zinc-800">{repair.report_hours}h</span>
                     </div>
                   )}
@@ -656,7 +662,7 @@ export default function AdminReparationDetail() {
                 {/* Work done */}
                 {repair.report_work_done && (
                   <div>
-                    <p className="text-xs font-black uppercase tracking-wider text-zinc-400 mb-1.5">Travaux effectués</p>
+                    <p className="text-xs font-black uppercase tracking-wider text-zinc-400 mb-1.5">{t("portal.admin.workDone")}</p>
                     <p className="text-sm text-zinc-700 whitespace-pre-line">{repair.report_work_done}</p>
                   </div>
                 )}
@@ -665,15 +671,15 @@ export default function AdminReparationDetail() {
                 {reportParts_.length > 0 && (
                   <div>
                     <p className="text-xs font-black uppercase tracking-wider text-zinc-400 mb-2 flex items-center gap-1.5">
-                      <Package className="w-3.5 h-3.5" /> Pièces de rechange utilisées
+                      <Package className="w-3.5 h-3.5" /> {t("portal.admin.spareParts")}
                     </p>
                     <div className="rounded-xl border border-zinc-100 overflow-hidden">
                       <table className="w-full text-sm">
                         <thead>
                           <tr className="bg-zinc-50">
-                            <th className="text-left px-4 py-2.5 text-xs font-black uppercase text-zinc-400 tracking-wide">Référence</th>
-                            <th className="text-left px-4 py-2.5 text-xs font-black uppercase text-zinc-400 tracking-wide">Désignation</th>
-                            <th className="text-right px-4 py-2.5 text-xs font-black uppercase text-zinc-400 tracking-wide">Qté</th>
+                            <th className="text-left px-4 py-2.5 text-xs font-black uppercase text-zinc-400 tracking-wide">{t("portal.admin.reference")}</th>
+                            <th className="text-left px-4 py-2.5 text-xs font-black uppercase text-zinc-400 tracking-wide">{t("portal.admin.designation")}</th>
+                            <th className="text-right px-4 py-2.5 text-xs font-black uppercase text-zinc-400 tracking-wide">{t("portal.common.qty")}</th>
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-zinc-50">
@@ -693,7 +699,7 @@ export default function AdminReparationDetail() {
                 {/* Observations */}
                 {repair.report_observations && (
                   <div>
-                    <p className="text-xs font-black uppercase tracking-wider text-zinc-400 mb-1.5">Observations & recommandations</p>
+                    <p className="text-xs font-black uppercase tracking-wider text-zinc-400 mb-1.5">{t("portal.admin.observations")}</p>
                     <p className="text-sm text-zinc-600 whitespace-pre-line">{repair.report_observations}</p>
                   </div>
                 )}
@@ -705,7 +711,7 @@ export default function AdminReparationDetail() {
                   return (
                     <div>
                       <p className="text-xs font-black uppercase tracking-wider text-zinc-400 mb-2 flex items-center gap-1.5">
-                        <Package className="w-3.5 h-3.5" /> Photos du technicien ({photos.length})
+                        <Package className="w-3.5 h-3.5" /> {t("portal.admin.techPhotos")} ({photos.length})
                       </p>
                       <div className="grid grid-cols-4 gap-2">
                         {photos.map((p, i) => (
@@ -723,7 +729,7 @@ export default function AdminReparationDetail() {
                 {checklist.length > 0 && (
                   <div>
                     <p className="text-xs font-black uppercase tracking-wider text-zinc-400 mb-2 flex items-center gap-1.5">
-                      <CheckCircle2 className="w-3.5 h-3.5" /> Checklist — {checklist.filter((i) => i.done).length}/{checklist.length}
+                      <CheckCircle2 className="w-3.5 h-3.5" /> {t("portal.admin.techChecklist")} — {checklist.filter((i) => i.done).length}/{checklist.length}
                     </p>
                     <div className="grid grid-cols-2 gap-1.5">
                       {checklist.map((item) => (
@@ -747,7 +753,7 @@ export default function AdminReparationDetail() {
             if (!atts.length) return null;
             return (
               <div className="bg-white rounded-xl border border-zinc-100 p-6 mb-5">
-                <h2 className="text-xs font-black uppercase tracking-wider text-zinc-500 mb-4">Documents joints par le client ({atts.length})</h2>
+                <h2 className="text-xs font-black uppercase tracking-wider text-zinc-500 mb-4">{t("portal.admin.clientAttachments")} ({atts.length})</h2>
                 <div className="grid grid-cols-4 gap-3">
                   {atts.map((a, i) => (
                     a.type.startsWith("image/") ? (
@@ -771,23 +777,23 @@ export default function AdminReparationDetail() {
           {/* Repair info */}
           <div className="grid grid-cols-2 gap-5">
             <div className="bg-white rounded-xl border border-zinc-100 p-5">
-              <h2 className="text-xs font-black uppercase tracking-wider text-zinc-500 mb-3">Équipement</h2>
+              <h2 className="text-xs font-black uppercase tracking-wider text-zinc-500 mb-3">{t("portal.admin.equipment")}</h2>
               <p className="font-bold text-zinc-900">{repair.equipment_type}</p>
               {repair.equipment_brand && <p className="text-sm text-zinc-600 mt-1">{repair.equipment_brand} {repair.equipment_model}</p>}
               {repair.equipment_serial && <p className="text-xs text-zinc-400 mt-1 font-mono">S/N: {repair.equipment_serial}</p>}
             </div>
             {chantier && (
               <div className="bg-white rounded-xl border border-zinc-100 p-5">
-                <h2 className="text-xs font-black uppercase tracking-wider text-zinc-500 mb-3">Chantier</h2>
+                <h2 className="text-xs font-black uppercase tracking-wider text-zinc-500 mb-3">{t("portal.admin.worksite")}</h2>
                 <p className="font-bold text-zinc-900">{chantier.name}</p>
                 {chantier.address && <p className="text-sm text-zinc-500 mt-1">{chantier.address}, {chantier.city}</p>}
-                {chantier.contact_name && <p className="text-sm text-zinc-500 mt-1">Contact : {chantier.contact_name} {chantier.contact_phone}</p>}
+                {chantier.contact_name && <p className="text-sm text-zinc-500 mt-1">{t("portal.common.contact")} : {chantier.contact_name} {chantier.contact_phone}</p>}
               </div>
             )}
           </div>
 
           <div className="bg-zinc-50 rounded-xl border border-zinc-100 p-5 mt-5">
-            <h2 className="text-xs font-black uppercase tracking-wider text-zinc-500 mb-2">Description du problème</h2>
+            <h2 className="text-xs font-black uppercase tracking-wider text-zinc-500 mb-2">{t("portal.admin.problemDescription")}</h2>
             <p className="text-sm text-zinc-700 whitespace-pre-line">{repair.description}</p>
           </div>
         </div>

@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Link } from "wouter";
-import { ArrowRight, Globe, ShieldCheck, HardHat, MapPin } from "lucide-react";
+import { ArrowRight, Globe, ShieldCheck, HardHat, MapPin, FileText, Wrench } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useSEO, useScrollTop } from "@/hooks/use-seo";
 import { HeroSection } from "@/components/HeroSection";
@@ -13,7 +13,6 @@ import { StatBlock } from "@/components/StatBlock";
 import { OfficesSection } from "@/components/OfficesSection";
 import { categories } from "@/data/categories";
 import { useLang } from "@/i18n/I18nProvider";
-import { Testimonials } from "@/components/Testimonials";
 import { heroSlides } from "@/data/heroSlides";
 import { BlogTicker } from "@/components/BlogTicker";
 
@@ -233,7 +232,62 @@ export default function Home() {
         </div>
       </section>
 
-      <Testimonials />
+      {/* Forms CTA Section */}
+      <section className="py-24 bg-zinc-950">
+        <div className="container mx-auto px-4 md:px-6">
+          <div className="text-center mb-12">
+            <p className="text-xs font-black uppercase tracking-widest text-zinc-500 mb-3">Services en ligne</p>
+            <h2 className="text-3xl md:text-4xl font-heading font-extrabold text-white tracking-tight">
+              Besoin d'un devis ou d'une intervention ?
+            </h2>
+            <p className="text-zinc-400 mt-4 max-w-xl mx-auto">
+              Déposez votre demande directement en ligne. Notre équipe vous répond sous 24h.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 max-w-3xl mx-auto">
+            {/* Devis */}
+            <Link href="/demande-devis">
+              <motion.div
+                whileHover={{ y: -4 }}
+                transition={{ duration: 0.2 }}
+                className="group relative bg-gradient-to-br from-sky-500/10 to-sky-600/5 border border-sky-500/20 hover:border-sky-400/50 rounded-2xl p-8 cursor-pointer transition-colors"
+              >
+                <div className="w-12 h-12 bg-sky-500/15 rounded-xl flex items-center justify-center mb-5">
+                  <FileText className="w-6 h-6 text-sky-400" />
+                </div>
+                <h3 className="text-xl font-black text-white mb-2">Demande de devis</h3>
+                <p className="text-sm text-zinc-400 leading-relaxed mb-6">
+                  Grues, nacelles, élévateurs, pièces de rechange — obtenez un devis personnalisé pour votre projet.
+                </p>
+                <div className="inline-flex items-center gap-2 text-sky-400 font-bold text-sm group-hover:gap-3 transition-all">
+                  Faire une demande <ArrowRight className="w-4 h-4" />
+                </div>
+              </motion.div>
+            </Link>
+
+            {/* Intervention */}
+            <Link href="/demande-intervention">
+              <motion.div
+                whileHover={{ y: -4 }}
+                transition={{ duration: 0.2 }}
+                className="group relative bg-gradient-to-br from-orange-500/10 to-orange-600/5 border border-orange-500/20 hover:border-orange-400/50 rounded-2xl p-8 cursor-pointer transition-colors"
+              >
+                <div className="w-12 h-12 bg-orange-500/15 rounded-xl flex items-center justify-center mb-5">
+                  <Wrench className="w-6 h-6 text-orange-400" />
+                </div>
+                <h3 className="text-xl font-black text-white mb-2">Demande d'intervention</h3>
+                <p className="text-sm text-zinc-400 leading-relaxed mb-6">
+                  Panne, maintenance, entretien — signalez un problème sur votre machine avec photos et documents.
+                </p>
+                <div className="inline-flex items-center gap-2 text-orange-400 font-bold text-sm group-hover:gap-3 transition-all">
+                  Signaler un problème <ArrowRight className="w-4 h-4" />
+                </div>
+              </motion.div>
+            </Link>
+          </div>
+        </div>
+      </section>
+
       <CTASection
         title={t("home.ctaTitle")}
         description={t("home.ctaDesc")}
