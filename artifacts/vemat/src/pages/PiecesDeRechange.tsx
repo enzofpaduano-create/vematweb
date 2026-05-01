@@ -487,7 +487,7 @@ export default function PiecesDeRechange() {
   const handleSendToPortal = () => {
     localStorage.setItem("vemat_devis_cart", JSON.stringify(cart));
     setIsOrderOpen(false);
-    navigate("/espace-client/commandes/nouvelle");
+    navigate("/demande-devis");
   };
 
   const totalItems = cart.reduce((s, i) => s + i.quantity, 0);
@@ -1091,6 +1091,44 @@ export default function PiecesDeRechange() {
                   ))}
                 </div>
               </div>
+
+              {/* Catalogues techniques (DocWare / partsbook) */}
+              <div className="mt-12">
+                <p className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-400 mb-4 flex items-center gap-2">
+                  <span className="block w-6 h-px bg-zinc-300" />
+                  {lang === "fr" ? "Catalogues techniques" : "Technical catalogs"}
+                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <a
+                    href="/pieces-de-rechange/terex/catalogue/trt-35"
+                    className="group relative bg-white rounded-[2.5rem] border border-zinc-100 p-8 flex flex-col items-start gap-6 hover:border-accent/30 hover:shadow-soft transition-all duration-300 text-left overflow-hidden"
+                  >
+                    <div className="absolute top-0 right-0 w-40 h-40 bg-accent/5 rounded-full -translate-y-10 translate-x-10 group-hover:bg-accent/10 transition-colors duration-500" />
+                    <div className="h-14 flex items-center">
+                      <img src={terexLogo} alt="Terex" className="h-full object-contain" />
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2 mb-1 flex-wrap">
+                        <span className="text-2xl font-heading font-extrabold text-zinc-950 tracking-tight">
+                          Terex TRT 35
+                        </span>
+                        <span className="px-2.5 py-0.5 bg-accent/10 text-accent text-[10px] font-black uppercase tracking-widest rounded-full border border-accent/20">
+                          Catalogue
+                        </span>
+                      </div>
+                      <p className="text-zinc-500 text-sm font-medium">
+                        {lang === "fr"
+                          ? "231 sous-assemblages · 133 schémas · 2 113 pièces (8 niveaux)"
+                          : "231 sub-assemblies · 133 diagrams · 2,113 parts (8 levels)"}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-2 text-accent text-xs font-black uppercase tracking-widest mt-auto group-hover:gap-3 transition-all">
+                      {lang === "fr" ? "Ouvrir le catalogue" : "Open catalog"}
+                      <ChevronRight className="h-4 w-4" />
+                    </div>
+                  </a>
+                </div>
+              </div>
             </motion.div>
           )}
 
@@ -1286,14 +1324,13 @@ export default function PiecesDeRechange() {
                 onClick={handleSendToPortal}
                 className="w-full h-14 bg-zinc-950 text-white hover:bg-accent rounded-2xl font-black uppercase tracking-[0.15em] text-xs transition-all"
               >
-                {lang === "fr" ? "Continuer dans mon Espace Client" : "Continue in my Client Portal"}
+                {lang === "fr" ? "Envoyer une demande de devis" : "Send a quote request"}
                 <ArrowRight className="ml-3 h-4 w-4" />
               </Button>
               <p className="text-center text-xs text-zinc-400 mt-4">
-                {lang === "fr" ? "Vous serez redirigé vers votre espace client. " : "You'll be redirected to your client portal. "}
-                <a href="/espace-vemat" className="text-accent font-semibold hover:underline">
-                  {lang === "fr" ? "Se connecter →" : "Sign in →"}
-                </a>
+                {lang === "fr"
+                  ? "Votre sélection sera transmise à notre équipe. Nous vous répondons sous 24h."
+                  : "Your selection will be sent to our team. We'll respond within 24h."}
               </p>
             </motion.div>
           </div>

@@ -89,6 +89,7 @@ export async function sendInterventionEmail(params: {
   problem_description: string;
   urgency: string;
   location: string;
+  attachments?: string[];
 }) {
   const urgencyLabel: Record<string, string> = {
     normale: "Normale",
@@ -96,6 +97,10 @@ export async function sendInterventionEmail(params: {
     tres_urgente: "🚨 TRÈS URGENTE",
   };
   const urg = urgencyLabel[params.urgency] ?? params.urgency;
+
+  const attachmentSection = params.attachments && params.attachments.length > 0
+    ? `\n── PIÈCES JOINTES ───────────────────────────\n${params.attachments.map((url, i) => `Fichier ${i + 1} : ${url}`).join("\n")}\n`
+    : "";
 
   const subject = `[INTERVENTION ${urg}] ${params.reference} — ${params.company_name}`;
   const body = `
@@ -120,7 +125,7 @@ N° série  : ${params.machine_serial ?? "Non précisé"}
 ── INTERVENTION ─────────────────────────────
 Description : ${params.problem_description}
 Adresse     : ${params.location}
-
+${attachmentSection}
 ─────────────────────────────────────────────
 Retrouvez cette demande dans l'Espace Manager → Demandes entrantes.
   `.trim();

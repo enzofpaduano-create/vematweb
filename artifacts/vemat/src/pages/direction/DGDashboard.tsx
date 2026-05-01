@@ -6,6 +6,7 @@ import { DGGuard } from "./DGGuard";
 import { RepairStatusBadge } from "@/components/espace-client/StatusBadge";
 import { supabaseDG } from "@/lib/supabase";
 import type { RepairRequest, Company, Technician, DevisRequest, CommercialSale, Commercial } from "@/lib/database.types";
+import { useLang } from "@/i18n/I18nProvider";
 
 type RepairWithCompany = RepairRequest & { company?: Company };
 
@@ -14,8 +15,9 @@ function toDateStr(d: Date) {
 }
 
 export default function DGDashboard() {
+  const { lang, t } = useLang();
   const [repairs, setRepairs] = useState<RepairWithCompany[]>([]);
-  const [orders, setOrders] = useState<DevisRequest[]>([]);
+  const [orders, setOrders] = useState<Pick<DevisRequest, "id" | "status" | "quote_amount" | "created_at">[]>([]);
   const [technicians, setTechnicians] = useState<Technician[]>([]);
   const [commercialSales, setCommercialSales] = useState<CommercialSale[]>([]);
   const [commercials, setCommerciaux] = useState<Commercial[]>([]);
@@ -35,9 +37,9 @@ export default function DGDashboard() {
       supabaseDG.from("devis_requests").select("id, status, quote_amount, created_at").not("quote_amount", "is", null),
       supabaseDG.from("commercial_sales").select("*").in("status", ["facture", "paye"]),
       supabaseDG.from("commercials").select("*").order("name"),
-    ]).then(([r, t, o, cs, com]) => {
+    ]).then(([r, techData, o, cs, com]) => {
       setRepairs((r.data ?? []).map((rep: RepairRequest & { companies?: Company }) => ({ ...rep, company: rep.companies })));
-      setTechnicians(t.data ?? []);
+      setTechnicians(techData.data ?? []);
       setOrders(o.data ?? []);
       setCommercialSales(cs.data ?? []);
       setCommerciaux(com.data ?? []);
@@ -71,7 +73,7 @@ export default function DGDashboard() {
       if (key in months) months[key] += o.quote_amount ?? 0;
     });
     return Object.entries(months).map(([key, value]) => ({
-      month: new Date(key + "-01").toLocaleDateString("fr-FR", { month: "short" }),
+      month: new Date(key + "-01").toLocaleDateString(lang === "fr" ? "fr-FR" : "en-GB", { month: "short" }),
       ca: value,
     }));
   }, [paidOrders]);
@@ -81,7 +83,7 @@ export default function DGDashboard() {
     .filter((o) => { const d = new Date(o.invoice_date ?? o.created_at); return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear(); })
     .reduce((s, o) => s + (o.invoice_amount ?? 0), 0);
 
-  const techById = (id: string | null) => (id ? technicians.find((t) => t.id === id) ?? null : null);
+  const techById = (id: string | null) => (id ? technicians.find((tech) => tech.id === id) ?? null : null);
 
   const openReassign = (repair: RepairWithCompany) => {
     setReassignTarget(repair);
@@ -112,10 +114,10 @@ export default function DGDashboard() {
   };
 
   const operationalStats = [
-    { icon: Wrench, label: "Missions actives", value: activeRepairs.length, color: "text-orange-600 bg-orange-50" },
-    { icon: AlertTriangle, label: "Urgentes", value: urgentRepairs.length, color: "text-red-600 bg-red-50" },
-    { icon: CalendarDays, label: "Aujourd'hui", value: todayRepairs.length, color: "text-blue-600 bg-blue-50" },
-    { icon: CheckCircle2, label: "Rapports à valider", value: reportsToValidate.length, color: "text-purple-600 bg-purple-50" },
+    { icon: Wrench, label: t("portal.dg.activeMissions"), value: activeRepairs.length, color: "text-orange-600 bg-orange-50" },
+    { icon: AlertTriangle, label: t("portal.dg.urgent"), value: urgentRepairs.length, color: "text-red-600 bg-red-50" },
+    { icon: CalendarDays, label: t("portal.dg.today"), value: todayRepairs.length, color: "text-blue-600 bg-blue-50" },
+    { icon: CheckCircle2, label: t("portal.dg.reportsToValidate"), value: reportsToValidate.length, color: "text-purple-600 bg-purple-50" },
   ];
 
   return (
@@ -123,9 +125,9 @@ export default function DGDashboard() {
       <DGLayout>
         <div className="p-8">
           <div className="mb-8">
-            <h1 className="text-2xl font-black text-zinc-900">Tableau de bord Direction</h1>
+            <h1 className="text-2xl font-black text-zinc-900">{t("portal.dg.dashboardTitle")}</h1>
             <p className="text-sm text-zinc-500 mt-1">
-              {new Date().toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long", year: "numeric" })}
+              {new Date().toLocaleDateString(lang === "fr" ? "fr-FR" : "en-GB", { weekday: "long", day: "numeric", month: "long", year: "numeric" })}
             </p>
           </div>
 
@@ -166,8 +168,8 @@ export default function DGDashboard() {
                   <div className="w-10 h-10 rounded-lg flex items-center justify-center mb-3 text-emerald-600 bg-emerald-50">
                     <DollarSign className="w-5 h-5" />
                   </div>
-                  <p className="text-xl font-black text-zinc-900 leading-tight">{totalCA > 0 ? `${totalCA.toLocaleString("fr-FR")} MAD` : "—"}</p>
-                  <p className="text-xs text-zinc-500 mt-0.5">CA total facturé</p>
+                  <p className="text-xl font-black text-zinc-900 leading-tight">{totalCA > 0 ? `${totalCA.toLocaleString(lang === "fr" ? "fr-FR" : "en-GB")} MAD` : "—"}</p>
+                  <p className="text-xs text-zinc-500 mt-0.5">{t("portal.dg.totalBilledCA")}</p>
                 </>
               )}
             </div>
@@ -184,8 +186,8 @@ export default function DGDashboard() {
                   <div className="w-10 h-10 rounded-lg flex items-center justify-center mb-3 text-blue-600 bg-blue-50">
                     <TrendingUp className="w-5 h-5" />
                   </div>
-                  <p className="text-xl font-black text-zinc-900 leading-tight">{thisMonthCA > 0 ? `${thisMonthCA.toLocaleString("fr-FR")} MAD` : "—"}</p>
-                  <p className="text-xs text-zinc-500 mt-0.5">CA ce mois · {new Date().toLocaleDateString("fr-FR", { month: "long" })}</p>
+                  <p className="text-xl font-black text-zinc-900 leading-tight">{thisMonthCA > 0 ? `${thisMonthCA.toLocaleString(lang === "fr" ? "fr-FR" : "en-GB")} MAD` : "—"}</p>
+                  <p className="text-xs text-zinc-500 mt-0.5">{t("portal.dg.thisMonthCA")} · {new Date().toLocaleDateString(lang === "fr" ? "fr-FR" : "en-GB", { month: "long" })}</p>
                 </>
               )}
             </div>
@@ -195,13 +197,13 @@ export default function DGDashboard() {
           {/* Monthly CA chart */}
           {!loading && totalCA > 0 && (
             <div className="bg-white rounded-xl border border-zinc-100 p-6 mb-6">
-              <h2 className="text-xs font-black uppercase tracking-wider text-zinc-500 mb-4">Chiffre d'affaires mensuel (6 derniers mois)</h2>
+              <h2 className="text-xs font-black uppercase tracking-wider text-zinc-500 mb-4">{t("portal.dg.monthlyCAChart")}</h2>
               <ResponsiveContainer width="100%" height={130}>
                 <BarChart data={monthlyCA} margin={{ top: 4, right: 0, left: 0, bottom: 0 }}>
                   <XAxis dataKey="month" tick={{ fontSize: 11, fill: "#9ca3af" }} axisLine={false} tickLine={false} />
                   <YAxis hide />
                   <Tooltip
-                    formatter={(value: number) => [`${value.toLocaleString("fr-FR")} MAD`, "CA"]}
+                    formatter={(value: number) => [`${value.toLocaleString(lang === "fr" ? "fr-FR" : "en-GB")} MAD`, "CA"]}
                     contentStyle={{ background: "#fff", border: "1px solid #e5e7eb", borderRadius: 8, fontSize: 12, padding: "6px 12px" }}
                     cursor={{ fill: "#f4f4f5" }}
                   />
@@ -217,11 +219,11 @@ export default function DGDashboard() {
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
                   <TrendingUp className="w-4 h-4 text-sky-500" />
-                  <h2 className="font-bold text-zinc-900 text-sm">Ventes machines (commercial)</h2>
+                  <h2 className="font-bold text-zinc-900 text-sm">{t("portal.dg.machineSales")}</h2>
                 </div>
                 <div className="flex items-center gap-4 text-sm">
-                  <span className="text-zinc-500">Total : <span className="font-bold text-zinc-900">{totalCAMachines > 0 ? `${totalCAMachines.toLocaleString("fr-FR")} MAD` : "—"}</span></span>
-                  <span className="text-zinc-500">Ce mois : <span className="font-bold text-zinc-900">{thisMonthCAMachines > 0 ? `${thisMonthCAMachines.toLocaleString("fr-FR")} MAD` : "—"}</span></span>
+                  <span className="text-zinc-500">{t("portal.dg.total")} : <span className="font-bold text-zinc-900">{totalCAMachines > 0 ? `${totalCAMachines.toLocaleString(lang === "fr" ? "fr-FR" : "en-GB")} MAD` : "—"}</span></span>
+                  <span className="text-zinc-500">{t("portal.dg.thisMonth")} : <span className="font-bold text-zinc-900">{thisMonthCAMachines > 0 ? `${thisMonthCAMachines.toLocaleString(lang === "fr" ? "fr-FR" : "en-GB")} MAD` : "—"}</span></span>
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-3">
@@ -236,11 +238,11 @@ export default function DGDashboard() {
                       </div>
                       <div className="min-w-0 flex-1">
                         <p className="text-sm font-bold text-zinc-900">{com.name}</p>
-                        <p className="text-xs text-zinc-500">{comSales.length} vente{comSales.length !== 1 ? "s" : ""}</p>
+                        <p className="text-xs text-zinc-500">{comSales.length} {comSales.length !== 1 ? t("portal.commercial_page.salesPlural") : t("portal.commercial_page.sale")}</p>
                       </div>
                       <div className="text-right shrink-0">
-                        <p className="text-sm font-black text-zinc-900">{comCA > 0 ? `${comCA.toLocaleString("fr-FR")} MAD` : "—"}</p>
-                        {comMonthCA > 0 && <p className="text-xs text-sky-600 font-semibold">+{comMonthCA.toLocaleString("fr-FR")} ce mois</p>}
+                        <p className="text-sm font-black text-zinc-900">{comCA > 0 ? `${comCA.toLocaleString(lang === "fr" ? "fr-FR" : "en-GB")} MAD` : "—"}</p>
+                        {comMonthCA > 0 && <p className="text-xs text-sky-600 font-semibold">+{comMonthCA.toLocaleString(lang === "fr" ? "fr-FR" : "en-GB")} {t("portal.dg.thisMonth")}</p>}
                       </div>
                     </div>
                   );
@@ -254,12 +256,12 @@ export default function DGDashboard() {
             <div className="flex items-center justify-between px-5 py-4 border-b border-zinc-100">
               <div className="flex items-center gap-2">
                 <Wrench className="w-4 h-4 text-orange-500" />
-                <h2 className="font-bold text-zinc-900 text-sm">Missions en cours</h2>
+                <h2 className="font-bold text-zinc-900 text-sm">{t("portal.dg.ongoingMissions")}</h2>
                 {!loading && activeRepairs.length > 0 && (
                   <span className="text-xs font-bold bg-orange-100 text-orange-600 px-2 py-0.5 rounded-full">{activeRepairs.length}</span>
                 )}
               </div>
-              <p className="text-xs text-zinc-400">Cliquez sur Modifier pour réassigner</p>
+              <p className="text-xs text-zinc-400">{t("portal.dg.clickToReassign")}</p>
             </div>
 
             {loading ? (
@@ -275,18 +277,18 @@ export default function DGDashboard() {
                 ))}
               </div>
             ) : activeRepairs.length === 0 ? (
-              <div className="px-5 py-8 text-center text-sm text-zinc-400">Aucune mission active</div>
+              <div className="px-5 py-8 text-center text-sm text-zinc-400">{t("portal.dg.noActiveMission")}</div>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="border-b border-zinc-100">
-                      <th className="text-left px-5 py-3 text-xs font-bold text-zinc-400 uppercase tracking-wider">Réf.</th>
-                      <th className="text-left px-5 py-3 text-xs font-bold text-zinc-400 uppercase tracking-wider">Client</th>
-                      <th className="text-left px-5 py-3 text-xs font-bold text-zinc-400 uppercase tracking-wider">Équipement</th>
-                      <th className="text-left px-5 py-3 text-xs font-bold text-zinc-400 uppercase tracking-wider">Technicien</th>
-                      <th className="text-left px-5 py-3 text-xs font-bold text-zinc-400 uppercase tracking-wider">Date</th>
-                      <th className="text-left px-5 py-3 text-xs font-bold text-zinc-400 uppercase tracking-wider">Statut</th>
+                      <th className="text-left px-5 py-3 text-xs font-bold text-zinc-400 uppercase tracking-wider">{t("portal.common.reference")}</th>
+                      <th className="text-left px-5 py-3 text-xs font-bold text-zinc-400 uppercase tracking-wider">{t("portal.common.client")}</th>
+                      <th className="text-left px-5 py-3 text-xs font-bold text-zinc-400 uppercase tracking-wider">{t("portal.repairs.equipmentCol")}</th>
+                      <th className="text-left px-5 py-3 text-xs font-bold text-zinc-400 uppercase tracking-wider">{t("portal.repairs.technicianCol")}</th>
+                      <th className="text-left px-5 py-3 text-xs font-bold text-zinc-400 uppercase tracking-wider">{t("portal.common.date")}</th>
+                      <th className="text-left px-5 py-3 text-xs font-bold text-zinc-400 uppercase tracking-wider">{t("portal.common.status")}</th>
                       <th className="px-5 py-3" />
                     </tr>
                   </thead>
@@ -299,7 +301,7 @@ export default function DGDashboard() {
                             <div className="flex items-center gap-2">
                               <span className="font-bold text-zinc-900">{r.reference}</span>
                               {r.priority === "urgente" && (
-                                <span className="text-[9px] font-black bg-red-100 text-red-600 px-1.5 py-0.5 rounded-full uppercase">Urgent</span>
+                                <span className="text-[9px] font-black bg-red-100 text-red-600 px-1.5 py-0.5 rounded-full uppercase">{t("portal.dashboard.urgent")}</span>
                               )}
                             </div>
                           </td>
@@ -313,18 +315,18 @@ export default function DGDashboard() {
                                 </span>
                                 <span className="text-zinc-700 text-xs">{tech.name}</span>
                               </div>
-                            ) : <span className="text-zinc-400 text-xs">Non assigné</span>}
+                            ) : <span className="text-zinc-400 text-xs">{t("portal.dashboard.unassigned")}</span>}
                           </td>
                           <td className="px-5 py-3 text-zinc-600 text-xs">
                             {r.scheduled_date
-                              ? new Date(r.scheduled_date + "T00:00:00").toLocaleDateString("fr-FR", { day: "numeric", month: "short" })
+                              ? new Date(r.scheduled_date + "T00:00:00").toLocaleDateString(lang === "fr" ? "fr-FR" : "en-GB", { day: "numeric", month: "short" })
                               : <span className="text-zinc-400">—</span>}
                           </td>
                           <td className="px-5 py-3"><RepairStatusBadge status={r.status} /></td>
                           <td className="px-5 py-3">
                             <button onClick={() => openReassign(r)}
                               className="flex items-center gap-1.5 text-xs font-bold text-purple-600 hover:text-purple-800 bg-purple-50 hover:bg-purple-100 px-3 py-1.5 rounded-lg transition-colors">
-                              <Edit3 className="w-3 h-3" /> Modifier
+                              <Edit3 className="w-3 h-3" /> {t("portal.dg.edit")}
                             </button>
                           </td>
                         </tr>
@@ -341,7 +343,7 @@ export default function DGDashboard() {
             <div className="bg-white rounded-xl border border-zinc-100 overflow-hidden">
               <div className="flex items-center gap-2 px-5 py-4 border-b border-zinc-100">
                 <CheckCircle2 className="w-4 h-4 text-purple-500" />
-                <h2 className="font-bold text-zinc-900 text-sm">Rapports à valider</h2>
+                <h2 className="font-bold text-zinc-900 text-sm">{t("portal.dg.reportsToValidate")}</h2>
                 {!loading && reportsToValidate.length > 0 && (
                   <span className="text-xs font-bold bg-purple-100 text-purple-600 px-2 py-0.5 rounded-full">{reportsToValidate.length}</span>
                 )}
@@ -352,7 +354,7 @@ export default function DGDashboard() {
                     {Array.from({ length: 3 }).map((_, i) => <div key={i} className="h-10 bg-zinc-100 rounded animate-pulse" />)}
                   </div>
                 ) : reportsToValidate.length === 0 ? (
-                  <div className="px-5 py-8 text-center text-sm text-zinc-400">Aucun rapport en attente</div>
+                  <div className="px-5 py-8 text-center text-sm text-zinc-400">{t("portal.dg.noReportPending")}</div>
                 ) : reportsToValidate.map((r) => {
                   const tech = techById(r.technician_id ?? null);
                   return (
@@ -362,13 +364,13 @@ export default function DGDashboard() {
                         <p className="text-xs text-zinc-400">{r.company?.name ?? "—"}{tech ? ` · ${tech.name}` : ""}</p>
                         {r.report_submitted_at && (
                           <p className="text-[10px] text-zinc-400 mt-0.5 flex items-center gap-1">
-                            <Clock className="w-2.5 h-2.5" />Soumis le {new Date(r.report_submitted_at).toLocaleDateString("fr-FR")}
+                            <Clock className="w-2.5 h-2.5" />{t("portal.dashboard.submittedOn")} {new Date(r.report_submitted_at).toLocaleDateString(lang === "fr" ? "fr-FR" : "en-GB")}
                           </p>
                         )}
                       </div>
                       <button onClick={() => lockReport(r)} disabled={locking === r.id}
                         className="flex items-center gap-1.5 text-xs font-bold text-emerald-600 hover:text-emerald-800 bg-emerald-50 hover:bg-emerald-100 px-3 py-1.5 rounded-lg transition-colors disabled:opacity-50">
-                        <UserCheck className="w-3.5 h-3.5" />{locking === r.id ? "..." : "Valider"}
+                        <UserCheck className="w-3.5 h-3.5" />{locking === r.id ? "..." : t("portal.dg.validate")}
                       </button>
                     </div>
                   );
@@ -380,7 +382,7 @@ export default function DGDashboard() {
             <div className="bg-white rounded-xl border border-zinc-100 overflow-hidden">
               <div className="flex items-center gap-2 px-5 py-4 border-b border-zinc-100">
                 <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-                <h2 className="font-bold text-zinc-900 text-sm">Missions terminées récentes</h2>
+                <h2 className="font-bold text-zinc-900 text-sm">{t("portal.dg.recentFinished")}</h2>
               </div>
               <div className="divide-y divide-zinc-50">
                 {loading ? (
@@ -388,7 +390,7 @@ export default function DGDashboard() {
                     {Array.from({ length: 3 }).map((_, i) => <div key={i} className="h-10 bg-zinc-100 rounded animate-pulse" />)}
                   </div>
                 ) : recentFinished.length === 0 ? (
-                  <div className="px-5 py-8 text-center text-sm text-zinc-400">Aucune mission terminée</div>
+                  <div className="px-5 py-8 text-center text-sm text-zinc-400">{t("portal.dg.noFinishedMission")}</div>
                 ) : recentFinished.map((r) => {
                   const tech = techById(r.technician_id ?? null);
                   return (
@@ -397,12 +399,12 @@ export default function DGDashboard() {
                         <div className="flex items-center gap-2">
                           <p className="text-sm font-bold text-zinc-900">{r.reference}</p>
                           {r.report_locked && (
-                            <span className="text-[9px] font-black bg-emerald-100 text-emerald-600 px-1.5 py-0.5 rounded-full uppercase">Validé</span>
+                            <span className="text-[9px] font-black bg-emerald-100 text-emerald-600 px-1.5 py-0.5 rounded-full uppercase">{t("portal.dg.validated")}</span>
                           )}
                         </div>
                         <p className="text-xs text-zinc-400">{r.company?.name ?? "—"}{tech ? ` · ${tech.name}` : ""}</p>
                         {r.completed_date && (
-                          <p className="text-[10px] text-zinc-400 mt-0.5">Terminée le {new Date(r.completed_date + "T00:00:00").toLocaleDateString("fr-FR")}</p>
+                          <p className="text-[10px] text-zinc-400 mt-0.5">{t("portal.dg.finishedOn")} {new Date(r.completed_date + "T00:00:00").toLocaleDateString(lang === "fr" ? "fr-FR" : "en-GB")}</p>
                         )}
                       </div>
                       <div className={`w-2 h-2 rounded-full ${r.report_locked ? "bg-emerald-400" : r.report_submitted_at ? "bg-amber-400" : "bg-zinc-300"}`} />
@@ -420,22 +422,22 @@ export default function DGDashboard() {
             <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md">
               <div className="flex items-center justify-between p-6 border-b border-zinc-100">
                 <div>
-                  <h3 className="font-black text-zinc-900">Modifier la mission</h3>
+                  <h3 className="font-black text-zinc-900">{t("portal.dg.editMission")}</h3>
                   <p className="text-sm text-zinc-500 mt-0.5">{reassignTarget.reference} · {reassignTarget.company?.name}</p>
                 </div>
                 <button onClick={() => setReassignTarget(null)} className="text-zinc-400 hover:text-zinc-700 transition-colors"><X className="w-5 h-5" /></button>
               </div>
               <div className="p-6 space-y-5">
                 <div>
-                  <label className="block text-xs font-bold text-zinc-700 uppercase tracking-wide mb-2">Technicien assigné</label>
+                  <label className="block text-xs font-bold text-zinc-700 uppercase tracking-wide mb-2">{t("portal.dg.assignedTechnician")}</label>
                   <select value={newTechId} onChange={(e) => setNewTechId(e.target.value)}
                     className="w-full border border-zinc-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-purple-500 bg-white">
-                    <option value="">— Non assigné —</option>
-                    {technicians.map((t) => <option key={t.id} value={t.id}>{t.name}</option>)}
+                    <option value="">— {t("portal.dashboard.unassigned")} —</option>
+                    {technicians.map((tech) => <option key={tech.id} value={tech.id}>{tech.name}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-zinc-700 uppercase tracking-wide mb-2">Date d'intervention</label>
+                  <label className="block text-xs font-bold text-zinc-700 uppercase tracking-wide mb-2">{t("portal.dg.interventionDate")}</label>
                   <input type="date" value={newDate} onChange={(e) => setNewDate(e.target.value)}
                     className="w-full border border-zinc-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-purple-500" />
                 </div>
@@ -443,11 +445,11 @@ export default function DGDashboard() {
               <div className="flex gap-3 px-6 pb-6">
                 <button onClick={() => setReassignTarget(null)}
                   className="flex-1 border border-zinc-200 text-zinc-600 font-bold py-2.5 rounded-xl hover:bg-zinc-50 transition-colors">
-                  Annuler
+                  {t("portal.common.cancel")}
                 </button>
                 <button onClick={saveReassign} disabled={saving}
                   className="flex-1 bg-purple-600 hover:bg-purple-500 text-white font-black py-2.5 rounded-xl transition-colors disabled:opacity-60">
-                  {saving ? "Enregistrement..." : "Enregistrer"}
+                  {saving ? t("portal.dg.saving") : t("portal.common.save")}
                 </button>
               </div>
             </div>

@@ -5,12 +5,16 @@ import { AdminLayout } from "./AdminLayout";
 import { AdminGuard } from "./AdminGuard";
 import { supabaseAdmin } from "@/lib/supabase";
 import type { RepairRequest, Technician, Company } from "@/lib/database.types";
+import { useLang } from "@/i18n/I18nProvider";
 
 type RepairWithCompany = RepairRequest & { company?: Company };
 
 const DAYS_FR = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"];
+const DAYS_EN = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 const MONTHS_FR = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"];
-const MONTHS_SHORT = ["Jan", "Fév", "Mar", "Avr", "Mai", "Jun", "Jul", "Aoû", "Sep", "Oct", "Nov", "Déc"];
+const MONTHS_EN = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const MONTHS_SHORT_FR = ["Jan", "Fév", "Mar", "Avr", "Mai", "Jun", "Jul", "Aoû", "Sep", "Oct", "Nov", "Déc"];
+const MONTHS_SHORT_EN = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 function startOfWeek(date: Date) {
   const d = new Date(date);
@@ -24,6 +28,10 @@ function addDays(date: Date, n: number) { const d = new Date(date); d.setDate(d.
 function toDateStr(d: Date) { return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`; }
 
 export default function AdminCalendrier() {
+  const { lang, t } = useLang();
+  const DAYS = lang === "fr" ? DAYS_FR : DAYS_EN;
+  const MONTHS = lang === "fr" ? MONTHS_FR : MONTHS_EN;
+  const MONTHS_SHORT = lang === "fr" ? MONTHS_SHORT_FR : MONTHS_SHORT_EN;
   const [, navigate] = useLocation();
   const [weekStart, setWeekStart] = useState(() => startOfWeek(new Date()));
   const [repairs, setRepairs] = useState<RepairWithCompany[]>([]);
@@ -93,7 +101,7 @@ export default function AdminCalendrier() {
 
   const weekLabel = () => {
     const a = days[0]; const b = days[6];
-    if (a.getMonth() === b.getMonth()) return `${a.getDate()} – ${b.getDate()} ${MONTHS_FR[a.getMonth()]} ${a.getFullYear()}`;
+    if (a.getMonth() === b.getMonth()) return `${a.getDate()} – ${b.getDate()} ${MONTHS[a.getMonth()]} ${a.getFullYear()}`;
     return `${a.getDate()} ${MONTHS_SHORT[a.getMonth()]} – ${b.getDate()} ${MONTHS_SHORT[b.getMonth()]} ${b.getFullYear()}`;
   };
 
@@ -103,13 +111,13 @@ export default function AdminCalendrier() {
         <div className="p-8">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h1 className="text-2xl font-black text-zinc-900">Calendrier</h1>
-              <p className="text-sm text-zinc-500 mt-0.5">Glissez les cartes pour replanifier une intervention</p>
+              <h1 className="text-2xl font-black text-zinc-900">{t("portal.calendar.title")}</h1>
+              <p className="text-sm text-zinc-500 mt-0.5">{t("portal.calendar.subtitle")}</p>
             </div>
             <div className="flex items-center gap-2">
               <button onClick={() => setWeekStart(startOfWeek(new Date()))}
                 className="text-xs font-bold border border-zinc-200 px-3 py-2 rounded-lg hover:bg-zinc-50 transition-colors">
-                Aujourd'hui
+                {t("portal.calendar.today")}
               </button>
               <div className="flex items-center border border-zinc-200 rounded-lg overflow-hidden">
                 <button onClick={() => setWeekStart((d) => addDays(d, -7))} className="p-2 hover:bg-zinc-50 border-r border-zinc-200 transition-colors">
@@ -124,7 +132,7 @@ export default function AdminCalendrier() {
           </div>
 
           {loading ? (
-            <div className="bg-white rounded-xl border border-zinc-100 py-32 text-center text-zinc-400">Chargement...</div>
+            <div className="bg-white rounded-xl border border-zinc-100 py-32 text-center text-zinc-400">{t("portal.common.loading")}</div>
           ) : (
             <div className="flex gap-5 items-start">
               {/* Main grid */}
@@ -134,7 +142,7 @@ export default function AdminCalendrier() {
                   <div className="px-4 py-3 border-r border-zinc-100" />
                   {days.map((day, i) => (
                     <div key={i} className={`px-3 py-3 text-center border-r border-zinc-100 last:border-r-0 ${isToday(day) ? "bg-accent/8" : ""}`}>
-                      <p className={`text-[10px] font-black uppercase tracking-widest ${isToday(day) ? "text-accent" : "text-zinc-400"}`}>{DAYS_FR[i]}</p>
+                      <p className={`text-[10px] font-black uppercase tracking-widest ${isToday(day) ? "text-accent" : "text-zinc-400"}`}>{DAYS[i]}</p>
                       <div className={`text-lg font-black mt-0.5 inline-flex w-8 h-8 items-center justify-center rounded-full mx-auto ${
                         isToday(day) ? "bg-accent text-accent-foreground" : isPast(day) ? "text-zinc-300" : "text-zinc-900"
                       }`}>{day.getDate()}</div>
@@ -143,7 +151,7 @@ export default function AdminCalendrier() {
                 </div>
 
                 {technicians.length === 0 ? (
-                  <div className="py-16 text-center text-zinc-400 text-sm">Aucun technicien</div>
+                  <div className="py-16 text-center text-zinc-400 text-sm">{t("portal.calendar.noTechnician")}</div>
                 ) : (
                   <>
                     {technicians.map((tech, ti) => (
@@ -157,7 +165,7 @@ export default function AdminCalendrier() {
                           </div>
                           <div className="min-w-0">
                             <p className="text-xs font-bold text-zinc-800 truncate">{tech.name.split(" ")[0]}</p>
-                            {!tech.available && <p className="text-[9px] text-zinc-400 font-semibold uppercase">Indispo</p>}
+                            {!tech.available && <p className="text-[9px] text-zinc-400 font-semibold uppercase">{t("portal.calendar.indispo")}</p>}
                           </div>
                         </div>
                         {days.map((day, di) => {
@@ -182,7 +190,7 @@ export default function AdminCalendrier() {
                                   {r.company && <p className="text-[9px] text-zinc-500 truncate leading-tight mt-0.5">{r.company.name}</p>}
                                   {r.priority === "urgente" && (
                                     <p className="text-[8px] font-black text-red-600 uppercase flex items-center gap-0.5 mt-0.5">
-                                      <AlertTriangle className="w-2.5 h-2.5" /> Urgent
+                                      <AlertTriangle className="w-2.5 h-2.5" /> {t("portal.common.urgent")}
                                     </p>
                                   )}
                                 </div>
@@ -199,7 +207,7 @@ export default function AdminCalendrier() {
                         <div className="w-7 h-7 rounded-full bg-zinc-100 flex items-center justify-center shrink-0">
                           <span className="text-[10px] text-zinc-400 font-black">?</span>
                         </div>
-                        <p className="text-xs font-bold text-zinc-400">Non assigné</p>
+                        <p className="text-xs font-bold text-zinc-400">{t("portal.calendar.unassignedRow")}</p>
                       </div>
                       {days.map((day, di) => {
                         const dateStr = toDateStr(day);
@@ -219,7 +227,7 @@ export default function AdminCalendrier() {
                                 style={{ borderLeft: "3px solid #a1a1aa" }}>
                                 <p className="text-[10px] font-black text-zinc-700 truncate">{r.reference}</p>
                                 {r.company && <p className="text-[9px] text-zinc-400 truncate">{r.company.name}</p>}
-                                {r.priority === "urgente" && <p className="text-[8px] font-black text-red-600 uppercase">Urgent</p>}
+                                {r.priority === "urgente" && <p className="text-[8px] font-black text-red-600 uppercase">{t("portal.common.urgent")}</p>}
                               </div>
                             ))}
                           </div>
@@ -236,7 +244,7 @@ export default function AdminCalendrier() {
                   <div className="bg-accent/5 border border-accent/20 rounded-xl overflow-hidden">
                     <div className="px-4 py-3 border-b border-accent/10 flex items-center gap-2">
                       <CalendarDays className="w-3.5 h-3.5 text-accent" />
-                      <h3 className="text-xs font-black uppercase tracking-wider text-accent">Aujourd'hui · {todayAll.length}</h3>
+                      <h3 className="text-xs font-black uppercase tracking-wider text-accent">{t("portal.calendar.today")} · {todayAll.length}</h3>
                     </div>
                     <div className="divide-y divide-accent/10 max-h-64 overflow-y-auto">
                       {todayAll.map((r) => {
@@ -265,14 +273,14 @@ export default function AdminCalendrier() {
                 {/* À planifier — aussi draggable */}
                 <div className="bg-white rounded-xl border border-zinc-100 overflow-hidden">
                   <div className="px-4 py-3 border-b border-zinc-100 flex items-center justify-between">
-                    <h3 className="text-xs font-black uppercase tracking-wider text-zinc-500">À planifier</h3>
+                    <h3 className="text-xs font-black uppercase tracking-wider text-zinc-500">{t("portal.calendar.unscheduled")}</h3>
                     {unscheduled.length > 0 && (
                       <span className="text-xs font-bold text-white bg-orange-500 px-2 py-0.5 rounded-full">{unscheduled.length}</span>
                     )}
                   </div>
                   <div className="divide-y divide-zinc-50 max-h-72 overflow-y-auto">
                     {unscheduled.length === 0 ? (
-                      <div className="px-4 py-8 text-center text-xs text-zinc-400">Toutes les demandes sont planifiées ✓</div>
+                      <div className="px-4 py-8 text-center text-xs text-zinc-400">{t("portal.calendar.allPlanned")}</div>
                     ) : unscheduled.map((r) => {
                       const tech = techById(r.technician_id ?? null);
                       return (
@@ -291,7 +299,7 @@ export default function AdminCalendrier() {
                               <div className="w-3 h-3 rounded-full shrink-0" style={{ backgroundColor: tech.color }} />
                               <span className="text-[10px] text-zinc-400">{tech.name}</span>
                             </div>
-                          ) : <p className="text-[10px] text-zinc-300 mt-1">Aucun technicien</p>}
+                          ) : <p className="text-[10px] text-zinc-300 mt-1">{t("portal.calendar.noTechnician")}</p>}
                         </div>
                       );
                     })}
@@ -300,14 +308,14 @@ export default function AdminCalendrier() {
 
                 {/* Légende */}
                 <div className="bg-white rounded-xl border border-zinc-100 p-4">
-                  <h3 className="text-xs font-black uppercase tracking-wider text-zinc-500 mb-3">Techniciens</h3>
+                  <h3 className="text-xs font-black uppercase tracking-wider text-zinc-500 mb-3">{t("portal.calendar.technicianLegend")}</h3>
                   <div className="space-y-2">
-                    {technicians.map((t) => (
-                      <div key={t.id} className="flex items-center gap-2">
-                        <div className="w-3 h-3 rounded-full shrink-0" style={{ backgroundColor: t.color }} />
-                        <span className="text-xs text-zinc-700 font-semibold truncate">{t.name}</span>
-                        <span className={`ml-auto text-[10px] font-bold px-1.5 py-0.5 rounded-full shrink-0 ${t.available ? "bg-emerald-50 text-emerald-600" : "bg-zinc-100 text-zinc-400"}`}>
-                          {t.available ? "Dispo" : "Indispo"}
+                    {technicians.map((tech) => (
+                      <div key={tech.id} className="flex items-center gap-2">
+                        <div className="w-3 h-3 rounded-full shrink-0" style={{ backgroundColor: tech.color }} />
+                        <span className="text-xs text-zinc-700 font-semibold truncate">{tech.name}</span>
+                        <span className={`ml-auto text-[10px] font-bold px-1.5 py-0.5 rounded-full shrink-0 ${tech.available ? "bg-emerald-50 text-emerald-600" : "bg-zinc-100 text-zinc-400"}`}>
+                          {tech.available ? t("portal.calendar.dispo") : t("portal.calendar.indispo")}
                         </span>
                       </div>
                     ))}

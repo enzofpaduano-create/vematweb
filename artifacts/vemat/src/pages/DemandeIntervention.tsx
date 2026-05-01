@@ -1,6 +1,10 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Link } from "wouter";
-import { CheckCircle2, Loader2, ArrowLeft, Wrench, AlertTriangle, AlertOctagon, Minus } from "lucide-react";
+import {
+  CheckCircle2, Loader2, ArrowLeft, Wrench,
+  AlertTriangle, AlertOctagon, Minus,
+  Paperclip, X, FileText,
+} from "lucide-react";
 import vematLogo from "@/assets/vemat-logo.png";
 import { supabasePublic } from "@/lib/supabase";
 import { sendInterventionEmail } from "@/lib/emailService";
@@ -57,8 +61,8 @@ const URGENCY_OPTIONS: {
     desc: "Intervention à planifier sous quelques jours",
     icon: Minus,
     color: "text-zinc-300",
-    border: "border-zinc-700",
-    bg: "bg-zinc-800",
+    border: "border-zinc-600",
+    bg: "bg-zinc-700/50",
   },
   {
     value: "urgente",
@@ -80,6 +84,38 @@ const URGENCY_OPTIONS: {
   },
 ];
 
+const MAX_FILES = 8;
+const MAX_SIZE_MB = 10;
+
+function FilePreviewItem({ file, onRemove }: { file: File; onRemove: () => void }) {
+  const isImage = file.type.startsWith("image/");
+  const [imgUrl] = useState(() => (isImage ? URL.createObjectURL(file) : null));
+  const sizeMB = (file.size / 1024 / 1024).toFixed(1);
+
+  return (
+    <div className="relative group">
+      {isImage && imgUrl ? (
+        <div className="w-20 h-20 rounded-xl overflow-hidden border border-zinc-700 bg-zinc-800">
+          <img src={imgUrl} alt={file.name} className="w-full h-full object-cover" />
+        </div>
+      ) : (
+        <div className="w-20 h-20 rounded-xl border border-zinc-700 bg-zinc-800 flex flex-col items-center justify-center gap-1 px-1">
+          <FileText className="w-7 h-7 text-orange-400/70 flex-shrink-0" />
+          <span className="text-[9px] text-zinc-500 w-full truncate text-center px-1">{file.name}</span>
+        </div>
+      )}
+      <p className="text-[10px] text-zinc-600 text-center mt-1">{sizeMB} Mo</p>
+      <button
+        type="button"
+        onClick={onRemove}
+        className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-zinc-900 border border-zinc-700 rounded-full flex items-center justify-center text-zinc-500 hover:text-red-400 hover:border-red-400/50 transition-colors shadow-sm"
+      >
+        <X className="w-3 h-3" />
+      </button>
+    </div>
+  );
+}
+
 export default function DemandeIntervention() {
   const [step, setStep] = useState<"form" | "success">("form");
   const [loading, setLoading] = useState(false);
@@ -97,11 +133,31 @@ export default function DemandeIntervention() {
   const [machineBrand, setMachineBrand] = useState("");
   const [machineModel, setMachineModel] = useState("");
   const [machineSerial, setMachineSerial] = useState("");
+  const [machineYear, setMachineYear] = useState("");
 
   // Intervention
   const [problemDescription, setProblemDescription] = useState("");
   const [urgency, setUrgency] = useState<InterventionUrgency>("normale");
   const [location, setLocation] = useState("");
+
+  // Attachments
+  const [attachmentFiles, setAttachmentFiles] = useState<File[]>([]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const selected = Array.from(e.target.files ?? []);
+    const valid = selected.filter((f) => {
+      if (f.size > MAX_SIZE_MB * 1024 * 1024) return false;
+      if (!["image/jpeg", "image/png", "image/jpg", "application/pdf"].includes(f.type)) return false;
+      return true;
+    });
+    setAttachmentFiles((prev) => [...prev, ...valid].slice(0, MAX_FILES));
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  }
+
+  function removeFile(idx: number) {
+    setAttachmentFiles((prev) => prev.filter((_, i) => i !== idx));
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -109,6 +165,23 @@ export default function DemandeIntervention() {
     setLoading(true);
 
     const ref = genRef();
+
+    // Upload attachments to Supabase Storage
+    const attachmentUrls: string[] = [];
+    for (const file of attachmentFiles) {
+      const ext = file.name.split(".").pop() ?? "bin";
+      const uniqueName = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+      const path = `${ref}/${uniqueName}`;
+      const { data: uploadData, error: uploadErr } = await supabasePublic.storage
+        .from("intervention-files")
+        .upload(path, file, { cacheControl: "3600", upsert: false });
+      if (!uploadErr && uploadData) {
+        const { data: urlData } = supabasePublic.storage
+          .from("intervention-files")
+          .getPublicUrl(uploadData.path);
+        attachmentUrls.push(urlData.publicUrl);
+      }
+    }
 
     const payload = {
       reference: ref,
@@ -120,9 +193,11 @@ export default function DemandeIntervention() {
       machine_brand: machineBrand.trim() || null,
       machine_model: machineModel.trim() || null,
       machine_serial: machineSerial.trim() || null,
+      machine_year: machineYear.trim() || null,
       problem_description: problemDescription.trim(),
       urgency,
       location: location.trim(),
+      attachments: attachmentUrls,
       status: "nouveau",
     };
 
@@ -138,10 +213,19 @@ export default function DemandeIntervention() {
 
     // Send email notification (non-blocking)
     await sendInterventionEmail({
-      ...payload,
+      reference: payload.reference,
+      company_name: payload.company_name,
+      contact_name: payload.contact_name,
+      contact_phone: payload.contact_phone,
+      contact_email: payload.contact_email,
+      machine_type: payload.machine_type,
       machine_brand: payload.machine_brand ?? undefined,
       machine_model: payload.machine_model ?? undefined,
       machine_serial: payload.machine_serial ?? undefined,
+      problem_description: payload.problem_description,
+      urgency: payload.urgency,
+      location: payload.location,
+      attachments: attachmentUrls,
     });
 
     setReference(ref);
@@ -178,8 +262,9 @@ export default function DemandeIntervention() {
                 onClick={() => {
                   setStep("form");
                   setCompanyName(""); setContactName(""); setContactPhone(""); setContactEmail("");
-                  setMachineType(""); setMachineBrand(""); setMachineModel(""); setMachineSerial("");
+                  setMachineType(""); setMachineBrand(""); setMachineModel(""); setMachineSerial(""); setMachineYear("");
                   setProblemDescription(""); setUrgency("normale"); setLocation("");
+                  setAttachmentFiles([]);
                 }}
                 className="w-full text-zinc-500 hover:text-white text-sm py-2 transition-colors"
               >
@@ -229,19 +314,20 @@ export default function DemandeIntervention() {
             <h2 className="text-sm font-black uppercase tracking-widest text-zinc-500 mb-5">02 — Identification de la machine</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="sm:col-span-2">
-                <InputField label="Type de machine" value={machineType} onChange={setMachineType} placeholder="Grue à tour, Nacelle, Élévateur…" required />
+                <InputField label="Type de machine" value={machineType} onChange={setMachineType} placeholder="Grue à tour, Nacelle, Élévateur télescopique…" required />
               </div>
               <InputField label="Marque" value={machineBrand} onChange={setMachineBrand} placeholder="Tadano, JLG, Terex…" />
               <InputField label="Modèle" value={machineModel} onChange={setMachineModel} placeholder="TRT 50, 600AJ…" />
-              <div className="sm:col-span-2">
-                <InputField label="N° de série" value={machineSerial} onChange={setMachineSerial} placeholder="Numéro de série ou référence interne" />
-              </div>
+              <InputField label="N° de série" value={machineSerial} onChange={setMachineSerial} placeholder="Numéro de série constructeur" />
+              <InputField label="Année de mise en service" value={machineYear} onChange={setMachineYear} placeholder="2019" type="number" />
             </div>
           </div>
 
           {/* Section 3: Urgence */}
           <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6">
-            <h2 className="text-sm font-black uppercase tracking-widest text-zinc-500 mb-5">03 — Niveau d'urgence <span className="text-red-400">*</span></h2>
+            <h2 className="text-sm font-black uppercase tracking-widest text-zinc-500 mb-5">
+              03 — Niveau d'urgence <span className="text-red-400">*</span>
+            </h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               {URGENCY_OPTIONS.map(({ value, label, desc, icon: Icon, color, border, bg }) => (
                 <button
@@ -273,7 +359,7 @@ export default function DemandeIntervention() {
                 <textarea
                   value={problemDescription}
                   onChange={(e) => setProblemDescription(e.target.value)}
-                  placeholder="Décrivez la panne, le dysfonctionnement ou les travaux d'entretien à réaliser…"
+                  placeholder="Décrivez la panne, le dysfonctionnement ou les travaux d'entretien à réaliser. Précisez les symptômes, les erreurs affichées, la fréquence du problème…"
                   rows={5}
                   required
                   className="bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent resize-none"
@@ -287,6 +373,47 @@ export default function DemandeIntervention() {
                 required
               />
             </div>
+          </div>
+
+          {/* Section 5: Pièces jointes */}
+          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6">
+            <h2 className="text-sm font-black uppercase tracking-widest text-zinc-500 mb-1">
+              05 — Pièces jointes{" "}
+              <span className="text-zinc-600 normal-case font-semibold tracking-normal">(optionnel)</span>
+            </h2>
+            <p className="text-xs text-zinc-600 mb-5">
+              Photos de la panne, rapport de maintenance, bon de livraison… Formats acceptés : JPG, PNG, PDF · Max {MAX_SIZE_MB} Mo par fichier · {MAX_FILES} fichiers maximum
+            </p>
+
+            {/* File previews */}
+            {attachmentFiles.length > 0 && (
+              <div className="flex flex-wrap gap-4 mb-5">
+                {attachmentFiles.map((file, idx) => (
+                  <FilePreviewItem key={`${file.name}-${idx}`} file={file} onRemove={() => removeFile(idx)} />
+                ))}
+              </div>
+            )}
+
+            {/* Upload button */}
+            {attachmentFiles.length < MAX_FILES && (
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                className="flex items-center gap-2 border border-dashed border-zinc-700 hover:border-orange-500/50 bg-zinc-800 hover:bg-orange-500/5 text-zinc-400 hover:text-orange-300 text-sm font-semibold px-5 py-3 rounded-xl transition-all"
+              >
+                <Paperclip className="w-4 h-4" />
+                {attachmentFiles.length === 0 ? "Ajouter des fichiers" : `Ajouter d'autres fichiers (${attachmentFiles.length}/${MAX_FILES})`}
+              </button>
+            )}
+
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".jpg,.jpeg,.png,.pdf"
+              multiple
+              onChange={handleFileChange}
+              className="hidden"
+            />
           </div>
 
           {error && (

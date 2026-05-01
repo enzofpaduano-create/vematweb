@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { Link } from "wouter";
-import { ShoppingCart, Wrench, Clock, AlertTriangle, CalendarDays, ArrowRight, CheckCircle2, UserCheck, Package, Truck, FileText } from "lucide-react";
+import { ShoppingCart, Wrench, Clock, AlertTriangle, CalendarDays, ArrowRight, CheckCircle2, UserCheck, Package, Truck, FileText, Inbox } from "lucide-react";
 import { AdminLayout } from "./AdminLayout";
 import { AdminGuard } from "./AdminGuard";
 import { RepairStatusBadge } from "@/components/espace-client/StatusBadge";
 import { supabaseAdmin } from "@/lib/supabase";
 import type { DevisRequest, RepairRequest, Company, Technician } from "@/lib/database.types";
+import { useLang } from "@/i18n/I18nProvider";
 
 type RepairWithCompany = RepairRequest & { company?: Company };
 type OrderWithCompany = DevisRequest & { company?: Company };
@@ -14,52 +15,58 @@ function toDateStr(d: Date) {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 }
 
-const PIPELINE = [
-  {
-    key: "en_traitement",
-    label: "Devis à envoyer",
-    sublabel: "Action requise",
-    dot: "bg-blue-400",
-    badge: "bg-blue-100 text-blue-700",
-    colBg: "bg-blue-50/60",
-    actionRequired: true,
-  },
-  {
-    key: "devis_envoye",
-    label: "En attente client",
-    sublabel: "Devis envoyé",
-    dot: "bg-violet-400",
-    badge: "bg-violet-100 text-violet-700",
-    colBg: "",
-    actionRequired: false,
-  },
-  {
-    key: "commande_payee",
-    label: "À préparer",
-    sublabel: "Action requise",
-    dot: "bg-emerald-400",
-    badge: "bg-emerald-100 text-emerald-700",
-    colBg: "bg-emerald-50/60",
-    actionRequired: true,
-  },
-  {
-    key: "en_livraison",
-    label: "En livraison",
-    sublabel: "En transit",
-    dot: "bg-orange-400",
-    badge: "bg-orange-100 text-orange-700",
-    colBg: "",
-    actionRequired: false,
-  },
-] as const;
+function getPipeline(t: (k: string) => string) {
+  return [
+    {
+      key: "en_traitement" as const,
+      label: t("portal.dashboard.pipeline.enTraitement"),
+      sublabel: t("portal.dashboard.pipeline.actionRequired"),
+      dot: "bg-blue-400",
+      badge: "bg-blue-100 text-blue-700",
+      colBg: "bg-blue-50/60",
+      actionRequired: true,
+    },
+    {
+      key: "devis_envoye" as const,
+      label: t("portal.dashboard.pipeline.devisEnvoye"),
+      sublabel: t("portal.dashboard.pipeline.devisEnvoyeSub"),
+      dot: "bg-violet-400",
+      badge: "bg-violet-100 text-violet-700",
+      colBg: "",
+      actionRequired: false,
+    },
+    {
+      key: "commande_payee" as const,
+      label: t("portal.dashboard.pipeline.commandePayee"),
+      sublabel: t("portal.dashboard.pipeline.actionRequired"),
+      dot: "bg-emerald-400",
+      badge: "bg-emerald-100 text-emerald-700",
+      colBg: "bg-emerald-50/60",
+      actionRequired: true,
+    },
+    {
+      key: "en_livraison" as const,
+      label: t("portal.dashboard.pipeline.enLivraison"),
+      sublabel: t("portal.dashboard.pipeline.enTransit"),
+      dot: "bg-orange-400",
+      badge: "bg-orange-100 text-orange-700",
+      colBg: "",
+      actionRequired: false,
+    },
+  ];
+}
 
 export default function AdminDashboard() {
+  const { lang, t } = useLang();
+  const PIPELINE = getPipeline(t);
   const [activeOrders, setActiveOrders] = useState<OrderWithCompany[]>([]);
   const [repairs, setRepairs] = useState<RepairWithCompany[]>([]);
   const [technicians, setTechnicians] = useState<Technician[]>([]);
   const [loading, setLoading] = useState(true);
   const [locking, setLocking] = useState<string | null>(null);
   const [sending, setSending] = useState<string | null>(null);
+  const [newDevisCount, setNewDevisCount] = useState(0);
+  const [newIntervCount, setNewIntervCount] = useState(0);
 
   const todayStr = toDateStr(new Date());
 
@@ -72,14 +79,18 @@ export default function AdminDashboard() {
         .order("created_at", { ascending: false }),
       supabaseAdmin.from("repair_requests").select("*, companies(*)").order("created_at", { ascending: false }).limit(50),
       supabaseAdmin.from("technicians").select("*").order("name"),
-    ]).then(([o, r, t]) => {
+      supabaseAdmin.from("form_devis").select("id").eq("status", "nouveau"),
+      supabaseAdmin.from("form_interventions").select("id").eq("status", "nouveau"),
+    ]).then(([o, r, tech, fd, fi]) => {
       setActiveOrders(
         (o.data ?? []).map((x: DevisRequest & { companies?: Company }) => ({ ...x, company: x.companies }))
       );
       setRepairs(
         (r.data ?? []).map((rep: RepairRequest & { companies?: Company }) => ({ ...rep, company: rep.companies }))
       );
-      setTechnicians(t.data ?? []);
+      setTechnicians(tech.data ?? []);
+      setNewDevisCount((fd.data ?? []).length);
+      setNewIntervCount((fi.data ?? []).length);
       setLoading(false);
     });
   };
@@ -147,22 +158,22 @@ export default function AdminDashboard() {
   };
 
   const stats = [
-    { icon: Package, label: "Actions requises", value: actionsRequired, color: "text-emerald-600 bg-emerald-50", href: "/espace-manager/commandes" },
-    { icon: ShoppingCart, label: "Commandes actives", value: activeOrders.length, color: "text-blue-600 bg-blue-50", href: "/espace-manager/commandes" },
-    { icon: AlertTriangle, label: "Urgentes actives", value: urgentRepairs.length, color: "text-red-600 bg-red-50", href: "/espace-manager/reparations" },
-    { icon: Wrench, label: "Réparations actives", value: activeRepairs.length, color: "text-orange-600 bg-orange-50", href: "/espace-manager/reparations" },
+    { icon: Package, label: t("portal.dashboard.actionsRequired"), value: actionsRequired, color: "text-emerald-600 bg-emerald-50", href: "/espace-manager/commandes" },
+    { icon: ShoppingCart, label: t("portal.dashboard.activeOrders"), value: activeOrders.length, color: "text-blue-600 bg-blue-50", href: "/espace-manager/commandes" },
+    { icon: AlertTriangle, label: t("portal.dashboard.urgentActive"), value: urgentRepairs.length, color: "text-red-600 bg-red-50", href: "/espace-manager/reparations" },
+    { icon: Wrench, label: t("portal.dashboard.activeRepairs"), value: activeRepairs.length, color: "text-orange-600 bg-orange-50", href: "/espace-manager/reparations" },
   ];
 
-  const techById = (id: string | null) => id ? technicians.find((t) => t.id === id) ?? null : null;
+  const techById = (id: string | null) => id ? technicians.find((tech) => tech.id === id) ?? null : null;
 
   return (
     <AdminGuard>
       <AdminLayout>
         <div className="p-8">
           <div className="mb-8">
-            <h1 className="text-2xl font-black text-zinc-900">Tableau de bord</h1>
+            <h1 className="text-2xl font-black text-zinc-900">{t("portal.dashboard.title")}</h1>
             <p className="text-sm text-zinc-500 mt-1">
-              {new Date().toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long", year: "numeric" })}
+              {new Date().toLocaleDateString(lang === "fr" ? "fr-FR" : "en-GB", { weekday: "long", day: "numeric", month: "long", year: "numeric" })}
             </p>
           </div>
 
@@ -179,15 +190,56 @@ export default function AdminDashboard() {
             ))}
           </div>
 
+          {/* ── Demandes entrantes ── */}
+          <div className="bg-white rounded-xl border border-zinc-100 px-5 py-4 mb-6">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-5">
+                <div className="flex items-center gap-2">
+                  <Inbox className="w-4 h-4 text-zinc-400" />
+                  <h2 className="font-bold text-sm text-zinc-900">{t("portal.dashboard.incomingRequests")}</h2>
+                </div>
+                <div className="flex items-center gap-5 border-l border-zinc-100 pl-5">
+                  <div className="flex items-center gap-2">
+                    <FileText className="w-3.5 h-3.5 text-sky-400" />
+                    <span className="text-sm text-zinc-600">{t("portal.dashboard.quotes")}</span>
+                    <span className={`text-xs font-black px-2 py-0.5 rounded-full ${
+                      !loading && newDevisCount > 0 ? "bg-sky-100 text-sky-700" : "bg-zinc-100 text-zinc-400"
+                    }`}>
+                      {loading ? "·" : newDevisCount}
+                    </span>
+                    {!loading && newDevisCount > 0 && (
+                      <span className="text-[11px] font-semibold text-sky-500">{newDevisCount > 1 ? t("portal.dashboard.newPlural") : t("portal.dashboard.newSingular")}</span>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Wrench className="w-3.5 h-3.5 text-orange-400" />
+                    <span className="text-sm text-zinc-600">{t("portal.dashboard.sav")}</span>
+                    <span className={`text-xs font-black px-2 py-0.5 rounded-full ${
+                      !loading && newIntervCount > 0 ? "bg-orange-100 text-orange-700" : "bg-zinc-100 text-zinc-400"
+                    }`}>
+                      {loading ? "·" : newIntervCount}
+                    </span>
+                    {!loading && newIntervCount > 0 && (
+                      <span className="text-[11px] font-semibold text-orange-500">{newIntervCount > 1 ? t("portal.dashboard.newPluralF") : t("portal.dashboard.newSingularF")}</span>
+                    )}
+                  </div>
+                </div>
+              </div>
+              <Link href="/espace-manager/demandes" className="flex items-center gap-1 text-xs font-semibold text-accent hover:underline">
+                {t("portal.dashboard.manageRequests")} <ArrowRight className="w-3 h-3" />
+              </Link>
+            </div>
+          </div>
+
           {/* ── Pipeline commandes ── */}
           <div className="bg-white rounded-xl border border-zinc-100 mb-6 overflow-hidden">
             <div className="flex items-center justify-between px-5 py-4 border-b border-zinc-100">
               <div className="flex items-center gap-2">
                 <ShoppingCart className="w-4 h-4 text-zinc-400" />
-                <h2 className="font-bold text-zinc-900 text-sm">Pipeline des commandes</h2>
+                <h2 className="font-bold text-zinc-900 text-sm">{t("portal.dashboard.orderPipeline")}</h2>
               </div>
               <Link href="/espace-manager/commandes" className="flex items-center gap-1 text-xs text-accent font-semibold hover:underline">
-                Toutes les commandes <ArrowRight className="w-3 h-3" />
+                {t("portal.dashboard.allOrders")} <ArrowRight className="w-3 h-3" />
               </Link>
             </div>
 
@@ -215,9 +267,9 @@ export default function AdminDashboard() {
                     {/* Cards */}
                     <div className="flex-1 p-3 space-y-2">
                       {loading ? (
-                        <div className="text-xs text-zinc-300 text-center py-6">Chargement...</div>
+                        <div className="text-xs text-zinc-300 text-center py-6">{t("portal.common.loading")}</div>
                       ) : stageOrders.length === 0 ? (
-                        <div className="text-xs text-zinc-300 text-center py-6">Aucune</div>
+                        <div className="text-xs text-zinc-300 text-center py-6">{t("portal.dashboard.none")}</div>
                       ) : (
                         <>
                           {stageOrders.slice(0, 4).map((o) => (
@@ -226,9 +278,9 @@ export default function AdminDashboard() {
                                 <p className="text-xs font-black text-zinc-900 hover:text-accent transition-colors">{o.reference}</p>
                                 <p className="text-[10px] text-zinc-400 truncate mt-0.5">{o.company?.name ?? "—"}</p>
                                 {o.quote_amount ? (
-                                  <p className="text-[10px] font-bold text-zinc-600 mt-1">{o.quote_amount.toLocaleString("fr-FR")} MAD</p>
+                                  <p className="text-[10px] font-bold text-zinc-600 mt-1">{o.quote_amount.toLocaleString(lang === "fr" ? "fr-FR" : "en-GB")} MAD</p>
                                 ) : (
-                                  <p className="text-[10px] text-zinc-300 mt-1 italic">Pas de montant</p>
+                                  <p className="text-[10px] text-zinc-300 mt-1 italic">{t("portal.dashboard.noAmount")}</p>
                                 )}
                               </Link>
 
@@ -238,7 +290,7 @@ export default function AdminDashboard() {
                                   className="mt-2 w-full flex items-center justify-center gap-1 text-[10px] font-bold text-blue-700 bg-blue-50 hover:bg-blue-100 px-2 py-1.5 rounded-md transition-colors"
                                 >
                                   <FileText className="w-3 h-3" />
-                                  Préparer le devis
+                                  {t("portal.dashboard.prepareQuote")}
                                 </Link>
                               )}
 
@@ -249,7 +301,7 @@ export default function AdminDashboard() {
                                   className="mt-2 w-full flex items-center justify-center gap-1 text-[10px] font-black text-white bg-emerald-600 hover:bg-emerald-700 px-2 py-1.5 rounded-md transition-colors disabled:opacity-50"
                                 >
                                   <Truck className="w-3 h-3" />
-                                  {sending === o.id ? "En cours..." : "Marquer en livraison"}
+                                  {sending === o.id ? t("portal.dashboard.inProgress") : t("portal.dashboard.markShipping")}
                                 </button>
                               )}
                             </div>
@@ -259,7 +311,7 @@ export default function AdminDashboard() {
                               href="/espace-manager/commandes"
                               className="block text-center text-[10px] text-zinc-400 hover:text-zinc-600 font-semibold py-1"
                             >
-                              +{stageOrders.length - 4} de plus →
+                              +{stageOrders.length - 4} {t("portal.dashboard.more")} →
                             </Link>
                           )}
                         </>
@@ -276,7 +328,7 @@ export default function AdminDashboard() {
             <div className="flex items-center justify-between px-5 py-4 border-b border-zinc-100">
               <div className="flex items-center gap-2">
                 <CalendarDays className="w-4 h-4 text-accent" />
-                <h2 className="font-bold text-zinc-900 text-sm">Interventions aujourd'hui</h2>
+                <h2 className="font-bold text-zinc-900 text-sm">{t("portal.dashboard.todayInterventions")}</h2>
                 {!loading && todayRepairs.length > 0 && (
                   <span className="text-xs font-bold bg-accent text-accent-foreground px-2 py-0.5 rounded-full">
                     {todayRepairs.length}
@@ -284,14 +336,14 @@ export default function AdminDashboard() {
                 )}
               </div>
               <Link href="/espace-manager/calendrier" className="flex items-center gap-1 text-xs text-accent font-semibold hover:underline">
-                Voir le calendrier <ArrowRight className="w-3 h-3" />
+                {t("portal.dashboard.seeCalendar")} <ArrowRight className="w-3 h-3" />
               </Link>
             </div>
 
             {loading ? (
-              <div className="px-5 py-8 text-center text-sm text-zinc-400">Chargement...</div>
+              <div className="px-5 py-8 text-center text-sm text-zinc-400">{t("portal.common.loading")}</div>
             ) : todayRepairs.length === 0 ? (
-              <div className="px-5 py-8 text-center text-sm text-zinc-400">Aucune intervention planifiée aujourd'hui</div>
+              <div className="px-5 py-8 text-center text-sm text-zinc-400">{t("portal.dashboard.noInterventionToday")}</div>
             ) : (
               <div className="divide-y divide-zinc-50">
                 {todayRepairs.map((r) => {
@@ -314,13 +366,13 @@ export default function AdminDashboard() {
                           <span className="text-sm font-bold text-zinc-900">{r.reference}</span>
                           {r.priority === "urgente" && (
                             <span className="flex items-center gap-0.5 text-[9px] font-black bg-red-100 text-red-600 px-1.5 py-0.5 rounded-full uppercase">
-                              <AlertTriangle className="w-2.5 h-2.5" />Urgent
+                              <AlertTriangle className="w-2.5 h-2.5" />{t("portal.dashboard.urgent")}
                             </span>
                           )}
                         </div>
                         <p className="text-xs text-zinc-500 truncate">
                           {r.company?.name ?? "—"} · {r.equipment_type}
-                          {tech ? ` · ${tech.name}` : " · Non assigné"}
+                          {tech ? ` · ${tech.name}` : ` · ${t("portal.dashboard.unassigned")}`}
                         </p>
                       </div>
                       <RepairStatusBadge status={r.status} />
@@ -336,7 +388,7 @@ export default function AdminDashboard() {
             <div className="bg-white rounded-xl border border-zinc-100 mb-6 overflow-hidden">
               <div className="flex items-center gap-2 px-5 py-4 border-b border-zinc-100">
                 <CheckCircle2 className="w-4 h-4 text-amber-500" />
-                <h2 className="font-bold text-zinc-900 text-sm">Rapports d'intervention à valider</h2>
+                <h2 className="font-bold text-zinc-900 text-sm">{t("portal.dashboard.reportsToValidate")}</h2>
                 {!loading && reportsToValidate.length > 0 && (
                   <span className="text-xs font-bold bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full">
                     {reportsToValidate.length}
@@ -344,7 +396,7 @@ export default function AdminDashboard() {
                 )}
               </div>
               {loading ? (
-                <div className="px-5 py-6 text-center text-sm text-zinc-400">Chargement...</div>
+                <div className="px-5 py-6 text-center text-sm text-zinc-400">{t("portal.common.loading")}</div>
               ) : (
                 <div className="divide-y divide-zinc-50">
                   {reportsToValidate.map((r) => {
@@ -369,7 +421,7 @@ export default function AdminDashboard() {
                             </Link>
                             {r.priority === "urgente" && (
                               <span className="flex items-center gap-0.5 text-[9px] font-black bg-red-100 text-red-600 px-1.5 py-0.5 rounded-full uppercase">
-                                <AlertTriangle className="w-2.5 h-2.5" />Urgent
+                                <AlertTriangle className="w-2.5 h-2.5" />{t("portal.dashboard.urgent")}
                               </span>
                             )}
                           </div>
@@ -380,14 +432,14 @@ export default function AdminDashboard() {
                           {r.report_submitted_at && (
                             <p className="text-[10px] text-zinc-400 mt-0.5 flex items-center gap-1">
                               <Clock className="w-2.5 h-2.5" />
-                              Soumis le {new Date(r.report_submitted_at).toLocaleDateString("fr-FR")}
+                              {t("portal.dashboard.submittedOn")} {new Date(r.report_submitted_at).toLocaleDateString(lang === "fr" ? "fr-FR" : "en-GB")}
                             </p>
                           )}
                         </div>
                         <div className="flex items-center gap-2">
                           <Link href={`/espace-manager/reparations/${r.id}`}
                             className="text-xs font-semibold text-zinc-500 hover:text-zinc-900 px-3 py-1.5 border border-zinc-200 rounded-lg hover:bg-zinc-50 transition-colors">
-                            Voir le rapport
+                            {t("portal.dashboard.seeReport")}
                           </Link>
                           <button
                             onClick={() => lockReport(r)}
@@ -395,7 +447,7 @@ export default function AdminDashboard() {
                             className="flex items-center gap-1.5 text-xs font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 px-3 py-1.5 rounded-lg transition-colors disabled:opacity-50 border border-emerald-200"
                           >
                             <UserCheck className="w-3.5 h-3.5" />
-                            {locking === r.id ? "En cours..." : "Clôturer la mission"}
+                            {locking === r.id ? t("portal.dashboard.inProgress") : t("portal.dashboard.closeMission")}
                           </button>
                         </div>
                       </div>
@@ -409,12 +461,12 @@ export default function AdminDashboard() {
           {/* ── Réparations récentes ── */}
           <div className="bg-white rounded-xl border border-zinc-100">
             <div className="flex items-center justify-between px-5 py-4 border-b border-zinc-100">
-              <h2 className="font-bold text-zinc-900 text-sm">Réparations récentes</h2>
-              <Link href="/espace-manager/reparations" className="text-xs text-accent font-semibold hover:underline">Gérer →</Link>
+              <h2 className="font-bold text-zinc-900 text-sm">{t("portal.dashboard.recentRepairs")}</h2>
+              <Link href="/espace-manager/reparations" className="text-xs text-accent font-semibold hover:underline">{t("portal.dashboard.manage")} →</Link>
             </div>
             <div className="divide-y divide-zinc-50">
               {loading ? (
-                <div className="px-5 py-8 text-center text-sm text-zinc-400">Chargement...</div>
+                <div className="px-5 py-8 text-center text-sm text-zinc-400">{t("portal.common.loading")}</div>
               ) : activeRepairs.slice(0, 6).map((r) => {
                 const tech = techById(r.technician_id ?? null);
                 return (
@@ -424,7 +476,7 @@ export default function AdminDashboard() {
                       <div className="flex items-center gap-2">
                         <p className="text-sm font-semibold text-zinc-900">{r.reference}</p>
                         {r.priority === "urgente" && (
-                          <span className="text-[9px] font-black uppercase bg-red-100 text-red-600 px-1.5 py-0.5 rounded-full">Urgent</span>
+                          <span className="text-[9px] font-black uppercase bg-red-100 text-red-600 px-1.5 py-0.5 rounded-full">{t("portal.dashboard.urgent")}</span>
                         )}
                       </div>
                       <div className="flex items-center gap-2 text-xs text-zinc-400">

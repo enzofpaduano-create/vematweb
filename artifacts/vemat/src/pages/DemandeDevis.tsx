@@ -1,6 +1,8 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Link } from "wouter";
-import { CheckCircle2, ChevronDown, Loader2, ArrowLeft, FileText } from "lucide-react";
+import {
+  CheckCircle2, ChevronDown, Loader2, ArrowLeft, FileText, ShoppingCart, X, Package, Wrench,
+} from "lucide-react";
 import vematLogo from "@/assets/vemat-logo.png";
 import { supabasePublic } from "@/lib/supabase";
 import { sendDevisEmail } from "@/lib/emailService";
@@ -17,7 +19,9 @@ function genRef() {
   return `DEV-${new Date().getFullYear()}-${String(Math.floor(Math.random() * 9000) + 1000)}`;
 }
 
-type Step = "form" | "success";
+type CartItem = { sku: string; title: string; brand: string; quantity: number };
+
+// ── Field components ──────────────────────────────────────────────────────────
 
 function SelectField({
   label,
@@ -84,11 +88,26 @@ function InputField({
   );
 }
 
+// ── Main component ────────────────────────────────────────────────────────────
+
 export default function DemandeDevis() {
-  const [step, setStep] = useState<Step>("form");
+  const [step, setStep] = useState<"form" | "success">("form");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [reference, setReference] = useState("");
+
+  // Cart pre-fill (from Pièces de rechange)
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+
+  useEffect(() => {
+    const saved = localStorage.getItem("vemat_devis_cart");
+    if (saved) {
+      try { setCartItems(JSON.parse(saved)); } catch { /* ignore */ }
+    }
+  }, []);
+
+  // true = "pièces de rechange" mode, false = "machine/équipement" mode
+  const fromCart = cartItems.length > 0;
 
   // Contact
   const [companyName, setCompanyName] = useState("");
@@ -96,13 +115,13 @@ export default function DemandeDevis() {
   const [contactPhone, setContactPhone] = useState("");
   const [contactEmail, setContactEmail] = useState("");
 
-  // Machine
+  // Machine picker (only used in machine mode)
   const [category, setCategory] = useState<CategorySlug | "">("");
   const [subCatSlug, setSubCatSlug] = useState("");
   const [modelName, setModelName] = useState("");
   const [quantity, setQuantity] = useState("1");
 
-  // Details
+  // Shared details
   const [location, setLocation] = useState("");
   const [desiredDate, setDesiredDate] = useState("");
   const [notes, setNotes] = useState("");
@@ -131,6 +150,15 @@ export default function DemandeDevis() {
     setModelName("");
   }
 
+  function resetForm() {
+    setStep("form");
+    setCompanyName(""); setContactName(""); setContactPhone(""); setContactEmail("");
+    setCategory(""); setSubCatSlug(""); setModelName(""); setQuantity("1");
+    setLocation(""); setDesiredDate(""); setNotes("");
+    setCartItems([]);
+    localStorage.removeItem("vemat_devis_cart");
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
@@ -138,19 +166,31 @@ export default function DemandeDevis() {
 
     const ref = genRef();
 
+    // Build notes: cart items (if any) + user notes
+    const cartNote = cartItems.length > 0
+      ? `Pièces de rechange sélectionnées :\n${cartItems.map(i => `- ${i.title} (${i.sku}) x${i.quantity}`).join("\n")}`
+      : "";
+    const fullNotes = [cartNote, notes.trim()].filter(Boolean).join("\n\n");
+
     const payload = {
       reference: ref,
       company_name: companyName.trim(),
       contact_name: contactName.trim(),
       contact_phone: contactPhone.trim(),
       contact_email: contactEmail.trim(),
-      product_category: category ? CATEGORY_LABELS[category] : null,
-      product_brand: selectedSub?.title.fr ?? null,
-      product_model: modelName || null,
-      quantity: parseInt(quantity) || 1,
+      // In cart mode, mark as spare parts; in machine mode, use the catalog selection
+      product_category: fromCart
+        ? "Pièces de rechange"
+        : (category ? CATEGORY_LABELS[category] : null),
+      product_brand: fromCart ? null : (selectedSub?.title.fr ?? null),
+      product_model: fromCart ? null : (modelName || null),
+      quantity: fromCart
+        ? cartItems.reduce((sum, i) => sum + i.quantity, 0) || 1
+        : (parseInt(quantity) || 1),
+      cart_items: cartItems.length > 0 ? cartItems : null,
       location: location.trim() || null,
       desired_date: desiredDate || null,
-      notes: notes.trim() || null,
+      notes: fullNotes || null,
       status: "nouveau",
     };
 
@@ -175,10 +215,15 @@ export default function DemandeDevis() {
       notes: payload.notes ?? undefined,
     });
 
+    // Clear the cart from localStorage now that it's submitted
+    localStorage.removeItem("vemat_devis_cart");
+
     setReference(ref);
     setStep("success");
     setLoading(false);
   }
+
+  // ── Success screen ──────────────────────────────────────────────────────────
 
   if (step === "success") {
     return (
@@ -206,12 +251,7 @@ export default function DemandeDevis() {
                 </div>
               </Link>
               <button
-                onClick={() => {
-                  setStep("form");
-                  setCompanyName(""); setContactName(""); setContactPhone(""); setContactEmail("");
-                  setCategory(""); setSubCatSlug(""); setModelName(""); setQuantity("1");
-                  setLocation(""); setDesiredDate(""); setNotes("");
-                }}
+                onClick={resetForm}
                 className="w-full text-zinc-500 hover:text-white text-sm py-2 transition-colors"
               >
                 Soumettre une autre demande
@@ -223,26 +263,129 @@ export default function DemandeDevis() {
     );
   }
 
+  // ── Form ────────────────────────────────────────────────────────────────────
+
   return (
     <div className="min-h-screen bg-zinc-950 px-4 py-12">
       <div className="w-full max-w-2xl mx-auto">
+
         {/* Header */}
         <div className="text-center mb-10">
           <Link href="/">
             <img src={vematLogo} alt="Vemat" className="h-7 brightness-0 invert mx-auto mb-6 cursor-pointer" />
           </Link>
           <div className="inline-flex items-center gap-2 bg-sky-500/10 border border-sky-500/20 rounded-full px-4 py-1.5 mb-4">
-            <FileText className="w-3.5 h-3.5 text-sky-400" />
-            <span className="text-xs font-bold text-sky-400 uppercase tracking-widest">Demande de devis</span>
+            {fromCart
+              ? <><Package className="w-3.5 h-3.5 text-sky-400" /><span className="text-xs font-bold text-sky-400 uppercase tracking-widest">Devis pièces de rechange</span></>
+              : <><FileText className="w-3.5 h-3.5 text-sky-400" /><span className="text-xs font-bold text-sky-400 uppercase tracking-widest">Demande de devis</span></>
+            }
           </div>
-          <h1 className="text-2xl font-black text-white">Obtenez un devis personnalisé</h1>
-          <p className="text-zinc-500 text-sm mt-2">Remplissez le formulaire ci-dessous. Notre équipe vous répond sous 24h.</p>
+          <h1 className="text-2xl font-black text-white">
+            {fromCart ? "Récapitulatif de votre panier" : "Obtenez un devis personnalisé"}
+          </h1>
+          <p className="text-zinc-500 text-sm mt-2">
+            {fromCart
+              ? "Vérifiez vos pièces puis remplissez vos coordonnées. Notre équipe vous répond sous 24h."
+              : "Sélectionnez l'équipement souhaité. Notre équipe vous répond sous 24h."}
+          </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Section 1: Coordonnées */}
+
+          {/* ── MODE A: PIÈCES DE RECHANGE (cart) ─────────────────────────── */}
+          {fromCart && (
+            <div className="bg-zinc-900 border border-sky-500/20 rounded-2xl p-6">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-2">
+                  <ShoppingCart className="w-4 h-4 text-sky-400" />
+                  <h2 className="text-sm font-black uppercase tracking-widest text-sky-400">Pièces sélectionnées</h2>
+                </div>
+                <span className="text-xs text-zinc-500 bg-zinc-800 rounded-full px-2.5 py-0.5">
+                  {cartItems.length} référence{cartItems.length > 1 ? "s" : ""}
+                </span>
+              </div>
+              <div className="space-y-2">
+                {cartItems.map((item) => (
+                  <div key={item.sku} className="flex items-center justify-between bg-zinc-800 rounded-xl px-4 py-3 gap-3">
+                    <div className="min-w-0">
+                      <p className="text-sm text-white font-semibold truncate">{item.title}</p>
+                      <p className="text-xs text-zinc-500 mt-0.5">{item.brand} · Réf. {item.sku} · Qté : {item.quantity}</p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setCartItems((prev) => prev.filter((i) => i.sku !== item.sku))}
+                      className="text-zinc-600 hover:text-red-400 transition-colors flex-shrink-0"
+                      aria-label="Retirer"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+              {cartItems.length === 0 && (
+                <p className="text-sm text-zinc-500 text-center py-2">
+                  Panier vide. <Link href="/pieces-de-rechange" className="text-sky-400 hover:underline">Retourner au catalogue</Link>
+                </p>
+              )}
+            </div>
+          )}
+
+          {/* ── MODE B: MACHINE / ÉQUIPEMENT ──────────────────────────────── */}
+          {!fromCart && (
+            <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6">
+              <div className="flex items-center gap-2 mb-5">
+                <Wrench className="w-4 h-4 text-zinc-500" />
+                <h2 className="text-sm font-black uppercase tracking-widest text-zinc-500">01 — Machine / équipement souhaité</h2>
+              </div>
+              <div className="space-y-4">
+                <SelectField label="Catégorie" value={category} onChange={handleCategoryChange} required>
+                  <option value="">— Sélectionnez une catégorie —</option>
+                  {(Object.keys(CATEGORY_LABELS) as CategorySlug[]).map((k) => (
+                    <option key={k} value={k}>{CATEGORY_LABELS[k]}</option>
+                  ))}
+                </SelectField>
+
+                {category && (
+                  <SelectField label="Type / Gamme" value={subCatSlug} onChange={handleSubCatChange}>
+                    <option value="">— Sélectionnez un type —</option>
+                    {subCategories.map((s) => (
+                      <option key={s.slug} value={s.slug}>{s.title.fr}</option>
+                    ))}
+                  </SelectField>
+                )}
+
+                {subCatSlug && models.length > 0 && (
+                  <SelectField label="Modèle" value={modelName} onChange={setModelName}>
+                    <option value="">— Sélectionnez un modèle (optionnel) —</option>
+                    {models.map((m) => (
+                      <option key={m.name} value={m.name}>{m.name}</option>
+                    ))}
+                  </SelectField>
+                )}
+
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-sm font-semibold text-zinc-300">
+                    Quantité <span className="text-red-400 ml-1">*</span>
+                  </label>
+                  <input
+                    type="number"
+                    min={1}
+                    max={100}
+                    value={quantity}
+                    onChange={(e) => setQuantity(e.target.value)}
+                    required
+                    className="bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent w-32"
+                  />
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* ── COORDONNÉES (both modes) ───────────────────────────────────── */}
           <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6">
-            <h2 className="text-sm font-black uppercase tracking-widest text-zinc-500 mb-5">01 — Vos coordonnées</h2>
+            <h2 className="text-sm font-black uppercase tracking-widest text-zinc-500 mb-5">
+              {fromCart ? "01" : "02"} — Vos coordonnées
+            </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="sm:col-span-2">
                 <InputField label="Société" value={companyName} onChange={setCompanyName} placeholder="Nom de votre entreprise" required />
@@ -255,55 +398,11 @@ export default function DemandeDevis() {
             </div>
           </div>
 
-          {/* Section 2: Machine */}
+          {/* ── INFORMATIONS COMPLÉMENTAIRES (both modes) ─────────────────── */}
           <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6">
-            <h2 className="text-sm font-black uppercase tracking-widest text-zinc-500 mb-5">02 — Machine souhaitée</h2>
-            <div className="space-y-4">
-              <SelectField label="Catégorie" value={category} onChange={handleCategoryChange}>
-                <option value="">— Sélectionnez une catégorie —</option>
-                {(Object.keys(CATEGORY_LABELS) as CategorySlug[]).map((k) => (
-                  <option key={k} value={k}>{CATEGORY_LABELS[k]}</option>
-                ))}
-              </SelectField>
-
-              {category && (
-                <SelectField label="Type / Gamme" value={subCatSlug} onChange={handleSubCatChange}>
-                  <option value="">— Sélectionnez un type —</option>
-                  {subCategories.map((s) => (
-                    <option key={s.slug} value={s.slug}>{s.title.fr}</option>
-                  ))}
-                </SelectField>
-              )}
-
-              {subCatSlug && models.length > 0 && (
-                <SelectField label="Modèle" value={modelName} onChange={setModelName}>
-                  <option value="">— Sélectionnez un modèle (optionnel) —</option>
-                  {models.map((m) => (
-                    <option key={m.name} value={m.name}>{m.name}</option>
-                  ))}
-                </SelectField>
-              )}
-
-              <div className="flex flex-col gap-1.5">
-                <label className="text-sm font-semibold text-zinc-300">
-                  Quantité <span className="text-red-400 ml-1">*</span>
-                </label>
-                <input
-                  type="number"
-                  min={1}
-                  max={100}
-                  value={quantity}
-                  onChange={(e) => setQuantity(e.target.value)}
-                  required
-                  className="bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent w-32"
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Section 3: Détails */}
-          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6">
-            <h2 className="text-sm font-black uppercase tracking-widest text-zinc-500 mb-5">03 — Informations complémentaires</h2>
+            <h2 className="text-sm font-black uppercase tracking-widest text-zinc-500 mb-5">
+              {fromCart ? "02" : "03"} — Informations complémentaires
+            </h2>
             <div className="space-y-4">
               <InputField label="Localisation / Chantier" value={location} onChange={setLocation} placeholder="Casablanca, Maroc" />
               <div className="flex flex-col gap-1.5">
@@ -321,7 +420,11 @@ export default function DemandeDevis() {
                 <textarea
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
-                  placeholder="Durée de location souhaitée, contraintes de chantier, spécifications particulières…"
+                  placeholder={
+                    fromCart
+                      ? "Informations supplémentaires sur votre commande, délai souhaité…"
+                      : "Durée de location souhaitée, contraintes de chantier, spécifications particulières…"
+                  }
                   rows={4}
                   className="bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent resize-none"
                 />
@@ -337,14 +440,13 @@ export default function DemandeDevis() {
 
           <button
             type="submit"
-            disabled={loading}
+            disabled={loading || (fromCart && cartItems.length === 0)}
             className="w-full flex items-center justify-center gap-2 bg-sky-600 hover:bg-sky-500 disabled:opacity-60 text-white font-black text-sm px-6 py-4 rounded-xl transition-colors"
           >
-            {loading ? (
-              <><Loader2 className="w-4 h-4 animate-spin" />Envoi en cours…</>
-            ) : (
-              "Envoyer ma demande de devis"
-            )}
+            {loading
+              ? <><Loader2 className="w-4 h-4 animate-spin" />Envoi en cours…</>
+              : "Envoyer ma demande de devis"
+            }
           </button>
 
           <p className="text-center text-xs text-zinc-600 pb-4">

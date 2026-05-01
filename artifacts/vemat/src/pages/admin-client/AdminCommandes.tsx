@@ -7,6 +7,7 @@ import { OrderStatusBadge } from "@/components/espace-client/StatusBadge";
 import { supabaseAdmin } from "@/lib/supabase";
 import type { DevisRequest, Company, OrderStatus } from "@/lib/database.types";
 import { ORDER_STATUSES } from "@/lib/database.types";
+import { useLang } from "@/i18n/I18nProvider";
 
 type OrderWithCompany = DevisRequest & { company?: Company };
 type DateFilter = "all" | "today" | "week" | "month";
@@ -32,14 +33,18 @@ function getDateRange(f: DateFilter): { from?: string; to?: string } {
   return {};
 }
 
-const DATE_FILTERS: { value: DateFilter; label: string }[] = [
-  { value: "all", label: "Tout" },
-  { value: "today", label: "Aujourd'hui" },
-  { value: "week", label: "Cette semaine" },
-  { value: "month", label: "Ce mois" },
-];
+function getDateFilters(t: (k: string) => string): { value: DateFilter; label: string }[] {
+  return [
+    { value: "all", label: t("portal.common.all") },
+    { value: "today", label: t("portal.common.today") },
+    { value: "week", label: t("portal.common.week") },
+    { value: "month", label: t("portal.common.month") },
+  ];
+}
 
 export default function AdminCommandes() {
+  const { lang, t } = useLang();
+  const DATE_FILTERS = getDateFilters(t);
   const [orders, setOrders] = useState<OrderWithCompany[]>([]);
   const [loading, setLoading] = useState(true);
   const [exporting, setExporting] = useState(false);
@@ -81,11 +86,11 @@ export default function AdminCommandes() {
     if (df) q = q.gte("created_at", df);
     if (dt) q = q.lte("created_at", dt);
     const { data } = await q;
-    const headers = ["Référence", "Société", "Date", "Montant (MAD)", "Statut"];
+    const headers = [t("portal.common.reference"), t("portal.common.client"), t("portal.common.date"), t("portal.orders.amountMAD"), t("portal.common.status")];
     const rows = (data ?? []).map((o: DevisRequest & { companies?: Company }) => [
       o.reference,
       (o.companies as Company | undefined)?.name ?? "",
-      new Date(o.created_at).toLocaleDateString("fr-FR"),
+      new Date(o.created_at).toLocaleDateString(lang === "fr" ? "fr-FR" : "en-GB"),
       o.quote_amount ?? "",
       ORDER_STATUSES.find((s) => s.value === o.status)?.label ?? o.status,
     ]);
@@ -110,19 +115,19 @@ export default function AdminCommandes() {
         <div className="p-8">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h1 className="text-2xl font-black text-zinc-900">Commandes</h1>
-              {!loading && <p className="text-sm text-zinc-500 mt-1">{total} commande{total !== 1 ? "s" : ""}</p>}
+              <h1 className="text-2xl font-black text-zinc-900">{t("portal.manager.nav.orders")}</h1>
+              {!loading && <p className="text-sm text-zinc-500 mt-1">{total} {total !== 1 ? t("portal.orders.ordersPlural") : t("portal.orders.order")}</p>}
             </div>
             <button onClick={exportCSV} disabled={exporting || loading}
               className="flex items-center gap-2 border border-zinc-200 text-zinc-600 hover:bg-zinc-50 font-semibold text-sm px-4 py-2 rounded-lg transition-colors disabled:opacity-40">
-              <Download className="w-4 h-4" />{exporting ? "Export..." : "Exporter CSV"}
+              <Download className="w-4 h-4" />{exporting ? t("portal.common.exporting") : t("portal.common.export")}
             </button>
           </div>
 
           <div className="flex gap-3 mb-4 flex-wrap items-center">
             <div className="relative flex-1 min-w-48">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" />
-              <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Rechercher par référence..."
+              <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder={t("portal.orders.searchPlaceholder")}
                 className="w-full pl-9 pr-3.5 py-2 border border-zinc-200 rounded-lg text-sm focus:outline-none focus:border-accent" />
             </div>
             <div className="flex items-center gap-0.5 bg-zinc-100 rounded-lg p-1">
@@ -139,7 +144,7 @@ export default function AdminCommandes() {
           <div className="flex gap-2 flex-wrap mb-5">
             <button onClick={() => { setFilter("all"); setPage(0); }}
               className={`px-3 py-2 rounded-lg text-xs font-semibold border transition-colors ${filter === "all" ? "bg-zinc-900 text-white border-zinc-900" : "border-zinc-200 text-zinc-600"}`}>
-              Tous
+              {t("portal.common.all")}
             </button>
             {ORDER_STATUSES.map((s) => (
               <button key={s.value} onClick={() => { setFilter(s.value as OrderStatus); setPage(0); }}
@@ -163,12 +168,12 @@ export default function AdminCommandes() {
                 ))}
               </div>
             ) : orders.length === 0 ? (
-              <div className="py-16 text-center text-zinc-400 text-sm">Aucune commande</div>
+              <div className="py-16 text-center text-zinc-400 text-sm">{t("portal.orders.noOrders")}</div>
             ) : (
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-zinc-100 bg-zinc-50">
-                    {["Référence", "Société", "Date", "Montant", "Statut", ""].map((h) => (
+                    {[t("portal.common.reference"), t("portal.common.client"), t("portal.common.date"), t("portal.common.amount"), t("portal.common.status"), ""].map((h) => (
                       <th key={h} className="text-left px-5 py-3 text-xs font-black uppercase tracking-wider text-zinc-500">{h}</th>
                     ))}
                   </tr>
@@ -179,11 +184,11 @@ export default function AdminCommandes() {
                       <td className="px-5 py-4 font-bold text-zinc-900">{o.reference}</td>
                       <td className="px-5 py-4 text-zinc-600">{o.company?.name ?? "—"}</td>
                       <td className="px-5 py-4 text-zinc-500">
-                        <div className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5" />{new Date(o.created_at).toLocaleDateString("fr-FR")}</div>
+                        <div className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5" />{new Date(o.created_at).toLocaleDateString(lang === "fr" ? "fr-FR" : "en-GB")}</div>
                       </td>
-                      <td className="px-5 py-4 font-semibold text-zinc-700">{o.quote_amount ? `${o.quote_amount.toLocaleString("fr-FR")} MAD` : "—"}</td>
+                      <td className="px-5 py-4 font-semibold text-zinc-700">{o.quote_amount ? `${o.quote_amount.toLocaleString(lang === "fr" ? "fr-FR" : "en-GB")} MAD` : "—"}</td>
                       <td className="px-5 py-4"><OrderStatusBadge status={o.status} /></td>
-                      <td className="px-5 py-4"><Link href={`/espace-manager/commandes/${o.id}`} className="text-xs text-accent font-bold hover:underline">Gérer →</Link></td>
+                      <td className="px-5 py-4"><Link href={`/espace-manager/commandes/${o.id}`} className="text-xs text-accent font-bold hover:underline">{t("portal.common.manage")} →</Link></td>
                     </tr>
                   ))}
                 </tbody>
@@ -193,16 +198,16 @@ export default function AdminCommandes() {
 
           {!loading && totalPages > 1 && (
             <div className="flex items-center justify-between mt-4">
-              <p className="text-xs text-zinc-400">{from}–{to} sur {total} résultat{total !== 1 ? "s" : ""}</p>
+              <p className="text-xs text-zinc-400">{from}–{to} {t("portal.common.of")} {total} {total !== 1 ? t("portal.common.results") : t("portal.common.result")}</p>
               <div className="flex items-center gap-2">
                 <button onClick={() => setPage((p) => p - 1)} disabled={page === 0}
                   className="flex items-center gap-1 px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-semibold text-zinc-600 hover:border-zinc-300 disabled:opacity-40 disabled:cursor-not-allowed transition-colors">
-                  <ChevronLeft className="w-3.5 h-3.5" /> Précédent
+                  <ChevronLeft className="w-3.5 h-3.5" /> {t("portal.common.previous")}
                 </button>
-                <span className="text-xs font-bold text-zinc-700 px-1">Page {page + 1} / {totalPages}</span>
+                <span className="text-xs font-bold text-zinc-700 px-1">{t("portal.common.page")} {page + 1} / {totalPages}</span>
                 <button onClick={() => setPage((p) => p + 1)} disabled={page >= totalPages - 1}
                   className="flex items-center gap-1 px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-semibold text-zinc-600 hover:border-zinc-300 disabled:opacity-40 disabled:cursor-not-allowed transition-colors">
-                  Suivant <ChevronRight className="w-3.5 h-3.5" />
+                  {t("portal.common.next")} <ChevronRight className="w-3.5 h-3.5" />
                 </button>
               </div>
             </div>

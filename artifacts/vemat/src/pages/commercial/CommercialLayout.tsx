@@ -1,18 +1,21 @@
 import { Link, useLocation } from "wouter";
 import { LayoutDashboard, CalendarDays, FileText, TrendingUp, LogOut, Briefcase } from "lucide-react";
 import { useCommercialAuth } from "@/contexts/CommercialAuthContext";
+import { useLang } from "@/i18n/I18nProvider";
 import vematLogo from "@/assets/vemat-logo.png";
 
-const NAV = [
-  { href: "/espace-commercial/dashboard", icon: LayoutDashboard, label: "Tableau de bord", exact: true },
-  { href: "/espace-commercial/calendrier", icon: CalendarDays, label: "Planning", exact: false },
-  { href: "/espace-commercial/reunions", icon: FileText, label: "Comptes-rendus", exact: false },
-  { href: "/espace-commercial/ventes", icon: TrendingUp, label: "Ventes machines", exact: false },
+const getNav = (t: (k: string) => string) => [
+  { href: "/espace-commercial/dashboard", icon: LayoutDashboard, label: t("portal.commercial.nav.dashboard"), exact: true },
+  { href: "/espace-commercial/calendrier", icon: CalendarDays, label: t("portal.commercial.nav.planning"), exact: false },
+  { href: "/espace-commercial/reunions", icon: FileText, label: t("portal.commercial.nav.reports"), exact: false },
+  { href: "/espace-commercial/ventes", icon: TrendingUp, label: t("portal.commercial.nav.sales"), exact: false },
 ];
 
 export function CommercialLayout({ children }: { children: React.ReactNode }) {
   const [location, setLocation] = useLocation();
   const { commercial, user, signOut, loading } = useCommercialAuth();
+  const { lang, setLang, t } = useLang();
+  const nav = getNav(t);
 
   if (loading) {
     return (
@@ -34,12 +37,12 @@ export function CommercialLayout({ children }: { children: React.ReactNode }) {
           <img src={vematLogo} alt="Vemat" className="h-6 brightness-0 invert mb-3" />
           <div className="flex items-center gap-1.5">
             <Briefcase className="w-3 h-3 text-sky-400" />
-            <p className="text-[10px] font-black uppercase tracking-[0.25em] text-sky-400">Espace Commercial</p>
+            <p className="text-[10px] font-black uppercase tracking-[0.25em] text-sky-400">{t("portal.commercial.title")}</p>
           </div>
         </div>
 
         <nav className="flex-1 px-2 py-3 space-y-0.5 overflow-y-auto">
-          {NAV.map(({ href, icon: Icon, label, exact }) => {
+          {nav.map(({ href, icon: Icon, label, exact }) => {
             const active = exact ? location === href : location.startsWith(href);
             return (
               <Link key={href} href={href}
@@ -66,9 +69,17 @@ export function CommercialLayout({ children }: { children: React.ReactNode }) {
               </div>
             </div>
           )}
+          <button
+            onClick={() => setLang(lang === "fr" ? "en" : "fr")}
+            className="w-full flex items-center gap-2 text-xs text-zinc-500 hover:text-white transition-colors px-2 py-1"
+          >
+            <span className="text-sm">🌐</span>
+            <span>{lang === "fr" ? "English" : "Français"}</span>
+          </button>
+
           <button onClick={signOut}
             className="w-full flex items-center gap-2 text-xs text-zinc-500 hover:text-red-400 transition-colors px-2 py-1">
-            <LogOut className="w-3.5 h-3.5" /> Déconnexion
+            <LogOut className="w-3.5 h-3.5" /> {t("portal.common.logout")}
           </button>
         </div>
       </aside>

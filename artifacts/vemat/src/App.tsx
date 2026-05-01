@@ -2,8 +2,6 @@ import { Switch, Route, Router as WouterRouter } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { GoogleAuthProvider } from "@/contexts/GoogleAuthContext";
-import { ClientAuthProvider } from "@/contexts/ClientAuthContext";
 import { ManagerAuthProvider } from "@/contexts/ManagerAuthContext";
 import { TechnicienAuthProvider } from "@/contexts/TechnicienAuthContext";
 import { DGAuthProvider } from "@/contexts/DGAuthContext";
@@ -25,6 +23,7 @@ import Services from "@/pages/Services";
 import APropos from "@/pages/APropos";
 import Contact from "@/pages/Contact";
 import PiecesDeRechange from "@/pages/PiecesDeRechange";
+import TerexCatalogueTRT35 from "@/pages/TerexCatalogueTRT35";
 import Blog from "@/pages/Blog";
 import Article from "@/pages/Article";
 import ProductPage from "@/pages/ProductPage";
@@ -34,19 +33,6 @@ import NotFound from "@/pages/not-found";
 
 // Portail d'entrée
 import EspaceVemat from "@/pages/EspaceVemat";
-
-// Espace client
-import EspaceClientLogin from "@/pages/espace-client/Login";
-import EspaceClientRegister from "@/pages/espace-client/Register";
-import EspaceClientDashboard from "@/pages/espace-client/Dashboard";
-import EspaceClientCommandes from "@/pages/espace-client/Commandes";
-import EspaceClientCommandeDetail from "@/pages/espace-client/CommandeDetail";
-import EspaceClientNouvelleCommande from "@/pages/espace-client/NouvelleCommande";
-import EspaceClientReparations from "@/pages/espace-client/Reparations";
-import EspaceClientReparationDetail from "@/pages/espace-client/ReparationDetail";
-import EspaceClientNouvelleReparation from "@/pages/espace-client/NouvelleReparation";
-import EspaceClientChantiers from "@/pages/espace-client/Chantiers";
-import EspaceClientProfil from "@/pages/espace-client/Profil";
 
 // Espace manager
 import ManagerLogin from "@/pages/espace-manager/ManagerLogin";
@@ -90,7 +76,7 @@ import AdminDemandes from "@/pages/admin-client/AdminDemandes";
 
 const queryClient = new QueryClient();
 
-const PORTAL_PREFIXES = ["/espace-client", "/espace-manager", "/espace-technicien", "/espace-vemat", "/direction", "/espace-commercial"];
+const PORTAL_PREFIXES = ["/espace-manager", "/espace-technicien", "/espace-vemat", "/direction", "/espace-commercial"];
 function isPortalRoute(path: string) {
   return PORTAL_PREFIXES.some((p) => path.startsWith(p));
 }
@@ -100,19 +86,6 @@ function Router() {
     <Switch>
       {/* Portail d'entrée */}
       <Route path="/espace-vemat" component={EspaceVemat} />
-
-      {/* Espace client */}
-      <Route path="/espace-client/connexion" component={EspaceClientLogin} />
-      <Route path="/espace-client/inscription" component={EspaceClientRegister} />
-      <Route path="/espace-client/dashboard" component={EspaceClientDashboard} />
-      <Route path="/espace-client/commandes/nouvelle" component={EspaceClientNouvelleCommande} />
-      <Route path="/espace-client/commandes/:id" component={EspaceClientCommandeDetail} />
-      <Route path="/espace-client/commandes" component={EspaceClientCommandes} />
-      <Route path="/espace-client/reparations/nouvelle" component={EspaceClientNouvelleReparation} />
-      <Route path="/espace-client/reparations/:id" component={EspaceClientReparationDetail} />
-      <Route path="/espace-client/reparations" component={EspaceClientReparations} />
-      <Route path="/espace-client/chantiers" component={EspaceClientChantiers} />
-      <Route path="/espace-client/profil" component={EspaceClientProfil} />
 
       {/* Espace manager */}
       <Route path="/espace-manager/connexion" component={ManagerLogin} />
@@ -167,6 +140,7 @@ function Router() {
               <Route path="/elevateurs-telescopiques" component={ElevateursTelescopiques} />
               <Route path="/construction" component={Construction} />
               <Route path="/services" component={Services} />
+              <Route path="/pieces-de-rechange/terex/catalogue/trt-35" component={TerexCatalogueTRT35} />
               <Route path="/pieces-de-rechange" component={PiecesDeRechange} />
               <Route path="/blog" component={Blog} />
               <Route path="/blog/:slug" component={Article} />
@@ -189,10 +163,8 @@ function Router() {
 
 function App() {
   return (
-    <GoogleAuthProvider>
-    <ClientAuthProvider>
-      <ManagerAuthProvider>
-        <TechnicienAuthProvider>
+    <ManagerAuthProvider>
+      <TechnicienAuthProvider>
         <DGAuthProvider>
         <CommercialAuthProvider>
           <QueryClientProvider client={queryClient}>
@@ -207,10 +179,8 @@ function App() {
           </QueryClientProvider>
         </CommercialAuthProvider>
         </DGAuthProvider>
-        </TechnicienAuthProvider>
-      </ManagerAuthProvider>
-    </ClientAuthProvider>
-    </GoogleAuthProvider>
+      </TechnicienAuthProvider>
+    </ManagerAuthProvider>
   );
 }
 

@@ -7,6 +7,7 @@ import { RepairStatusBadge } from "@/components/espace-client/StatusBadge";
 import { supabaseAdmin } from "@/lib/supabase";
 import type { RepairRequest, Company, RepairStatus } from "@/lib/database.types";
 import { REPAIR_STATUSES } from "@/lib/database.types";
+import { useLang } from "@/i18n/I18nProvider";
 
 type RepairWithCompany = RepairRequest & { company?: Company };
 type DateFilter = "all" | "today" | "week" | "month";
@@ -32,14 +33,18 @@ function getDateRange(f: DateFilter): { from?: string; to?: string } {
   return {};
 }
 
-const DATE_FILTERS: { value: DateFilter; label: string }[] = [
-  { value: "all", label: "Tout" },
-  { value: "today", label: "Aujourd'hui" },
-  { value: "week", label: "Cette semaine" },
-  { value: "month", label: "Ce mois" },
-];
+function getDateFilters(t: (k: string) => string): { value: DateFilter; label: string }[] {
+  return [
+    { value: "all", label: t("portal.common.all") },
+    { value: "today", label: t("portal.common.today") },
+    { value: "week", label: t("portal.common.week") },
+    { value: "month", label: t("portal.common.month") },
+  ];
+}
 
 export default function AdminReparations() {
+  const { lang, t } = useLang();
+  const DATE_FILTERS = getDateFilters(t);
   const [repairs, setRepairs] = useState<RepairWithCompany[]>([]);
   const [loading, setLoading] = useState(true);
   const [exporting, setExporting] = useState(false);
@@ -87,15 +92,15 @@ export default function AdminReparations() {
     if (df) q = q.gte("created_at", df);
     if (dt) q = q.lte("created_at", dt);
     const { data } = await q;
-    const headers = ["Référence", "Société", "Équipement", "Priorité", "Statut", "Date", "Technicien"];
+    const headers = [t("portal.common.reference"), t("portal.common.client"), t("portal.common.equipment"), t("portal.repairs.priority"), t("portal.common.status"), t("portal.common.date"), t("portal.common.technician")];
     const rows = (data ?? []).map((r: RepairRequest & { companies?: Company }) => [
       r.reference,
       (r.companies as Company | undefined)?.name ?? "",
       `${r.equipment_type}${r.equipment_brand ? " " + r.equipment_brand : ""}`,
       r.priority,
       REPAIR_STATUSES.find((s) => s.value === r.status)?.label ?? r.status,
-      new Date(r.created_at).toLocaleDateString("fr-FR"),
-      r.scheduled_date ? new Date(r.scheduled_date + "T00:00:00").toLocaleDateString("fr-FR") : "",
+      new Date(r.created_at).toLocaleDateString(lang === "fr" ? "fr-FR" : "en-GB"),
+      r.scheduled_date ? new Date(r.scheduled_date + "T00:00:00").toLocaleDateString(lang === "fr" ? "fr-FR" : "en-GB") : "",
     ]);
     const csv = [headers, ...rows].map((r) => r.map(String).join(";")).join("\n");
     const blob = new Blob(["﻿" + csv], { type: "text/csv;charset=utf-8" });
@@ -118,19 +123,19 @@ export default function AdminReparations() {
         <div className="p-8">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h1 className="text-2xl font-black text-zinc-900">Réparations</h1>
-              {!loading && <p className="text-sm text-zinc-500 mt-1">{total} réparation{total !== 1 ? "s" : ""}</p>}
+              <h1 className="text-2xl font-black text-zinc-900">{t("portal.manager.nav.repairs")}</h1>
+              {!loading && <p className="text-sm text-zinc-500 mt-1">{total} {total !== 1 ? t("portal.repairs.repairsPlural") : t("portal.repairs.repair")}</p>}
             </div>
             <button onClick={exportCSV} disabled={exporting || loading}
               className="flex items-center gap-2 border border-zinc-200 text-zinc-600 hover:bg-zinc-50 font-semibold text-sm px-4 py-2 rounded-lg transition-colors disabled:opacity-40">
-              <Download className="w-4 h-4" />{exporting ? "Export..." : "Exporter CSV"}
+              <Download className="w-4 h-4" />{exporting ? t("portal.common.exporting") : t("portal.common.export")}
             </button>
           </div>
 
           <div className="flex gap-3 mb-4 flex-wrap items-center">
             <div className="relative flex-1 min-w-48">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" />
-              <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Référence ou équipement..."
+              <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder={t("portal.repairs.searchPlaceholder")}
                 className="w-full pl-9 pr-3.5 py-2 border border-zinc-200 rounded-lg text-sm focus:outline-none focus:border-accent" />
             </div>
             <div className="flex items-center gap-0.5 bg-zinc-100 rounded-lg p-1">
@@ -147,7 +152,7 @@ export default function AdminReparations() {
           <div className="flex gap-2 flex-wrap mb-5">
             <button onClick={() => { setFilter("all"); setPage(0); }}
               className={`px-3 py-2 rounded-lg text-xs font-semibold border transition-colors ${filter === "all" ? "bg-zinc-900 text-white border-zinc-900" : "border-zinc-200 text-zinc-600"}`}>
-              Toutes
+              {t("portal.common.all")}
             </button>
             {REPAIR_STATUSES.map((s) => (
               <button key={s.value} onClick={() => { setFilter(s.value as RepairStatus); setPage(0); }}
@@ -173,7 +178,7 @@ export default function AdminReparations() {
                 </div>
               ))
             ) : repairs.length === 0 ? (
-              <div className="bg-white rounded-xl border border-zinc-100 py-16 text-center text-zinc-400 text-sm">Aucune réparation</div>
+              <div className="bg-white rounded-xl border border-zinc-100 py-16 text-center text-zinc-400 text-sm">{t("portal.repairs.noRepairs")}</div>
             ) : repairs.map((r) => (
               <Link key={r.id} href={`/espace-manager/reparations/${r.id}`}
                 className="bg-white rounded-xl border border-zinc-100 p-5 flex items-center gap-5 hover:border-zinc-200 hover:shadow-sm transition-all block">
@@ -194,12 +199,12 @@ export default function AdminReparations() {
                   {r.scheduled_date ? (
                     <div className="flex items-center gap-1.5 text-xs text-blue-600 font-semibold">
                       <Calendar className="w-3.5 h-3.5" />
-                      {new Date(r.scheduled_date).toLocaleDateString("fr-FR", { day: "numeric", month: "short" })}
+                      {new Date(r.scheduled_date).toLocaleDateString(lang === "fr" ? "fr-FR" : "en-GB", { day: "numeric", month: "short" })}
                     </div>
                   ) : (
-                    <p className="text-xs text-zinc-400">{new Date(r.created_at).toLocaleDateString("fr-FR")}</p>
+                    <p className="text-xs text-zinc-400">{new Date(r.created_at).toLocaleDateString(lang === "fr" ? "fr-FR" : "en-GB")}</p>
                   )}
-                  <p className="text-xs text-accent font-bold mt-1">Gérer →</p>
+                  <p className="text-xs text-accent font-bold mt-1">{t("portal.common.manage")} →</p>
                 </div>
               </Link>
             ))}
@@ -207,16 +212,16 @@ export default function AdminReparations() {
 
           {!loading && totalPages > 1 && (
             <div className="flex items-center justify-between mt-4">
-              <p className="text-xs text-zinc-400">{from}–{to} sur {total} résultat{total !== 1 ? "s" : ""}</p>
+              <p className="text-xs text-zinc-400">{from}–{to} {t("portal.common.of")} {total} {total !== 1 ? t("portal.common.results") : t("portal.common.result")}</p>
               <div className="flex items-center gap-2">
                 <button onClick={() => setPage((p) => p - 1)} disabled={page === 0}
                   className="flex items-center gap-1 px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-semibold text-zinc-600 hover:border-zinc-300 disabled:opacity-40 disabled:cursor-not-allowed transition-colors">
-                  <ChevronLeft className="w-3.5 h-3.5" /> Précédent
+                  <ChevronLeft className="w-3.5 h-3.5" /> {t("portal.common.previous")}
                 </button>
-                <span className="text-xs font-bold text-zinc-700 px-1">Page {page + 1} / {totalPages}</span>
+                <span className="text-xs font-bold text-zinc-700 px-1">{t("portal.common.page")} {page + 1} / {totalPages}</span>
                 <button onClick={() => setPage((p) => p + 1)} disabled={page >= totalPages - 1}
                   className="flex items-center gap-1 px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-semibold text-zinc-600 hover:border-zinc-300 disabled:opacity-40 disabled:cursor-not-allowed transition-colors">
-                  Suivant <ChevronRight className="w-3.5 h-3.5" />
+                  {t("portal.common.next")} <ChevronRight className="w-3.5 h-3.5" />
                 </button>
               </div>
             </div>

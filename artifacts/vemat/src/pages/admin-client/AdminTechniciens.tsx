@@ -5,6 +5,7 @@ import { AdminGuard } from "./AdminGuard";
 import { RepairStatusBadge } from "@/components/espace-client/StatusBadge";
 import { supabaseAdmin } from "@/lib/supabase";
 import type { Technician, RepairRequest, Company } from "@/lib/database.types";
+import { useLang } from "@/i18n/I18nProvider";
 
 type RepairWithCompany = RepairRequest & { company?: Company };
 
@@ -94,33 +95,35 @@ export default function AdminTechniciens() {
   const set = (k: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement>) =>
     setForm((f) => ({ ...f, [k]: e.target.value }));
 
+  const { lang, t } = useLang();
+
   return (
     <AdminGuard>
       <AdminLayout>
         <div className="p-8">
           <div className="flex items-center justify-between mb-8">
             <div>
-              <h1 className="text-2xl font-black text-zinc-900">Techniciens</h1>
-              <p className="text-sm text-zinc-500 mt-1">Gérez l'équipe et le planning des interventions</p>
+              <h1 className="text-2xl font-black text-zinc-900">{t("portal.technicians.title")}</h1>
+              <p className="text-sm text-zinc-500 mt-1">{t("portal.technicians.subtitle")}</p>
             </div>
             <button
               onClick={openCreate}
               className="flex items-center gap-2 bg-accent text-accent-foreground font-bold text-sm px-4 py-2.5 rounded-lg hover:bg-accent/90 transition-colors"
             >
-              <Plus className="w-4 h-4" /> Nouveau technicien
+              <Plus className="w-4 h-4" /> {t("portal.technicians.newTechnician")}
             </button>
           </div>
 
           {loading ? (
             <div className="bg-white rounded-xl border border-zinc-100 py-16 text-center text-zinc-400">
-              Chargement...
+              {t("portal.common.loading")}
             </div>
           ) : technicians.length === 0 ? (
             <div className="bg-white rounded-xl border border-zinc-100 py-20 text-center">
               <Wrench className="w-10 h-10 text-zinc-200 mx-auto mb-3" />
-              <p className="text-zinc-400 text-sm mb-4">Aucun technicien enregistré</p>
+              <p className="text-zinc-400 text-sm mb-4">{t("portal.technicians.noTechnicians")}</p>
               <button onClick={openCreate} className="text-accent font-semibold text-sm hover:underline">
-                Ajouter le premier technicien →
+                {t("portal.technicians.addFirst")}
               </button>
             </div>
           ) : (
@@ -170,7 +173,7 @@ export default function AdminTechniciens() {
                               : "bg-zinc-50 text-zinc-400"
                           }`}
                         >
-                          {techRepairs.length} intervention{techRepairs.length !== 1 ? "s" : ""}
+                          {techRepairs.length} {techRepairs.length !== 1 ? t("portal.technicians.interventionCountPlural") : t("portal.technicians.interventionCount")}
                         </span>
                         <button
                           onClick={() => toggleAvailable(tech)}
@@ -181,7 +184,7 @@ export default function AdminTechniciens() {
                           }`}
                         >
                           <Power className="w-3 h-3" />
-                          {tech.available ? "Disponible" : "Indisponible"}
+                          {tech.available ? t("portal.technicians.available") : t("portal.technicians.unavailable")}
                         </button>
                         <button
                           onClick={() => openEdit(tech)}
@@ -196,7 +199,7 @@ export default function AdminTechniciens() {
                     {techRepairs.length === 0 ? (
                       <div className="px-6 py-8 text-center">
                         <CheckCircle2 className="w-8 h-8 text-zinc-100 mx-auto mb-2" />
-                        <p className="text-sm text-zinc-400">Aucune intervention assignée</p>
+                        <p className="text-sm text-zinc-400">{t("portal.technicians.noneAssigned")}</p>
                       </div>
                     ) : (
                       <div className="divide-y divide-zinc-50">
@@ -221,7 +224,7 @@ export default function AdminTechniciens() {
                               {r.scheduled_date && (
                                 <div className="flex items-center gap-1.5 text-xs text-zinc-500">
                                   <Calendar className="w-3.5 h-3.5" />
-                                  {new Date(r.scheduled_date).toLocaleDateString("fr-FR", {
+                                  {new Date(r.scheduled_date).toLocaleDateString(lang === "fr" ? "fr-FR" : "en-GB", {
                                     weekday: "short",
                                     day: "numeric",
                                     month: "short",
@@ -247,7 +250,7 @@ export default function AdminTechniciens() {
             <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4">
               <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-100">
                 <h2 className="font-black text-zinc-900">
-                  {editId ? "Modifier le technicien" : "Nouveau technicien"}
+                  {editId ? t("portal.technicians.modalTitleEdit") : t("portal.technicians.modalTitleNew")}
                 </h2>
                 <button
                   onClick={() => setShowModal(false)}
@@ -260,7 +263,7 @@ export default function AdminTechniciens() {
               <form onSubmit={handleSave} className="p-6 space-y-4">
                 <div>
                   <label className="block text-xs font-bold text-zinc-600 uppercase tracking-wide mb-1.5">
-                    Nom complet *
+                    {t("portal.technicians.fullName")} *
                   </label>
                   <input
                     value={form.name}
@@ -274,7 +277,7 @@ export default function AdminTechniciens() {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block text-xs font-bold text-zinc-600 uppercase tracking-wide mb-1.5">
-                      Téléphone
+                      {t("portal.technicians.phone")}
                     </label>
                     <input
                       value={form.phone}
@@ -285,7 +288,7 @@ export default function AdminTechniciens() {
                   </div>
                   <div>
                     <label className="block text-xs font-bold text-zinc-600 uppercase tracking-wide mb-1.5">
-                      Email
+                      {t("portal.technicians.email")}
                     </label>
                     <input
                       type="email"
@@ -300,8 +303,8 @@ export default function AdminTechniciens() {
                 {/* Supabase user_id for portal access */}
                 <div>
                   <label className="block text-xs font-bold text-zinc-600 uppercase tracking-wide mb-1.5">
-                    ID Utilisateur Supabase
-                    <span className="ml-2 font-normal normal-case text-zinc-400">(pour l'accès portail technicien)</span>
+                    {t("portal.technicians.supabaseId")}
+                    <span className="ml-2 font-normal normal-case text-zinc-400">({t("portal.technicians.supabaseIdHint")})</span>
                   </label>
                   <input
                     value={form.user_id}
@@ -309,13 +312,13 @@ export default function AdminTechniciens() {
                     placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
                     className="w-full border border-zinc-200 rounded-lg px-3.5 py-2.5 text-sm font-mono focus:outline-none focus:border-accent placeholder:font-sans"
                   />
-                  <p className="text-[10px] text-zinc-400 mt-1">Créer l'utilisateur dans Supabase → Authentication → Users → "Invite user", puis coller son UUID ici.</p>
+                  <p className="text-[10px] text-zinc-400 mt-1">{t("portal.technicians.supabaseIdHelp")}</p>
                 </div>
 
                 {/* Color picker */}
                 <div>
                   <label className="block text-xs font-bold text-zinc-600 uppercase tracking-wide mb-2">
-                    Couleur calendrier
+                    {t("portal.technicians.calendarColor")}
                   </label>
                   <div className="flex gap-2 flex-wrap">
                     {COLORS.map((c) => (
@@ -343,7 +346,7 @@ export default function AdminTechniciens() {
                       : "?"}
                   </div>
                   <div>
-                    <p className="text-sm font-bold text-zinc-900">{form.name || "Prénom Nom"}</p>
+                    <p className="text-sm font-bold text-zinc-900">{form.name || t("portal.technicians.preview")}</p>
                     <p className="text-xs text-zinc-400">{form.phone || "—"}</p>
                   </div>
                 </div>
@@ -360,7 +363,7 @@ export default function AdminTechniciens() {
                     onClick={() => setShowModal(false)}
                     className="flex-1 border border-zinc-200 text-zinc-600 font-bold text-sm py-2.5 rounded-lg hover:bg-zinc-50 transition-colors"
                   >
-                    Annuler
+                    {t("portal.common.cancel")}
                   </button>
                   <button
                     type="submit"
@@ -368,7 +371,7 @@ export default function AdminTechniciens() {
                     className="flex-1 flex items-center justify-center gap-2 bg-accent text-accent-foreground font-bold text-sm py-2.5 rounded-lg hover:bg-accent/90 transition-colors disabled:opacity-60"
                   >
                     <Check className="w-4 h-4" />
-                    {saving ? "Enregistrement..." : editId ? "Modifier" : "Créer"}
+                    {saving ? t("portal.technicians.creating") : editId ? t("portal.common.edit") : t("portal.common.new")}
                   </button>
                 </div>
               </form>
