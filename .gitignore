@@ -54,3 +54,4 @@ Thumbs.db
 .env.*
 !.env.example
 .claude/
+PHOTO-pdr/
