@@ -1,30 +1,37 @@
 /**
- * Email notifications via Web3Forms (https://web3forms.com)
+ * Notifications email des demandes du site.
  *
- * Setup (2 min):
- *  1. Go to https://web3forms.com
- *  2. Enter your Vemat email address → get an Access Key
- *  3. Add to Netlify environment variables:
- *       VITE_WEB3FORMS_KEY=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+ * L'envoi passe par le backend (Cloud Run → SMTP cPanel InMotion), via
+ * `POST /api/notify`. Le backend choisit la boîte destinataire selon le
+ * `type` envoyé (le client ne choisit jamais l'adresse) :
  *
- * Without the key, the DB insert still works — emails are just skipped silently.
+ *   machines → vemat@vematgroup.com         (devis machines)
+ *   pdr      → commercial.pdr@vematgroup.com (pièces de rechange)
+ *   sav      → vemat.sav@vematgroup.com      (SAV / interventions)
+ *
+ * Si le backend ou le SMTP n'est pas configuré, l'enregistrement en base reste
+ * la source de vérité — l'email échoue silencieusement.
  */
 
-const WEB3FORMS_KEY = import.meta.env.VITE_WEB3FORMS_KEY as string | undefined;
+type Recipient = "machines" | "pdr" | "sav";
 
-async function submitToWeb3Forms(subject: string, body: string, fromName: string) {
-  if (!WEB3FORMS_KEY) return;
+const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || "").replace(/\/$/, "");
+
+function buildApiUrl(path: string) {
+  return API_BASE_URL ? `${API_BASE_URL}${path}` : path;
+}
+
+async function sendNotification(
+  recipient: Recipient,
+  subject: string,
+  body: string,
+  replyTo?: string,
+) {
   try {
-    await fetch("https://api.web3forms.com/submit", {
+    await fetch(buildApiUrl("/api/notify"), {
       method: "POST",
       headers: { "Content-Type": "application/json", Accept: "application/json" },
-      body: JSON.stringify({
-        access_key: WEB3FORMS_KEY,
-        subject,
-        message: body,
-        from_name: fromName,
-        botcheck: "",
-      }),
+      body: JSON.stringify({ type: recipient, subject, body, replyTo }),
     });
   } catch {
     // Fail silently — the DB insert is the source of truth
@@ -44,8 +51,12 @@ export async function sendDevisEmail(params: {
   location?: string;
   desired_date?: string;
   notes?: string;
+  /** true = demande de pièces de rechange (→ PDR), false/absent = machine (→ machines) */
+  isSpareParts?: boolean;
 }) {
-  const subject = `[DEVIS] ${params.reference} — ${params.company_name}`;
+  const recipient: Recipient = params.isSpareParts ? "pdr" : "machines";
+  const tag = params.isSpareParts ? "DEVIS PIÈCES" : "DEVIS MACHINE";
+  const subject = `[${tag}] ${params.reference} — ${params.company_name}`;
   const body = `
 Nouvelle demande de devis reçue via le site Vemat Group.
 
@@ -73,7 +84,7 @@ Notes           : ${params.notes ?? "—"}
 Retrouvez cette demande dans l'Espace Manager → Demandes entrantes.
   `.trim();
 
-  await submitToWeb3Forms(subject, body, "Formulaire Devis Vemat");
+  await sendNotification(recipient, subject, body, params.contact_email);
 }
 
 export async function sendInterventionEmail(params: {
@@ -130,5 +141,5 @@ ${attachmentSection}
 Retrouvez cette demande dans l'Espace Manager → Demandes entrantes.
   `.trim();
 
-  await submitToWeb3Forms(subject, body, "Formulaire Intervention Vemat");
+  await sendNotification("sav", subject, body, params.contact_email);
 }

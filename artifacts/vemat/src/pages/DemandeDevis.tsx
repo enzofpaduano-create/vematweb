@@ -207,6 +207,7 @@ export default function DemandeDevis() {
     // Send email notification (non-blocking)
     await sendDevisEmail({
       ...payload,
+      isSpareParts: fromCart,
       product_category: payload.product_category ?? undefined,
       product_brand: payload.product_brand ?? undefined,
       product_model: payload.product_model ?? undefined,
