@@ -4,9 +4,10 @@ import { ContactForm } from "@/components/ContactForm";
 import { Button } from "@/components/ui/button";
 import { useLang } from "@/i18n/I18nProvider";
 import { motion } from "framer-motion";
-import { MapPin, Phone, Mail, Clock } from "lucide-react";
+import { MapPin, Phone, Mail } from "lucide-react";
 import { CTASection } from "@/components/CTASection";
 import { OfficesSection } from "@/components/OfficesSection";
+import contactHero from "@/assets/images/contact-hero.jpg";
 
 export default function Contact() {
   const { t } = useLang();
@@ -17,7 +18,10 @@ export default function Contact() {
     <div className="min-h-screen bg-white">
       {/* Premium Contact Hero */}
       <div className="relative h-[60vh] min-h-[500px] overflow-hidden bg-zinc-950">
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80')] bg-cover bg-center opacity-40 mix-blend-luminosity" />
+        <div
+          className="absolute inset-0 bg-cover bg-center opacity-40 mix-blend-luminosity"
+          style={{ backgroundImage: `url(${contactHero})` }}
+        />
         <div className="absolute inset-0 bg-gradient-to-b from-zinc-950/80 via-transparent to-white" />
         
         <div className="container mx-auto px-4 md:px-6 h-full flex flex-col justify-center relative z-10 pt-20">

@@ -52,7 +52,6 @@ import TechnicienMissions from "@/pages/technicien/TechnicienMissions";
 import TechnicienMission from "@/pages/technicien/TechnicienMission";
 import TechnicienHistorique from "@/pages/technicien/TechnicienHistorique";
 import TechnicienCatalogues from "@/pages/technicien/TechnicienCatalogues";
-import TechnicienCataloguesFamily from "@/pages/technicien/TechnicienCataloguesFamily";
 import TechnicienCatalogue from "@/pages/technicien/TechnicienCatalogue";
 
 // Espace direction (DG)
@@ -63,7 +62,6 @@ import DGCommandes from "@/pages/direction/DGCommandes";
 import DGCommandeDetail from "@/pages/direction/DGCommandeDetail";
 import DGCommercial from "@/pages/direction/DGCommercial";
 import DGCatalogues from "@/pages/direction/DGCatalogues";
-import DGCataloguesFamily from "@/pages/direction/DGCataloguesFamily";
 import DGCatalogue from "@/pages/direction/DGCatalogue";
 
 // Espace commercial
@@ -110,7 +108,6 @@ function Router() {
       <Route path="/espace-technicien/missions" component={TechnicienMissions} />
       <Route path="/espace-technicien/mission/:id" component={TechnicienMission} />
       <Route path="/espace-technicien/historique" component={TechnicienHistorique} />
-      <Route path="/espace-technicien/catalogues/groupe/:family" component={TechnicienCataloguesFamily} />
       <Route path="/espace-technicien/catalogues/:slug" component={TechnicienCatalogue} />
       <Route path="/espace-technicien/catalogues" component={TechnicienCatalogues} />
 
@@ -121,7 +118,6 @@ function Router() {
       <Route path="/direction/commandes" component={DGCommandes} />
       <Route path="/direction/reparations" component={DGReparations} />
       <Route path="/direction/commercial" component={DGCommercial} />
-      <Route path="/direction/catalogues/groupe/:family" component={DGCataloguesFamily} />
       <Route path="/direction/catalogues/:slug" component={DGCatalogue} />
       <Route path="/direction/catalogues" component={DGCatalogues} />
 
