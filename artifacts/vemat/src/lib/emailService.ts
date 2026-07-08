@@ -5,9 +5,11 @@
  * `POST /api/notify`. Le backend choisit la boîte destinataire selon le
  * `type` envoyé (le client ne choisit jamais l'adresse) :
  *
- *   machines → vemat@vematgroup.com         (devis machines)
- *   pdr      → commercial.pdr@vematgroup.com (pièces de rechange)
- *   sav      → vemat.sav@vematgroup.com      (SAV / interventions)
+ *   machines → vemat@vematgroup.com                        (devis machines, fallback générique)
+ *   pdr      → commercial.pdr@vematgroup.com + vemat@      (pièces de rechange)
+ *   sav      → vemat.sav@vematgroup.com      + vemat@      (SAV / interventions)
+ *
+ * `vemat@vematgroup.com` est en copie sur pdr et sav pour supervision.
  *
  * Si le backend ou le SMTP n'est pas configuré, l'enregistrement en base reste
  * la source de vérité — l'email échoue silencieusement.
@@ -142,4 +144,67 @@ Retrouvez cette demande dans l'Espace Manager → Demandes entrantes.
   `.trim();
 
   await sendNotification("sav", subject, body, params.contact_email);
+}
+
+// ─── Formulaire Contact (page /contact) ──────────────────────────────────────
+// Route selon le type de demande sélectionné dans le dropdown :
+//   devis / autre → machines (vemat@)
+//   sav           → sav      (vemat.sav@ + vemat@)
+//   pieces        → pdr      (commercial.pdr@ + vemat@)
+
+export type ContactTypeDemande = "devis" | "sav" | "pieces" | "autre";
+
+function contactRecipientFor(type: ContactTypeDemande): Recipient {
+  switch (type) {
+    case "sav":
+      return "sav";
+    case "pieces":
+      return "pdr";
+    case "devis":
+    case "autre":
+    default:
+      return "machines";
+  }
+}
+
+const CONTACT_TYPE_LABEL: Record<ContactTypeDemande, string> = {
+  devis: "Devis machine",
+  sav: "SAV",
+  pieces: "Pièces de rechange",
+  autre: "Autre",
+};
+
+export async function sendContactEmail(params: {
+  reference: string;
+  nom: string;
+  entreprise: string;
+  email: string;
+  telephone: string;
+  typeDemande: ContactTypeDemande;
+  message: string;
+}) {
+  const recipient = contactRecipientFor(params.typeDemande);
+  const typeLabel = CONTACT_TYPE_LABEL[params.typeDemande] ?? params.typeDemande;
+  const subject = `[CONTACT — ${typeLabel}] ${params.reference} — ${params.entreprise || params.nom}`;
+  const body = `
+Nouveau message reçu via le formulaire Contact du site Vemat Group.
+
+Référence : ${params.reference}
+Date      : ${new Date().toLocaleDateString("fr-FR")}
+Type      : ${typeLabel}
+
+── COORDONNÉES ──────────────────────────────
+Nom       : ${params.nom}
+Société   : ${params.entreprise || "—"}
+Email     : ${params.email}
+Téléphone : ${params.telephone}
+
+── MESSAGE ──────────────────────────────────
+${params.message}
+
+─────────────────────────────────────────────
+Répondre directement à ${params.email}.
+  `.trim();
+
+  await sendNotification(recipient, subject, body, params.email);
 }

@@ -1,6 +1,8 @@
+import { useState } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader2 } from "lucide-react";
 import { Button } from "./ui/button";
 import {
   Form,
@@ -21,6 +23,8 @@ import {
 } from "./ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { useLang } from "@/i18n/I18nProvider";
+import { supabasePublic } from "@/lib/supabase";
+import { sendContactEmail, type ContactTypeDemande } from "@/lib/emailService";
 
 const messages = {
   fr: {
@@ -39,7 +43,6 @@ const messages = {
     select: "Sélectionner...",
     types: {
       devis: "Demande de devis",
-      location: "Location d'engins",
       sav: "SAV & Maintenance",
       pieces: "Pièces de rechange",
       autre: "Autre demande",
@@ -49,11 +52,14 @@ const messages = {
       company: "Société SA",
       email: "jean@societe.com",
       phone: "+212 600 00 00 00",
-      message: "Décrivez votre besoin, le type d'équipement recherché, la durée prévue...",
+      message: "Décrivez votre besoin, le type d'équipement recherché...",
     },
     submit: "Envoyer la demande",
+    sending: "Envoi en cours…",
     successTitle: "Demande envoyée",
     successDesc: "Notre équipe vous contactera dans les plus brefs délais.",
+    errorTitle: "Erreur d'envoi",
+    errorDesc: "Une erreur est survenue. Réessayez ou écrivez-nous directement à vemat@vematgroup.com.",
   },
   en: {
     nameReq: "Name is required",
@@ -71,7 +77,6 @@ const messages = {
     select: "Select...",
     types: {
       devis: "Quote request",
-      location: "Equipment rental",
       sav: "After-sales & Maintenance",
       pieces: "Spare parts",
       autre: "Other request",
@@ -81,37 +86,89 @@ const messages = {
       company: "Company Ltd",
       email: "john@company.com",
       phone: "+212 600 00 00 00",
-      message: "Describe your need, the type of equipment, expected duration...",
+      message: "Describe your need, the type of equipment...",
     },
     submit: "Send request",
+    sending: "Sending…",
     successTitle: "Request sent",
     successDesc: "Our team will contact you as soon as possible.",
+    errorTitle: "Send error",
+    errorDesc: "An error occurred. Please retry or write to vemat@vematgroup.com directly.",
   },
 };
+
+function buildReference(): string {
+  const year = new Date().getFullYear();
+  const rand = Math.floor(1000 + Math.random() * 9000);
+  return `CTC-${year}-${rand}`;
+}
 
 export function ContactForm() {
   const { toast } = useToast();
   const { lang } = useLang();
   const m = messages[lang];
+  const [submitting, setSubmitting] = useState(false);
 
   const formSchema = z.object({
     nom: z.string().min(2, m.nameReq),
     entreprise: z.string().min(2, m.companyReq),
     email: z.string().email(m.emailInvalid),
     telephone: z.string().min(8, m.phoneReq),
-    typeDemande: z.string().min(1, m.typeReq),
+    typeDemande: z.enum(["devis", "sav", "pieces", "autre"], {
+      errorMap: () => ({ message: m.typeReq }),
+    }),
     message: z.string().min(10, m.messageMin),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: { nom: "", entreprise: "", email: "", telephone: "", typeDemande: "", message: "" },
+    defaultValues: {
+      nom: "",
+      entreprise: "",
+      email: "",
+      telephone: "",
+      typeDemande: undefined as unknown as ContactTypeDemande,
+      message: "",
+    },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setSubmitting(true);
+    const reference = buildReference();
+
+    const payload = {
+      reference,
+      contact_name: values.nom,
+      contact_email: values.email,
+      contact_phone: values.telephone,
+      company_name: values.entreprise,
+      type_demande: values.typeDemande,
+      message: values.message,
+    };
+
+    // 1. Sauvegarde en base (source de vérité)
+    const { error: dbError } = await supabasePublic.from("form_contact").insert(payload);
+
+    if (dbError) {
+      toast({ title: m.errorTitle, description: m.errorDesc, variant: "destructive" });
+      setSubmitting(false);
+      return;
+    }
+
+    // 2. Email de notification (non bloquant — silencieux en cas d'échec)
+    await sendContactEmail({
+      reference,
+      nom: values.nom,
+      entreprise: values.entreprise,
+      email: values.email,
+      telephone: values.telephone,
+      typeDemande: values.typeDemande,
+      message: values.message,
+    });
+
     toast({ title: m.successTitle, description: m.successDesc });
     form.reset();
+    setSubmitting(false);
   }
 
   return (
@@ -181,7 +238,7 @@ export function ContactForm() {
           render={({ field }) => (
             <FormItem>
               <FormLabel>{m.type}</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <Select onValueChange={field.onChange} value={field.value ?? ""}>
                 <FormControl>
                   <SelectTrigger className="rounded-none bg-zinc-50 border-zinc-200">
                     <SelectValue placeholder={m.select} />
@@ -189,7 +246,6 @@ export function ContactForm() {
                 </FormControl>
                 <SelectContent>
                   <SelectItem value="devis">{m.types.devis}</SelectItem>
-                  <SelectItem value="location">{m.types.location}</SelectItem>
                   <SelectItem value="sav">{m.types.sav}</SelectItem>
                   <SelectItem value="pieces">{m.types.pieces}</SelectItem>
                   <SelectItem value="autre">{m.types.autre}</SelectItem>
@@ -218,8 +274,19 @@ export function ContactForm() {
           )}
         />
 
-        <Button type="submit" className="w-full sm:w-auto bg-accent text-accent-foreground hover:bg-accent/90 rounded-none font-bold px-8 h-12">
-          {m.submit}
+        <Button
+          type="submit"
+          disabled={submitting}
+          className="w-full sm:w-auto bg-accent text-accent-foreground hover:bg-accent/90 rounded-none font-bold px-8 h-12 disabled:opacity-70"
+        >
+          {submitting ? (
+            <span className="inline-flex items-center gap-2">
+              <Loader2 className="w-4 h-4 animate-spin" />
+              {m.sending}
+            </span>
+          ) : (
+            m.submit
+          )}
         </Button>
       </form>
     </Form>

@@ -7,6 +7,13 @@ import { logger } from "./logger";
  * Le destinataire est choisi par le serveur à partir du `type` de demande —
  * jamais par le client — pour éviter que l'endpoint serve de relais ouvert.
  *
+ * Politique de routage :
+ *   machines → vemat@                          (devis machines et fallback générique)
+ *   pdr      → commercial.pdr@ + vemat@        (pièces de rechange, copie master)
+ *   sav      → vemat.sav@      + vemat@        (SAV / interventions, copie master)
+ *
+ * `vemat@vematgroup.com` reçoit systématiquement une copie pour supervision.
+ *
  * Variables d'env attendues (Cloud Run) :
  *   SMTP_HOST   ex: mail.vematgroup.com
  *   SMTP_PORT   465 (SSL) ou 587 (STARTTLS)
@@ -14,17 +21,19 @@ import { logger } from "./logger";
  *   SMTP_USER   boîte authentifiée, ex: vemat@vematgroup.com
  *   SMTP_PASS   mot de passe de la boîte
  *   MAIL_FROM   (optionnel) ex: "Site Vemat <vemat@vematgroup.com>" (défaut: SMTP_USER)
- *   MAIL_TO_MACHINES (optionnel, défaut vemat@vematgroup.com)
+ *   MAIL_MASTER      (optionnel, défaut vemat@vematgroup.com) — boîte qui reçoit tout
  *   MAIL_TO_PDR      (optionnel, défaut commercial.pdr@vematgroup.com)
  *   MAIL_TO_SAV      (optionnel, défaut vemat.sav@vematgroup.com)
  */
 
 export type NotifyType = "machines" | "pdr" | "sav";
 
-const RECIPIENTS: Record<NotifyType, string> = {
-  machines: process.env.MAIL_TO_MACHINES || "vemat@vematgroup.com",
-  pdr: process.env.MAIL_TO_PDR || "commercial.pdr@vematgroup.com",
-  sav: process.env.MAIL_TO_SAV || "vemat.sav@vematgroup.com",
+const MASTER = process.env.MAIL_MASTER || "vemat@vematgroup.com";
+
+const RECIPIENTS: Record<NotifyType, string[]> = {
+  machines: [MASTER],
+  pdr: [process.env.MAIL_TO_PDR || "commercial.pdr@vematgroup.com", MASTER],
+  sav: [process.env.MAIL_TO_SAV || "vemat.sav@vematgroup.com", MASTER],
 };
 
 export function isNotifyType(value: unknown): value is NotifyType {
@@ -74,7 +83,7 @@ export async function sendFormNotification(params: {
 
   await transport.sendMail({
     from,
-    to,
+    to: to.join(", "),
     replyTo: params.replyTo || undefined,
     subject: params.subject,
     text: params.body,

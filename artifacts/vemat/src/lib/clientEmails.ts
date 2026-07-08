@@ -17,7 +17,7 @@
  * construit subject+body et appelle `dispatch`.
  */
 
-import { supabaseAdmin } from "./supabase";
+import { supabasePublic } from "./supabase";
 
 const WEB3FORMS_KEY = import.meta.env.VITE_WEB3FORMS_KEY as string | undefined;
 
@@ -54,7 +54,7 @@ async function dispatch(params: {
 // Les tables `devis_requests` / `repair_requests` ne stockent pas le contact
 // directement — il faut remonter au formulaire d'origine via `converted_to_*`.
 async function getOrderClient(orderId: string): Promise<{ email: string; name: string } | null> {
-  const { data } = await supabaseAdmin
+  const { data } = await supabasePublic
     .from("form_devis")
     .select("contact_email, contact_name")
     .eq("converted_to_order_id", orderId)
@@ -64,7 +64,7 @@ async function getOrderClient(orderId: string): Promise<{ email: string; name: s
 }
 
 async function getRepairClient(repairId: string): Promise<{ email: string; name: string } | null> {
-  const { data } = await supabaseAdmin
+  const { data } = await supabasePublic
     .from("form_interventions")
     .select("contact_email, contact_name")
     .eq("converted_to_repair_id", repairId)
