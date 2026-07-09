@@ -1,1 +1,33 @@
+# ==========================================================================
+# Redirections SEO — vieilles URLs WordPress (indexées Google) → nouvelles pages
+# L'ancien site WP servait l'anglais sous /en/ et le français à la racine.
+# Le nouveau site (React) est bilingue sur les mêmes chemins (/grues, /services…).
+# Première règle qui matche = gagnante. Le fallback SPA doit rester EN DERNIER.
+# On NE touche PAS /produit/:slug, /services, /contact, /a-propos, /blog… :
+# ce sont des routes réelles du nouveau site (les vieilles URL FR y tombent bien).
+# ==========================================================================
+
+# --- Anglais : catégories produits (/en/products/...) ---------------------
+/en/products/cranes/*                          /grues                      301
+/en/products/aerial-lifts/*                    /nacelles                   301
+/en/products/telescopic-handlers/*             /elevateurs-telescopiques   301
+/en/products/construction-machines-equipment/* /construction              301
+/en/products/*                                 /                           301
+
+# --- Anglais : sections -----------------------------------------------------
+/en/services/*                                 /services                   301
+/en/about-us/*                                 /a-propos                   301
+/en/contact/*                                  /contact                    301
+/en/brand/*                                    /                           301
+/en/brands/*                                   /                           301
+
+# --- Anglais : tout le reste sous /en/ → accueil ---------------------------
+/en/*                                          /                           301
+/en                                            /                           301
+
+# --- Français : catégories produits à la racine (/produits/...) -----------
+/produits/pieces-detachees-rechange/*          /pieces-de-rechange         301
+/produits/*                                    /                           301
+
+# --- Fallback SPA (obligatoirement en dernier) -----------------------------
 /*    /index.html   200
