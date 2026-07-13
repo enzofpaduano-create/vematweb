@@ -402,18 +402,65 @@ export interface PdrPart {
   updated_at: string;
 }
 
+// Catalogue de pièces déjà présent sur le site (Vemat stock + Terex + JLG),
+// chargé une seule fois côté navigateur pour l'autocomplétion — pas d'import.
+let catalogCache: Array<{ reference: string; designation: string }> | null = null;
+let catalogPromise: Promise<void> | null = null;
+
+async function ensureCatalog(): Promise<void> {
+  if (catalogCache) return;
+  if (!catalogPromise) {
+    catalogPromise = fetch(`${import.meta.env.BASE_URL}pdr-parts-index.json`)
+      .then((r) => (r.ok ? r.json() : []))
+      .then((arr: [string, string][]) => {
+        catalogCache = arr.map(([reference, designation]) => ({ reference, designation }));
+      })
+      .catch(() => { catalogCache = []; });
+  }
+  await catalogPromise;
+}
+
+function searchCatalog(q: string, limit: number): PdrPart[] {
+  if (!catalogCache) return [];
+  const ql = q.toLowerCase();
+  const out: PdrPart[] = [];
+  for (const p of catalogCache) {
+    if (p.reference.toLowerCase().includes(ql) || p.designation.toLowerCase().includes(ql)) {
+      out.push({ reference: p.reference, designation: p.designation, last_unit_price: null, currency: null, updated_at: "" });
+      if (out.length >= limit) break;
+    }
+  }
+  return out;
+}
+
+/**
+ * Autocomplétion pièces : fusionne les pièces déjà utilisées (mémoire Supabase,
+ * avec prix rappelé) puis le catalogue du site (Vemat/Terex/JLG). Max 8.
+ */
 export async function searchParts(query: string): Promise<PdrPart[]> {
   const q = query.trim();
   if (q.length < 2) return [];
   const pattern = `%${q}%`;
-  const { data, error } = await supabasePdr
-    .from("pdr_parts")
-    .select("*")
-    .or(`reference.ilike.${pattern},designation.ilike.${pattern}`)
-    .order("updated_at", { ascending: false })
-    .limit(8);
-  if (error) return [];
-  return (data ?? []) as PdrPart[];
+  const [remembered] = await Promise.all([
+    supabasePdr
+      .from("pdr_parts")
+      .select("*")
+      .or(`reference.ilike.${pattern},designation.ilike.${pattern}`)
+      .order("updated_at", { ascending: false })
+      .limit(8)
+      .then(({ data, error }) => (error ? [] : ((data ?? []) as PdrPart[]))),
+    ensureCatalog(),
+  ]);
+
+  const seen = new Set(remembered.map((r) => r.reference));
+  const result = [...remembered];
+  for (const c of searchCatalog(q, 30)) {
+    if (seen.has(c.reference)) continue;
+    result.push(c);
+    seen.add(c.reference);
+    if (result.length >= 8) break;
+  }
+  return result.slice(0, 8);
 }
 
 export async function rememberParts(items: PdrItem[], currency: Currency): Promise<void> {
