@@ -188,6 +188,7 @@ export default function DemandeDevis() {
         ? cartItems.reduce((sum, i) => sum + i.quantity, 0) || 1
         : (parseInt(quantity) || 1),
       cart_items: cartItems.length > 0 ? cartItems : null,
+      is_spare_parts: fromCart,
       location: location.trim() || null,
       desired_date: desiredDate || null,
       notes: fullNotes || null,

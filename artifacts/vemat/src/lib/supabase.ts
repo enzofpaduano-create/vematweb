@@ -8,5 +8,10 @@ export const supabaseTech = createClient(url, anonKey, {
   auth: { storageKey: "vemat-tech-auth", autoRefreshToken: true, persistSession: true },
 });
 
+// PDR portal (pièces de rechange) — isolated session
+export const supabasePdr = createClient(url, anonKey, {
+  auth: { storageKey: "vemat-pdr-auth", autoRefreshToken: true, persistSession: true },
+});
+
 // Public client — used for anonymous form submissions (no auth persistence needed)
 export const supabasePublic = createClient(url, anonKey);

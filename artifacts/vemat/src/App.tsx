@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { TechnicienAuthProvider } from "@/contexts/TechnicienAuthContext";
+import { PdrAuthProvider } from "@/contexts/PdrAuthContext";
 
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
@@ -38,6 +39,13 @@ import TechnicienHistorique from "@/pages/technicien/TechnicienHistorique";
 import TechnicienCatalogues from "@/pages/technicien/TechnicienCatalogues";
 import TechnicienCatalogue from "@/pages/technicien/TechnicienCatalogue";
 
+// Espace PDR (pièces de rechange)
+import PdrLogin from "@/pages/pdr/PdrLogin";
+import PdrDashboard from "@/pages/pdr/PdrDashboard";
+import PdrDocuments from "@/pages/pdr/PdrDocuments";
+import PdrDevisNew from "@/pages/pdr/PdrDevisNew";
+import PdrDocumentDetail from "@/pages/pdr/PdrDocumentDetail";
+
 // Formulaires publics
 import DemandeDevis from "@/pages/DemandeDevis";
 import DemandeIntervention from "@/pages/DemandeIntervention";
@@ -57,6 +65,13 @@ function Router() {
       <Route path="/espace-technicien/historique" component={TechnicienHistorique} />
       <Route path="/espace-technicien/catalogues/:slug" component={TechnicienCatalogue} />
       <Route path="/espace-technicien/catalogues" component={TechnicienCatalogues} />
+
+      {/* Espace PDR (pièces de rechange) */}
+      <Route path="/espace-pdr/connexion" component={PdrLogin} />
+      <Route path="/espace-pdr/tableau" component={PdrDashboard} />
+      <Route path="/espace-pdr/documents" component={PdrDocuments} />
+      <Route path="/espace-pdr/devis/nouveau" component={PdrDevisNew} />
+      <Route path="/espace-pdr/document/:id" component={PdrDocumentDetail} />
 
       {/* Formulaires publics (standalone, sans Navbar/Footer) */}
       <Route path="/demande-devis" component={DemandeDevis} />
@@ -97,17 +112,19 @@ function Router() {
 function App() {
   return (
     <TechnicienAuthProvider>
-      <QueryClientProvider client={queryClient}>
-        <I18nProvider>
-          <TooltipProvider>
-            <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
-              <Router />
-            </WouterRouter>
-            <SplashScreen />
-            <Toaster />
-          </TooltipProvider>
-        </I18nProvider>
-      </QueryClientProvider>
+      <PdrAuthProvider>
+        <QueryClientProvider client={queryClient}>
+          <I18nProvider>
+            <TooltipProvider>
+              <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
+                <Router />
+              </WouterRouter>
+              <SplashScreen />
+              <Toaster />
+            </TooltipProvider>
+          </I18nProvider>
+        </QueryClientProvider>
+      </PdrAuthProvider>
     </TechnicienAuthProvider>
   );
 }

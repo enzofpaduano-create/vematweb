@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { Wrench, ArrowRight, Lock } from "lucide-react";
+import { Wrench, ArrowRight, Lock, Package } from "lucide-react";
 import vematLogo from "@/assets/vemat-logo.png";
 
 const PORTALS = [
@@ -11,6 +11,15 @@ const PORTALS = [
     border: "border-orange-500/30 hover:border-orange-400/60",
     iconBg: "bg-orange-500/20 text-orange-400",
     badge: "Personnel Vemat",
+  },
+  {
+    href: "/espace-pdr/connexion",
+    icon: Package,
+    label: "Espace PDR",
+    color: "from-sky-500/20 to-sky-600/5",
+    border: "border-sky-500/30 hover:border-sky-400/60",
+    iconBg: "bg-sky-500/20 text-sky-400",
+    badge: "Pièces de rechange",
   },
 ];
 
@@ -25,7 +34,7 @@ export default function EspaceVemat() {
       </div>
 
       {/* Portal cards */}
-      <div className="grid grid-cols-1 gap-5 w-full max-w-md">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 w-full max-w-2xl">
         {PORTALS.map(({ href, icon: Icon, label, color, border, iconBg, badge }) => (
           <div
             key={label}
