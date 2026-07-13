@@ -19,7 +19,7 @@ export default function PdrLogin() {
     setError(null);
     const { error: err } = await signIn(email, password);
     setLoading(false);
-    if (err) { setError("Email ou mot de passe incorrect."); return; }
+    if (err) { setError("Incorrect email or password."); return; }
     navigate("/espace-pdr/tableau");
   };
 
@@ -30,10 +30,10 @@ export default function PdrLogin() {
           <img src={vematLogo} alt="Vemat" className="h-8 brightness-0 invert mx-auto mb-6" />
           <div className="inline-flex items-center gap-2 bg-sky-500/10 text-sky-400 text-xs font-black uppercase tracking-widest px-3 py-1.5 rounded-full mb-4">
             <Package className="w-3 h-3" />
-            Espace PDR
+            PDR Portal
           </div>
-          <h1 className="text-2xl font-black text-white">Pièces de rechange</h1>
-          <p className="text-zinc-500 text-sm mt-1">Devis, commandes, livraisons, factures</p>
+          <h1 className="text-2xl font-black text-white">Spare parts</h1>
+          <p className="text-zinc-500 text-sm mt-1">Quotes, orders, deliveries, invoices</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -45,13 +45,12 @@ export default function PdrLogin() {
               onChange={(e) => setEmail(e.target.value)}
               required
               autoFocus
-              placeholder="votre@email.com"
+              placeholder="you@email.com"
               className="w-full bg-zinc-900 border border-zinc-700 text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-sky-500 placeholder:text-zinc-600 transition-colors"
             />
           </div>
-
           <div>
-            <label className="block text-xs font-bold text-zinc-400 uppercase tracking-wide mb-1.5">Mot de passe</label>
+            <label className="block text-xs font-bold text-zinc-400 uppercase tracking-wide mb-1.5">Password</label>
             <div className="relative">
               <input
                 type={showPwd ? "text" : "password"}
@@ -80,7 +79,7 @@ export default function PdrLogin() {
             disabled={loading}
             className="w-full bg-sky-500 hover:bg-sky-400 text-white font-black py-3 rounded-xl transition-colors disabled:opacity-60 mt-2"
           >
-            {loading ? "Connexion..." : "Se connecter"}
+            {loading ? "Signing in…" : "Sign in"}
           </button>
         </form>
       </div>

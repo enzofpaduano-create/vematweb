@@ -6,20 +6,20 @@ const PORTALS = [
   {
     href: "/espace-technicien/connexion",
     icon: Wrench,
-    label: "Espace Technicien",
+    label: "Technician Portal",
     color: "from-orange-500/20 to-orange-600/5",
     border: "border-orange-500/30 hover:border-orange-400/60",
     iconBg: "bg-orange-500/20 text-orange-400",
-    badge: "Personnel Vemat",
+    badge: "Vemat staff",
   },
   {
     href: "/espace-pdr/connexion",
     icon: Package,
-    label: "Espace PDR",
+    label: "PDR Portal",
     color: "from-sky-500/20 to-sky-600/5",
     border: "border-sky-500/30 hover:border-sky-400/60",
     iconBg: "bg-sky-500/20 text-sky-400",
-    badge: "Pièces de rechange",
+    badge: "Spare parts",
   },
 ];
 
@@ -29,8 +29,8 @@ export default function EspaceVemat() {
       {/* Logo */}
       <div className="text-center mb-14">
         <img src={vematLogo} alt="Vemat Group" className="h-20 w-auto brightness-0 invert mx-auto mb-6" />
-        <h1 className="text-3xl font-black text-white">Portail Vemat</h1>
-        <p className="text-zinc-500 mt-2">Choisissez votre espace de connexion</p>
+        <h1 className="text-3xl font-black text-white">Vemat Portal</h1>
+        <p className="text-zinc-500 mt-2">Choose your login area</p>
       </div>
 
       {/* Portal cards */}
@@ -53,19 +53,19 @@ export default function EspaceVemat() {
             <div className="mt-auto">
               <Link href={href}>
                 <div className="flex items-center justify-between bg-white/10 hover:bg-white/15 text-white font-bold text-sm px-4 py-2.5 rounded-xl transition-colors cursor-pointer">
-                  Se connecter
+                  Sign in
                   <ArrowRight className="w-4 h-4" />
                 </div>
               </Link>
               <p className="text-center text-[11px] text-zinc-700 py-2">
-                Accès sur invitation uniquement
+                Invitation-only access
               </p>
             </div>
           </div>
         ))}
       </div>
 
-      <p className="text-zinc-700 text-xs mt-12">© {new Date().getFullYear()} Vemat Group · Tous droits réservés</p>
+      <p className="text-zinc-700 text-xs mt-12">© {new Date().getFullYear()} Vemat Group · All rights reserved</p>
     </div>
   );
 }

@@ -31,6 +31,18 @@ export interface PdrItem {
   discount_pct: number;  // 0-100
 }
 
+/** Branch-specific logistics (stock delivery vs factory order). */
+export interface PdrLogistics {
+  branch?: "stock" | "factory";
+  warehouse?: string;
+  supplier_name?: string;
+  factory_ref?: string;
+  eta?: string;
+  delivery_date?: string;
+  carrier?: string;
+  received_date?: string;
+}
+
 export interface PdrDocument {
   id: string;
   type: PdrDocType;
@@ -62,27 +74,28 @@ export interface PdrDocument {
   // Workflow
   status: string;
   notes: string | null;
+  logistics: PdrLogistics;
   created_by: string | null;
   created_at: string;
   updated_at: string;
 }
 
 export const DOC_LABEL: Record<PdrDocType, string> = {
-  devis: "Offre / Devis",
-  bon_commande: "Bon de commande",
-  commande_fournisseur: "Commande fournisseur",
-  bon_reception: "Bon de réception",
-  bon_livraison: "Bon de livraison",
-  facture: "Facture",
+  devis: "Offer / Quote",
+  bon_commande: "Purchase Order",
+  commande_fournisseur: "Supplier Order",
+  bon_reception: "Goods Receipt",
+  bon_livraison: "Delivery Note",
+  facture: "Invoice",
 };
 
 export const DOC_LABEL_SHORT: Record<PdrDocType, string> = {
-  devis: "Offre",
-  bon_commande: "BC",
-  commande_fournisseur: "CF usine",
-  bon_reception: "Réception",
-  bon_livraison: "BL",
-  facture: "Facture",
+  devis: "Offer",
+  bon_commande: "PO",
+  commande_fournisseur: "Supplier",
+  bon_reception: "Receipt",
+  bon_livraison: "DN",
+  facture: "Invoice",
 };
 
 export interface NextStep {
@@ -91,14 +104,14 @@ export interface NextStep {
 }
 
 export const NEXT_STEPS: Record<PdrDocType, NextStep[]> = {
-  devis: [{ type: "bon_commande", label: "Convertir en bon de commande" }],
+  devis: [{ type: "bon_commande", label: "Convert to purchase order" }],
   bon_commande: [
-    { type: "bon_livraison", label: "Livrer (pièces en stock)" },
-    { type: "commande_fournisseur", label: "Commander à l'usine" },
+    { type: "bon_livraison", label: "Deliver (stock)" },
+    { type: "commande_fournisseur", label: "Order from factory" },
   ],
-  commande_fournisseur: [{ type: "bon_reception", label: "Créer le bon de réception" }],
-  bon_reception: [{ type: "bon_livraison", label: "Créer le bon de livraison" }],
-  bon_livraison: [{ type: "facture", label: "Facturer" }],
+  commande_fournisseur: [{ type: "bon_reception", label: "Create goods receipt" }],
+  bon_reception: [{ type: "bon_livraison", label: "Create delivery note" }],
+  bon_livraison: [{ type: "facture", label: "Invoice" }],
   facture: [],
 };
 
@@ -149,7 +162,7 @@ export function currencySymbol(c: Currency): string {
   return c === "EUR" ? "€" : "$";
 }
 export function formatAmount(amount: number, symbol: string): string {
-  return `${(Number(amount) || 0).toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ${symbol}`;
+  return `${(Number(amount) || 0).toLocaleString("en-GB", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ${symbol}`;
 }
 export function formatMoney(amount: number, currency: Currency): string {
   return formatAmount(amount, currencySymbol(currency));
@@ -166,16 +179,48 @@ export async function listDocuments(): Promise<PdrDocument[]> {
     .select("*")
     .order("created_at", { ascending: false });
   if (error) throw new Error(error.message);
-  return (data ?? []) as PdrDocument[];
+  return ((data ?? []) as PdrDocument[]).map((d) => normalizeDoc(d)!);
 }
 
 export async function getDocument(id: string): Promise<PdrDocument | null> {
   const { data, error } = await supabasePdr.from("pdr_documents").select("*").eq("id", id).maybeSingle();
   if (error) throw new Error(error.message);
-  return (data as PdrDocument) ?? null;
+  return normalizeDoc(data as PdrDocument | null);
 }
 
-/** Documents liés dans la même chaîne (racine + descendants), triés par date. */
+function normalizeDoc(doc: PdrDocument | null): PdrDocument | null {
+  if (!doc) return null;
+  let reference = doc.reference;
+  if (reference) {
+    reference = reference
+      .replace(/^BC-/, "PO-")
+      .replace(/^CF-/, "SO-")
+      .replace(/^BR-/, "GR-")
+      .replace(/^BL-/, "DN-")
+      .replace(/^FAC-/, "INV-");
+  }
+  return {
+    ...doc,
+    reference,
+    logistics: (doc.logistics && typeof doc.logistics === "object") ? doc.logistics : {},
+  };
+}
+
+const TYPE_ORDER: PdrDocType[] = [
+  "devis", "bon_commande", "commande_fournisseur",
+  "bon_reception", "bon_livraison", "facture",
+];
+
+function sortChainDocs(docs: PdrDocument[]): PdrDocument[] {
+  return [...docs].sort((a, b) => {
+    const ta = TYPE_ORDER.indexOf(a.type);
+    const tb = TYPE_ORDER.indexOf(b.type);
+    if (ta !== tb) return ta - tb;
+    return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
+  });
+}
+
+/** Documents liés dans la même chaîne (racine + descendants), triés par type. */
 export async function getChain(doc: PdrDocument): Promise<PdrDocument[]> {
   const all = await listDocuments();
   const byId = new Map(all.map((d) => [d.id, d]));
@@ -187,7 +232,51 @@ export async function getChain(doc: PdrDocument): Promise<PdrDocument[]> {
     for (const d of all) if (d.parent_id === node.id) visit(d);
   };
   visit(root);
-  return chain;
+  return sortChainDocs(chain);
+}
+
+/** One folder = one commercial chain (root offer/PO + all converted children). */
+export interface PdrFolder {
+  id: string;
+  root: PdrDocument;
+  docs: PdrDocument[];
+  client: string;
+  latestAt: string;
+}
+
+/** Group a flat document list into folders by parent_id chain. Newest folders first. */
+export function groupIntoFolders(docs: PdrDocument[]): PdrFolder[] {
+  if (docs.length === 0) return [];
+  const byId = new Map(docs.map((d) => [d.id, d]));
+  const findRoot = (d: PdrDocument): PdrDocument => {
+    let cur = d;
+    while (cur.parent_id && byId.has(cur.parent_id)) cur = byId.get(cur.parent_id)!;
+    return cur;
+  };
+  const buckets = new Map<string, PdrDocument[]>();
+  for (const d of docs) {
+    const root = findRoot(d);
+    const list = buckets.get(root.id) ?? [];
+    list.push(d);
+    buckets.set(root.id, list);
+  }
+  const folders: PdrFolder[] = [];
+  for (const [id, list] of buckets) {
+    const sorted = sortChainDocs(list);
+    const root = byId.get(id)!;
+    const latestAt = list.reduce(
+      (max, d) => (d.updated_at > max ? d.updated_at : max),
+      list[0]!.created_at,
+    );
+    folders.push({
+      id,
+      root,
+      docs: sorted,
+      client: root.client_company || root.client_name || "—",
+      latestAt,
+    });
+  }
+  return folders.sort((a, b) => new Date(b.latestAt).getTime() - new Date(a.latestAt).getTime());
 }
 
 export type NewDocumentInput = Omit<
@@ -207,12 +296,67 @@ export async function createDocument(input: NewDocumentInput): Promise<PdrDocume
 }
 
 export async function updateDocument(id: string, patch: Partial<PdrDocument>): Promise<void> {
-  const { error } = await supabasePdr.from("pdr_documents").update(patch).eq("id", id);
+  const payload: Partial<PdrDocument> = { ...patch };
+  if (patch.items !== undefined || patch.apply_vat !== undefined || patch.vat_rate !== undefined || patch.customs_naira !== undefined) {
+    const current = await getDocument(id);
+    if (!current) throw new Error("Document not found.");
+    const merged = {
+      items: patch.items ?? current.items,
+      apply_vat: patch.apply_vat ?? current.apply_vat,
+      vat_rate: patch.vat_rate ?? current.vat_rate,
+      customs_naira: patch.customs_naira ?? current.customs_naira,
+    };
+    payload.total_amount = computeTotals(merged).mainTotal;
+  }
+  const { error } = await supabasePdr.from("pdr_documents").update(payload).eq("id", id);
   if (error) throw new Error(error.message);
 }
 
-/** Crée le document suivant en recopiant les données du parent. */
-export async function convertDocument(parent: PdrDocument, toType: PdrDocType): Promise<PdrDocument> {
+/** True si un document enfant existe déjà dans la chaîne. */
+export async function hasChildDocuments(id: string): Promise<boolean> {
+  const { count, error } = await supabasePdr
+    .from("pdr_documents")
+    .select("id", { count: "exact", head: true })
+    .eq("parent_id", id);
+  if (error) throw new Error(error.message);
+  return (count ?? 0) > 0;
+}
+
+/** Enfants directs groupés par type (pour éviter les doublons de conversion). */
+export async function getChildrenByType(id: string): Promise<Partial<Record<PdrDocType, PdrDocument>>> {
+  const { data, error } = await supabasePdr
+    .from("pdr_documents")
+    .select("*")
+    .eq("parent_id", id)
+    .order("created_at", { ascending: true });
+  if (error) throw new Error(error.message);
+  const map: Partial<Record<PdrDocType, PdrDocument>> = {};
+  for (const row of (data ?? []) as PdrDocument[]) {
+    if (!map[row.type]) map[row.type] = row;
+  }
+  return map;
+}
+
+export function canEditDocument(doc: PdrDocument, hasChildren: boolean): boolean {
+  return !hasChildren && doc.status === "brouillon";
+}
+
+/** Crée le document suivant en recopiant les données du parent (+ logistics). */
+export interface ConvertOptions {
+  logistics?: PdrLogistics;
+  notes?: string | null;
+  markParentStatus?: string;
+}
+
+export async function convertDocument(
+  parent: PdrDocument,
+  toType: PdrDocType,
+  options: ConvertOptions = {},
+): Promise<PdrDocument> {
+  const logistics: PdrLogistics = {
+    ...(parent.logistics ?? {}),
+    ...(options.logistics ?? {}),
+  };
   const child: NewDocumentInput = {
     type: toType,
     parent_id: parent.id,
@@ -236,10 +380,16 @@ export async function convertDocument(parent: PdrDocument, toType: PdrDocType): 
     delivery_terms: parent.delivery_terms,
     incoterms_note: parent.incoterms_note,
     status: "brouillon",
-    notes: parent.notes,
+    notes: options.notes !== undefined ? options.notes : parent.notes,
+    logistics,
     created_by: parent.created_by,
   };
-  return createDocument(child);
+  const created = await createDocument(child);
+  const parentStatus = options.markParentStatus ?? "en_cours";
+  if (parent.status !== parentStatus) {
+    await updateDocument(parent.id, { status: parentStatus });
+  }
+  return created;
 }
 
 // ── Mémoire des pièces (autocomplétion) ─────────────────────────────────────

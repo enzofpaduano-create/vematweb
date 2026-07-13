@@ -5,9 +5,9 @@ import { usePdrAuth } from "@/contexts/PdrAuthContext";
 import vematLogo from "@/assets/vemat-logo.png";
 
 const NAV = [
-  { href: "/espace-pdr/tableau", icon: LayoutGrid, label: "Tableau de bord" },
-  { href: "/espace-pdr/documents", icon: FileText, label: "Tous les documents" },
-  { href: "/espace-pdr/devis/nouveau", icon: Plus, label: "Nouveau devis" },
+  { href: "/espace-pdr/tableau", icon: LayoutGrid, label: "Dashboard" },
+  { href: "/espace-pdr/documents", icon: FileText, label: "All documents" },
+  { href: "/espace-pdr/devis/nouveau", icon: Plus, label: "New quote" },
 ];
 
 export function PdrLayout({ children }: { children: React.ReactNode }) {
@@ -29,7 +29,7 @@ export function PdrLayout({ children }: { children: React.ReactNode }) {
           <img src={vematLogo} alt="Vemat" className="h-12 w-auto brightness-0 invert mb-4" />
           <div className="flex items-center gap-2">
             <Package className="w-3 h-3 text-sky-400" />
-            <p className="text-[10px] font-black uppercase tracking-[0.25em] text-sky-400">Espace PDR</p>
+            <p className="text-[10px] font-black uppercase tracking-[0.25em] text-sky-400">PDR Portal</p>
           </div>
         </div>
 
@@ -58,14 +58,14 @@ export function PdrLayout({ children }: { children: React.ReactNode }) {
             </div>
             <div className="min-w-0">
               <p className="text-xs font-bold text-white truncate">{user.email}</p>
-              <p className="text-[10px] text-zinc-500">Pièces de rechange</p>
+              <p className="text-[10px] text-zinc-500">Spare parts</p>
             </div>
           </div>
           <button
             onClick={async () => { await signOut(); navigate("/espace-pdr/connexion"); }}
             className="w-full flex items-center gap-2 text-xs text-zinc-500 hover:text-red-400 transition-colors py-1"
           >
-            <LogOut className="w-3.5 h-3.5" /> Déconnexion
+            <LogOut className="w-3.5 h-3.5" /> Sign out
           </button>
         </div>
       </aside>

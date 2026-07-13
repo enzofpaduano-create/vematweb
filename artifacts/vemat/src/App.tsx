@@ -45,6 +45,8 @@ import PdrDashboard from "@/pages/pdr/PdrDashboard";
 import PdrDocuments from "@/pages/pdr/PdrDocuments";
 import PdrDevisNew from "@/pages/pdr/PdrDevisNew";
 import PdrDocumentDetail from "@/pages/pdr/PdrDocumentDetail";
+import PdrDocumentEdit from "@/pages/pdr/PdrDocumentEdit";
+import PdrConvert from "@/pages/pdr/PdrConvert";
 
 // Formulaires publics
 import DemandeDevis from "@/pages/DemandeDevis";
@@ -71,6 +73,8 @@ function Router() {
       <Route path="/espace-pdr/tableau" component={PdrDashboard} />
       <Route path="/espace-pdr/documents" component={PdrDocuments} />
       <Route path="/espace-pdr/devis/nouveau" component={PdrDevisNew} />
+      <Route path="/espace-pdr/document/:id/edit" component={PdrDocumentEdit} />
+      <Route path="/espace-pdr/document/:id/convert/:toType" component={PdrConvert} />
       <Route path="/espace-pdr/document/:id" component={PdrDocumentDetail} />
 
       {/* Formulaires publics (standalone, sans Navbar/Footer) */}
