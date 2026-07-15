@@ -18,8 +18,12 @@
 /en/services/*                                 /services                   301
 /en/about-us/*                                 /a-propos                   301
 /en/contact/*                                  /contact                    301
-/en/brand/*                                    /                           301
-/en/brands/*                                   /                           301
+
+# --- Marques : les marques sont présentées sur /a-propos --------------------
+/en/brand/*                                    /a-propos                   301
+/en/brands/*                                   /a-propos                   301
+/marque/*                                      /a-propos                   301
+/marques/*                                     /a-propos                   301
 
 # --- Anglais : tout le reste sous /en/ → accueil ---------------------------
 /en/*                                          /                           301
@@ -27,6 +31,11 @@
 
 # --- Français : catégories produits à la racine (/produits/...) -----------
 /produits/pieces-detachees-rechange/*          /pieces-de-rechange         301
+/produits/grues/*                              /grues                      301
+/produits/nacelles/*                           /nacelles                   301
+/produits/chariots-telescopiques/*             /elevateurs-telescopiques   301
+/produits/elevateurs-telescopiques/*           /elevateurs-telescopiques   301
+/produits/construction-machines-engins/*       /construction               301
 /produits/*                                    /                           301
 
 # --- Fallback SPA (obligatoirement en dernier) -----------------------------
