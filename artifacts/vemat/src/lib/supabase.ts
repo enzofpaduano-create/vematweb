@@ -13,5 +13,10 @@ export const supabasePdr = createClient(url, anonKey, {
   auth: { storageKey: "vemat-pdr-auth", autoRefreshToken: true, persistSession: true },
 });
 
+// SAV portal (service / interventions) — isolated session
+export const supabaseSav = createClient(url, anonKey, {
+  auth: { storageKey: "vemat-sav-auth", autoRefreshToken: true, persistSession: true },
+});
+
 // Public client — used for anonymous form submissions (no auth persistence needed)
 export const supabasePublic = createClient(url, anonKey);

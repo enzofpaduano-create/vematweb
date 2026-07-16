@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { Wrench, ArrowRight, Lock, Package } from "lucide-react";
+import { Wrench, ArrowRight, Lock, Package, LifeBuoy } from "lucide-react";
 import vematLogo from "@/assets/vemat-logo.png";
 
 const PORTALS = [
@@ -20,6 +20,15 @@ const PORTALS = [
     border: "border-sky-500/30 hover:border-sky-400/60",
     iconBg: "bg-sky-500/20 text-sky-400",
     badge: "Spare parts",
+  },
+  {
+    href: "/espace-sav/connexion",
+    icon: LifeBuoy,
+    label: "SAV Portal",
+    color: "from-emerald-500/20 to-emerald-600/5",
+    border: "border-emerald-500/30 hover:border-emerald-400/60",
+    iconBg: "bg-emerald-500/20 text-emerald-400",
+    badge: "Service",
   },
 ];
 

@@ -4,6 +4,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { TechnicienAuthProvider } from "@/contexts/TechnicienAuthContext";
 import { PdrAuthProvider } from "@/contexts/PdrAuthContext";
+import { SavAuthProvider } from "@/contexts/SavAuthContext";
 
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
@@ -48,6 +49,15 @@ import PdrDocumentDetail from "@/pages/pdr/PdrDocumentDetail";
 import PdrDocumentEdit from "@/pages/pdr/PdrDocumentEdit";
 import PdrConvert from "@/pages/pdr/PdrConvert";
 
+// Espace SAV (service / interventions)
+import SavLogin from "@/pages/sav/SavLogin";
+import SavDashboard from "@/pages/sav/SavDashboard";
+import SavDocuments from "@/pages/sav/SavDocuments";
+import SavOfferNew from "@/pages/sav/SavOfferNew";
+import SavDocumentDetail from "@/pages/sav/SavDocumentDetail";
+import SavDocumentEdit from "@/pages/sav/SavDocumentEdit";
+import SavSettings from "@/pages/sav/SavSettings";
+
 // Formulaires publics
 import DemandeDevis from "@/pages/DemandeDevis";
 import DemandeIntervention from "@/pages/DemandeIntervention";
@@ -76,6 +86,15 @@ function Router() {
       <Route path="/espace-pdr/document/:id/edit" component={PdrDocumentEdit} />
       <Route path="/espace-pdr/document/:id/convert/:toType" component={PdrConvert} />
       <Route path="/espace-pdr/document/:id" component={PdrDocumentDetail} />
+
+      {/* Espace SAV (service / interventions) */}
+      <Route path="/espace-sav/connexion" component={SavLogin} />
+      <Route path="/espace-sav/tableau" component={SavDashboard} />
+      <Route path="/espace-sav/documents" component={SavDocuments} />
+      <Route path="/espace-sav/offre/nouvelle" component={SavOfferNew} />
+      <Route path="/espace-sav/reglages" component={SavSettings} />
+      <Route path="/espace-sav/document/:id/edit" component={SavDocumentEdit} />
+      <Route path="/espace-sav/document/:id" component={SavDocumentDetail} />
 
       {/* Formulaires publics (standalone, sans Navbar/Footer) */}
       <Route path="/demande-devis" component={DemandeDevis} />
@@ -117,17 +136,19 @@ function App() {
   return (
     <TechnicienAuthProvider>
       <PdrAuthProvider>
-        <QueryClientProvider client={queryClient}>
-          <I18nProvider>
-            <TooltipProvider>
-              <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
-                <Router />
-              </WouterRouter>
-              <SplashScreen />
-              <Toaster />
-            </TooltipProvider>
-          </I18nProvider>
-        </QueryClientProvider>
+        <SavAuthProvider>
+          <QueryClientProvider client={queryClient}>
+            <I18nProvider>
+              <TooltipProvider>
+                <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
+                  <Router />
+                </WouterRouter>
+                <SplashScreen />
+                <Toaster />
+              </TooltipProvider>
+            </I18nProvider>
+          </QueryClientProvider>
+        </SavAuthProvider>
       </PdrAuthProvider>
     </TechnicienAuthProvider>
   );
