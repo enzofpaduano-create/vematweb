@@ -6,7 +6,8 @@ import { useEffect, useRef, useState } from "react";
 import { History, Plus, Save, Trash2 } from "lucide-react";
 import {
   computeTotals, lineTotal, formatMoney, formatNaira, templateModel, searchParts,
-  type PdrItem, type PdrPart, type Currency, type PdrDocument,
+  fetchAgentSuggestions, SOURCE_LABEL,
+  type PdrItem, type PdrPart, type Currency, type PdrDocument, type PdrSource,
 } from "@/lib/pdrDocuments";
 
 export const emptyItem = (): PdrItem => ({
@@ -33,29 +34,42 @@ export interface PdrFormValues {
   deliveryTerms: string;
   incotermsNote: string;
   notes: string;
+  // Tracking (Hassan's spec)
+  source: PdrSource | "";
+  assignedAgent: string;
 }
 
-export const defaultFormValues = (): PdrFormValues => ({
-  company: "",
-  address: "",
-  attention: "",
-  machine: "",
-  clientCode: "",
-  name: "",
-  email: "",
-  phone: "",
-  currency: "EUR",
-  applyVat: false,
-  vatRate: 7.5,
-  items: [emptyItem()],
-  customsNaira: 0,
-  customsLabel: "CUSTOMS CLEARING and DELIVERY",
-  paymentTerms: "Advance payment",
-  validity: "30 Days",
-  deliveryTerms: "CIF, Port Harcourt",
-  incotermsNote: "",
-  notes: "",
-});
+const AGENT_MEMORY_KEY = "vemat-pdr-last-agent";
+
+export const defaultFormValues = (): PdrFormValues => {
+  let rememberedAgent = "";
+  try {
+    rememberedAgent = localStorage.getItem(AGENT_MEMORY_KEY) ?? "";
+  } catch { /* private browsing */ }
+  return {
+    company: "",
+    address: "",
+    attention: "",
+    machine: "",
+    clientCode: "",
+    name: "",
+    email: "",
+    phone: "",
+    currency: "EUR",
+    applyVat: false,
+    vatRate: 7.5,
+    items: [emptyItem()],
+    customsNaira: 0,
+    customsLabel: "CUSTOMS CLEARING and DELIVERY",
+    paymentTerms: "Advance payment",
+    validity: "30 Days",
+    deliveryTerms: "CIF, Port Harcourt",
+    incotermsNote: "",
+    notes: "",
+    source: "",
+    assignedAgent: rememberedAgent,
+  };
+};
 
 export function valuesFromDocument(doc: PdrDocument): PdrFormValues {
   return {
@@ -78,6 +92,8 @@ export function valuesFromDocument(doc: PdrDocument): PdrFormValues {
     deliveryTerms: doc.delivery_terms ?? "CIF, Port Harcourt",
     incotermsNote: doc.incoterms_note ?? "",
     notes: doc.notes ?? "",
+    source: (doc.source ?? "") as PdrSource | "",
+    assignedAgent: doc.assigned_agent ?? "",
   };
 }
 
@@ -105,6 +121,8 @@ export function formToPayload(v: PdrFormValues) {
     delivery_terms: v.deliveryTerms || null,
     incoterms_note: v.incotermsNote || null,
     notes: v.notes || null,
+    source: v.source || null,
+    assigned_agent: v.assignedAgent.trim() || null,
   };
 }
 
@@ -126,11 +144,26 @@ export function PdrDocumentForm({
   const [v, setV] = useState<PdrFormValues>(initial);
   const [suggestRow, setSuggestRow] = useState<number | null>(null);
   const [suggestions, setSuggestions] = useState<PdrPart[]>([]);
+  const [agentSuggestions, setAgentSuggestions] = useState<string[]>([]);
   const debounce = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     setV(initial);
   }, [syncKey]); // eslint-disable-line react-hooks/exhaustive-deps -- sync when source id / doc id changes
+
+  // Fetch previously used agent names for the autocomplete datalist.
+  useEffect(() => {
+    let cancelled = false;
+    fetchAgentSuggestions().then((names) => { if (!cancelled) setAgentSuggestions(names); });
+    return () => { cancelled = true; };
+  }, []);
+
+  // Remember last used agent locally so it prefills on next document.
+  useEffect(() => {
+    if (v.assignedAgent.trim()) {
+      try { localStorage.setItem(AGENT_MEMORY_KEY, v.assignedAgent.trim()); } catch { /* ignore */ }
+    }
+  }, [v.assignedAgent]);
 
   const set = <K extends keyof PdrFormValues>(key: K, value: PdrFormValues[K]) =>
     setV((prev) => ({ ...prev, [key]: value }));
@@ -177,6 +210,41 @@ export function PdrDocumentForm({
       <p className="text-zinc-500 text-sm mb-8">
         {subtitle ?? `Word template ${model} · ${v.currency}${v.customsNaira > 0 ? " + NAIRA customs" : ""}${v.applyVat ? ` · VAT ${v.vatRate}%` : ""}`}
       </p>
+
+      <section className="bg-white rounded-2xl border border-zinc-200 p-6 mb-5">
+        <h2 className="font-black text-zinc-950 mb-1">Request tracking</h2>
+        <p className="text-xs text-zinc-500 mb-4">Where the demand came from and who is handling it.</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label className={lbl}>Source / channel</label>
+            <select
+              className={ic}
+              value={v.source}
+              onChange={(e) => set("source", (e.target.value || "") as PdrSource | "")}
+            >
+              <option value="">— Select source —</option>
+              {(Object.keys(SOURCE_LABEL) as PdrSource[]).map((s) => (
+                <option key={s} value={s}>{SOURCE_LABEL[s]}</option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label className={lbl}>Assigned agent</label>
+            <input
+              className={ic}
+              list="pdr-agent-suggestions"
+              placeholder="Your name (e.g. Hassan)"
+              value={v.assignedAgent}
+              onChange={(e) => set("assignedAgent", e.target.value)}
+            />
+            <datalist id="pdr-agent-suggestions">
+              {agentSuggestions.map((name) => (
+                <option key={name} value={name} />
+              ))}
+            </datalist>
+          </div>
+        </div>
+      </section>
 
       <section className="bg-white rounded-2xl border border-zinc-200 p-6 mb-5">
         <h2 className="font-black text-zinc-950 mb-4">Client</h2>

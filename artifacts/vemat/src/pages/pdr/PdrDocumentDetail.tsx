@@ -7,7 +7,10 @@ import {
   getDocument, getChain, updateDocument, getChildrenByType, canEditDocument,
   computeTotals, lineDiscountedUnit, lineTotal,
   DOC_LABEL, DOC_LABEL_SHORT, NEXT_STEPS, formatMoney, formatNaira, templateModel,
+  SOURCE_LABEL, COMM_STATUS_LABEL, COMM_STATUS_COLOR,
+  COMMERCIAL_STATUS_LABEL, COMMERCIAL_STATUS_COLOR,
   type PdrDocument, type PdrDocType,
+  type PdrCommStatus, type PdrCommercialStatus,
 } from "@/lib/pdrDocuments";
 
 const STATUS_OPTIONS = ["brouillon", "envoye", "accepte", "refuse", "en_cours", "termine"];
@@ -116,6 +119,20 @@ export default function PdrDocumentDetail() {
     setDoc({ ...doc, status });
   }
 
+  async function handleCommStatus(next: PdrCommStatus) {
+    if (!doc) return;
+    await updateDocument(doc.id, { communication_status: next });
+    // Reload to pick up the sent_at trigger set server-side.
+    const fresh = await getDocument(doc.id);
+    if (fresh) setDoc(fresh);
+  }
+
+  async function handleCommercialStatus(next: PdrCommercialStatus) {
+    if (!doc) return;
+    await updateDocument(doc.id, { commercial_status: next });
+    setDoc({ ...doc, commercial_status: next });
+  }
+
   const totals = doc ? computeTotals(doc) : null;
   const hasKids = Object.keys(childrenByType).length > 0;
   const editable = doc ? canEditDocument(doc, hasKids) : false;
@@ -169,6 +186,65 @@ export default function PdrDocumentDetail() {
                   ))}
                 </div>
               )}
+
+              <section className="bg-white rounded-2xl border border-zinc-200 p-6 mb-5">
+                <h2 className="font-black text-zinc-950 mb-4">Tracking</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                  <div>
+                    <p className="text-xs font-bold text-zinc-500 mb-1.5">Source / channel</p>
+                    <p className="text-sm font-semibold text-zinc-900">
+                      {doc.source ? SOURCE_LABEL[doc.source] : <span className="text-zinc-400 font-normal">Not set</span>}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold text-zinc-500 mb-1.5">Assigned agent</p>
+                    <p className="text-sm font-semibold text-zinc-900">
+                      {doc.assigned_agent || <span className="text-zinc-400 font-normal">Not assigned</span>}
+                    </p>
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-bold text-zinc-500 mb-1.5">Communication status</label>
+                    <select
+                      value={doc.communication_status}
+                      onChange={(e) => handleCommStatus(e.target.value as PdrCommStatus)}
+                      className="w-full bg-white border border-zinc-200 rounded-xl px-3 py-2.5 text-sm font-semibold text-zinc-900 focus:outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-100"
+                    >
+                      {(Object.keys(COMM_STATUS_LABEL) as PdrCommStatus[]).map((s) => (
+                        <option key={s} value={s}>{COMM_STATUS_LABEL[s]}</option>
+                      ))}
+                    </select>
+                    <div className="flex items-center gap-2 mt-2">
+                      <span className={`text-[10px] font-black uppercase tracking-wide px-2 py-1 rounded ${COMM_STATUS_COLOR[doc.communication_status]}`}>
+                        {COMM_STATUS_LABEL[doc.communication_status]}
+                      </span>
+                      {doc.sent_at && (
+                        <span className="text-[11px] text-zinc-500">
+                          Sent {new Date(doc.sent_at).toLocaleString("en-GB")}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-zinc-500 mb-1.5">Commercial outcome</label>
+                    <select
+                      value={doc.commercial_status}
+                      onChange={(e) => handleCommercialStatus(e.target.value as PdrCommercialStatus)}
+                      className="w-full bg-white border border-zinc-200 rounded-xl px-3 py-2.5 text-sm font-semibold text-zinc-900 focus:outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-100"
+                    >
+                      {(Object.keys(COMMERCIAL_STATUS_LABEL) as PdrCommercialStatus[]).map((s) => (
+                        <option key={s} value={s}>{COMMERCIAL_STATUS_LABEL[s]}</option>
+                      ))}
+                    </select>
+                    <div className="flex items-center gap-2 mt-2">
+                      <span className={`text-[10px] font-black uppercase tracking-wide px-2 py-1 rounded ${COMMERCIAL_STATUS_COLOR[doc.commercial_status]}`}>
+                        {COMMERCIAL_STATUS_LABEL[doc.commercial_status]}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </section>
 
               <section className="bg-white rounded-2xl border border-zinc-200 p-6 mb-5">
                 <h2 className="font-black text-zinc-950 mb-3">Client</h2>

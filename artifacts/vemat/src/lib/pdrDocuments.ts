@@ -22,6 +22,61 @@ export type PdrDocType =
 
 export type Currency = "EUR" | "USD";
 
+// ── Tracking (Hassan's spec 08/2026) ────────────────────────────────────────
+// Every document tracks where the request came in, who owns it, and its
+// double status (communication to client + commercial outcome).
+
+export type PdrSource = "phone" | "email" | "visit" | "website" | "social" | "other";
+export type PdrCommStatus = "non_communique" | "en_attente_validation" | "communique";
+export type PdrCommercialStatus = "en_cours" | "gagne" | "perdu" | "sans_suite";
+
+export const SOURCE_LABEL: Record<PdrSource, string> = {
+  phone: "Phone call",
+  email: "Email",
+  visit: "Visit / Counter",
+  website: "Website",
+  social: "Social media",
+  other: "Other",
+};
+
+export const SOURCE_COLOR: Record<PdrSource, string> = {
+  phone: "#0284c7",   // sky-600
+  email: "#7c3aed",   // violet-600
+  visit: "#059669",   // emerald-600
+  website: "#d97706", // amber-600
+  social: "#db2777",  // pink-600
+  other: "#71717a",   // zinc-500
+};
+
+export const COMM_STATUS_LABEL: Record<PdrCommStatus, string> = {
+  non_communique: "Not sent",
+  en_attente_validation: "Pending validation",
+  communique: "Sent",
+};
+
+export const COMM_STATUS_COLOR: Record<PdrCommStatus, string> = {
+  non_communique: "bg-red-100 text-red-700",
+  en_attente_validation: "bg-amber-100 text-amber-700",
+  communique: "bg-emerald-100 text-emerald-700",
+};
+
+export const COMMERCIAL_STATUS_LABEL: Record<PdrCommercialStatus, string> = {
+  en_cours: "Open",
+  gagne: "Won",
+  perdu: "Lost",
+  sans_suite: "No follow-up",
+};
+
+export const COMMERCIAL_STATUS_COLOR: Record<PdrCommercialStatus, string> = {
+  en_cours: "bg-sky-100 text-sky-700",
+  gagne: "bg-emerald-100 text-emerald-700",
+  perdu: "bg-red-100 text-red-700",
+  sans_suite: "bg-zinc-100 text-zinc-600",
+};
+
+/** How many hours before an un-communicated document is flagged red. */
+export const OVERDUE_THRESHOLD_HOURS = 48;
+
 export interface PdrItem {
   reference: string;
   designation: string;
@@ -78,6 +133,12 @@ export interface PdrDocument {
   created_by: string | null;
   created_at: string;
   updated_at: string;
+  // Tracking (Hassan's spec)
+  source: PdrSource | null;
+  assigned_agent: string | null;
+  communication_status: PdrCommStatus;
+  sent_at: string | null;
+  commercial_status: PdrCommercialStatus;
 }
 
 export const DOC_LABEL: Record<PdrDocType, string> = {
@@ -203,6 +264,97 @@ function normalizeDoc(doc: PdrDocument | null): PdrDocument | null {
     ...doc,
     reference,
     logistics: (doc.logistics && typeof doc.logistics === "object") ? doc.logistics : {},
+    // Ensure tracking fields have safe defaults for legacy rows.
+    communication_status: (doc.communication_status ?? "non_communique") as PdrCommStatus,
+    commercial_status: (doc.commercial_status ?? "en_cours") as PdrCommercialStatus,
+    source: doc.source ?? null,
+    assigned_agent: doc.assigned_agent ?? null,
+    sent_at: doc.sent_at ?? null,
+  };
+}
+
+// ── Autocomplete helper: distinct agents already used ───────────────────────
+
+interface AgentRow { name: string; usage_count: number; last_used: string }
+
+export async function fetchAgentSuggestions(): Promise<string[]> {
+  const { data, error } = await supabasePdr
+    .from("pdr_agents_used")
+    .select("name")
+    .order("last_used", { ascending: false })
+    .limit(50);
+  if (error) return [];
+  return ((data ?? []) as AgentRow[]).map((r) => r.name).filter(Boolean);
+}
+
+// ── Dashboard KPIs (Hassan's spec) ──────────────────────────────────────────
+
+export interface PdrKpis {
+  totalToday: number;
+  totalWeek: number;
+  totalMonth: number;
+  notCommunicated: number;
+  notCommunicatedOverdue: number;
+  avgResponseHours: number | null;
+  transformationRate: number | null;
+  bySource: Array<{ source: PdrSource; count: number }>;
+}
+
+export function computeKpis(docs: PdrDocument[]): PdrKpis {
+  const now = Date.now();
+  const day = 24 * 60 * 60 * 1000;
+  const startOfDay = new Date(); startOfDay.setHours(0, 0, 0, 0);
+  const startOfWeek = new Date(startOfDay); startOfWeek.setDate(startOfWeek.getDate() - startOfDay.getDay());
+  const startOfMonth = new Date(); startOfMonth.setHours(0, 0, 0, 0); startOfMonth.setDate(1);
+
+  let totalToday = 0, totalWeek = 0, totalMonth = 0;
+  let notCommunicated = 0, notCommunicatedOverdue = 0;
+  const respTimes: number[] = [];
+  const bySourceMap = new Map<PdrSource, number>();
+  let communicatedCount = 0, wonCount = 0;
+
+  for (const d of docs) {
+    const created = new Date(d.created_at).getTime();
+    if (created >= startOfDay.getTime()) totalToday += 1;
+    if (created >= startOfWeek.getTime()) totalWeek += 1;
+    if (created >= startOfMonth.getTime()) totalMonth += 1;
+
+    if (d.communication_status !== "communique") {
+      notCommunicated += 1;
+      if (now - created > OVERDUE_THRESHOLD_HOURS * 60 * 60 * 1000) {
+        notCommunicatedOverdue += 1;
+      }
+    } else {
+      communicatedCount += 1;
+      if (d.sent_at) {
+        const sent = new Date(d.sent_at).getTime();
+        if (sent > created) respTimes.push((sent - created) / (60 * 60 * 1000));
+      }
+    }
+
+    if (d.commercial_status === "gagne") wonCount += 1;
+
+    if (d.source) bySourceMap.set(d.source, (bySourceMap.get(d.source) ?? 0) + 1);
+  }
+
+  void day; // reserved for future rolling-window KPIs
+
+  const avgResponseHours = respTimes.length > 0
+    ? respTimes.reduce((s, h) => s + h, 0) / respTimes.length
+    : null;
+  const transformationRate = communicatedCount > 0
+    ? (wonCount / communicatedCount) * 100
+    : null;
+
+  const bySource: PdrKpis["bySource"] = Array.from(bySourceMap.entries())
+    .map(([source, count]) => ({ source, count }))
+    .sort((a, b) => b.count - a.count);
+
+  return {
+    totalToday, totalWeek, totalMonth,
+    notCommunicated, notCommunicatedOverdue,
+    avgResponseHours, transformationRate,
+    bySource,
   };
 }
 
