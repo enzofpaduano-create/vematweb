@@ -1,11 +1,13 @@
 import { useEffect } from "react";
 import { Link, useLocation } from "wouter";
-import { LayoutGrid, FileText, LogOut, Package, Plus } from "lucide-react";
+import { LayoutGrid, FileText, LogOut, Package, Plus, Users, Wrench } from "lucide-react";
 import { usePdrAuth } from "@/contexts/PdrAuthContext";
 import vematLogo from "@/assets/vemat-logo.png";
 
 const NAV = [
   { href: "/espace-pdr/tableau", icon: LayoutGrid, label: "Dashboard" },
+  { href: "/espace-pdr/clients", icon: Users, label: "Clients" },
+  { href: "/espace-pdr/equipments", icon: Wrench, label: "Equipment park" },
   { href: "/espace-pdr/documents", icon: FileText, label: "All documents" },
   { href: "/espace-pdr/devis/nouveau", icon: Plus, label: "New quote" },
 ];

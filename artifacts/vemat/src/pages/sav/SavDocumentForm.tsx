@@ -1,10 +1,16 @@
-import { useEffect, useState } from "react";
-import { Plus, Trash2, Save } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import { Plus, Trash2, Save, AlertTriangle, Link2, Unlink } from "lucide-react";
 import {
   computeSavTotals, labourTotal, travelTotal, partsTotal, partLineTotal,
-  formatMoney, formatNaira, getSavSettings,
+  formatMoney, formatNaira, getSavSettings, type SavDocument,
   type SavPart, type Currency, type LabourMode, type PaymentMode, type SavSettings,
 } from "@/lib/savDocuments";
+import { supabaseSav } from "@/lib/supabase";
+import {
+  listClients, CLIENT_STATUS_LABEL, CLIENT_STATUS_COLOR, isClientLocked,
+  type Client,
+} from "@/lib/clients";
+import { listEquipmentsByClient, type ClientEquipment } from "@/lib/equipments";
 
 export const emptyPart = (): SavPart => ({ reference: "", designation: "", quantity: 1, unit_price: 0, discount_pct: 0 });
 
@@ -19,6 +25,18 @@ export interface SavFormValues {
   currency: Currency; applyVat: boolean; vatRate: number; customsNaira: number; customsLabel: string;
   paymentMode: PaymentMode;
   paymentTerms: string; validity: string; deliveryTerms: string; incotermsNote: string; notes: string;
+  // Client + equipment link (Hassan spec 11/08)
+  clientId: string | null;
+  equipmentId: string | null;
+  overrideBlock: boolean;
+}
+
+export function valuesFromSavDocument(doc: SavDocument): Partial<SavFormValues> {
+  return {
+    clientId: doc.client_id ?? null,
+    equipmentId: doc.equipment_id ?? null,
+    overrideBlock: false,
+  };
 }
 
 export const defaultFormValues = (): SavFormValues => ({
@@ -32,6 +50,7 @@ export const defaultFormValues = (): SavFormValues => ({
   currency: "EUR", applyVat: false, vatRate: 7.5, customsNaira: 0, customsLabel: "CUSTOMS CLEARING and DELIVERY",
   paymentMode: "advance",
   paymentTerms: "Advance payment", validity: "30 Days", deliveryTerms: "", incotermsNote: "", notes: "",
+  clientId: null, equipmentId: null, overrideBlock: false,
 });
 
 export function formToPayload(v: SavFormValues) {
@@ -52,7 +71,15 @@ export function formToPayload(v: SavFormValues) {
     payment_terms: v.paymentTerms || null, validity: v.validity || null,
     delivery_terms: v.deliveryTerms || null, incoterms_note: v.incotermsNote || null,
     notes: v.notes || null,
+    client_id: v.clientId,
+    equipment_id: v.equipmentId,
   };
+}
+
+export function shouldBlockSavSave(v: SavFormValues, client: Client | null): boolean {
+  if (!client) return false;
+  if (!isClientLocked(client)) return false;
+  return !v.overrideBlock;
 }
 
 interface Props {
@@ -71,6 +98,54 @@ export function SavDocumentForm({ initial, syncKey, title, submitLabel, saving, 
   const set = <K extends keyof SavFormValues>(k: K, val: SavFormValues[K]) => setV((p) => ({ ...p, [k]: val }));
 
   useEffect(() => { setV(initial); }, [syncKey]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const [clients, setClients] = useState<Client[]>([]);
+  const [equipments, setEquipments] = useState<ClientEquipment[]>([]);
+
+  const selectedClient = useMemo(
+    () => (v.clientId ? clients.find((c) => c.id === v.clientId) ?? null : null),
+    [v.clientId, clients],
+  );
+
+  useEffect(() => {
+    let cancelled = false;
+    listClients(supabaseSav).then((list) => { if (!cancelled) setClients(list); }).catch(() => {});
+    return () => { cancelled = true; };
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    if (v.clientId) {
+      listEquipmentsByClient(supabaseSav, v.clientId).then((list) => { if (!cancelled) setEquipments(list); }).catch(() => {});
+    } else {
+      setEquipments([]);
+    }
+    return () => { cancelled = true; };
+  }, [v.clientId]);
+
+  function pickClient(id: string) {
+    const c = clients.find((x) => x.id === id);
+    if (!c) return;
+    setV((prev) => ({
+      ...prev,
+      clientId: c.id, equipmentId: null, overrideBlock: false,
+      company: c.name || prev.company,
+      address: c.address || prev.address,
+      name: c.contact_name || prev.name,
+      email: c.contact_email || prev.email,
+      phone: c.contact_phone || prev.phone,
+      clientCode: c.code_unique || prev.clientCode,
+    }));
+  }
+
+  function pickEquipment(id: string) {
+    const eq = equipments.find((x) => x.id === id);
+    if (!eq) { setV((prev) => ({ ...prev, equipmentId: null })); return; }
+    const machineText = [eq.brand, eq.model, eq.serial_number ? `s/n ${eq.serial_number}` : ""].filter(Boolean).join(" ");
+    setV((prev) => ({ ...prev, equipmentId: eq.id, machine: machineText || prev.machine }));
+  }
+
+  const clientLocked = isClientLocked(selectedClient);
 
   // Applique les taux globaux (Settings) sur une nouvelle offre si non déjà saisis
   useEffect(() => {
@@ -111,6 +186,59 @@ export function SavDocumentForm({ initial, syncKey, title, submitLabel, saving, 
     <>
       <h1 className="text-3xl font-black text-zinc-950 mb-1">{title}</h1>
       <p className="text-zinc-500 text-sm mb-8">{v.currency}{v.applyVat ? ` · VAT ${v.vatRate}%` : ""}{v.customsNaira > 0 ? " · customs NGN" : ""} · {v.paymentMode === "advance" ? "advance payment" : "payment after delivery"}</p>
+
+      {/* Link to existing client / equipment */}
+      <section className="bg-white rounded-2xl border border-zinc-200 p-6 mb-5">
+        <div className="flex items-center gap-2 mb-1">
+          <Link2 className="w-4 h-4 text-emerald-600" />
+          <h2 className="font-black text-zinc-950">Link to existing client / equipment</h2>
+        </div>
+        <p className="text-xs text-zinc-500 mb-4">Pick an existing client to prefill contact info and enforce commercial rules.</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label className={lbl}>Client</label>
+            <div className="flex gap-2">
+              <select className={ic} value={v.clientId ?? ""} onChange={(e) => e.target.value ? pickClient(e.target.value) : setV((prev) => ({ ...prev, clientId: null, equipmentId: null, overrideBlock: false }))}>
+                <option value="">— No client linked —</option>
+                {clients.map((c) => (
+                  <option key={c.id} value={c.id}>{c.name}{c.code_unique ? ` (${c.code_unique})` : ""}{c.status !== "actif" ? ` — ${CLIENT_STATUS_LABEL[c.status]}` : ""}</option>
+                ))}
+              </select>
+              {v.clientId && (
+                <button type="button" onClick={() => setV((prev) => ({ ...prev, clientId: null, equipmentId: null, overrideBlock: false }))} className="text-xs text-zinc-500 hover:text-red-500 px-2" title="Unlink"><Unlink className="w-4 h-4" /></button>
+              )}
+            </div>
+            {selectedClient && (
+              <span className={`inline-block mt-2 text-[10px] font-black uppercase tracking-wide px-2 py-1 rounded ${CLIENT_STATUS_COLOR[selectedClient.status]}`}>{CLIENT_STATUS_LABEL[selectedClient.status]}</span>
+            )}
+          </div>
+          <div>
+            <label className={lbl}>Equipment (from client's park)</label>
+            <select className={ic} value={v.equipmentId ?? ""} onChange={(e) => pickEquipment(e.target.value)} disabled={!v.clientId}>
+              <option value="">{v.clientId ? "— No equipment linked —" : "— Pick a client first —"}</option>
+              {equipments.map((eq) => (
+                <option key={eq.id} value={eq.id}>{[eq.brand, eq.model].filter(Boolean).join(" ")}{eq.serial_number ? ` — S/N ${eq.serial_number}` : ""}</option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        {clientLocked && (
+          <div className="mt-4 bg-red-50 border border-red-200 rounded-xl p-4">
+            <div className="flex items-start gap-2 mb-2">
+              <AlertTriangle className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
+              <div className="flex-1">
+                <p className="font-bold text-red-800">Client is {CLIENT_STATUS_LABEL[selectedClient!.status].toLowerCase()} — save blocked</p>
+                <p className="text-sm text-red-700">Billable service offers for this client require N+1 approval.{selectedClient!.status_reason && <> Reason: <span className="italic">{selectedClient!.status_reason}</span></>}</p>
+              </div>
+            </div>
+            <label className="flex items-center gap-2 cursor-pointer text-sm font-semibold text-red-800 mt-2">
+              <input type="checkbox" checked={v.overrideBlock} onChange={(e) => set("overrideBlock", e.target.checked)} className="w-4 h-4 accent-red-600" />
+              I have N+1 approval — allow creating this document anyway
+            </label>
+          </div>
+        )}
+      </section>
 
       {/* Client & machine */}
       <section className="bg-white rounded-2xl border border-zinc-200 p-6 mb-5">
@@ -277,8 +405,13 @@ export function SavDocumentForm({ initial, syncKey, title, submitLabel, saving, 
       </section>
 
       {error && <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-xl px-4 py-2.5 mb-4">{error}</p>}
+      {clientLocked && !v.overrideBlock && (
+        <p className="text-sm text-red-600 mb-3 font-semibold flex items-center gap-2">
+          <AlertTriangle className="w-4 h-4" /> Cannot save: client is locked. Check the N+1 override box above or pick a different client.
+        </p>
+      )}
 
-      <button onClick={() => onSubmit(v)} disabled={saving} className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-black px-8 py-3 rounded-xl transition-colors disabled:opacity-60">
+      <button onClick={() => onSubmit(v)} disabled={saving || (clientLocked && !v.overrideBlock)} className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-black px-8 py-3 rounded-xl transition-colors disabled:opacity-60 disabled:cursor-not-allowed">
         <Save className="w-4 h-4" /> {saving ? "Saving…" : submitLabel}
       </button>
     </>

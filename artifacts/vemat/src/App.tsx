@@ -44,6 +44,10 @@ import TechnicienCatalogue from "@/pages/technicien/TechnicienCatalogue";
 import PdrLogin from "@/pages/pdr/PdrLogin";
 import PdrDashboard from "@/pages/pdr/PdrDashboard";
 import PdrDocuments from "@/pages/pdr/PdrDocuments";
+import PdrClients from "@/pages/pdr/PdrClients";
+import PdrClientDetail from "@/pages/pdr/PdrClientDetail";
+import PdrEquipments from "@/pages/pdr/PdrEquipments";
+import PdrEquipmentDetail from "@/pages/pdr/PdrEquipmentDetail";
 import PdrDevisNew from "@/pages/pdr/PdrDevisNew";
 import PdrDocumentDetail from "@/pages/pdr/PdrDocumentDetail";
 import PdrDocumentEdit from "@/pages/pdr/PdrDocumentEdit";
@@ -53,6 +57,10 @@ import PdrConvert from "@/pages/pdr/PdrConvert";
 import SavLogin from "@/pages/sav/SavLogin";
 import SavDashboard from "@/pages/sav/SavDashboard";
 import SavDocuments from "@/pages/sav/SavDocuments";
+import SavClients from "@/pages/sav/SavClients";
+import SavClientDetail from "@/pages/sav/SavClientDetail";
+import SavEquipments from "@/pages/sav/SavEquipments";
+import SavEquipmentDetail from "@/pages/sav/SavEquipmentDetail";
 import SavOfferNew from "@/pages/sav/SavOfferNew";
 import SavDocumentDetail from "@/pages/sav/SavDocumentDetail";
 import SavDocumentEdit from "@/pages/sav/SavDocumentEdit";
@@ -81,6 +89,10 @@ function Router() {
       {/* Espace PDR (pièces de rechange) */}
       <Route path="/espace-pdr/connexion" component={PdrLogin} />
       <Route path="/espace-pdr/tableau" component={PdrDashboard} />
+      <Route path="/espace-pdr/clients" component={PdrClients} />
+      <Route path="/espace-pdr/client/:id" component={PdrClientDetail} />
+      <Route path="/espace-pdr/equipments" component={PdrEquipments} />
+      <Route path="/espace-pdr/equipment/:id" component={PdrEquipmentDetail} />
       <Route path="/espace-pdr/documents" component={PdrDocuments} />
       <Route path="/espace-pdr/devis/nouveau" component={PdrDevisNew} />
       <Route path="/espace-pdr/document/:id/edit" component={PdrDocumentEdit} />
@@ -90,6 +102,10 @@ function Router() {
       {/* Espace SAV (service / interventions) */}
       <Route path="/espace-sav/connexion" component={SavLogin} />
       <Route path="/espace-sav/tableau" component={SavDashboard} />
+      <Route path="/espace-sav/clients" component={SavClients} />
+      <Route path="/espace-sav/client/:id" component={SavClientDetail} />
+      <Route path="/espace-sav/equipments" component={SavEquipments} />
+      <Route path="/espace-sav/equipment/:id" component={SavEquipmentDetail} />
       <Route path="/espace-sav/documents" component={SavDocuments} />
       <Route path="/espace-sav/offre/nouvelle" component={SavOfferNew} />
       <Route path="/espace-sav/reglages" component={SavSettings} />

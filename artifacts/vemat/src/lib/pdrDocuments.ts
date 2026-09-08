@@ -139,6 +139,9 @@ export interface PdrDocument {
   communication_status: PdrCommStatus;
   sent_at: string | null;
   commercial_status: PdrCommercialStatus;
+  // Client + equipment link (Hassan spec 11/08)
+  client_id: string | null;
+  equipment_id: string | null;
 }
 
 export const DOC_LABEL: Record<PdrDocType, string> = {
@@ -270,6 +273,8 @@ function normalizeDoc(doc: PdrDocument | null): PdrDocument | null {
     source: doc.source ?? null,
     assigned_agent: doc.assigned_agent ?? null,
     sent_at: doc.sent_at ?? null,
+    client_id: doc.client_id ?? null,
+    equipment_id: doc.equipment_id ?? null,
   };
 }
 
@@ -431,10 +436,18 @@ export function groupIntoFolders(docs: PdrDocument[]): PdrFolder[] {
   return folders.sort((a, b) => new Date(b.latestAt).getTime() - new Date(a.latestAt).getTime());
 }
 
-export type NewDocumentInput = Omit<
-  PdrDocument,
-  "id" | "reference" | "created_at" | "updated_at" | "total_amount"
-> & { total_amount?: number };
+export type NewDocumentInput =
+  Omit<
+    PdrDocument,
+    | "id" | "reference" | "created_at" | "updated_at" | "total_amount"
+    // Optional at creation — DB has defaults for these tracking / link fields.
+    | "source" | "assigned_agent" | "communication_status" | "sent_at" | "commercial_status"
+    | "client_id" | "equipment_id"
+  >
+  & Partial<Pick<PdrDocument,
+      | "source" | "assigned_agent" | "communication_status" | "sent_at" | "commercial_status"
+      | "client_id" | "equipment_id" | "total_amount"
+    >>;
 
 export async function createDocument(input: NewDocumentInput): Promise<PdrDocument> {
   const total_amount = computeTotals(input).mainTotal;

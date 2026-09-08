@@ -90,6 +90,9 @@ export interface SavDocument {
   created_by: string | null;
   created_at: string;
   updated_at: string;
+  // Client + equipment link (Hassan spec 11/08)
+  client_id: string | null;
+  equipment_id: string | null;
 }
 
 export const DOC_LABEL: Record<SavDocType, string> = {

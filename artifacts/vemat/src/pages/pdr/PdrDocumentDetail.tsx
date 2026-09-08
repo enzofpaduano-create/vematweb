@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useRoute, useLocation } from "wouter";
-import { ArrowLeft, AlertCircle, FileDown, ArrowRight, Check, Loader2, Pencil, Eye, FileText } from "lucide-react";
+import { ArrowLeft, AlertCircle, FileDown, ArrowRight, Check, Loader2, Pencil, Eye, FileText, Users, Wrench } from "lucide-react";
 import { PdrGuard } from "./PdrGuard";
 import { PdrLayout } from "./PdrLayout";
 import {
@@ -245,6 +245,28 @@ export default function PdrDocumentDetail() {
                   </div>
                 </div>
               </section>
+
+              {(doc.client_id || doc.equipment_id) && (
+                <section className="bg-white rounded-2xl border border-zinc-200 p-6 mb-5">
+                  <h2 className="font-black text-zinc-950 mb-3">Linked to</h2>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    {doc.client_id && (
+                      <Link href={`/espace-pdr/client/${doc.client_id}`}>
+                        <span className="inline-flex items-center gap-1.5 bg-sky-50 hover:bg-sky-100 text-sky-700 font-bold text-sm px-3 py-2 rounded-xl cursor-pointer transition-colors">
+                          <Users className="w-4 h-4" /> Client sheet
+                        </span>
+                      </Link>
+                    )}
+                    {doc.equipment_id && (
+                      <Link href={`/espace-pdr/equipment/${doc.equipment_id}`}>
+                        <span className="inline-flex items-center gap-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-bold text-sm px-3 py-2 rounded-xl cursor-pointer transition-colors">
+                          <Wrench className="w-4 h-4" /> Equipment 360°
+                        </span>
+                      </Link>
+                    )}
+                  </div>
+                </section>
+              )}
 
               <section className="bg-white rounded-2xl border border-zinc-200 p-6 mb-5">
                 <h2 className="font-black text-zinc-950 mb-3">Client</h2>
