@@ -3,7 +3,7 @@ import { Link } from "wouter";
 import {
   AlertCircle, ArrowRight, Inbox, FolderOpen, Plus, Package,
   X, Trash2, ChevronDown, ChevronRight, Clock, TrendingUp, AlertTriangle,
-  CalendarDays, CalendarRange, Calendar,
+  CalendarDays, CalendarRange, Calendar, ShieldQuestion,
 } from "lucide-react";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 import { PdrGuard } from "./PdrGuard";
@@ -204,6 +204,15 @@ export default function PdrDashboard() {
     [docs],
   );
 
+  const pendingValidationDocs = useMemo(
+    () => (docs ?? []).filter((d) => d.validation_status === "pending"),
+    [docs],
+  );
+  const rejectedDocs = useMemo(
+    () => (docs ?? []).filter((d) => d.validation_status === "rejected"),
+    [docs],
+  );
+
   const recentFolders = useMemo(() => groupIntoFolders(docs ?? []).slice(0, 6), [docs]);
 
   function toggleFolder(id: string) {
@@ -248,7 +257,7 @@ export default function PdrDashboard() {
           {kpis && (
             <>
               {/* Volume KPIs */}
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 mb-6">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-6">
                 <KpiTile label="Today" value={kpis.totalToday} icon={CalendarDays} sub="new requests" />
                 <KpiTile label="This week" value={kpis.totalWeek} icon={CalendarRange} sub="new requests" />
                 <KpiTile label="This month" value={kpis.totalMonth} icon={Calendar} sub="new requests" />
@@ -262,12 +271,59 @@ export default function PdrDashboard() {
                   alert={kpis.notCommunicatedOverdue > 0}
                 />
                 <KpiTile
+                  label="Pending validation"
+                  value={pendingValidationDocs.length}
+                  icon={ShieldQuestion}
+                  sub={rejectedDocs.length > 0 ? `+ ${rejectedDocs.length} rejected` : "awaiting Manager"}
+                  alert={pendingValidationDocs.length > 0}
+                />
+                <KpiTile
                   label="Transformation"
                   value={kpis.transformationRate !== null ? `${kpis.transformationRate.toFixed(0)}%` : "—"}
                   icon={TrendingUp}
                   sub="won / communicated"
                 />
               </div>
+
+              {/* Pending validation actionable list */}
+              {(pendingValidationDocs.length > 0 || rejectedDocs.length > 0) && (
+                <div className="mb-8">
+                  <div className="flex items-center gap-2 mb-3">
+                    <ShieldQuestion className="w-4 h-4 text-amber-600" />
+                    <h2 className="text-lg font-black text-zinc-950">Validation queue</h2>
+                    <span className="bg-amber-100 text-amber-700 text-xs font-black px-2 py-0.5 rounded-full">
+                      {pendingValidationDocs.length + rejectedDocs.length}
+                    </span>
+                  </div>
+                  <div className="space-y-2">
+                    {[...pendingValidationDocs, ...rejectedDocs].map((d) => {
+                      const isRejected = d.validation_status === "rejected";
+                      return (
+                        <Link key={d.id} href={`/espace-pdr/document/${d.id}`}>
+                          <div className={`bg-white rounded-2xl border p-4 flex items-start justify-between gap-4 flex-wrap hover:border-sky-300 transition-colors cursor-pointer ${isRejected ? "border-red-300" : "border-amber-300"}`}>
+                            <div className="min-w-0 flex-1">
+                              <div className="flex items-center gap-2 mb-1 flex-wrap">
+                                <span className="font-mono text-xs text-zinc-500">{d.reference}</span>
+                                <span className={`text-[10px] font-black uppercase tracking-wide px-1.5 py-0.5 rounded ${isRejected ? "bg-red-100 text-red-700" : "bg-amber-100 text-amber-700"}`}>
+                                  {isRejected ? "Rejected" : "Pending"}
+                                </span>
+                              </div>
+                              <p className="font-bold text-zinc-950">{d.client_company || d.client_name || "—"}</p>
+                              {d.validation_note && (
+                                <p className="text-xs text-red-700 italic mt-1 line-clamp-2">"{d.validation_note}"</p>
+                              )}
+                            </div>
+                            <div className="text-right shrink-0">
+                              <p className="font-black text-zinc-900">{formatMoney(d.total_amount, d.currency)}</p>
+                              <p className="text-[11px] text-zinc-400 mt-0.5">{DOC_LABEL_SHORT[d.type]}</p>
+                            </div>
+                          </div>
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
 
               {/* Second row: response time + source distribution */}
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 mb-8">

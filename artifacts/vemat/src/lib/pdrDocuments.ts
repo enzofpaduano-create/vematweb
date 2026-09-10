@@ -142,6 +142,12 @@ export interface PdrDocument {
   // Client + equipment link (Hassan spec 11/08)
   client_id: string | null;
   equipment_id: string | null;
+  // Manager validation workflow (Hassan Phase 3)
+  validation_status: import("./approval").ValidationStatus;
+  validation_requested_at: string | null;
+  validation_decided_at: string | null;
+  validation_decided_by: string | null;
+  validation_note: string | null;
 }
 
 export const DOC_LABEL: Record<PdrDocType, string> = {
@@ -275,6 +281,11 @@ function normalizeDoc(doc: PdrDocument | null): PdrDocument | null {
     sent_at: doc.sent_at ?? null,
     client_id: doc.client_id ?? null,
     equipment_id: doc.equipment_id ?? null,
+    validation_status: (doc.validation_status ?? "not_required") as import("./approval").ValidationStatus,
+    validation_requested_at: doc.validation_requested_at ?? null,
+    validation_decided_at: doc.validation_decided_at ?? null,
+    validation_decided_by: doc.validation_decided_by ?? null,
+    validation_note: doc.validation_note ?? null,
   };
 }
 
@@ -443,10 +454,14 @@ export type NewDocumentInput =
     // Optional at creation — DB has defaults for these tracking / link fields.
     | "source" | "assigned_agent" | "communication_status" | "sent_at" | "commercial_status"
     | "client_id" | "equipment_id"
+    | "validation_status" | "validation_requested_at" | "validation_decided_at"
+    | "validation_decided_by" | "validation_note"
   >
   & Partial<Pick<PdrDocument,
       | "source" | "assigned_agent" | "communication_status" | "sent_at" | "commercial_status"
       | "client_id" | "equipment_id" | "total_amount"
+      | "validation_status" | "validation_requested_at" | "validation_decided_at"
+      | "validation_decided_by" | "validation_note"
     >>;
 
 export async function createDocument(input: NewDocumentInput): Promise<PdrDocument> {

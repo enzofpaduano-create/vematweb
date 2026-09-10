@@ -15,7 +15,7 @@
  * la source de vérité — l'email échoue silencieusement.
  */
 
-type Recipient = "machines" | "pdr" | "sav";
+type Recipient = "machines" | "pdr" | "sav" | "validation";
 
 const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || "").replace(/\/$/, "");
 
@@ -28,12 +28,13 @@ async function sendNotification(
   subject: string,
   body: string,
   replyTo?: string,
+  toOverride?: string,
 ) {
   try {
     await fetch(buildApiUrl("/api/notify"), {
       method: "POST",
       headers: { "Content-Type": "application/json", Accept: "application/json" },
-      body: JSON.stringify({ type: recipient, subject, body, replyTo }),
+      body: JSON.stringify({ type: recipient, subject, body, replyTo, toOverride }),
     });
   } catch {
     // Fail silently — the DB insert is the source of truth
@@ -207,4 +208,69 @@ Répondre directement à ${params.email}.
   `.trim();
 
   await sendNotification(recipient, subject, body, params.email);
+}
+
+// ─── Validation workflow (Hassan Phase 3) ────────────────────────────────────
+
+export async function sendValidationRequestEmail(params: {
+  portal: "PDR" | "SAV";
+  reference: string | null;
+  clientName: string;
+  totalAmount: number;
+  currency: "EUR" | "USD";
+  reasons: string[];
+  requestedBy?: string;      // agent / user email who submitted
+  managerEmail: string;      // recipient
+  docUrl?: string;           // direct link to the doc detail page
+  note?: string;
+}) {
+  const cur = params.currency === "EUR" ? "€" : "$";
+  const subject = `[VALIDATION ${params.portal}] ${params.reference ?? ""} — ${params.clientName} (${params.totalAmount.toLocaleString("en-GB")} ${cur})`;
+  const body = `
+Validation request — ${params.portal} portal
+
+Client        : ${params.clientName}
+Reference     : ${params.reference ?? "—"}
+Total amount  : ${params.totalAmount.toLocaleString("en-GB")} ${cur}
+Requested by  : ${params.requestedBy ?? "—"}
+
+Why this document needs approval:
+${params.reasons.map((r) => `  • ${r}`).join("\n") || "  • (business rule not specified)"}
+
+${params.note ? `Note from requester:\n${params.note}\n` : ""}
+Please review and approve or reject in the portal:
+${params.docUrl ?? "(open the portal → Documents → search the reference)"}
+  `.trim();
+
+  await sendNotification("validation", subject, body, undefined, params.managerEmail);
+}
+
+export async function sendValidationDecisionEmail(params: {
+  portal: "PDR" | "SAV";
+  reference: string | null;
+  clientName: string;
+  decision: "approved" | "rejected";
+  decidedBy: string;
+  note?: string;
+  requesterEmail?: string;   // if we know who to notify back
+  docUrl?: string;
+}) {
+  const tag = params.decision === "approved" ? "APPROVED" : "REJECTED";
+  const subject = `[VALIDATION ${tag}] ${params.reference ?? ""} — ${params.clientName}`;
+  const body = `
+Validation ${params.decision.toUpperCase()} — ${params.portal} portal
+
+Client       : ${params.clientName}
+Reference    : ${params.reference ?? "—"}
+Decided by   : ${params.decidedBy}
+
+${params.note ? `Note:\n${params.note}\n\n` : ""}${params.decision === "approved"
+    ? "You can now mark this document as Sent to the client."
+    : "Please revise the document, then request validation again."}
+
+${params.docUrl ?? ""}
+  `.trim();
+
+  // Send to master vemat@ + requester if known (via toOverride slot).
+  await sendNotification("validation", subject, body, undefined, params.requesterEmail);
 }

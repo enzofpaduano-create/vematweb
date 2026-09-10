@@ -48,6 +48,7 @@ import PdrClients from "@/pages/pdr/PdrClients";
 import PdrClientDetail from "@/pages/pdr/PdrClientDetail";
 import PdrEquipments from "@/pages/pdr/PdrEquipments";
 import PdrEquipmentDetail from "@/pages/pdr/PdrEquipmentDetail";
+import PdrSettings from "@/pages/pdr/PdrSettings";
 import PdrDevisNew from "@/pages/pdr/PdrDevisNew";
 import PdrDocumentDetail from "@/pages/pdr/PdrDocumentDetail";
 import PdrDocumentEdit from "@/pages/pdr/PdrDocumentEdit";
@@ -93,6 +94,7 @@ function Router() {
       <Route path="/espace-pdr/client/:id" component={PdrClientDetail} />
       <Route path="/espace-pdr/equipments" component={PdrEquipments} />
       <Route path="/espace-pdr/equipment/:id" component={PdrEquipmentDetail} />
+      <Route path="/espace-pdr/reglages" component={PdrSettings} />
       <Route path="/espace-pdr/documents" component={PdrDocuments} />
       <Route path="/espace-pdr/devis/nouveau" component={PdrDevisNew} />
       <Route path="/espace-pdr/document/:id/edit" component={PdrDocumentEdit} />

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "wouter";
-import { AlertCircle, ArrowRight, Inbox, FolderOpen, Plus, Wrench, X, Trash2, ChevronDown, ChevronRight } from "lucide-react";
+import { AlertCircle, ArrowRight, Inbox, FolderOpen, Plus, Wrench, X, Trash2, ChevronDown, ChevronRight, ShieldQuestion } from "lucide-react";
 import { SavGuard } from "./SavGuard";
 import { SavLayout } from "./SavLayout";
 import { supabaseSav } from "@/lib/supabase";
@@ -98,6 +98,14 @@ export default function SavDashboard() {
     return c;
   }, [docs]);
   const recentFolders = useMemo(() => groupSavIntoFolders(docs ?? []).slice(0, 6), [docs]);
+  const pendingValidationDocs = useMemo(
+    () => (docs ?? []).filter((d) => d.validation_status === "pending"),
+    [docs],
+  );
+  const rejectedValidationDocs = useMemo(
+    () => (docs ?? []).filter((d) => d.validation_status === "rejected"),
+    [docs],
+  );
 
   function toggleFolder(id: string) {
     setOpenFolders((prev) => {
@@ -130,13 +138,20 @@ export default function SavDashboard() {
             </div>
           )}
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
+          <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 mb-8">
             {(["devis", "bon_commande", "bon_livraison", "facture"] as SavDocType[]).map((t) => (
               <div key={t} className="bg-white rounded-2xl border border-zinc-200 p-4">
                 <p className="text-2xl font-black text-zinc-950">{counts[t] ?? 0}</p>
                 <p className="text-[11px] text-zinc-500 font-semibold mt-1">{DOC_LABEL_SHORT[t]}</p>
               </div>
             ))}
+            <div className={`rounded-2xl border p-4 ${pendingValidationDocs.length > 0 ? "border-amber-300 bg-amber-50" : "border-zinc-200 bg-white"}`}>
+              <div className="flex items-center gap-1.5 mb-1">
+                <ShieldQuestion className={`w-4 h-4 ${pendingValidationDocs.length > 0 ? "text-amber-600" : "text-zinc-400"}`} />
+                <p className={`text-2xl font-black ${pendingValidationDocs.length > 0 ? "text-amber-700" : "text-zinc-950"}`}>{pendingValidationDocs.length}</p>
+              </div>
+              <p className="text-[11px] text-zinc-500 font-semibold">Pending validation{rejectedValidationDocs.length > 0 ? ` (+${rejectedValidationDocs.length} rejected)` : ""}</p>
+            </div>
           </div>
 
           {/* Incoming intervention requests */}

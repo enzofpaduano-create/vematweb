@@ -26,7 +26,7 @@ import { logger } from "./logger";
  *   MAIL_TO_SAV      (optionnel, défaut vemat.sav@vematgroup.com)
  */
 
-export type NotifyType = "machines" | "pdr" | "sav";
+export type NotifyType = "machines" | "pdr" | "sav" | "validation";
 
 const MASTER = process.env.MAIL_MASTER || "vemat@vematgroup.com";
 
@@ -34,10 +34,21 @@ const RECIPIENTS: Record<NotifyType, string[]> = {
   machines: [MASTER],
   pdr: [process.env.MAIL_TO_PDR || "commercial.pdr@vematgroup.com", MASTER],
   sav: [process.env.MAIL_TO_SAV || "vemat.sav@vematgroup.com", MASTER],
+  // Validation: the caller MUST supply toOverride (manager email from settings).
+  // If missing we fall back to MASTER so nothing is silently lost.
+  validation: [MASTER],
 };
 
 export function isNotifyType(value: unknown): value is NotifyType {
-  return value === "machines" || value === "pdr" || value === "sav";
+  return value === "machines" || value === "pdr" || value === "sav" || value === "validation";
+}
+
+// Basic email validation to avoid abusing the endpoint as a relay.
+export function isSafeEmail(value: unknown): value is string {
+  if (typeof value !== "string") return false;
+  const trimmed = value.trim();
+  if (trimmed.length === 0 || trimmed.length > 320) return false;
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed);
 }
 
 let cachedTransport: Transporter | null = null;
@@ -74,12 +85,17 @@ export async function sendFormNotification(params: {
   subject: string;
   body: string;
   replyTo?: string;
+  /** Only honored for type='validation' — manager email from approval_settings. */
+  toOverride?: string;
 }): Promise<{ sent: boolean }> {
   const transport = getTransport();
   if (!transport) return { sent: false };
 
   const from = process.env.MAIL_FROM || process.env.SMTP_USER!;
-  const to = RECIPIENTS[params.type];
+  let to = RECIPIENTS[params.type];
+  if (params.type === "validation" && params.toOverride && isSafeEmail(params.toOverride)) {
+    to = [params.toOverride, MASTER];
+  }
 
   await transport.sendMail({
     from,

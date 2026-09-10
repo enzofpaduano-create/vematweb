@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useRoute, useLocation } from "wouter";
-import { ArrowLeft, AlertCircle, FileDown, ArrowRight, Check, Loader2, Pencil, Package, ExternalLink, Files } from "lucide-react";
+import { ArrowLeft, AlertCircle, FileDown, ArrowRight, Check, Loader2, Pencil, Package, ExternalLink, Files, ShieldCheck, ShieldAlert, ShieldQuestion } from "lucide-react";
 import { SavGuard } from "./SavGuard";
 import { SavLayout } from "./SavLayout";
 import {
@@ -9,6 +9,15 @@ import {
   DOC_LABEL, DOC_LABEL_SHORT, nextSteps, formatMoney, formatNaira,
   type SavDocument, type SavDocType,
 } from "@/lib/savDocuments";
+import {
+  getApprovalSettings, docNeedsValidation, isSendBlocked,
+  requestValidation, approveValidation, rejectValidation, clearValidation,
+  VALIDATION_STATUS_LABEL, VALIDATION_STATUS_COLOR,
+  type ApprovalSettings,
+} from "@/lib/approval";
+import { supabaseSav } from "@/lib/supabase";
+import { useSavAuth } from "@/contexts/SavAuthContext";
+import { sendValidationRequestEmail, sendValidationDecisionEmail } from "@/lib/emailService";
 
 const STATUS_OPTIONS = ["brouillon", "envoye", "accepte", "refuse", "en_cours", "termine"];
 const STATUS_LABEL: Record<string, string> = {
@@ -30,6 +39,19 @@ export default function SavDocumentDetail() {
   const [genWord, setGenWord] = useState(false);
   const [genZip, setGenZip] = useState(false);
   const [pdrLoading, setPdrLoading] = useState(false);
+  const [approvalSettings, setApprovalSettings] = useState<ApprovalSettings | null>(null);
+  const [rejectMode, setRejectMode] = useState(false);
+  const [rejectNote, setRejectNote] = useState("");
+  const [busyValidation, setBusyValidation] = useState(false);
+  const { user } = useSavAuth();
+
+  useEffect(() => {
+    let cancelled = false;
+    getApprovalSettings(supabaseSav, "sav")
+      .then((s) => { if (!cancelled) setApprovalSettings(s); })
+      .catch(() => {});
+    return () => { cancelled = true; };
+  }, []);
 
   const reload = async () => {
     if (!id) return;
@@ -81,8 +103,95 @@ export default function SavDocumentDetail() {
 
   async function handleStatus(status: string) {
     if (!doc) return;
+    // Business rule: cannot mark 'envoye'/'accepte' when validation is pending or rejected.
+    if ((status === "envoye" || status === "accepte") && isSendBlocked(doc.validation_status)) {
+      setError("Cannot mark as Sent/Accepted — this document is waiting for Manager validation.");
+      return;
+    }
     await updateSavDocument(doc.id, { status });
     setDoc({ ...doc, status });
+  }
+
+  const validationCheck = doc && approvalSettings
+    ? docNeedsValidation({ total_amount: doc.total_amount, parts: doc.parts }, approvalSettings)
+    : { needsValidation: false, reasons: [] };
+
+  async function handleRequestValidation() {
+    if (!doc || !approvalSettings) return;
+    setBusyValidation(true);
+    try {
+      await requestValidation(supabaseSav, "sav_documents", doc.id);
+      const fresh = await getSavDocument(doc.id);
+      if (fresh) setDoc(fresh);
+      if (approvalSettings.manager_email) {
+        await sendValidationRequestEmail({
+          portal: "SAV",
+          reference: doc.reference,
+          clientName: doc.client_company || doc.client_name || "—",
+          totalAmount: doc.total_amount,
+          currency: doc.currency,
+          reasons: validationCheck.reasons,
+          requestedBy: user?.email ?? undefined,
+          managerEmail: approvalSettings.manager_email,
+          docUrl: typeof window !== "undefined" ? `${window.location.origin}/espace-sav/document/${doc.id}` : undefined,
+        });
+      }
+    } catch (e) { setError((e as Error).message); }
+    finally { setBusyValidation(false); }
+  }
+
+  async function handleApprove() {
+    if (!doc) return;
+    setBusyValidation(true);
+    try {
+      const decidedBy = user?.email ?? "manager";
+      await approveValidation(supabaseSav, "sav_documents", doc.id, decidedBy);
+      const fresh = await getSavDocument(doc.id);
+      if (fresh) setDoc(fresh);
+      await sendValidationDecisionEmail({
+        portal: "SAV",
+        reference: doc.reference,
+        clientName: doc.client_company || doc.client_name || "—",
+        decision: "approved",
+        decidedBy,
+        docUrl: typeof window !== "undefined" ? `${window.location.origin}/espace-sav/document/${doc.id}` : undefined,
+      });
+    } catch (e) { setError((e as Error).message); }
+    finally { setBusyValidation(false); }
+  }
+
+  async function handleReject() {
+    if (!doc) return;
+    if (!rejectNote.trim()) { setError("A reason is required to reject."); return; }
+    setBusyValidation(true);
+    try {
+      const decidedBy = user?.email ?? "manager";
+      await rejectValidation(supabaseSav, "sav_documents", doc.id, decidedBy, rejectNote.trim());
+      const fresh = await getSavDocument(doc.id);
+      if (fresh) setDoc(fresh);
+      setRejectMode(false); setRejectNote("");
+      await sendValidationDecisionEmail({
+        portal: "SAV",
+        reference: doc.reference,
+        clientName: doc.client_company || doc.client_name || "—",
+        decision: "rejected",
+        decidedBy,
+        note: rejectNote.trim(),
+        docUrl: typeof window !== "undefined" ? `${window.location.origin}/espace-sav/document/${doc.id}` : undefined,
+      });
+    } catch (e) { setError((e as Error).message); }
+    finally { setBusyValidation(false); }
+  }
+
+  async function handleClearValidation() {
+    if (!doc) return;
+    setBusyValidation(true);
+    try {
+      await clearValidation(supabaseSav, "sav_documents", doc.id);
+      const fresh = await getSavDocument(doc.id);
+      if (fresh) setDoc(fresh);
+    } catch (e) { setError((e as Error).message); }
+    finally { setBusyValidation(false); }
   }
 
   const totals = doc ? computeSavTotals(doc) : null;
@@ -134,6 +243,92 @@ export default function SavDocumentDetail() {
                     </div>
                   ))}
                 </div>
+              )}
+
+              {/* Manager validation workflow (Hassan Phase 3) */}
+              {(validationCheck.needsValidation || doc.validation_status !== "not_required") && (
+                <section className={`rounded-2xl border p-6 mb-5 ${
+                  doc.validation_status === "approved" ? "bg-emerald-50 border-emerald-200"
+                  : doc.validation_status === "rejected" ? "bg-red-50 border-red-200"
+                  : doc.validation_status === "pending" ? "bg-amber-50 border-amber-200"
+                  : "bg-white border-zinc-200"
+                }`}>
+                  <div className="flex items-center gap-2 mb-3 flex-wrap">
+                    {doc.validation_status === "approved" && <ShieldCheck className="w-5 h-5 text-emerald-600" />}
+                    {doc.validation_status === "rejected" && <ShieldAlert className="w-5 h-5 text-red-600" />}
+                    {doc.validation_status === "pending" && <ShieldQuestion className="w-5 h-5 text-amber-600" />}
+                    {doc.validation_status === "not_required" && <ShieldQuestion className="w-5 h-5 text-zinc-500" />}
+                    <h2 className="font-black text-zinc-950">Manager validation</h2>
+                    <span className={`text-[10px] font-black uppercase tracking-wide px-2 py-1 rounded ${VALIDATION_STATUS_COLOR[doc.validation_status]}`}>
+                      {VALIDATION_STATUS_LABEL[doc.validation_status]}
+                    </span>
+                  </div>
+
+                  {validationCheck.needsValidation && doc.validation_status === "not_required" && (
+                    <>
+                      <p className="text-sm text-zinc-700 mb-1">This document meets the criteria for Manager approval:</p>
+                      <ul className="text-sm text-zinc-700 mb-3 pl-4 list-disc">
+                        {validationCheck.reasons.map((r, i) => <li key={i}>{r}</li>)}
+                      </ul>
+                      <button onClick={handleRequestValidation} disabled={busyValidation || !approvalSettings?.manager_email}
+                        className="inline-flex items-center gap-2 bg-amber-600 hover:bg-amber-500 text-white font-bold text-sm px-4 py-2.5 rounded-xl disabled:opacity-60">
+                        {busyValidation ? "Requesting…" : "Request Manager validation"}
+                      </button>
+                      {!approvalSettings?.manager_email && (
+                        <p className="text-xs text-red-600 mt-2">⚠ No manager email in <Link href="/espace-sav/reglages" className="underline">Settings</Link>.</p>
+                      )}
+                    </>
+                  )}
+
+                  {doc.validation_status === "pending" && (
+                    <>
+                      <p className="text-sm text-zinc-700 mb-3">
+                        Requested {doc.validation_requested_at ? new Date(doc.validation_requested_at).toLocaleString("en-GB") : "—"}. Sending is blocked until approval.
+                      </p>
+                      {!rejectMode && (
+                        <div className="flex flex-wrap gap-2">
+                          <button onClick={handleApprove} disabled={busyValidation} className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm px-4 py-2.5 rounded-xl disabled:opacity-60">
+                            <ShieldCheck className="w-4 h-4" /> Approve
+                          </button>
+                          <button onClick={() => setRejectMode(true)} disabled={busyValidation} className="inline-flex items-center gap-2 bg-white border border-red-300 hover:border-red-500 text-red-700 font-bold text-sm px-4 py-2.5 rounded-xl disabled:opacity-60">
+                            <ShieldAlert className="w-4 h-4" /> Reject
+                          </button>
+                          <button onClick={handleClearValidation} disabled={busyValidation} className="text-xs text-zinc-500 hover:text-zinc-800 px-2">Cancel request</button>
+                        </div>
+                      )}
+                      {rejectMode && (
+                        <div className="border border-red-200 rounded-xl p-3 bg-white">
+                          <label className="block text-xs font-bold text-zinc-500 mb-1.5">Reason for rejection (required)</label>
+                          <textarea className="w-full bg-white border border-zinc-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-red-400 min-h-[60px] mb-2" value={rejectNote} onChange={(e) => setRejectNote(e.target.value)} placeholder="Why is this quote being rejected?" />
+                          <div className="flex gap-2">
+                            <button onClick={handleReject} disabled={busyValidation || !rejectNote.trim()} className="bg-red-600 hover:bg-red-500 text-white font-bold text-xs px-3 py-1.5 rounded-lg disabled:opacity-60">Confirm reject</button>
+                            <button onClick={() => { setRejectMode(false); setRejectNote(""); }} className="text-xs font-semibold text-zinc-500 hover:text-zinc-800 px-2">Cancel</button>
+                          </div>
+                        </div>
+                      )}
+                    </>
+                  )}
+
+                  {doc.validation_status === "approved" && (
+                    <p className="text-sm text-emerald-800">
+                      ✓ Approved by <strong>{doc.validation_decided_by ?? "manager"}</strong>
+                      {doc.validation_decided_at && ` on ${new Date(doc.validation_decided_at).toLocaleString("en-GB")}`}.
+                    </p>
+                  )}
+
+                  {doc.validation_status === "rejected" && (
+                    <>
+                      <p className="text-sm text-red-800 mb-2">
+                        ✗ Rejected by <strong>{doc.validation_decided_by ?? "manager"}</strong>
+                        {doc.validation_decided_at && ` on ${new Date(doc.validation_decided_at).toLocaleString("en-GB")}`}.
+                      </p>
+                      {doc.validation_note && <p className="text-sm text-red-700 mb-3 bg-white border border-red-200 rounded-lg p-3 italic">Manager note: "{doc.validation_note}"</p>}
+                      <button onClick={handleRequestValidation} disabled={busyValidation || !approvalSettings?.manager_email} className="inline-flex items-center gap-2 bg-amber-600 hover:bg-amber-500 text-white font-bold text-sm px-4 py-2.5 rounded-xl disabled:opacity-60">
+                        {busyValidation ? "Resubmitting…" : "Resubmit for validation"}
+                      </button>
+                    </>
+                  )}
+                </section>
               )}
 
               {/* Client */}

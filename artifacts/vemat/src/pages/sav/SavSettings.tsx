@@ -1,18 +1,25 @@
 import { useEffect, useState } from "react";
-import { Save, Check } from "lucide-react";
+import { Save, Check, ShieldCheck } from "lucide-react";
 import { SavGuard } from "./SavGuard";
 import { SavLayout } from "./SavLayout";
 import { getSavSettings, saveSavSettings, DEFAULT_SETTINGS, type SavSettings as Settings, type Currency } from "@/lib/savDocuments";
+import { getApprovalSettings, saveApprovalSettings, type ApprovalSettings } from "@/lib/approval";
+import { supabaseSav } from "@/lib/supabase";
 
 export default function SavSettings() {
   const [s, setS] = useState<Settings>(DEFAULT_SETTINGS);
+  const [approval, setApproval] = useState<ApprovalSettings | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    getSavSettings().then((r) => { setS(r); setLoading(false); });
+    Promise.all([
+      getSavSettings(),
+      getApprovalSettings(supabaseSav, "sav"),
+    ]).then(([r, a]) => { setS(r); setApproval(a); setLoading(false); })
+      .catch((e) => { setError((e as Error).message); setLoading(false); });
   }, []);
 
   const set = <K extends keyof Settings>(k: K, v: Settings[K]) => setS((p) => ({ ...p, [k]: v }));
@@ -21,6 +28,13 @@ export default function SavSettings() {
     setSaving(true); setError(null); setSaved(false);
     try {
       await saveSavSettings(s);
+      if (approval) {
+        await saveApprovalSettings(supabaseSav, "sav", {
+          amount_threshold: approval.amount_threshold,
+          discount_threshold: approval.discount_threshold,
+          manager_email: approval.manager_email,
+        });
+      }
       setSaved(true);
       setTimeout(() => setSaved(false), 2500);
     } catch (e) { setError((e as Error).message); }
@@ -77,6 +91,43 @@ export default function SavSettings() {
                   <div><label className={lbl}>VAT rate %</label><input className={`${ic} w-24`} type="number" step="0.5" value={s.default_vat_rate} onChange={(e) => set("default_vat_rate", Number(e.target.value))} /></div>
                 </div>
               </section>
+
+              {/* Manager approval workflow (Hassan Phase 3) */}
+              {approval && (
+                <section className="bg-white rounded-2xl border border-zinc-200 p-6 mb-6">
+                  <div className="flex items-center gap-2 mb-1">
+                    <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                    <h2 className="font-black text-zinc-950">Quote approval workflow</h2>
+                  </div>
+                  <p className="text-xs text-zinc-500 mb-4">
+                    A quote that meets ANY of these criteria is blocked from being sent to the client until a Manager approves it (email + portal).
+                  </p>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                    <div>
+                      <label className={lbl}>Amount threshold</label>
+                      <input type="number" min="0" step="100" className={ic}
+                        value={approval.amount_threshold}
+                        onChange={(e) => setApproval({ ...approval, amount_threshold: Number(e.target.value) })} />
+                    </div>
+                    <div>
+                      <label className={lbl}>Max discount threshold (%)</label>
+                      <input type="number" min="0" max="100" step="0.5" className={ic}
+                        value={approval.discount_threshold}
+                        onChange={(e) => setApproval({ ...approval, discount_threshold: Number(e.target.value) })} />
+                    </div>
+                  </div>
+                  <div>
+                    <label className={lbl}>Manager email (recipient)</label>
+                    <input type="email" className={ic}
+                      placeholder="manager.sav@vematgroup.com"
+                      value={approval.manager_email ?? ""}
+                      onChange={(e) => setApproval({ ...approval, manager_email: e.target.value || null })} />
+                    <p className="text-[11px] text-zinc-400 mt-1">
+                      Falls back to vemat@vematgroup.com if empty. Master inbox is always copied.
+                    </p>
+                  </div>
+                </section>
+              )}
 
               {error && <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-xl px-4 py-2.5 mb-4">{error}</p>}
 

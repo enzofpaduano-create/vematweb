@@ -93,6 +93,12 @@ export interface SavDocument {
   // Client + equipment link (Hassan spec 11/08)
   client_id: string | null;
   equipment_id: string | null;
+  // Manager validation workflow (Hassan Phase 3)
+  validation_status: import("./approval").ValidationStatus;
+  validation_requested_at: string | null;
+  validation_decided_at: string | null;
+  validation_decided_by: string | null;
+  validation_note: string | null;
 }
 
 export const DOC_LABEL: Record<SavDocType, string> = {
@@ -264,7 +270,18 @@ export async function getSavChildrenByType(parentId: string): Promise<Partial<Re
   return out;
 }
 
-export type NewSavDocument = Omit<SavDocument, "id" | "reference" | "created_at" | "updated_at" | "total_amount"> & { total_amount?: number };
+export type NewSavDocument =
+  Omit<SavDocument,
+    | "id" | "reference" | "created_at" | "updated_at" | "total_amount"
+    | "client_id" | "equipment_id"
+    | "validation_status" | "validation_requested_at" | "validation_decided_at"
+    | "validation_decided_by" | "validation_note"
+  >
+  & Partial<Pick<SavDocument,
+      | "total_amount" | "client_id" | "equipment_id"
+      | "validation_status" | "validation_requested_at" | "validation_decided_at"
+      | "validation_decided_by" | "validation_note"
+    >>;
 
 export async function createSavDocument(input: NewSavDocument): Promise<SavDocument> {
   const total_amount = computeSavTotals(input).total;

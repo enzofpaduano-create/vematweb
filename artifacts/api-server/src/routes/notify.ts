@@ -1,5 +1,5 @@
 import { Router, type IRouter } from "express";
-import { isNotifyType, sendFormNotification } from "../lib/mailer";
+import { isNotifyType, isSafeEmail, sendFormNotification } from "../lib/mailer";
 
 const router: IRouter = Router();
 
@@ -28,7 +28,7 @@ router.post("/notify", async (req, res, next) => {
       return;
     }
 
-    const { type, subject, body, replyTo } = req.body ?? {};
+    const { type, subject, body, replyTo, toOverride } = req.body ?? {};
 
     if (!isNotifyType(type)) {
       res.status(400).json({ error: "Invalid type" });
@@ -51,6 +51,8 @@ router.post("/notify", async (req, res, next) => {
         typeof replyTo === "string" && replyTo.length <= MAX_REPLYTO
           ? replyTo
           : undefined,
+      // Only honored for type='validation' inside the mailer.
+      toOverride: type === "validation" && isSafeEmail(toOverride) ? toOverride : undefined,
     });
 
     res.json({ ok: true, sent: result.sent });
