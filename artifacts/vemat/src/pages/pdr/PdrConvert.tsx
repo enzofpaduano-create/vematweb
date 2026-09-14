@@ -12,10 +12,12 @@ import {
   getDocument, convertDocument, DOC_LABEL, formatMoney,
   type PdrDocument, type PdrDocType, type PdrLogistics,
 } from "@/lib/pdrDocuments";
+import { initAvoirWorkflow } from "@/lib/creditNotes";
+import { supabasePdr } from "@/lib/supabase";
 
 const VALID_TYPES: PdrDocType[] = [
   "devis", "bon_commande", "commande_fournisseur",
-  "bon_reception", "bon_livraison", "facture",
+  "bon_reception", "bon_livraison", "facture", "avoir",
 ];
 
 type FormState = {
@@ -27,6 +29,7 @@ type FormState = {
   carrier: string;
   received_date: string;
   notes: string;
+  avoir_reason: string;   // Required when toType === 'avoir'
 };
 
 const emptyForm = (): FormState => ({
@@ -38,6 +41,7 @@ const emptyForm = (): FormState => ({
   carrier: "",
   received_date: new Date().toISOString().slice(0, 10),
   notes: "",
+  avoir_reason: "",
 });
 
 function todayISO() {
@@ -119,11 +123,22 @@ export default function PdrConvert() {
         logistics.branch = "factory";
       }
 
+      // Credit note (avoir) requires a reason before we even create it.
+      if (toType === "avoir" && !form.avoir_reason.trim()) {
+        throw new Error("A reason (motif) is required to create a credit note.");
+      }
+
       const child = await convertDocument(parent, toType, {
         logistics,
         notes: form.notes.trim() || parent.notes,
         markParentStatus: "en_cours",
       });
+
+      // Kick off the 2-stage approval workflow for avoirs.
+      if (toType === "avoir") {
+        await initAvoirWorkflow(supabasePdr, "pdr_documents", child.id, form.avoir_reason.trim());
+      }
+
       navigate(`/espace-pdr/document/${child.id}`);
     } catch (err) {
       setError((err as Error).message);
@@ -255,7 +270,29 @@ export default function PdrConvert() {
                   </>
                 )}
 
-                {!isStockDn && !isFactory && !isReceipt && !isFactoryDn && (
+                {toType === "avoir" && (
+                  <>
+                    <div className="flex items-center gap-2 text-red-700 font-bold text-sm mb-1">
+                      Credit note (avoir)
+                    </div>
+                    <p className="text-xs text-zinc-500 mb-1">
+                      A credit note requires <strong>double approval</strong> (Manager SAV then Direction Financière)
+                      before it can be sent to the client. Motif is mandatory.
+                    </p>
+                    <div>
+                      <label className={lbl}>Reason (motif) *</label>
+                      <textarea
+                        required
+                        className={`${ic} min-h-[80px]`}
+                        value={form.avoir_reason}
+                        onChange={(e) => set("avoir_reason", e.target.value)}
+                        placeholder="e.g. Cancel invoice INV-2026-0042 — part returned defective on 2026-03-12"
+                      />
+                    </div>
+                  </>
+                )}
+
+                {!isStockDn && !isFactory && !isReceipt && !isFactoryDn && toType !== "avoir" && (
                   <p className="text-sm text-zinc-600">
                     This will create a <strong>{title}</strong> by copying client, lines and amounts from the parent document.
                   </p>

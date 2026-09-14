@@ -19,6 +19,7 @@ const TITLE: Record<PdrDocument["type"], string> = {
   bon_reception: "GOODS RECEIPT N°",
   bon_livraison: "DELIVERY NOTE N°",
   facture: "INVOICE N°",
+  avoir: "CREDIT NOTE N°",
 };
 
 const MAX_ITEM_ROWS = 8;

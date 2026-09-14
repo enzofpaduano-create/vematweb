@@ -32,6 +32,7 @@ export interface ApprovalSettings {
   amount_threshold: number;
   discount_threshold: number;   // percent (0-100)
   manager_email: string | null;
+  finance_email: string | null; // Direction Financière — for credit note (avoir) second-stage approval
   updated_at: string;
 }
 
@@ -43,7 +44,8 @@ export async function getApprovalSettings(sb: SupabaseClient, kind: ApprovalKind
   if (error) throw new Error(error.message);
   // Return safe defaults if row missing (should not happen because seeded by SQL).
   return (data as ApprovalSettings | null) ?? {
-    kind, amount_threshold: 10000, discount_threshold: 15, manager_email: null,
+    kind, amount_threshold: 10000, discount_threshold: 15,
+    manager_email: null, finance_email: null,
     updated_at: new Date().toISOString(),
   };
 }
@@ -57,6 +59,7 @@ export async function saveApprovalSettings(
       amount_threshold: patch.amount_threshold,
       discount_threshold: patch.discount_threshold,
       manager_email: patch.manager_email ?? null,
+      finance_email: patch.finance_email ?? null,
     })
     .eq("kind", kind);
   if (error) throw new Error(error.message);

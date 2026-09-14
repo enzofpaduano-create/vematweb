@@ -29,6 +29,7 @@ export default function PdrSettings() {
         amount_threshold: settings.amount_threshold,
         discount_threshold: settings.discount_threshold,
         manager_email: settings.manager_email,
+        finance_email: settings.finance_email,
       });
       setSaved(true);
       setTimeout(() => setSaved(false), 2000);
@@ -103,6 +104,20 @@ export default function PdrSettings() {
                 />
                 <p className="text-[11px] text-zinc-400 mt-1">
                   If empty, requests fall back to vemat@vematgroup.com. Emails also copy the master inbox.
+                </p>
+              </div>
+
+              <div className="mb-6">
+                <label className={lbl}>Finance email (2nd-level approval for credit notes)</label>
+                <input
+                  type="email"
+                  className={ic}
+                  placeholder="finance@vematgroup.com"
+                  value={settings.finance_email ?? ""}
+                  onChange={(e) => setSettings({ ...settings, finance_email: e.target.value || null })}
+                />
+                <p className="text-[11px] text-zinc-400 mt-1">
+                  Credit notes (avoirs) require a second approval by Direction Financière after the Manager has approved.
                 </p>
               </div>
 

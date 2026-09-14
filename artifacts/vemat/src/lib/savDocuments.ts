@@ -11,7 +11,7 @@
 
 import { supabaseSav } from "@/lib/supabase";
 
-export type SavDocType = "devis" | "bon_commande" | "bon_livraison" | "facture";
+export type SavDocType = "devis" | "bon_commande" | "bon_livraison" | "facture" | "avoir";
 export type Currency = "EUR" | "USD";
 export type LabourMode = "daily" | "fixed";
 export type PaymentMode = "advance" | "after";
@@ -99,6 +99,16 @@ export interface SavDocument {
   validation_decided_at: string | null;
   validation_decided_by: string | null;
   validation_note: string | null;
+  // Credit note (avoir) workflow (Hassan Phase 4)
+  avoir_reason: string | null;
+  avoir_manager_status: import("./creditNotes").AvoirStatus | null;
+  avoir_manager_decided_at: string | null;
+  avoir_manager_decided_by: string | null;
+  avoir_manager_note: string | null;
+  avoir_finance_status: import("./creditNotes").AvoirStatus | null;
+  avoir_finance_decided_at: string | null;
+  avoir_finance_decided_by: string | null;
+  avoir_finance_note: string | null;
 }
 
 export const DOC_LABEL: Record<SavDocType, string> = {
@@ -106,6 +116,7 @@ export const DOC_LABEL: Record<SavDocType, string> = {
   bon_commande: "Purchase Order",
   bon_livraison: "Delivery Note",
   facture: "Invoice",
+  avoir: "Credit Note",
 };
 
 export const DOC_LABEL_SHORT: Record<SavDocType, string> = {
@@ -113,6 +124,7 @@ export const DOC_LABEL_SHORT: Record<SavDocType, string> = {
   bon_commande: "PO",
   bon_livraison: "DN",
   facture: "Invoice",
+  avoir: "CN",
 };
 
 export const DOC_FOLDER: Record<SavDocType, string> = {
@@ -120,6 +132,7 @@ export const DOC_FOLDER: Record<SavDocType, string> = {
   bon_commande: "02-Purchase-Orders",
   bon_livraison: "03-Delivery-Notes",
   facture: "04-Invoices",
+  avoir: "05-Credit-Notes",
 };
 
 export interface NextStep {
@@ -138,6 +151,8 @@ export function nextSteps(doc: Pick<SavDocument, "type" | "payment_mode">): Next
         : [{ type: "bon_livraison", label: "Create Delivery Note" }];
     case "bon_livraison":
       return [{ type: "facture", label: "Invoice" }];
+    case "facture":
+      return [{ type: "avoir", label: "Create credit note (avoir)" }];
     default:
       return [];
   }
@@ -276,11 +291,17 @@ export type NewSavDocument =
     | "client_id" | "equipment_id"
     | "validation_status" | "validation_requested_at" | "validation_decided_at"
     | "validation_decided_by" | "validation_note"
+    | "avoir_reason"
+    | "avoir_manager_status" | "avoir_manager_decided_at" | "avoir_manager_decided_by" | "avoir_manager_note"
+    | "avoir_finance_status" | "avoir_finance_decided_at" | "avoir_finance_decided_by" | "avoir_finance_note"
   >
   & Partial<Pick<SavDocument,
       | "total_amount" | "client_id" | "equipment_id"
       | "validation_status" | "validation_requested_at" | "validation_decided_at"
       | "validation_decided_by" | "validation_note"
+      | "avoir_reason"
+      | "avoir_manager_status" | "avoir_manager_decided_at" | "avoir_manager_decided_by" | "avoir_manager_note"
+      | "avoir_finance_status" | "avoir_finance_decided_at" | "avoir_finance_decided_by" | "avoir_finance_note"
     >>;
 
 export async function createSavDocument(input: NewSavDocument): Promise<SavDocument> {

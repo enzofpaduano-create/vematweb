@@ -46,6 +46,7 @@ const TITLE: Record<PdrDocType, string> = {
   bon_reception: "GOODS RECEIPT No",
   bon_livraison: "DELIVERY NOTE No",
   facture: "INVOICE No",
+  avoir: "CREDIT NOTE No",
 };
 
 export const DOC_FOLDER: Record<PdrDocType, string> = {
@@ -55,6 +56,7 @@ export const DOC_FOLDER: Record<PdrDocType, string> = {
   bon_reception: "04-Goods-Receipts",
   bon_livraison: "05-Delivery-Notes",
   facture: "06-Invoices",
+  avoir: "07-Credit-Notes",
 };
 
 /** Largeurs colonnes modèle DE26499 (dxa). */

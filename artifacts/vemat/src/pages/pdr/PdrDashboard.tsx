@@ -39,6 +39,7 @@ const TYPE_BADGE: Record<PdrDocType, string> = {
   bon_reception: "bg-amber-100 text-amber-700",
   bon_livraison: "bg-violet-100 text-violet-700",
   facture: "bg-emerald-100 text-emerald-700",
+  avoir: "bg-red-100 text-red-700",
 };
 
 function formatDurationHours(hours: number | null): string {
@@ -212,6 +213,11 @@ export default function PdrDashboard() {
     () => (docs ?? []).filter((d) => d.validation_status === "rejected"),
     [docs],
   );
+  const pendingAvoirDocs = useMemo(
+    () => (docs ?? []).filter((d) => d.type === "avoir"
+      && (d.avoir_manager_status === "pending" || d.avoir_finance_status === "pending")),
+    [docs],
+  );
 
   const recentFolders = useMemo(() => groupIntoFolders(docs ?? []).slice(0, 6), [docs]);
 
@@ -284,6 +290,37 @@ export default function PdrDashboard() {
                   sub="won / communicated"
                 />
               </div>
+
+              {/* Credit notes pending approval — clickable row */}
+              {pendingAvoirDocs.length > 0 && (
+                <div className="mb-8 bg-white rounded-2xl border border-red-200 p-4">
+                  <div className="flex items-center gap-2 mb-3">
+                    <ShieldQuestion className="w-4 h-4 text-red-600" />
+                    <h2 className="text-sm font-black text-zinc-950">Credit notes pending approval</h2>
+                    <span className="bg-red-100 text-red-700 text-xs font-black px-2 py-0.5 rounded-full">{pendingAvoirDocs.length}</span>
+                  </div>
+                  <div className="space-y-1.5">
+                    {pendingAvoirDocs.map((d) => {
+                      const stage = d.avoir_manager_status === "pending" ? "Manager SAV" : "Finance";
+                      return (
+                        <Link key={d.id} href={`/espace-pdr/document/${d.id}`}>
+                          <div className="border-b border-zinc-100 last:border-0 px-2 py-2 flex items-center justify-between gap-3 cursor-pointer hover:bg-red-50 rounded transition-colors">
+                            <div className="min-w-0 flex items-center gap-2 flex-wrap">
+                              <span className="text-[10px] font-black uppercase tracking-wide px-1.5 py-0.5 rounded bg-red-100 text-red-700">CN</span>
+                              <span className="font-mono text-xs text-zinc-500">{d.reference}</span>
+                              <span className="text-xs text-zinc-500">· stage : {stage}</span>
+                            </div>
+                            <div className="text-right shrink-0">
+                              <p className="text-sm font-bold text-zinc-900">{formatMoney(d.total_amount, d.currency)}</p>
+                              <p className="text-[11px] text-zinc-400">{d.client_company || "—"}</p>
+                            </div>
+                          </div>
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
 
               {/* Pending validation actionable list */}
               {(pendingValidationDocs.length > 0 || rejectedDocs.length > 0) && (

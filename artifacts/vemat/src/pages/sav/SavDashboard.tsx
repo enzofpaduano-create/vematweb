@@ -30,6 +30,7 @@ const TYPE_BADGE: Record<SavDocType, string> = {
   bon_commande: "bg-indigo-100 text-indigo-700",
   bon_livraison: "bg-violet-100 text-violet-700",
   facture: "bg-amber-100 text-amber-700",
+  avoir: "bg-red-100 text-red-700",
 };
 
 const URGENCY: Record<string, { label: string; cls: string }> = {
@@ -106,6 +107,11 @@ export default function SavDashboard() {
     () => (docs ?? []).filter((d) => d.validation_status === "rejected"),
     [docs],
   );
+  const pendingAvoirDocs = useMemo(
+    () => (docs ?? []).filter((d) => d.type === "avoir"
+      && (d.avoir_manager_status === "pending" || d.avoir_finance_status === "pending")),
+    [docs],
+  );
 
   function toggleFolder(id: string) {
     setOpenFolders((prev) => {
@@ -138,7 +144,7 @@ export default function SavDashboard() {
             </div>
           )}
 
-          <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 mb-8">
+          <div className="grid grid-cols-2 sm:grid-cols-6 gap-3 mb-8">
             {(["devis", "bon_commande", "bon_livraison", "facture"] as SavDocType[]).map((t) => (
               <div key={t} className="bg-white rounded-2xl border border-zinc-200 p-4">
                 <p className="text-2xl font-black text-zinc-950">{counts[t] ?? 0}</p>
@@ -151,6 +157,13 @@ export default function SavDashboard() {
                 <p className={`text-2xl font-black ${pendingValidationDocs.length > 0 ? "text-amber-700" : "text-zinc-950"}`}>{pendingValidationDocs.length}</p>
               </div>
               <p className="text-[11px] text-zinc-500 font-semibold">Pending validation{rejectedValidationDocs.length > 0 ? ` (+${rejectedValidationDocs.length} rejected)` : ""}</p>
+            </div>
+            <div className={`rounded-2xl border p-4 ${pendingAvoirDocs.length > 0 ? "border-red-300 bg-red-50" : "border-zinc-200 bg-white"}`}>
+              <div className="flex items-center gap-1.5 mb-1">
+                <ShieldQuestion className={`w-4 h-4 ${pendingAvoirDocs.length > 0 ? "text-red-600" : "text-zinc-400"}`} />
+                <p className={`text-2xl font-black ${pendingAvoirDocs.length > 0 ? "text-red-700" : "text-zinc-950"}`}>{pendingAvoirDocs.length}</p>
+              </div>
+              <p className="text-[11px] text-zinc-500 font-semibold">Credit notes pending</p>
             </div>
           </div>
 

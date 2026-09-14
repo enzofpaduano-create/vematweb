@@ -15,9 +15,16 @@ import {
   VALIDATION_STATUS_LABEL, VALIDATION_STATUS_COLOR,
   type ApprovalSettings,
 } from "@/lib/approval";
+import {
+  decideAvoirManager, decideAvoirFinance,
+  currentAvoirStage, isAvoirFullyApproved, canIssueAvoir,
+  initAvoirWorkflow,
+  AVOIR_STATUS_LABEL, AVOIR_STATUS_COLOR,
+} from "@/lib/creditNotes";
 import { supabaseSav } from "@/lib/supabase";
 import { useSavAuth } from "@/contexts/SavAuthContext";
-import { sendValidationRequestEmail, sendValidationDecisionEmail } from "@/lib/emailService";
+import { sendValidationRequestEmail, sendValidationDecisionEmail,
+  sendAvoirApprovalRequestEmail, sendAvoirDecisionEmail } from "@/lib/emailService";
 
 const STATUS_OPTIONS = ["brouillon", "envoye", "accepte", "refuse", "en_cours", "termine"];
 const STATUS_LABEL: Record<string, string> = {
@@ -68,6 +75,25 @@ export default function SavDocumentDetail() {
   async function handleConvert(toType: SavDocType) {
     if (!doc) return;
     if (childrenByType[toType]) { navigate(`/espace-sav/document/${childrenByType[toType]!.id}`); return; }
+
+    // Credit note: prompt for mandatory reason before creating.
+    if (toType === "avoir") {
+      const reason = window.prompt(
+        "Reason for credit note (motif — required):\n\nExample: Cancel invoice INV-2026-0042 — customer disputed labour hours."
+      );
+      if (!reason || !reason.trim()) {
+        setError("A reason (motif) is required to create a credit note.");
+        return;
+      }
+      setConverting(toType);
+      try {
+        const child = await convertSavDocument(doc, toType);
+        await initAvoirWorkflow(supabaseSav, "sav_documents", child.id, reason.trim());
+        navigate(`/espace-sav/document/${child.id}`);
+      } catch (e) { setError((e as Error).message); setConverting(null); }
+      return;
+    }
+
     setConverting(toType);
     try {
       const child = await convertSavDocument(doc, toType);
@@ -103,9 +129,12 @@ export default function SavDocumentDetail() {
 
   async function handleStatus(status: string) {
     if (!doc) return;
-    // Business rule: cannot mark 'envoye'/'accepte' when validation is pending or rejected.
     if ((status === "envoye" || status === "accepte") && isSendBlocked(doc.validation_status)) {
       setError("Cannot mark as Sent/Accepted — this document is waiting for Manager validation.");
+      return;
+    }
+    if ((status === "envoye" || status === "accepte") && doc.type === "avoir" && !canIssueAvoir(doc)) {
+      setError("Cannot mark as Sent/Accepted — this credit note needs both Manager SAV and Direction Financière approval.");
       return;
     }
     await updateSavDocument(doc.id, { status });
@@ -194,6 +223,60 @@ export default function SavDocumentDetail() {
     finally { setBusyValidation(false); }
   }
 
+  // ── Credit note (avoir) 2-stage approval handlers (Phase 4) ────────────
+  const [avoirRejectMode, setAvoirRejectMode] = useState<null | "manager" | "finance">(null);
+  const [avoirRejectNote, setAvoirRejectNote] = useState("");
+
+  async function handleAvoirDecide(stage: "manager" | "finance", decision: "approved" | "rejected", note?: string) {
+    if (!doc || !approvalSettings) return;
+    setBusyValidation(true);
+    try {
+      const decidedBy = user?.email ?? "manager";
+      if (stage === "manager") {
+        await decideAvoirManager(supabaseSav, "sav_documents", doc.id, decision, decidedBy, note);
+      } else {
+        await decideAvoirFinance(supabaseSav, "sav_documents", doc.id, decision, decidedBy, note);
+      }
+      const fresh = await getSavDocument(doc.id);
+      if (fresh) setDoc(fresh);
+      const docUrl = typeof window !== "undefined" ? `${window.location.origin}/espace-sav/document/${doc.id}` : undefined;
+      await sendAvoirDecisionEmail({
+        portal: "SAV", stage, reference: doc.reference,
+        clientName: doc.client_company || doc.client_name || "—",
+        decision, decidedBy, note, docUrl,
+      });
+      if (stage === "manager" && decision === "approved" && approvalSettings.finance_email) {
+        await sendAvoirApprovalRequestEmail({
+          portal: "SAV", stage: "finance",
+          reference: doc.reference,
+          clientName: doc.client_company || doc.client_name || "—",
+          totalAmount: doc.total_amount, currency: doc.currency,
+          reason: doc.avoir_reason ?? "(no reason)",
+          requestedBy: user?.email ?? undefined,
+          approverEmail: approvalSettings.finance_email,
+          docUrl,
+        });
+      }
+      setAvoirRejectMode(null); setAvoirRejectNote("");
+    } catch (e) { setError((e as Error).message); }
+    finally { setBusyValidation(false); }
+  }
+
+  async function handleRequestAvoirManagerEmail() {
+    if (!doc || !approvalSettings?.manager_email) return;
+    await sendAvoirApprovalRequestEmail({
+      portal: "SAV", stage: "manager",
+      reference: doc.reference,
+      clientName: doc.client_company || doc.client_name || "—",
+      totalAmount: doc.total_amount, currency: doc.currency,
+      reason: doc.avoir_reason ?? "(no reason)",
+      requestedBy: user?.email ?? undefined,
+      approverEmail: approvalSettings.manager_email,
+      docUrl: typeof window !== "undefined" ? `${window.location.origin}/espace-sav/document/${doc.id}` : undefined,
+    });
+    alert("Manager notification email sent.");
+  }
+
   const totals = doc ? computeSavTotals(doc) : null;
   const hasKids = Object.keys(childrenByType).length > 0;
   const editable = doc ? canEditSavDocument(doc, hasKids) : false;
@@ -243,6 +326,155 @@ export default function SavDocumentDetail() {
                     </div>
                   ))}
                 </div>
+              )}
+
+              {/* Credit note (avoir) 2-stage approval workflow — Hassan Phase 4 */}
+              {doc.type === "avoir" && (
+                <section className={`rounded-2xl border p-6 mb-5 ${
+                  isAvoirFullyApproved(doc) ? "bg-emerald-50 border-emerald-200"
+                  : (doc.avoir_manager_status === "rejected" || doc.avoir_finance_status === "rejected") ? "bg-red-50 border-red-200"
+                  : "bg-amber-50 border-amber-200"
+                }`}>
+                  <div className="flex items-center gap-2 mb-3 flex-wrap">
+                    <ShieldCheck className={`w-5 h-5 ${isAvoirFullyApproved(doc) ? "text-emerald-600" : "text-amber-600"}`} />
+                    <h2 className="font-black text-zinc-950">Credit note double approval</h2>
+                    {isAvoirFullyApproved(doc) && (
+                      <span className="text-[10px] font-black uppercase tracking-wide px-2 py-1 rounded bg-emerald-100 text-emerald-700">Fully approved</span>
+                    )}
+                  </div>
+
+                  {doc.avoir_reason && (
+                    <p className="text-xs text-zinc-600 mb-4 bg-white border border-zinc-200 rounded-lg p-3">
+                      <span className="font-bold uppercase tracking-wide">Motif : </span>
+                      <span className="italic">{doc.avoir_reason}</span>
+                    </p>
+                  )}
+
+                  {/* STAGE 1 — Manager SAV */}
+                  <div className="mb-4">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-xs font-black uppercase tracking-wide text-zinc-500">Step 1 · Manager SAV</span>
+                      <span className={`text-[10px] font-black uppercase tracking-wide px-2 py-1 rounded ${AVOIR_STATUS_COLOR[doc.avoir_manager_status ?? "pending"]}`}>
+                        {AVOIR_STATUS_LABEL[doc.avoir_manager_status ?? "pending"]}
+                      </span>
+                    </div>
+                    {(!doc.avoir_manager_status || doc.avoir_manager_status === "pending") && (
+                      <>
+                        {avoirRejectMode !== "manager" ? (
+                          <div className="flex flex-wrap gap-2">
+                            <button onClick={() => handleAvoirDecide("manager", "approved")} disabled={busyValidation}
+                              className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm px-4 py-2 rounded-xl disabled:opacity-60">
+                              <ShieldCheck className="w-4 h-4" /> Approve as Manager
+                            </button>
+                            <button onClick={() => setAvoirRejectMode("manager")} disabled={busyValidation}
+                              className="inline-flex items-center gap-2 bg-white border border-red-300 hover:border-red-500 text-red-700 font-bold text-sm px-4 py-2 rounded-xl disabled:opacity-60">
+                              <ShieldAlert className="w-4 h-4" /> Reject
+                            </button>
+                            {approvalSettings?.manager_email && (
+                              <button onClick={handleRequestAvoirManagerEmail} disabled={busyValidation}
+                                className="text-xs text-emerald-600 hover:underline px-2">
+                                Send email reminder to {approvalSettings.manager_email}
+                              </button>
+                            )}
+                          </div>
+                        ) : (
+                          <div className="border border-red-200 rounded-xl p-3 bg-white">
+                            <label className="block text-xs font-bold text-zinc-500 mb-1.5">Reason for rejection (required)</label>
+                            <textarea className="w-full bg-white border border-zinc-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-red-400 min-h-[60px] mb-2"
+                              value={avoirRejectNote} onChange={(e) => setAvoirRejectNote(e.target.value)} />
+                            <div className="flex gap-2">
+                              <button onClick={() => handleAvoirDecide("manager", "rejected", avoirRejectNote)} disabled={busyValidation || !avoirRejectNote.trim()}
+                                className="bg-red-600 hover:bg-red-500 text-white font-bold text-xs px-3 py-1.5 rounded-lg disabled:opacity-60">Confirm reject</button>
+                              <button onClick={() => { setAvoirRejectMode(null); setAvoirRejectNote(""); }}
+                                className="text-xs font-semibold text-zinc-500 hover:text-zinc-800 px-2">Cancel</button>
+                            </div>
+                          </div>
+                        )}
+                      </>
+                    )}
+                    {doc.avoir_manager_status === "approved" && (
+                      <p className="text-sm text-emerald-800">
+                        ✓ Approved by <strong>{doc.avoir_manager_decided_by ?? "manager"}</strong>
+                        {doc.avoir_manager_decided_at && ` on ${new Date(doc.avoir_manager_decided_at).toLocaleString("en-GB")}`}.
+                      </p>
+                    )}
+                    {doc.avoir_manager_status === "rejected" && (
+                      <>
+                        <p className="text-sm text-red-800 mb-1">
+                          ✗ Rejected by <strong>{doc.avoir_manager_decided_by ?? "manager"}</strong>
+                          {doc.avoir_manager_decided_at && ` on ${new Date(doc.avoir_manager_decided_at).toLocaleString("en-GB")}`}.
+                        </p>
+                        {doc.avoir_manager_note && (
+                          <p className="text-sm text-red-700 italic bg-white border border-red-200 rounded-lg p-2">"{doc.avoir_manager_note}"</p>
+                        )}
+                      </>
+                    )}
+                  </div>
+
+                  {/* STAGE 2 — Direction Financière */}
+                  {doc.avoir_manager_status === "approved" && (
+                    <div className="border-t border-zinc-200 pt-4">
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className="text-xs font-black uppercase tracking-wide text-zinc-500">Step 2 · Direction Financière</span>
+                        <span className={`text-[10px] font-black uppercase tracking-wide px-2 py-1 rounded ${AVOIR_STATUS_COLOR[doc.avoir_finance_status ?? "pending"]}`}>
+                          {AVOIR_STATUS_LABEL[doc.avoir_finance_status ?? "pending"]}
+                        </span>
+                      </div>
+                      {(!doc.avoir_finance_status || doc.avoir_finance_status === "pending") && (
+                        <>
+                          {avoirRejectMode !== "finance" ? (
+                            <div className="flex flex-wrap gap-2">
+                              <button onClick={() => handleAvoirDecide("finance", "approved")} disabled={busyValidation}
+                                className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm px-4 py-2 rounded-xl disabled:opacity-60">
+                                <ShieldCheck className="w-4 h-4" /> Approve as Finance
+                              </button>
+                              <button onClick={() => setAvoirRejectMode("finance")} disabled={busyValidation}
+                                className="inline-flex items-center gap-2 bg-white border border-red-300 hover:border-red-500 text-red-700 font-bold text-sm px-4 py-2 rounded-xl disabled:opacity-60">
+                                <ShieldAlert className="w-4 h-4" /> Reject
+                              </button>
+                            </div>
+                          ) : (
+                            <div className="border border-red-200 rounded-xl p-3 bg-white">
+                              <label className="block text-xs font-bold text-zinc-500 mb-1.5">Reason for rejection (required)</label>
+                              <textarea className="w-full bg-white border border-zinc-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-red-400 min-h-[60px] mb-2"
+                                value={avoirRejectNote} onChange={(e) => setAvoirRejectNote(e.target.value)} />
+                              <div className="flex gap-2">
+                                <button onClick={() => handleAvoirDecide("finance", "rejected", avoirRejectNote)} disabled={busyValidation || !avoirRejectNote.trim()}
+                                  className="bg-red-600 hover:bg-red-500 text-white font-bold text-xs px-3 py-1.5 rounded-lg disabled:opacity-60">Confirm reject</button>
+                                <button onClick={() => { setAvoirRejectMode(null); setAvoirRejectNote(""); }}
+                                  className="text-xs font-semibold text-zinc-500 hover:text-zinc-800 px-2">Cancel</button>
+                              </div>
+                            </div>
+                          )}
+                        </>
+                      )}
+                      {doc.avoir_finance_status === "approved" && (
+                        <p className="text-sm text-emerald-800">
+                          ✓ Approved by <strong>{doc.avoir_finance_decided_by ?? "finance"}</strong>
+                          {doc.avoir_finance_decided_at && ` on ${new Date(doc.avoir_finance_decided_at).toLocaleString("en-GB")}`}.
+                          <span className="block mt-1 font-bold text-emerald-900">The credit note is fully approved.</span>
+                        </p>
+                      )}
+                      {doc.avoir_finance_status === "rejected" && (
+                        <>
+                          <p className="text-sm text-red-800 mb-1">
+                            ✗ Rejected by <strong>{doc.avoir_finance_decided_by ?? "finance"}</strong>
+                            {doc.avoir_finance_decided_at && ` on ${new Date(doc.avoir_finance_decided_at).toLocaleString("en-GB")}`}.
+                          </p>
+                          {doc.avoir_finance_note && (
+                            <p className="text-sm text-red-700 italic bg-white border border-red-200 rounded-lg p-2">"{doc.avoir_finance_note}"</p>
+                          )}
+                        </>
+                      )}
+                    </div>
+                  )}
+
+                  {currentAvoirStage(doc) && (
+                    <p className="text-xs text-zinc-500 mt-4 italic">
+                      Sending this credit note to the client is blocked until both approvals are granted.
+                    </p>
+                  )}
+                </section>
               )}
 
               {/* Manager validation workflow (Hassan Phase 3) */}

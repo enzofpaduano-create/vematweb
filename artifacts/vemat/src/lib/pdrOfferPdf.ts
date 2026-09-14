@@ -19,6 +19,7 @@ const TITLE: Record<PdrDocument["type"], string> = {
   bon_reception: "GOODS RECEIPT No",
   bon_livraison: "DELIVERY NOTE No",
   facture: "INVOICE No",
+  avoir: "CREDIT NOTE No",
 };
 
 function num(n: number, currency?: Currency): string {

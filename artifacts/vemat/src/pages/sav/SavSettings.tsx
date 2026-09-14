@@ -33,6 +33,7 @@ export default function SavSettings() {
           amount_threshold: approval.amount_threshold,
           discount_threshold: approval.discount_threshold,
           manager_email: approval.manager_email,
+          finance_email: approval.finance_email,
         });
       }
       setSaved(true);
@@ -116,7 +117,7 @@ export default function SavSettings() {
                         onChange={(e) => setApproval({ ...approval, discount_threshold: Number(e.target.value) })} />
                     </div>
                   </div>
-                  <div>
+                  <div className="mb-4">
                     <label className={lbl}>Manager email (recipient)</label>
                     <input type="email" className={ic}
                       placeholder="manager.sav@vematgroup.com"
@@ -124,6 +125,16 @@ export default function SavSettings() {
                       onChange={(e) => setApproval({ ...approval, manager_email: e.target.value || null })} />
                     <p className="text-[11px] text-zinc-400 mt-1">
                       Falls back to vemat@vematgroup.com if empty. Master inbox is always copied.
+                    </p>
+                  </div>
+                  <div>
+                    <label className={lbl}>Finance email (2nd-level approval for credit notes)</label>
+                    <input type="email" className={ic}
+                      placeholder="finance@vematgroup.com"
+                      value={approval.finance_email ?? ""}
+                      onChange={(e) => setApproval({ ...approval, finance_email: e.target.value || null })} />
+                    <p className="text-[11px] text-zinc-400 mt-1">
+                      Credit notes (avoirs) require a second approval by Direction Financière after Manager approval.
                     </p>
                   </div>
                 </section>

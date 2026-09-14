@@ -15,9 +15,10 @@ const TYPE_BADGE: Record<PdrDocType, string> = {
   bon_reception: "bg-amber-100 text-amber-700",
   bon_livraison: "bg-violet-100 text-violet-700",
   facture: "bg-emerald-100 text-emerald-700",
+  avoir: "bg-red-100 text-red-700",
 };
 
-const FILTERS: (PdrDocType | "all")[] = ["all", "devis", "bon_commande", "commande_fournisseur", "bon_reception", "bon_livraison", "facture"];
+const FILTERS: (PdrDocType | "all")[] = ["all", "devis", "bon_commande", "commande_fournisseur", "bon_reception", "bon_livraison", "facture", "avoir"];
 
 export default function PdrDocuments() {
   const [docs, setDocs] = useState<PdrDocument[] | null>(null);

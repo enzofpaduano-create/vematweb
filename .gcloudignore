@@ -1,0 +1,84 @@
+# Explicit ignore approach — target ~500 files, ~10 MiB upload.
+
+# ── Baseline junk ──────────────────────────────────────────────────
+.git/
+.gitignore
+.gitattributes
+.gcloudignore
+.local/
+**/.local
+.claude/
+**/.claude
+.cache/
+**/.cache
+node_modules/
+**/node_modules
+dist/
+**/dist
+build/
+**/build
+.turbo/
+**/.turbo
+coverage/
+**/coverage
+**/tsconfig.tsbuildinfo
+*.log
+**/*.log
+.env
+.env.*
+!.env.example
+**/.env
+**/.env.*
+.DS_Store
+**/.DS_Store
+.idea/
+.vscode/
+
+# ── Root-level heavy folders NOT needed by api-server build ────────
+PHOTO-pdr/
+photos-histoire-vemat/
+attached_assets/
+pdr-modeles/
+vemat-recovery/
+vemat-dist/
+supplier-scraper/
+database*/
+excel*/
+scripts/downloads/
+
+# ── artifacts/vemat: keep ONLY src/data + src/types ────────────────
+artifacts/vemat/public/
+artifacts/vemat/attached_assets/
+artifacts/vemat/index.html
+artifacts/vemat/vite.config.ts
+artifacts/vemat/tailwind.config.*
+artifacts/vemat/postcss.config.*
+artifacts/vemat/components.json
+artifacts/vemat/netlify/
+artifacts/vemat/netlify.toml
+artifacts/vemat/build_log.txt
+artifacts/vemat/*.sql
+
+# Frontend source — exclude everything EXCEPT data/ and types/
+artifacts/vemat/src/assets/
+artifacts/vemat/src/components/
+artifacts/vemat/src/contexts/
+artifacts/vemat/src/hooks/
+artifacts/vemat/src/i18n/
+artifacts/vemat/src/lib/
+artifacts/vemat/src/pages/
+artifacts/vemat/src/App.tsx
+artifacts/vemat/src/main.tsx
+artifacts/vemat/src/index.css
+artifacts/vemat/src/vite-env.d.ts
+
+# ── mockup-sandbox not needed ──────────────────────────────────────
+artifacts/mockup-sandbox/
+
+# ── Root SQL migrations not needed at build ────────────────────────
+*.sql
+**/*.sql
+
+# ── Root docs ──────────────────────────────────────────────────────
+*.md
+!README.md

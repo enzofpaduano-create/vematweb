@@ -13,9 +13,10 @@ const TYPE_BADGE: Record<SavDocType, string> = {
   bon_commande: "bg-indigo-100 text-indigo-700",
   bon_livraison: "bg-violet-100 text-violet-700",
   facture: "bg-amber-100 text-amber-700",
+  avoir: "bg-red-100 text-red-700",
 };
 
-const FILTERS: (SavDocType | "all")[] = ["all", "devis", "bon_commande", "bon_livraison", "facture"];
+const FILTERS: (SavDocType | "all")[] = ["all", "devis", "bon_commande", "bon_livraison", "facture", "avoir"];
 
 export default function SavDocuments() {
   const [docs, setDocs] = useState<SavDocument[] | null>(null);

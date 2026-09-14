@@ -28,6 +28,7 @@ const TITLE: Record<SavDocType, string> = {
   bon_commande: "PURCHASE ORDER No",
   bon_livraison: "DELIVERY NOTE No",
   facture: "INVOICE No",
+  avoir: "CREDIT NOTE No",
 };
 
 const BANK: Record<Currency, string[]> = {

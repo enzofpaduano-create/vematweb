@@ -18,7 +18,8 @@ export type PdrDocType =
   | "commande_fournisseur"
   | "bon_reception"
   | "bon_livraison"
-  | "facture";
+  | "facture"
+  | "avoir";
 
 export type Currency = "EUR" | "USD";
 
@@ -148,6 +149,16 @@ export interface PdrDocument {
   validation_decided_at: string | null;
   validation_decided_by: string | null;
   validation_note: string | null;
+  // Credit note (avoir) workflow — populated when type='avoir' (Hassan Phase 4)
+  avoir_reason: string | null;
+  avoir_manager_status: import("./creditNotes").AvoirStatus | null;
+  avoir_manager_decided_at: string | null;
+  avoir_manager_decided_by: string | null;
+  avoir_manager_note: string | null;
+  avoir_finance_status: import("./creditNotes").AvoirStatus | null;
+  avoir_finance_decided_at: string | null;
+  avoir_finance_decided_by: string | null;
+  avoir_finance_note: string | null;
 }
 
 export const DOC_LABEL: Record<PdrDocType, string> = {
@@ -157,6 +168,7 @@ export const DOC_LABEL: Record<PdrDocType, string> = {
   bon_reception: "Goods Receipt",
   bon_livraison: "Delivery Note",
   facture: "Invoice",
+  avoir: "Credit Note",
 };
 
 export const DOC_LABEL_SHORT: Record<PdrDocType, string> = {
@@ -166,6 +178,7 @@ export const DOC_LABEL_SHORT: Record<PdrDocType, string> = {
   bon_reception: "Receipt",
   bon_livraison: "DN",
   facture: "Invoice",
+  avoir: "CN",
 };
 
 export interface NextStep {
@@ -182,7 +195,8 @@ export const NEXT_STEPS: Record<PdrDocType, NextStep[]> = {
   commande_fournisseur: [{ type: "bon_reception", label: "Create goods receipt" }],
   bon_reception: [{ type: "bon_livraison", label: "Create delivery note" }],
   bon_livraison: [{ type: "facture", label: "Invoice" }],
-  facture: [],
+  facture: [{ type: "avoir", label: "Create credit note (avoir)" }],
+  avoir: [],
 };
 
 /** Modèle Word 1 à 4 : devise (EUR/USD) × douane (non/oui). */
@@ -286,6 +300,15 @@ function normalizeDoc(doc: PdrDocument | null): PdrDocument | null {
     validation_decided_at: doc.validation_decided_at ?? null,
     validation_decided_by: doc.validation_decided_by ?? null,
     validation_note: doc.validation_note ?? null,
+    avoir_reason: doc.avoir_reason ?? null,
+    avoir_manager_status: doc.avoir_manager_status ?? null,
+    avoir_manager_decided_at: doc.avoir_manager_decided_at ?? null,
+    avoir_manager_decided_by: doc.avoir_manager_decided_by ?? null,
+    avoir_manager_note: doc.avoir_manager_note ?? null,
+    avoir_finance_status: doc.avoir_finance_status ?? null,
+    avoir_finance_decided_at: doc.avoir_finance_decided_at ?? null,
+    avoir_finance_decided_by: doc.avoir_finance_decided_by ?? null,
+    avoir_finance_note: doc.avoir_finance_note ?? null,
   };
 }
 
@@ -456,12 +479,18 @@ export type NewDocumentInput =
     | "client_id" | "equipment_id"
     | "validation_status" | "validation_requested_at" | "validation_decided_at"
     | "validation_decided_by" | "validation_note"
+    | "avoir_reason"
+    | "avoir_manager_status" | "avoir_manager_decided_at" | "avoir_manager_decided_by" | "avoir_manager_note"
+    | "avoir_finance_status" | "avoir_finance_decided_at" | "avoir_finance_decided_by" | "avoir_finance_note"
   >
   & Partial<Pick<PdrDocument,
       | "source" | "assigned_agent" | "communication_status" | "sent_at" | "commercial_status"
       | "client_id" | "equipment_id" | "total_amount"
       | "validation_status" | "validation_requested_at" | "validation_decided_at"
       | "validation_decided_by" | "validation_note"
+      | "avoir_reason"
+      | "avoir_manager_status" | "avoir_manager_decided_at" | "avoir_manager_decided_by" | "avoir_manager_note"
+      | "avoir_finance_status" | "avoir_finance_decided_at" | "avoir_finance_decided_by" | "avoir_finance_note"
     >>;
 
 export async function createDocument(input: NewDocumentInput): Promise<PdrDocument> {

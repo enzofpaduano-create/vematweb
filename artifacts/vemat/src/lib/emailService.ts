@@ -274,3 +274,80 @@ ${params.docUrl ?? ""}
   // Send to master vemat@ + requester if known (via toOverride slot).
   await sendNotification("validation", subject, body, undefined, params.requesterEmail);
 }
+
+// ─── Credit note (avoir) workflow — Hassan Phase 4 ──────────────────────────
+
+export type AvoirApprovalStage = "manager" | "finance";
+
+export async function sendAvoirApprovalRequestEmail(params: {
+  portal: "PDR" | "SAV";
+  stage: AvoirApprovalStage;   // who receives the request
+  reference: string | null;
+  clientName: string;
+  totalAmount: number;
+  currency: "EUR" | "USD";
+  reason: string;              // required — motif de l'avoir
+  requestedBy?: string;
+  approverEmail: string;       // manager_email or finance_email depending on stage
+  docUrl?: string;
+}) {
+  const cur = params.currency === "EUR" ? "€" : "$";
+  const stageLabel = params.stage === "manager" ? "Manager SAV" : "Direction Financière";
+  const subject = `[CREDIT NOTE — ${stageLabel}] ${params.reference ?? ""} — ${params.clientName} (${params.totalAmount.toLocaleString("en-GB")} ${cur})`;
+  const body = `
+Credit note approval request — ${params.portal} portal
+
+Approval stage : ${stageLabel} (${params.stage === "manager" ? "1st of 2" : "2nd of 2"})
+Reference     : ${params.reference ?? "—"}
+Client        : ${params.clientName}
+Amount        : ${params.totalAmount.toLocaleString("en-GB")} ${cur}
+Reason (motif) : ${params.reason}
+Requested by  : ${params.requestedBy ?? "—"}
+
+${params.stage === "manager"
+  ? "Please review as Manager. If you approve, the request will be forwarded to Direction Financière."
+  : "Manager SAV has already approved. Please review as Direction Financière — this is the final step."}
+
+Approve or reject in the portal:
+${params.docUrl ?? "(open the portal → Documents → search the reference)"}
+  `.trim();
+
+  await sendNotification("validation", subject, body, undefined, params.approverEmail);
+}
+
+export async function sendAvoirDecisionEmail(params: {
+  portal: "PDR" | "SAV";
+  stage: AvoirApprovalStage;   // who just decided
+  reference: string | null;
+  clientName: string;
+  decision: "approved" | "rejected";
+  decidedBy: string;
+  note?: string;
+  requesterEmail?: string;     // notify back the person who created the avoir
+  docUrl?: string;
+}) {
+  const tag = params.decision === "approved" ? "APPROVED" : "REJECTED";
+  const stageLabel = params.stage === "manager" ? "Manager SAV" : "Direction Financière";
+  const subject = `[CREDIT NOTE ${tag} · ${stageLabel}] ${params.reference ?? ""} — ${params.clientName}`;
+
+  const nextStep =
+    params.decision === "approved" && params.stage === "manager"
+      ? "The request has been forwarded to Direction Financière for final approval."
+      : params.decision === "approved" && params.stage === "finance"
+      ? "The credit note is now fully approved and can be issued to the client."
+      : "The credit note has been rejected. Please revise or discard.";
+
+  const body = `
+Credit note ${params.decision.toUpperCase()} at ${stageLabel} — ${params.portal} portal
+
+Reference   : ${params.reference ?? "—"}
+Client      : ${params.clientName}
+Decided by  : ${params.decidedBy}
+${params.note ? `Note:\n${params.note}\n` : ""}
+${nextStep}
+
+${params.docUrl ?? ""}
+  `.trim();
+
+  await sendNotification("validation", subject, body, undefined, params.requesterEmail);
+}
