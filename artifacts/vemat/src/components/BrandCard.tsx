@@ -22,7 +22,11 @@ export function BrandCard({ brand, index = 0 }: Props) {
         href={brand.website}
         target="_blank"
         rel="noopener noreferrer"
-        className="bg-zinc-50 border-b border-zinc-200 h-72 flex items-center justify-center p-10 group-hover:bg-white transition-colors"
+        className={`border-b border-zinc-200 h-72 flex items-center justify-center p-10 transition-colors ${
+          brand.darkBg
+            ? "bg-zinc-900 group-hover:bg-zinc-800"
+            : "bg-zinc-50 group-hover:bg-white"
+        }`}
         aria-label={`${t("brands.visitSite")} ${brand.name}`}
       >
         <img

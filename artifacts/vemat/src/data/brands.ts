@@ -3,6 +3,7 @@ import tadanoLogo from "@/assets/brands/tadano-demag.png";
 import magniLogo from "@/assets/brands/magni.png";
 import mecalacLogo from "@/assets/brands/mecalac.png";
 import jlgLogo from "@/assets/brands/jlg.png";
+import fuchsLogo from "@/assets/brands/fuchs.svg";
 
 export type BrandCategory = "grues" | "nacelles" | "elevateurs" | "construction";
 
@@ -10,6 +11,8 @@ export type Brand = {
   id: string;
   name: string;
   logo: string;
+  /** True when the logo is white/light and needs a dark background to be visible. */
+  darkBg?: boolean;
   website: string;
   categories: BrandCategory[];
   tagline: { fr: string; en: string };
@@ -80,7 +83,8 @@ export const brands: Brand[] = [
   {
     id: "terex-fuchs",
     name: "Terex Fuchs",
-    logo: terexLogo,
+    logo: fuchsLogo,
+    darkBg: true,
     website: "https://www.terex.com/fuchs/fr/produits/machines-de-manutention",
     categories: ["construction"],
     tagline: {
