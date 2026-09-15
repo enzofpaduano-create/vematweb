@@ -25,7 +25,7 @@ export const catalog: Record<CategorySlug, SubCategory[]> = {
   grues: [
     {
       slug: "grues-automotrices-lentes",
-      brand: "Terex Rough Terrain",
+      brand: "Terex Rough Terrain — Raimondi Group",
       title: {
         fr: "Grues automotrices lentes (Rough Terrain)",
         en: "Rough Terrain Cranes",

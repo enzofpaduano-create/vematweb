@@ -19,17 +19,17 @@ export type Brand = {
 export const brands: Brand[] = [
   {
     id: "terex",
-    name: "Terex Rough Terrain Cranes",
+    name: "Terex RT Cranes — Raimondi Group",
     logo: terexLogo,
     website: "https://www.terex.com/rough-terrain-cranes/fr",
     categories: ["grues"],
     tagline: {
-      fr: "Grues tout-terrain",
-      en: "Rough terrain cranes",
+      fr: "Grues tout-terrain (RT) et grues à tour (TC) — Raimondi Group",
+      en: "Rough terrain (RT) and tower cranes (TC) — Raimondi Group",
     },
     description: {
-      fr: "Conçues et assemblées chez Terex Italia à Crespellano (Bologne), les grues tout-terrain Terex incarnent l'ingénierie italienne au service des chantiers les plus exigeants — infrastructure, mines, ports, énergie. Vemat Group distribue la gamme Terex RT au Maroc et en Afrique de l'Ouest, avec support technique, formation opérateurs et pièces d'origine.",
-      en: "Designed and assembled at Terex Italia in Crespellano (Bologna), Terex rough terrain cranes embody Italian engineering for the most demanding jobsites — infrastructure, mining, ports, energy. Vemat Group distributes the Terex RT range in Morocco and West Africa, with technical support, operator training and original parts.",
+      fr: "Depuis 2025, les grues Terex Rough Terrain (RT) et Tower Cranes (TC) sont désormais réunies sous la bannière Raimondi Group, qui a repris ces gammes historiques de Terex. Conçues et assemblées en Italie, elles incarnent l'ingénierie italienne au service des chantiers les plus exigeants — infrastructure, mines, ports, énergie. Vemat Group distribue les gammes Terex RT et Terex TC au Maroc et en Afrique de l'Ouest, avec support technique, formation opérateurs et pièces d'origine.",
+      en: "Since 2025, Terex Rough Terrain (RT) and Tower Cranes (TC) are now part of the Raimondi Group, which took over these historic Terex product lines. Designed and assembled in Italy, they embody Italian engineering for the most demanding jobsites — infrastructure, mining, ports, energy. Vemat Group distributes both Terex RT and Terex TC ranges in Morocco and West Africa, with technical support, operator training and original parts.",
     },
   },
   {
