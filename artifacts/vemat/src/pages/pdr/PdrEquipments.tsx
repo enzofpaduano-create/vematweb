@@ -6,6 +6,23 @@ import { PdrLayout } from "./PdrLayout";
 import { supabasePdr } from "@/lib/supabase";
 import { listAllEquipments, EQUIPMENT_STATUS_LABEL, EQUIPMENT_STATUS_COLOR, type ClientEquipment } from "@/lib/equipments";
 import { listClients, type Client } from "@/lib/clients";
+import { ExportButton } from "@/components/ExportButton";
+import type { ExportColumn } from "@/lib/exports";
+
+type EquipmentRow = ClientEquipment & { client_name?: string };
+
+const EQUIPMENT_EXPORT_COLUMNS: ExportColumn<EquipmentRow>[] = [
+  { key: "client_name", label: "Client" },
+  { key: "brand", label: "Brand" },
+  { key: "model", label: "Model" },
+  { key: "serial_number", label: "Serial number" },
+  { key: "machine_type", label: "Machine type" },
+  { key: "year_manufacture", label: "Year" },
+  { key: "purchase_date", label: "Purchase date" },
+  { key: "hour_meter", label: "Hour meter" },
+  { key: "status", label: "Status", resolve: (e) => EQUIPMENT_STATUS_LABEL[e.status] },
+  { key: "notes", label: "Notes" },
+];
 
 export default function PdrEquipments() {
   const [, navigate] = useLocation();
@@ -47,12 +64,21 @@ export default function PdrEquipments() {
     <PdrGuard>
       <PdrLayout>
         <div className="p-6 lg:p-10 max-w-[1400px] mx-auto">
-          <div className="mb-6">
-            <p className="text-[10px] uppercase tracking-[0.25em] font-black text-sky-600 mb-2">Spare parts</p>
-            <h1 className="text-3xl lg:text-4xl font-black text-zinc-950">Equipment park</h1>
-            <p className="text-sm text-zinc-500 mt-1">
-              {equipments.length} machine{equipments.length > 1 ? "s" : ""} across {clients.length} client{clients.length > 1 ? "s" : ""}
-            </p>
+          <div className="mb-6 flex items-start justify-between gap-4 flex-wrap">
+            <div>
+              <p className="text-[10px] uppercase tracking-[0.25em] font-black text-sky-600 mb-2">Spare parts</p>
+              <h1 className="text-3xl lg:text-4xl font-black text-zinc-950">Equipment park</h1>
+              <p className="text-sm text-zinc-500 mt-1">
+                {equipments.length} machine{equipments.length > 1 ? "s" : ""} across {clients.length} client{clients.length > 1 ? "s" : ""}
+              </p>
+            </div>
+            <ExportButton
+              rows={filtered.map((eq) => ({ ...eq, client_name: clientById.get(eq.client_id)?.name ?? "" }))}
+              columns={EQUIPMENT_EXPORT_COLUMNS}
+              entity="equipments"
+              portal="pdr"
+              accent="sky"
+            />
           </div>
 
           {error && <p className="text-sm text-red-600 mb-4">{error}</p>}

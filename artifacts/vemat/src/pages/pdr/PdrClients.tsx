@@ -9,6 +9,26 @@ import {
   CLIENT_STATUS_LABEL, CLIENT_STATUS_COLOR, PAYMENT_TERMS_LABEL,
   type Client, type ClientStatus,
 } from "@/lib/clients";
+import { ExportButton } from "@/components/ExportButton";
+import type { ExportColumn } from "@/lib/exports";
+
+const CLIENT_EXPORT_COLUMNS: ExportColumn<Client>[] = [
+  { key: "code_unique", label: "Code" },
+  { key: "name", label: "Company" },
+  { key: "contact_name", label: "Contact name" },
+  { key: "contact_email", label: "Email" },
+  { key: "contact_phone", label: "Phone" },
+  { key: "address", label: "Address" },
+  { key: "city", label: "City" },
+  { key: "country", label: "Country" },
+  { key: "payment_terms", label: "Payment terms", resolve: (c) => PAYMENT_TERMS_LABEL[c.payment_terms] },
+  { key: "credit_limit", label: "Credit limit" },
+  { key: "currency", label: "Currency" },
+  { key: "status", label: "Status", resolve: (c) => CLIENT_STATUS_LABEL[c.status] },
+  { key: "status_reason", label: "Status reason" },
+  { key: "notes", label: "Notes" },
+  { key: "created_at", label: "Created at", resolve: (c) => new Date(c.created_at).toISOString().slice(0, 10) },
+];
 
 export default function PdrClients() {
   const [, navigate] = useLocation();
@@ -79,12 +99,21 @@ export default function PdrClients() {
                 {counts.litige > 0 && <> · <span className="text-amber-600 font-semibold">{counts.litige} in dispute</span></>}
               </p>
             </div>
-            <button
-              onClick={() => setShowNew(true)}
-              className="inline-flex items-center gap-2 bg-sky-600 hover:bg-sky-500 text-white font-bold text-sm px-4 py-2.5 rounded-xl transition-colors"
-            >
-              <Plus className="w-4 h-4" /> New client
-            </button>
+            <div className="flex items-center gap-2 flex-wrap">
+              <ExportButton
+                rows={filtered}
+                columns={CLIENT_EXPORT_COLUMNS}
+                entity="clients"
+                portal="pdr"
+                accent="sky"
+              />
+              <button
+                onClick={() => setShowNew(true)}
+                className="inline-flex items-center gap-2 bg-sky-600 hover:bg-sky-500 text-white font-bold text-sm px-4 py-2.5 rounded-xl transition-colors"
+              >
+                <Plus className="w-4 h-4" /> New client
+              </button>
+            </div>
           </div>
 
           {error && (

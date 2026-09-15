@@ -5,8 +5,32 @@ import { PdrGuard } from "./PdrGuard";
 import { PdrLayout } from "./PdrLayout";
 import {
   listDocuments, DOC_LABEL, DOC_LABEL_SHORT, formatMoney, groupIntoFolders,
+  COMM_STATUS_LABEL, COMMERCIAL_STATUS_LABEL, SOURCE_LABEL,
   type PdrDocument, type PdrDocType, type PdrFolder,
 } from "@/lib/pdrDocuments";
+import { VALIDATION_STATUS_LABEL } from "@/lib/approval";
+import { ExportButton } from "@/components/ExportButton";
+import type { ExportColumn } from "@/lib/exports";
+
+const DOC_EXPORT_COLUMNS: ExportColumn<PdrDocument>[] = [
+  { key: "reference", label: "Reference" },
+  { key: "type", label: "Type", resolve: (d) => DOC_LABEL[d.type] },
+  { key: "client_company", label: "Company" },
+  { key: "client_name", label: "Contact" },
+  { key: "client_email", label: "Email" },
+  { key: "client_phone", label: "Phone" },
+  { key: "machine", label: "Machine" },
+  { key: "total_amount", label: "Amount" },
+  { key: "currency", label: "Currency" },
+  { key: "communication_status", label: "Communication", resolve: (d) => COMM_STATUS_LABEL[d.communication_status] },
+  { key: "commercial_status", label: "Commercial", resolve: (d) => COMMERCIAL_STATUS_LABEL[d.commercial_status] },
+  { key: "validation_status", label: "Validation", resolve: (d) => VALIDATION_STATUS_LABEL[d.validation_status] },
+  { key: "source", label: "Source", resolve: (d) => (d.source ? SOURCE_LABEL[d.source] : "") },
+  { key: "assigned_agent", label: "Agent" },
+  { key: "sent_at", label: "Sent at", resolve: (d) => d.sent_at ? new Date(d.sent_at).toISOString().slice(0, 10) : "" },
+  { key: "created_at", label: "Created at", resolve: (d) => new Date(d.created_at).toISOString().slice(0, 10) },
+  { key: "notes", label: "Notes" },
+];
 
 const TYPE_BADGE: Record<PdrDocType, string> = {
   devis: "bg-sky-100 text-sky-700",
@@ -63,6 +87,9 @@ export default function PdrDocuments() {
       .filter((f): f is PdrFolder => f !== null);
   }, [docs, filter, query]);
 
+  // Flat list of currently visible docs (for export).
+  const flatFiltered = useMemo(() => folders.flatMap((f) => f.docs), [folders]);
+
   function toggleFolder(id: string) {
     setOpenFolders((prev) => {
       const next = new Set(prev);
@@ -76,8 +103,19 @@ export default function PdrDocuments() {
     <PdrGuard>
       <PdrLayout>
         <div className="p-6 lg:p-10 max-w-[1400px] mx-auto">
-          <p className="text-[10px] uppercase tracking-[0.25em] font-black text-sky-600 mb-2">Spare parts</p>
-          <h1 className="text-3xl lg:text-4xl font-black text-zinc-950 mb-6">All documents</h1>
+          <div className="flex items-start justify-between gap-4 flex-wrap mb-6">
+            <div>
+              <p className="text-[10px] uppercase tracking-[0.25em] font-black text-sky-600 mb-2">Spare parts</p>
+              <h1 className="text-3xl lg:text-4xl font-black text-zinc-950">All documents</h1>
+            </div>
+            <ExportButton
+              rows={flatFiltered}
+              columns={DOC_EXPORT_COLUMNS}
+              entity="documents"
+              portal="pdr"
+              accent="sky"
+            />
+          </div>
 
           <div className="flex flex-wrap items-center gap-2 mb-4">
             {FILTERS.map((f) => (

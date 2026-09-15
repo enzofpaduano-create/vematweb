@@ -4,9 +4,30 @@ import { AlertCircle, Search, X, FolderOpen, ChevronDown, ChevronRight } from "l
 import { SavGuard } from "./SavGuard";
 import { SavLayout } from "./SavLayout";
 import {
-  listSavDocuments, DOC_LABEL_SHORT, formatMoney, groupSavIntoFolders,
+  listSavDocuments, DOC_LABEL, DOC_LABEL_SHORT, formatMoney, groupSavIntoFolders,
   type SavDocument, type SavDocType, type SavFolder,
 } from "@/lib/savDocuments";
+import { VALIDATION_STATUS_LABEL } from "@/lib/approval";
+import { ExportButton } from "@/components/ExportButton";
+import type { ExportColumn } from "@/lib/exports";
+
+const DOC_EXPORT_COLUMNS: ExportColumn<SavDocument>[] = [
+  { key: "reference", label: "Reference" },
+  { key: "type", label: "Type", resolve: (d) => DOC_LABEL[d.type] },
+  { key: "client_company", label: "Company" },
+  { key: "client_name", label: "Contact" },
+  { key: "client_email", label: "Email" },
+  { key: "client_phone", label: "Phone" },
+  { key: "machine", label: "Machine" },
+  { key: "location", label: "Location" },
+  { key: "intervention_date", label: "Intervention date" },
+  { key: "total_amount", label: "Amount" },
+  { key: "currency", label: "Currency" },
+  { key: "status", label: "Status" },
+  { key: "validation_status", label: "Validation", resolve: (d) => VALIDATION_STATUS_LABEL[d.validation_status] },
+  { key: "created_at", label: "Created at", resolve: (d) => new Date(d.created_at).toISOString().slice(0, 10) },
+  { key: "notes", label: "Notes" },
+];
 
 const TYPE_BADGE: Record<SavDocType, string> = {
   devis: "bg-emerald-100 text-emerald-700",
@@ -48,6 +69,8 @@ export default function SavDocuments() {
     }).filter((f): f is SavFolder => f !== null);
   }, [docs, filter, query]);
 
+  const flatFiltered = useMemo(() => folders.flatMap((f) => f.docs), [folders]);
+
   function toggleFolder(id: string) {
     setOpenFolders((prev) => { const next = new Set(prev); if (next.has(id)) next.delete(id); else next.add(id); return next; });
   }
@@ -56,8 +79,19 @@ export default function SavDocuments() {
     <SavGuard>
       <SavLayout>
         <div className="p-6 lg:p-10 max-w-[1400px] mx-auto">
-          <p className="text-[10px] uppercase tracking-[0.25em] font-black text-emerald-600 mb-2">Service</p>
-          <h1 className="text-3xl lg:text-4xl font-black text-zinc-950 mb-6">All documents</h1>
+          <div className="flex items-start justify-between gap-4 flex-wrap mb-6">
+            <div>
+              <p className="text-[10px] uppercase tracking-[0.25em] font-black text-emerald-600 mb-2">Service</p>
+              <h1 className="text-3xl lg:text-4xl font-black text-zinc-950">All documents</h1>
+            </div>
+            <ExportButton
+              rows={flatFiltered}
+              columns={DOC_EXPORT_COLUMNS}
+              entity="documents"
+              portal="sav"
+              accent="emerald"
+            />
+          </div>
 
           <div className="flex flex-wrap items-center gap-2 mb-4">
             {FILTERS.map((f) => (
