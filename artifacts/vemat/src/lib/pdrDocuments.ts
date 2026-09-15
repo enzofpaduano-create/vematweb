@@ -166,6 +166,9 @@ export interface PdrDocument {
   accounting_transferred_at: string | null;
   accounting_transferred_by: string | null;
   accounting_note: string | null;
+  // Inter-company flows (Hassan Phase 7)
+  issuing_entity: string;
+  client_entity_id: string | null;
 }
 
 export const DOC_LABEL: Record<PdrDocType, string> = {
@@ -322,6 +325,8 @@ function normalizeDoc(doc: PdrDocument | null): PdrDocument | null {
     accounting_transferred_at: doc.accounting_transferred_at ?? null,
     accounting_transferred_by: doc.accounting_transferred_by ?? null,
     accounting_note: doc.accounting_note ?? null,
+    issuing_entity: doc.issuing_entity ?? "casablanca",
+    client_entity_id: doc.client_entity_id ?? null,
   };
 }
 
@@ -497,6 +502,7 @@ export type NewDocumentInput =
     | "avoir_finance_status" | "avoir_finance_decided_at" | "avoir_finance_decided_by" | "avoir_finance_note"
     | "accounting_status" | "accounting_ready_at" | "accounting_ready_by"
     | "accounting_transferred_at" | "accounting_transferred_by" | "accounting_note"
+    | "issuing_entity" | "client_entity_id"
   >
   & Partial<Pick<PdrDocument,
       | "source" | "assigned_agent" | "communication_status" | "sent_at" | "commercial_status"
@@ -508,6 +514,7 @@ export type NewDocumentInput =
       | "avoir_finance_status" | "avoir_finance_decided_at" | "avoir_finance_decided_by" | "avoir_finance_note"
       | "accounting_status" | "accounting_ready_at" | "accounting_ready_by"
       | "accounting_transferred_at" | "accounting_transferred_by" | "accounting_note"
+      | "issuing_entity" | "client_entity_id"
     >>;
 
 export async function createDocument(input: NewDocumentInput): Promise<PdrDocument> {

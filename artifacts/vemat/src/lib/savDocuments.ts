@@ -116,6 +116,9 @@ export interface SavDocument {
   accounting_transferred_at: string | null;
   accounting_transferred_by: string | null;
   accounting_note: string | null;
+  // Inter-company flows (Hassan Phase 7)
+  issuing_entity: string;
+  client_entity_id: string | null;
 }
 
 export const DOC_LABEL: Record<SavDocType, string> = {
@@ -265,7 +268,10 @@ export async function listSavDocuments(): Promise<SavDocument[]> {
 }
 
 function normalize(d: Record<string, unknown>): SavDocument {
-  return { ...(d as unknown as SavDocument), parts: Array.isArray(d.parts) ? (d.parts as SavPart[]) : [] };
+  const doc = { ...(d as unknown as SavDocument), parts: Array.isArray(d.parts) ? (d.parts as SavPart[]) : [] };
+  doc.issuing_entity = (doc.issuing_entity ?? "casablanca") as string;
+  doc.client_entity_id = (doc.client_entity_id ?? null) as string | null;
+  return doc;
 }
 
 export async function getSavDocument(id: string): Promise<SavDocument | null> {
@@ -303,6 +309,7 @@ export type NewSavDocument =
     | "avoir_finance_status" | "avoir_finance_decided_at" | "avoir_finance_decided_by" | "avoir_finance_note"
     | "accounting_status" | "accounting_ready_at" | "accounting_ready_by"
     | "accounting_transferred_at" | "accounting_transferred_by" | "accounting_note"
+    | "issuing_entity" | "client_entity_id"
   >
   & Partial<Pick<SavDocument,
       | "total_amount" | "client_id" | "equipment_id"
@@ -313,6 +320,7 @@ export type NewSavDocument =
       | "avoir_finance_status" | "avoir_finance_decided_at" | "avoir_finance_decided_by" | "avoir_finance_note"
       | "accounting_status" | "accounting_ready_at" | "accounting_ready_by"
       | "accounting_transferred_at" | "accounting_transferred_by" | "accounting_note"
+      | "issuing_entity" | "client_entity_id"
     >>;
 
 export async function createSavDocument(input: NewSavDocument): Promise<SavDocument> {

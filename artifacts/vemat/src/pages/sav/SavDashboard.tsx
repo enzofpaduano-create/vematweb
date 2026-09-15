@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "wouter";
-import { AlertCircle, ArrowRight, Inbox, FolderOpen, Plus, Wrench, X, Trash2, ChevronDown, ChevronRight, ShieldQuestion, Calculator } from "lucide-react";
+import { AlertCircle, ArrowRight, Inbox, FolderOpen, Plus, Wrench, X, Trash2, ChevronDown, ChevronRight, ShieldQuestion, Calculator, Building2 } from "lucide-react";
+import { getEntityLabel } from "@/lib/vematEntities";
 import { SavGuard } from "./SavGuard";
 import { SavLayout } from "./SavLayout";
 import { supabaseSav } from "@/lib/supabase";
@@ -116,6 +117,10 @@ export default function SavDashboard() {
     () => (docs ?? []).filter((d) => d.type === "facture" && d.accounting_status === "ready"),
     [docs],
   );
+  const interCompanyDocs = useMemo(
+    () => (docs ?? []).filter((d) => d.client_entity_id && d.client_entity_id !== d.issuing_entity),
+    [docs],
+  );
 
   function toggleFolder(id: string) {
     setOpenFolders((prev) => {
@@ -199,6 +204,39 @@ export default function SavDashboard() {
                 ))}
                 {invoicesReady.length > 6 && (
                   <p className="text-[11px] text-zinc-400 text-center pt-2">+ {invoicesReady.length - 6} more…</p>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Inter-company flows — clickable row (Phase 7) */}
+          {interCompanyDocs.length > 0 && (
+            <div className="mb-8 bg-white rounded-2xl border border-indigo-200 p-4">
+              <div className="flex items-center gap-2 mb-3">
+                <Building2 className="w-4 h-4 text-indigo-600" />
+                <h2 className="text-sm font-black text-zinc-950">Inter-company flows</h2>
+                <span className="bg-indigo-100 text-indigo-700 text-xs font-black px-2 py-0.5 rounded-full">{interCompanyDocs.length}</span>
+                <span className="ml-auto text-[11px] text-zinc-400">To reconcile at group consolidation</span>
+              </div>
+              <div className="space-y-1.5">
+                {interCompanyDocs.slice(0, 6).map((d) => (
+                  <Link key={d.id} href={`/espace-sav/document/${d.id}`}>
+                    <div className="border-b border-zinc-100 last:border-0 px-2 py-2 flex items-center justify-between gap-3 cursor-pointer hover:bg-indigo-50 rounded transition-colors">
+                      <div className="min-w-0 flex items-center gap-2 flex-wrap">
+                        <span className="font-mono text-xs text-zinc-500">{d.reference}</span>
+                        <span className="text-[11px] text-indigo-700 font-semibold">
+                          {getEntityLabel(d.issuing_entity)} → Vemat {getEntityLabel(d.client_entity_id)}
+                        </span>
+                      </div>
+                      <div className="text-right shrink-0">
+                        <p className="text-sm font-bold text-zinc-900">{formatMoney(d.total_amount, d.currency)}</p>
+                        <p className="text-[11px] text-zinc-400">{new Date(d.created_at).toLocaleDateString("en-GB")}</p>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+                {interCompanyDocs.length > 6 && (
+                  <p className="text-[11px] text-zinc-400 text-center pt-2">+ {interCompanyDocs.length - 6} more…</p>
                 )}
               </div>
             </div>

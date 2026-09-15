@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "wouter";
-import { AlertCircle, Search, X, FolderOpen, ChevronDown, ChevronRight } from "lucide-react";
+import { AlertCircle, Search, X, FolderOpen, ChevronDown, ChevronRight, Building2 } from "lucide-react";
 import { SavGuard } from "./SavGuard";
 import { SavLayout } from "./SavLayout";
 import {
@@ -43,6 +43,7 @@ export default function SavDocuments() {
   const [docs, setDocs] = useState<SavDocument[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [filter, setFilter] = useState<SavDocType | "all">("all");
+  const [interOnly, setInterOnly] = useState(false);
   const [query, setQuery] = useState("");
   const [openFolders, setOpenFolders] = useState<Set<string>>(new Set());
 
@@ -60,6 +61,7 @@ export default function SavDocuments() {
     return all.map((folder): SavFolder | null => {
       let list = folder.docs;
       if (filter !== "all") list = list.filter((d) => d.type === filter);
+      if (interOnly) list = list.filter((d) => d.client_entity_id && d.client_entity_id !== d.issuing_entity);
       if (q) {
         const folderMatch = folder.client.toLowerCase().includes(q) || (folder.root.reference ?? "").toLowerCase().includes(q);
         if (!folderMatch) list = list.filter((d) => (d.reference ?? "").toLowerCase().includes(q) || (d.client_company ?? "").toLowerCase().includes(q) || (d.client_name ?? "").toLowerCase().includes(q));
@@ -67,7 +69,7 @@ export default function SavDocuments() {
       if (list.length === 0) return null;
       return { ...folder, docs: list };
     }).filter((f): f is SavFolder => f !== null);
-  }, [docs, filter, query]);
+  }, [docs, filter, interOnly, query]);
 
   const flatFiltered = useMemo(() => folders.flatMap((f) => f.docs), [folders]);
 
@@ -100,6 +102,10 @@ export default function SavDocuments() {
                 {f === "all" ? "All" : DOC_LABEL_SHORT[f]}
               </button>
             ))}
+            <button type="button" onClick={() => setInterOnly((v) => !v)}
+              className={`inline-flex items-center gap-1.5 text-sm font-bold px-3 py-1.5 rounded-lg transition-colors ${interOnly ? "bg-indigo-600 text-white" : "bg-white border border-indigo-200 text-indigo-600 hover:bg-indigo-50"}`}>
+              <Building2 className="w-3.5 h-3.5" /> Inter-company only
+            </button>
           </div>
 
           <div className="relative mb-6 max-w-md">

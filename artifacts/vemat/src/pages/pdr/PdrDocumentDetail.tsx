@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useRoute, useLocation } from "wouter";
-import { ArrowLeft, AlertCircle, FileDown, ArrowRight, Check, Loader2, Pencil, Eye, FileText, Users, Wrench, ShieldCheck, ShieldAlert, ShieldQuestion, Calculator, RotateCcw } from "lucide-react";
+import { ArrowLeft, AlertCircle, FileDown, ArrowRight, Check, Loader2, Pencil, Eye, FileText, Users, Wrench, ShieldCheck, ShieldAlert, ShieldQuestion, Calculator, RotateCcw, Building2, Building } from "lucide-react";
 import { PdrGuard } from "./PdrGuard";
 import { PdrLayout } from "./PdrLayout";
 import {
@@ -28,6 +28,7 @@ import {
   ACCOUNTING_STATUS_LABEL, ACCOUNTING_STATUS_COLOR,
   type CheckResult,
 } from "@/lib/preInvoicing";
+import { VEMAT_ENTITIES, getEntityLabel, isInterCompany } from "@/lib/vematEntities";
 import { supabasePdr } from "@/lib/supabase";
 import { usePdrAuth } from "@/contexts/PdrAuthContext";
 import { sendValidationRequestEmail, sendValidationDecisionEmail,
@@ -361,6 +362,27 @@ export default function PdrDocumentDetail() {
     finally { setBusyAccounting(false); }
   }
 
+  // ── Inter-company entities — Phase 7 ───────────────────────────────────
+  async function handleChangeIssuingEntity(entity: string) {
+    if (!doc) return;
+    try {
+      const { error: e } = await supabasePdr.from("pdr_documents")
+        .update({ issuing_entity: entity }).eq("id", doc.id);
+      if (e) throw new Error(e.message);
+      setDoc({ ...doc, issuing_entity: entity });
+    } catch (e) { setError((e as Error).message); }
+  }
+  async function handleChangeClientEntity(entity: string) {
+    if (!doc) return;
+    const val = entity === "" ? null : entity;
+    try {
+      const { error: e } = await supabasePdr.from("pdr_documents")
+        .update({ client_entity_id: val }).eq("id", doc.id);
+      if (e) throw new Error(e.message);
+      setDoc({ ...doc, client_entity_id: val });
+    } catch (e) { setError((e as Error).message); }
+  }
+
   async function handleRequestAvoirManagerEmail() {
     if (!doc || !approvalSettings?.manager_email) return;
     await sendAvoirApprovalRequestEmail({
@@ -399,7 +421,14 @@ export default function PdrDocumentDetail() {
             <>
               <div className="flex items-start justify-between gap-4 flex-wrap mb-6">
                 <div>
-                  <p className="text-[10px] uppercase tracking-[0.25em] font-black text-sky-600 mb-1">{DOC_LABEL[doc.type]}</p>
+                  <div className="flex items-center gap-2 flex-wrap mb-1">
+                    <p className="text-[10px] uppercase tracking-[0.25em] font-black text-sky-600">{DOC_LABEL[doc.type]}</p>
+                    {isInterCompany(doc) && (
+                      <span className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wide px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-700">
+                        <Building2 className="w-3 h-3" /> Inter-company
+                      </span>
+                    )}
+                  </div>
                   <h1 className="text-3xl font-black text-zinc-950 font-mono">{doc.reference}</h1>
                   <p className="text-zinc-500 text-sm mt-1">{new Date(doc.created_at).toLocaleDateString("en-GB")} · Word template {templateModel(doc.currency, totals.hasCustoms)} · {doc.currency}{totals.hasCustoms ? " + NAIRA" : ""}{doc.apply_vat ? ` · VAT ${doc.vat_rate}%` : ""}</p>
                 </div>
@@ -888,6 +917,44 @@ export default function PdrDocumentDetail() {
                   </div>
                 </section>
               )}
+
+              {/* Inter-company / issuing entity — Phase 7 */}
+              <section className={`rounded-2xl border p-4 mb-5 ${isInterCompany(doc) ? "bg-indigo-50 border-indigo-200" : "bg-white border-zinc-200"}`}>
+                <div className="flex items-center gap-2 mb-3">
+                  <Building className="w-4 h-4 text-zinc-700" />
+                  <h2 className="font-black text-zinc-950 text-sm">Entity</h2>
+                  {isInterCompany(doc) && (
+                    <span className="text-[10px] font-black uppercase tracking-wide px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-700">
+                      Inter-company flow
+                    </span>
+                  )}
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+                  <label className="block">
+                    <span className="text-xs font-bold text-zinc-500 uppercase tracking-wide">Issued by (Vemat entity)</span>
+                    <select value={doc.issuing_entity} onChange={(e) => handleChangeIssuingEntity(e.target.value)}
+                      className="mt-1 w-full bg-white border border-zinc-200 rounded-xl px-3 py-2 text-sm font-semibold text-zinc-700 focus:outline-none focus:border-sky-400">
+                      {VEMAT_ENTITIES.map((ent) => <option key={ent.id} value={ent.id}>{ent.label}</option>)}
+                    </select>
+                  </label>
+                  <label className="block">
+                    <span className="text-xs font-bold text-zinc-500 uppercase tracking-wide">Client is another Vemat entity?</span>
+                    <select value={doc.client_entity_id ?? ""} onChange={(e) => handleChangeClientEntity(e.target.value)}
+                      className="mt-1 w-full bg-white border border-zinc-200 rounded-xl px-3 py-2 text-sm font-semibold text-zinc-700 focus:outline-none focus:border-sky-400">
+                      <option value="">— No (external client)</option>
+                      {VEMAT_ENTITIES.filter((e) => e.id !== doc.issuing_entity).map((ent) => (
+                        <option key={ent.id} value={ent.id}>Vemat {ent.label}</option>
+                      ))}
+                    </select>
+                  </label>
+                </div>
+                {isInterCompany(doc) && (
+                  <p className="text-xs text-indigo-700 mt-2">
+                    <strong>{getEntityLabel(doc.issuing_entity)}</strong> → <strong>Vemat {getEntityLabel(doc.client_entity_id)}</strong>
+                    <span className="text-indigo-500"> · This flow must be reconciled at group consolidation.</span>
+                  </p>
+                )}
+              </section>
 
               <section className="bg-white rounded-2xl border border-zinc-200 p-6 mb-5">
                 <h2 className="font-black text-zinc-950 mb-3">Client</h2>

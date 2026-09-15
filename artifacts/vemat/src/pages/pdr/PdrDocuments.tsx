@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "wouter";
-import { AlertCircle, Search, X, FolderOpen, ChevronDown, ChevronRight } from "lucide-react";
+import { AlertCircle, Search, X, FolderOpen, ChevronDown, ChevronRight, Building2 } from "lucide-react";
 import { PdrGuard } from "./PdrGuard";
 import { PdrLayout } from "./PdrLayout";
 import {
@@ -48,6 +48,7 @@ export default function PdrDocuments() {
   const [docs, setDocs] = useState<PdrDocument[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [filter, setFilter] = useState<PdrDocType | "all">("all");
+  const [interOnly, setInterOnly] = useState(false);
   const [query, setQuery] = useState("");
   const [openFolders, setOpenFolders] = useState<Set<string>>(new Set());
 
@@ -70,6 +71,7 @@ export default function PdrDocuments() {
       .map((folder): PdrFolder | null => {
         let list = folder.docs;
         if (filter !== "all") list = list.filter((d) => d.type === filter);
+        if (interOnly) list = list.filter((d) => d.client_entity_id && d.client_entity_id !== d.issuing_entity);
         if (q) {
           const folderMatch =
             folder.client.toLowerCase().includes(q) ||
@@ -85,7 +87,7 @@ export default function PdrDocuments() {
         return { ...folder, docs: list };
       })
       .filter((f): f is PdrFolder => f !== null);
-  }, [docs, filter, query]);
+  }, [docs, filter, interOnly, query]);
 
   // Flat list of currently visible docs (for export).
   const flatFiltered = useMemo(() => folders.flatMap((f) => f.docs), [folders]);
@@ -124,6 +126,10 @@ export default function PdrDocuments() {
                 {f === "all" ? "All" : DOC_LABEL_SHORT[f]}
               </button>
             ))}
+            <button type="button" onClick={() => setInterOnly((v) => !v)}
+              className={`inline-flex items-center gap-1.5 text-sm font-bold px-3 py-1.5 rounded-lg transition-colors ${interOnly ? "bg-indigo-600 text-white" : "bg-white border border-indigo-200 text-indigo-600 hover:bg-indigo-50"}`}>
+              <Building2 className="w-3.5 h-3.5" /> Inter-company only
+            </button>
           </div>
 
           <div className="relative mb-6 max-w-md">
