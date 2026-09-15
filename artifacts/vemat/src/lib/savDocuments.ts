@@ -109,6 +109,13 @@ export interface SavDocument {
   avoir_finance_decided_at: string | null;
   avoir_finance_decided_by: string | null;
   avoir_finance_note: string | null;
+  // Pre-invoicing / accounting workflow (Hassan Phase 6)
+  accounting_status: import("./preInvoicing").AccountingStatus;
+  accounting_ready_at: string | null;
+  accounting_ready_by: string | null;
+  accounting_transferred_at: string | null;
+  accounting_transferred_by: string | null;
+  accounting_note: string | null;
 }
 
 export const DOC_LABEL: Record<SavDocType, string> = {
@@ -294,6 +301,8 @@ export type NewSavDocument =
     | "avoir_reason"
     | "avoir_manager_status" | "avoir_manager_decided_at" | "avoir_manager_decided_by" | "avoir_manager_note"
     | "avoir_finance_status" | "avoir_finance_decided_at" | "avoir_finance_decided_by" | "avoir_finance_note"
+    | "accounting_status" | "accounting_ready_at" | "accounting_ready_by"
+    | "accounting_transferred_at" | "accounting_transferred_by" | "accounting_note"
   >
   & Partial<Pick<SavDocument,
       | "total_amount" | "client_id" | "equipment_id"
@@ -302,6 +311,8 @@ export type NewSavDocument =
       | "avoir_reason"
       | "avoir_manager_status" | "avoir_manager_decided_at" | "avoir_manager_decided_by" | "avoir_manager_note"
       | "avoir_finance_status" | "avoir_finance_decided_at" | "avoir_finance_decided_by" | "avoir_finance_note"
+      | "accounting_status" | "accounting_ready_at" | "accounting_ready_by"
+      | "accounting_transferred_at" | "accounting_transferred_by" | "accounting_note"
     >>;
 
 export async function createSavDocument(input: NewSavDocument): Promise<SavDocument> {

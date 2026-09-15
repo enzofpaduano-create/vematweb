@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useRoute, useLocation } from "wouter";
-import { ArrowLeft, AlertCircle, FileDown, ArrowRight, Check, Loader2, Pencil, Eye, FileText, Users, Wrench, ShieldCheck, ShieldAlert, ShieldQuestion } from "lucide-react";
+import { ArrowLeft, AlertCircle, FileDown, ArrowRight, Check, Loader2, Pencil, Eye, FileText, Users, Wrench, ShieldCheck, ShieldAlert, ShieldQuestion, Calculator, RotateCcw } from "lucide-react";
 import { PdrGuard } from "./PdrGuard";
 import { PdrLayout } from "./PdrLayout";
 import {
@@ -23,6 +23,11 @@ import {
   currentAvoirStage, isAvoirFullyApproved, canIssueAvoir,
   AVOIR_STATUS_LABEL, AVOIR_STATUS_COLOR,
 } from "@/lib/creditNotes";
+import {
+  validatePdrInvoice, markInvoiceReady, markInvoiceTransferred, resetInvoiceAccounting,
+  ACCOUNTING_STATUS_LABEL, ACCOUNTING_STATUS_COLOR,
+  type CheckResult,
+} from "@/lib/preInvoicing";
 import { supabasePdr } from "@/lib/supabase";
 import { usePdrAuth } from "@/contexts/PdrAuthContext";
 import { sendValidationRequestEmail, sendValidationDecisionEmail,
@@ -305,6 +310,57 @@ export default function PdrDocumentDetail() {
     finally { setBusyValidation(false); }
   }
 
+  // ── Pre-invoicing (accounting) handlers ────────────────────────────────
+  const [preInvNote, setPreInvNote] = useState("");
+  const [busyAccounting, setBusyAccounting] = useState(false);
+  const preInvCheck = useMemo<CheckResult>(
+    () => (doc && doc.type === "facture" ? validatePdrInvoice(doc) : { errors: [], warnings: [] }),
+    [doc],
+  );
+
+  async function handleAccountingReady() {
+    if (!doc) return;
+    if (preInvCheck.errors.length > 0) {
+      setError("Cannot mark ready — please fix blocking errors first.");
+      return;
+    }
+    if (preInvCheck.warnings.length > 0 && !preInvNote.trim()) {
+      setError("A note is required when overriding warnings.");
+      return;
+    }
+    setBusyAccounting(true);
+    try {
+      await markInvoiceReady(supabasePdr, "pdr_documents", doc.id, user?.email ?? "user", preInvNote.trim() || undefined);
+      const fresh = await getDocument(doc.id);
+      if (fresh) setDoc(fresh);
+      setPreInvNote("");
+    } catch (e) { setError((e as Error).message); }
+    finally { setBusyAccounting(false); }
+  }
+
+  async function handleAccountingTransferred() {
+    if (!doc) return;
+    setBusyAccounting(true);
+    try {
+      await markInvoiceTransferred(supabasePdr, "pdr_documents", doc.id, user?.email ?? "accountant");
+      const fresh = await getDocument(doc.id);
+      if (fresh) setDoc(fresh);
+    } catch (e) { setError((e as Error).message); }
+    finally { setBusyAccounting(false); }
+  }
+
+  async function handleAccountingReset() {
+    if (!doc) return;
+    if (!window.confirm("Reopen this invoice? It will go back to Draft.")) return;
+    setBusyAccounting(true);
+    try {
+      await resetInvoiceAccounting(supabasePdr, "pdr_documents", doc.id);
+      const fresh = await getDocument(doc.id);
+      if (fresh) setDoc(fresh);
+    } catch (e) { setError((e as Error).message); }
+    finally { setBusyAccounting(false); }
+  }
+
   async function handleRequestAvoirManagerEmail() {
     if (!doc || !approvalSettings?.manager_email) return;
     await sendAvoirApprovalRequestEmail({
@@ -492,6 +548,111 @@ export default function PdrDocumentDetail() {
                         className="inline-flex items-center gap-2 bg-amber-600 hover:bg-amber-500 text-white font-bold text-sm px-4 py-2.5 rounded-xl disabled:opacity-60"
                       >
                         {busyValidation ? "Resubmitting…" : "Resubmit for validation"}
+                      </button>
+                    </>
+                  )}
+                </section>
+              )}
+
+              {/* Pre-invoicing consistency check — Hassan Phase 6 */}
+              {doc.type === "facture" && (
+                <section className={`rounded-2xl border p-6 mb-5 ${
+                  doc.accounting_status === "transferred" ? "bg-emerald-50 border-emerald-200"
+                  : doc.accounting_status === "ready" ? "bg-amber-50 border-amber-200"
+                  : preInvCheck.errors.length > 0 ? "bg-red-50 border-red-200"
+                  : "bg-white border-zinc-200"
+                }`}>
+                  <div className="flex items-center gap-2 mb-3 flex-wrap">
+                    <Calculator className="w-5 h-5 text-zinc-700" />
+                    <h2 className="font-black text-zinc-950">Pre-invoicing check</h2>
+                    <span className={`text-[10px] font-black uppercase tracking-wide px-2 py-1 rounded ${ACCOUNTING_STATUS_COLOR[doc.accounting_status]}`}>
+                      {ACCOUNTING_STATUS_LABEL[doc.accounting_status]}
+                    </span>
+                  </div>
+
+                  {/* Checklist */}
+                  {(preInvCheck.errors.length > 0 || preInvCheck.warnings.length > 0) && doc.accounting_status !== "transferred" && (
+                    <div className="space-y-1.5 mb-4">
+                      {preInvCheck.errors.map((e) => (
+                        <div key={e.code} className="flex items-start gap-2 text-sm">
+                          <AlertCircle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
+                          <span className="text-red-800"><strong>Error :</strong> {e.label}</span>
+                        </div>
+                      ))}
+                      {preInvCheck.warnings.map((w) => (
+                        <div key={w.code} className="flex items-start gap-2 text-sm">
+                          <AlertCircle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+                          <span className="text-amber-800"><strong>Warning :</strong> {w.label}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {preInvCheck.errors.length === 0 && preInvCheck.warnings.length === 0 && doc.accounting_status === "draft" && (
+                    <p className="text-sm text-emerald-800 mb-4 flex items-center gap-2">
+                      <Check className="w-4 h-4" /> All checks passed — this invoice is ready to be marked for accounting.
+                    </p>
+                  )}
+
+                  {/* Actions per status */}
+                  {doc.accounting_status === "draft" && (
+                    <>
+                      {preInvCheck.warnings.length > 0 && preInvCheck.errors.length === 0 && (
+                        <div className="mb-3">
+                          <label className="block text-xs font-bold text-zinc-500 mb-1.5">
+                            Override note (required to bypass warnings) *
+                          </label>
+                          <textarea
+                            className="w-full bg-white border border-zinc-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-amber-400 min-h-[60px]"
+                            value={preInvNote}
+                            onChange={(e) => setPreInvNote(e.target.value)}
+                            placeholder="e.g. Missing equipment link — client refused to provide S/N."
+                          />
+                        </div>
+                      )}
+                      <button
+                        onClick={handleAccountingReady}
+                        disabled={busyAccounting || preInvCheck.errors.length > 0
+                          || (preInvCheck.warnings.length > 0 && !preInvNote.trim())}
+                        className="inline-flex items-center gap-2 bg-zinc-900 hover:bg-zinc-800 text-white font-bold text-sm px-4 py-2.5 rounded-xl disabled:opacity-60"
+                      >
+                        <Check className="w-4 h-4" /> {busyAccounting ? "Saving…" : "Mark ready for accounting"}
+                      </button>
+                    </>
+                  )}
+
+                  {doc.accounting_status === "ready" && (
+                    <>
+                      <p className="text-sm text-amber-800 mb-3">
+                        Marked ready by <strong>{doc.accounting_ready_by ?? "—"}</strong>
+                        {doc.accounting_ready_at && ` on ${new Date(doc.accounting_ready_at).toLocaleString("en-GB")}`}.
+                        {doc.accounting_note && (
+                          <span className="block text-xs italic mt-1">Override note: "{doc.accounting_note}"</span>
+                        )}
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        <button onClick={handleAccountingTransferred} disabled={busyAccounting}
+                          className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm px-4 py-2.5 rounded-xl disabled:opacity-60">
+                          <ArrowRight className="w-4 h-4" /> Confirm transfer to accounting
+                        </button>
+                        <button onClick={handleAccountingReset} disabled={busyAccounting}
+                          className="inline-flex items-center gap-2 text-xs text-zinc-500 hover:text-zinc-800 px-2">
+                          <RotateCcw className="w-3.5 h-3.5" /> Reopen as draft
+                        </button>
+                      </div>
+                    </>
+                  )}
+
+                  {doc.accounting_status === "transferred" && (
+                    <>
+                      <p className="text-sm text-emerald-800">
+                        ✓ Transferred to accounting by <strong>{doc.accounting_transferred_by ?? "—"}</strong>
+                        {doc.accounting_transferred_at && ` on ${new Date(doc.accounting_transferred_at).toLocaleString("en-GB")}`}.
+                        <span className="block mt-1 font-bold text-emerald-900">This invoice is now locked from editing.</span>
+                      </p>
+                      <button onClick={handleAccountingReset} disabled={busyAccounting}
+                        className="inline-flex items-center gap-2 text-xs text-zinc-500 hover:text-red-600 mt-3">
+                        <RotateCcw className="w-3.5 h-3.5" /> Reopen as draft (unlocks editing)
                       </button>
                     </>
                   )}

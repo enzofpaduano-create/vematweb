@@ -159,6 +159,13 @@ export interface PdrDocument {
   avoir_finance_decided_at: string | null;
   avoir_finance_decided_by: string | null;
   avoir_finance_note: string | null;
+  // Pre-invoicing / accounting workflow (Hassan Phase 6)
+  accounting_status: import("./preInvoicing").AccountingStatus;
+  accounting_ready_at: string | null;
+  accounting_ready_by: string | null;
+  accounting_transferred_at: string | null;
+  accounting_transferred_by: string | null;
+  accounting_note: string | null;
 }
 
 export const DOC_LABEL: Record<PdrDocType, string> = {
@@ -309,6 +316,12 @@ function normalizeDoc(doc: PdrDocument | null): PdrDocument | null {
     avoir_finance_decided_at: doc.avoir_finance_decided_at ?? null,
     avoir_finance_decided_by: doc.avoir_finance_decided_by ?? null,
     avoir_finance_note: doc.avoir_finance_note ?? null,
+    accounting_status: (doc.accounting_status ?? "draft") as import("./preInvoicing").AccountingStatus,
+    accounting_ready_at: doc.accounting_ready_at ?? null,
+    accounting_ready_by: doc.accounting_ready_by ?? null,
+    accounting_transferred_at: doc.accounting_transferred_at ?? null,
+    accounting_transferred_by: doc.accounting_transferred_by ?? null,
+    accounting_note: doc.accounting_note ?? null,
   };
 }
 
@@ -482,6 +495,8 @@ export type NewDocumentInput =
     | "avoir_reason"
     | "avoir_manager_status" | "avoir_manager_decided_at" | "avoir_manager_decided_by" | "avoir_manager_note"
     | "avoir_finance_status" | "avoir_finance_decided_at" | "avoir_finance_decided_by" | "avoir_finance_note"
+    | "accounting_status" | "accounting_ready_at" | "accounting_ready_by"
+    | "accounting_transferred_at" | "accounting_transferred_by" | "accounting_note"
   >
   & Partial<Pick<PdrDocument,
       | "source" | "assigned_agent" | "communication_status" | "sent_at" | "commercial_status"
@@ -491,6 +506,8 @@ export type NewDocumentInput =
       | "avoir_reason"
       | "avoir_manager_status" | "avoir_manager_decided_at" | "avoir_manager_decided_by" | "avoir_manager_note"
       | "avoir_finance_status" | "avoir_finance_decided_at" | "avoir_finance_decided_by" | "avoir_finance_note"
+      | "accounting_status" | "accounting_ready_at" | "accounting_ready_by"
+      | "accounting_transferred_at" | "accounting_transferred_by" | "accounting_note"
     >>;
 
 export async function createDocument(input: NewDocumentInput): Promise<PdrDocument> {

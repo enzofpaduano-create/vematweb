@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "wouter";
-import { AlertCircle, ArrowRight, Inbox, FolderOpen, Plus, Wrench, X, Trash2, ChevronDown, ChevronRight, ShieldQuestion } from "lucide-react";
+import { AlertCircle, ArrowRight, Inbox, FolderOpen, Plus, Wrench, X, Trash2, ChevronDown, ChevronRight, ShieldQuestion, Calculator } from "lucide-react";
 import { SavGuard } from "./SavGuard";
 import { SavLayout } from "./SavLayout";
 import { supabaseSav } from "@/lib/supabase";
@@ -112,6 +112,10 @@ export default function SavDashboard() {
       && (d.avoir_manager_status === "pending" || d.avoir_finance_status === "pending")),
     [docs],
   );
+  const invoicesReady = useMemo(
+    () => (docs ?? []).filter((d) => d.type === "facture" && d.accounting_status === "ready"),
+    [docs],
+  );
 
   function toggleFolder(id: string) {
     setOpenFolders((prev) => {
@@ -166,6 +170,39 @@ export default function SavDashboard() {
               <p className="text-[11px] text-zinc-500 font-semibold">Credit notes pending</p>
             </div>
           </div>
+
+          {/* Invoices ready for accounting — clickable row */}
+          {invoicesReady.length > 0 && (
+            <div className="mb-8 bg-white rounded-2xl border border-amber-200 p-4">
+              <div className="flex items-center gap-2 mb-3">
+                <Calculator className="w-4 h-4 text-amber-600" />
+                <h2 className="text-sm font-black text-zinc-950">Invoices ready for accounting transfer</h2>
+                <span className="bg-amber-100 text-amber-700 text-xs font-black px-2 py-0.5 rounded-full">{invoicesReady.length}</span>
+              </div>
+              <div className="space-y-1.5">
+                {invoicesReady.slice(0, 6).map((d) => (
+                  <Link key={d.id} href={`/espace-sav/document/${d.id}`}>
+                    <div className="border-b border-zinc-100 last:border-0 px-2 py-2 flex items-center justify-between gap-3 cursor-pointer hover:bg-amber-50 rounded transition-colors">
+                      <div className="min-w-0 flex items-center gap-2 flex-wrap">
+                        <span className="text-[10px] font-black uppercase tracking-wide px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-700">INV</span>
+                        <span className="font-mono text-xs text-zinc-500">{d.reference}</span>
+                        {d.accounting_ready_by && (
+                          <span className="text-[11px] text-zinc-400">· by {d.accounting_ready_by}</span>
+                        )}
+                      </div>
+                      <div className="text-right shrink-0">
+                        <p className="text-sm font-bold text-zinc-900">{formatMoney(d.total_amount, d.currency)}</p>
+                        <p className="text-[11px] text-zinc-400">{d.client_company || "—"}</p>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+                {invoicesReady.length > 6 && (
+                  <p className="text-[11px] text-zinc-400 text-center pt-2">+ {invoicesReady.length - 6} more…</p>
+                )}
+              </div>
+            </div>
+          )}
 
           {/* Incoming intervention requests */}
           <div className="mb-8">
