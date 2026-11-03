@@ -27,11 +27,17 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 // --- Config: what we want the roster to look like at the end ------------
 const COLOR = "#D51A2A"; // Vemat brand red (from --accent 355 78% 47%)
-const NEW_TECHS = [
-  { email: "tech01@vematgroup.com", password: "tech01@2026", name: "tech 01" },
-  { email: "tech02@vematgroup.com", password: "tech02@2026", name: "tech 02" },
-  { email: "tech03@vematgroup.com", password: "tech03@2026", name: "tech 03" },
-];
+// La liste des techniciens (email, mot de passe, nom) n'est JAMAIS écrite dans le dépôt.
+// Elle est lue dans un fichier local ignoré par git :
+//   artifacts/api-server/scripts/technicians.local.json
+//   [ { "email": "...", "password": "...", "name": "tech 01" }, ... ]
+// (ou un autre chemin via la variable TECHNICIANS_FILE)
+const TECHS_FILE = process.env.TECHNICIANS_FILE || join(__dirname, "technicians.local.json");
+if (!existsSync(TECHS_FILE)) {
+  console.error(`Fichier introuvable : ${TECHS_FILE}\nCréez-le (voir le commentaire en haut de la liste) puis relancez.`);
+  process.exit(1);
+}
+const NEW_TECHS = JSON.parse(readFileSync(TECHS_FILE, "utf8"));
 
 // --- Minimal .env parser (no dep) ---------------------------------------
 function loadDotenv(path) {

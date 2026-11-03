@@ -65,3 +65,7 @@ service-account*.json
 # iCloud Drive duplicates ("name 2.png", "name 3.svg", etc.)
 * [2-9].*
 * [0-9][0-9].*
+
+# Identifiants techniciens (ne jamais committer)
+artifacts/api-server/scripts/technicians.local.json
+technicians.local.json
