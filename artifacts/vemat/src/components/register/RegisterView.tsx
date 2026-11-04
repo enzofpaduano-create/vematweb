@@ -41,7 +41,7 @@ const COLS: Col[] = [
     header: "Priority", block: "priority",
     cell: (r) => <span className={`text-[10px] font-black uppercase px-1.5 py-0.5 rounded ${PRIORITY_COLOR[r.priority]}`}>{PRIORITY_LABEL[r.priority]}</span>,
   },
-  { header: "Quotation Ref No.", block: "costing", cell: (r) => (r.quotation_ref ? <span className="font-mono font-bold">{r.quotation_ref}</span> : <span className="text-zinc-400">—</span>) },
+  { header: "Quotation Ref No.", block: "costing", cell: (r) => (r.quotation_ref ? <span className="font-mono font-bold">{r.quotation_ref}</span> : (r.pdr_document_id || r.sav_document_id) ? <span className="text-amber-600 font-semibold text-xs">To enter</span> : <span className="text-zinc-400">—</span>) },
   { header: "Date Prepared", block: "costing", cell: (r) => d(r.date_prepared) },
   { header: "Total Quote Amount", block: "costing", cell: (r) => <span className="tabular-nums">{money(r)} {r.total_quote_amount != null ? r.currency : ""}</span>, className: "text-right" },
   { header: "GM Approval Status", block: "dg", cell: (r) => (r.gm_approval_status ? GM_LABEL[r.gm_approval_status] : "—") },

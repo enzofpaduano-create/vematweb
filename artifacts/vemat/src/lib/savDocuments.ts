@@ -319,7 +319,7 @@ export type NewSavDocument =
     | "issuing_entity" | "client_entity_id"
   >
   & Partial<Pick<SavDocument,
-      | "total_amount" | "client_id" | "equipment_id"
+      | "reference" | "total_amount" | "client_id" | "equipment_id"
       | "validation_status" | "validation_requested_at" | "validation_decided_at"
       | "validation_decided_by" | "validation_note"
       | "avoir_reason"

@@ -509,6 +509,7 @@ export type NewDocumentInput =
     | "issuing_entity" | "client_entity_id"
   >
   & Partial<Pick<PdrDocument,
+      | "reference"
       | "source" | "assigned_agent" | "communication_status" | "sent_at" | "commercial_status"
       | "client_id" | "equipment_id" | "total_amount"
       | "validation_status" | "validation_requested_at" | "validation_decided_at"

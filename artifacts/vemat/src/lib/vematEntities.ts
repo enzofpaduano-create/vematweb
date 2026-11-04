@@ -46,3 +46,20 @@ export function getEntityLabel(id: string | null | undefined): string {
 export function isInterCompany(doc: { issuing_entity?: string | null; client_entity_id?: string | null }): boolean {
   return !!(doc.client_entity_id && doc.client_entity_id !== doc.issuing_entity);
 }
+
+/**
+ * Entités dont le numéro de devis (DE26…) est généré par Atlascom, hors du portail :
+ * il est saisi à la main sur le devis. Pour les autres entités, le portail le numérote seul.
+ */
+export const ATLASCOM_NUMBERING_ENTITIES: string[] = ["lagos"];
+
+/** True quand ce devis doit recevoir son numéro officiel d'Atlascom (saisie manuelle). */
+export function usesAtlascomNumber(doc: { type?: string | null; issuing_entity?: string | null }): boolean {
+  return doc.type === "devis" && !!doc.issuing_entity && ATLASCOM_NUMBERING_ENTITIES.includes(doc.issuing_entity);
+}
+
+/** Normalise un numéro saisi (espaces retirés, majuscules). Vide = pas de numéro. */
+export function cleanQuoteNumber(raw: string): string | null {
+  const v = raw.replace(/\s+/g, "").toUpperCase();
+  return v === "" ? null : v;
+}

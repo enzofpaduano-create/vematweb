@@ -11,6 +11,7 @@
 
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { CellValue } from "exceljs";
+import { ATLASCOM_NUMBERING_ENTITIES } from "@/lib/vematEntities";
 
 export type RequestType = "spare_parts" | "field_service" | "training";
 export type RequestPriority = "high" | "medium" | "low";
@@ -332,6 +333,9 @@ export function blockingReason(r: RegisterRow): string | null {
   if (r.closed_at) return null;
   if (r.missing_info?.trim()) return `Missing information: ${r.missing_info.trim()}`;
   if (r.stage === "revision_requested") return "DG asked for a revision of the quote";
+  if ((r.pdr_document_id || r.sav_document_id) && !r.quotation_ref && ATLASCOM_NUMBERING_ENTITIES.includes(r.entity)) {
+    return "Atlascom quote number to enter";
+  }
   if (r.stage === "pending_gm") return "Waiting for the DG's approval";
   if (r.stage === "to_cost") return "No quote prepared yet";
   if (r.stage === "ready_to_send") return "Approved — to be sent to the client";
