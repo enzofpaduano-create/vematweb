@@ -7,12 +7,18 @@ import { SavDocumentForm, defaultFormValues, formToPayload, type SavFormValues }
 import { supabaseSav } from "@/lib/supabase";
 import { useSavAuth } from "@/contexts/SavAuthContext";
 import { createSavDocument } from "@/lib/savDocuments";
+import { getClient } from "@/lib/clients";
+import { getEquipment } from "@/lib/equipments";
+import { addEvent, linkQuote, REQUEST_TYPE_PORTAL, REQUEST_TYPE_LABEL, type RegisterRow } from "@/lib/quotationRegister";
 
 export default function SavOfferNew() {
   const [, navigate] = useLocation();
   const search = useSearch();
   const { user } = useSavAuth();
   const fromId = useMemo(() => new URLSearchParams(search).get("from"), [search]);
+  // Offre préparée depuis le registre des demandes (?request=<id>)
+  const requestId = useMemo(() => new URLSearchParams(search).get("request"), [search]);
+  const [request, setRequest] = useState<RegisterRow | null>(null);
 
   const [initial, setInitial] = useState<SavFormValues>(defaultFormValues);
   const [syncKey, setSyncKey] = useState("new");
@@ -21,6 +27,45 @@ export default function SavOfferNew() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    if (!requestId) { setRequest(null); return; }
+    let cancelled = false;
+    (async () => {
+      const { data: row } = await supabaseSav.from("quotation_register").select("*").eq("id", requestId).maybeSingle();
+      if (cancelled) return;
+      if (!row) { setError("Request not found in the register."); return; }
+      const r = row as RegisterRow;
+      if (REQUEST_TYPE_PORTAL[r.request_type] !== "sav") { setError("This is a spare-parts request — prepare it in the PDR portal."); return; }
+      if (r.sav_document_id) { setError(`An offer (${r.quotation_ref}) already exists for ${r.request_id}.`); return; }
+      const [client, equipment] = await Promise.all([
+        getClient(supabaseSav, r.client_id).catch(() => null),
+        r.equipment_id ? getEquipment(supabaseSav, r.equipment_id).catch(() => null) : Promise.resolve(null),
+      ]);
+      if (cancelled) return;
+      const machine = [equipment?.brand, equipment?.model].filter(Boolean).join(" ")
+        + (equipment?.serial_number ? ` s/n ${equipment.serial_number}` : "");
+      setRequest(r);
+      setSourceId(null);
+      setInitial({
+        ...defaultFormValues(),
+        company: client?.name ?? r.client_name,
+        address: [client?.address, client?.city, client?.country].filter(Boolean).join("\n"),
+        name: r.contact_name ?? client?.contact_name ?? "",
+        email: r.contact_email ?? client?.contact_email ?? "",
+        phone: client?.contact_phone ?? "",
+        machine: machine.trim(),
+        location: r.location_site ?? "",
+        currency: "USD",
+        interventionDescription: `${REQUEST_TYPE_LABEL[r.request_type]} — request ${r.request_id}${r.request_details ? `\n${r.request_details}` : ""}`,
+        clientId: r.client_id,
+        equipmentId: r.equipment_id,
+      });
+      setSyncKey(`request-${r.id}`);
+    })();
+    return () => { cancelled = true; };
+  }, [requestId]);
+
+  useEffect(() => {
+    if (requestId) return;
     if (!fromId) { setInitial(defaultFormValues()); setSourceId(null); setSyncKey("new"); return; }
     let cancelled = false;
     (async () => {
@@ -43,7 +88,7 @@ export default function SavOfferNew() {
       setSyncKey(`from-${data.id}`);
     })();
     return () => { cancelled = true; };
-  }, [fromId]);
+  }, [fromId, requestId]);
 
   async function handleSubmit(values: SavFormValues) {
     setSaving(true);
@@ -56,9 +101,15 @@ export default function SavOfferNew() {
         source_form_intervention_id: sourceId,
         pdr_request_id: null,
         ...payload,
+        ...(request ? { issuing_entity: request.entity } : {}),
         status: "brouillon",
         created_by: user?.id ?? null,
       });
+      if (request) {
+        // Le numéro officiel DE26… est attribué par la base : on le rattache à la demande.
+        await linkQuote(supabaseSav, request, doc.id);
+        await addEvent(supabaseSav, request.id, "status", `Quote ${doc.reference} created`, user?.email ?? null).catch(() => {});
+      }
       if (sourceId) await supabaseSav.from("form_interventions").update({ status: "traite" }).eq("id", sourceId);
       navigate(`/espace-sav/document/${doc.id}`);
     } catch (e) {
@@ -77,7 +128,7 @@ export default function SavOfferNew() {
           <SavDocumentForm
             initial={initial}
             syncKey={syncKey}
-            title="New service offer"
+            title={request ? `New service offer — ${request.request_id}` : "New service offer"}
             submitLabel="Create offer"
             saving={saving}
             error={error}

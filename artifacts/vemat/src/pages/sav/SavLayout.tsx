@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Link, useLocation } from "wouter";
-import { LayoutGrid, FileText, LogOut, Wrench, Plus, Settings, Users } from "lucide-react";
+import { ClipboardList, LayoutGrid, FileText, LogOut, Wrench, Plus, Settings, Users } from "lucide-react";
 import { useSavAuth } from "@/contexts/SavAuthContext";
 import vematLogo from "@/assets/vemat-logo.png";
 
@@ -9,6 +9,7 @@ const NAV = [
   { href: "/espace-sav/clients", icon: Users, label: "Clients" },
   { href: "/espace-sav/equipments", icon: Wrench, label: "Equipment park" },
   { href: "/espace-sav/documents", icon: FileText, label: "All documents" },
+  { href: "/espace-sav/registre", icon: ClipboardList, label: "Quotation register" },
   { href: "/espace-sav/offre/nouvelle", icon: Plus, label: "New offer" },
   { href: "/espace-sav/reglages", icon: Settings, label: "Settings" },
 ];

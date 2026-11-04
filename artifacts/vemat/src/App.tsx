@@ -50,6 +50,7 @@ import PdrEquipments from "@/pages/pdr/PdrEquipments";
 import PdrEquipmentDetail from "@/pages/pdr/PdrEquipmentDetail";
 import PdrSettings from "@/pages/pdr/PdrSettings";
 import PdrDevisNew from "@/pages/pdr/PdrDevisNew";
+import PdrRegister from "@/pages/pdr/PdrRegister";
 import PdrDocumentDetail from "@/pages/pdr/PdrDocumentDetail";
 import PdrDocumentEdit from "@/pages/pdr/PdrDocumentEdit";
 import PdrConvert from "@/pages/pdr/PdrConvert";
@@ -63,6 +64,7 @@ import SavClientDetail from "@/pages/sav/SavClientDetail";
 import SavEquipments from "@/pages/sav/SavEquipments";
 import SavEquipmentDetail from "@/pages/sav/SavEquipmentDetail";
 import SavOfferNew from "@/pages/sav/SavOfferNew";
+import SavRegister from "@/pages/sav/SavRegister";
 import SavDocumentDetail from "@/pages/sav/SavDocumentDetail";
 import SavDocumentEdit from "@/pages/sav/SavDocumentEdit";
 import SavSettings from "@/pages/sav/SavSettings";
@@ -97,6 +99,7 @@ function Router() {
       <Route path="/espace-pdr/reglages" component={PdrSettings} />
       <Route path="/espace-pdr/documents" component={PdrDocuments} />
       <Route path="/espace-pdr/devis/nouveau" component={PdrDevisNew} />
+      <Route path="/espace-pdr/registre" component={PdrRegister} />
       <Route path="/espace-pdr/document/:id/edit" component={PdrDocumentEdit} />
       <Route path="/espace-pdr/document/:id/convert/:toType" component={PdrConvert} />
       <Route path="/espace-pdr/document/:id" component={PdrDocumentDetail} />
@@ -110,6 +113,7 @@ function Router() {
       <Route path="/espace-sav/equipment/:id" component={SavEquipmentDetail} />
       <Route path="/espace-sav/documents" component={SavDocuments} />
       <Route path="/espace-sav/offre/nouvelle" component={SavOfferNew} />
+      <Route path="/espace-sav/registre" component={SavRegister} />
       <Route path="/espace-sav/reglages" component={SavSettings} />
       <Route path="/espace-sav/document/:id/edit" component={SavDocumentEdit} />
       <Route path="/espace-sav/document/:id" component={SavDocumentDetail} />

@@ -15,6 +15,9 @@ export type SavDocType = "devis" | "bon_commande" | "bon_livraison" | "facture" 
 export type Currency = "EUR" | "USD";
 export type LabourMode = "daily" | "fixed";
 export type PaymentMode = "advance" | "after";
+// Suivi commercial (même vocabulaire que le portail PDR) — ajouté pour le registre des devis.
+export type SavCommStatus = "non_communique" | "en_attente_validation" | "communique";
+export type SavCommercialStatus = "en_cours" | "negociation" | "gagne" | "perdu" | "sans_suite" | "annule";
 
 export interface SavPart {
   reference: string;
@@ -119,6 +122,10 @@ export interface SavDocument {
   // Inter-company flows (Hassan Phase 7)
   issuing_entity: string;
   client_entity_id: string | null;
+  // Suivi d'envoi et issue commerciale (registre des devis)
+  communication_status?: SavCommStatus;
+  sent_at?: string | null;
+  commercial_status?: SavCommercialStatus;
 }
 
 export const DOC_LABEL: Record<SavDocType, string> = {
@@ -350,8 +357,10 @@ export function canEditSavDocument(doc: SavDocument, hasChildren: boolean): bool
 }
 
 export async function convertSavDocument(parent: SavDocument, toType: SavDocType, overrides: Partial<NewSavDocument> = {}): Promise<SavDocument> {
-  const { id, reference, created_at, updated_at, total_amount, ...rest } = parent;
+  const { id, reference, created_at, updated_at, total_amount,
+    communication_status, sent_at, commercial_status, ...rest } = parent;
   void id; void reference; void created_at; void updated_at; void total_amount;
+  void communication_status; void sent_at; void commercial_status; // le suivi d'envoi ne se copie pas sur le document suivant
   return createSavDocument({
     ...(rest as NewSavDocument),
     type: toType,

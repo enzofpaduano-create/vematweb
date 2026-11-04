@@ -33,6 +33,8 @@ export interface ApprovalSettings {
   discount_threshold: number;   // percent (0-100)
   manager_email: string | null;
   finance_email: string | null; // Direction Financière — for credit note (avoir) second-stage approval
+  /** Entities whose quotes ALWAYS need the DG's approval, whatever the amount (ex. ["lagos"]). */
+  always_validate_entities?: string[] | null;
   updated_at: string;
 }
 
@@ -78,11 +80,31 @@ export function computeMaxDiscount(doc: DocApprovalInput): number {
   return list.reduce((max, it) => Math.max(max, Number(it.discount_pct ?? 0) || 0), 0);
 }
 
+/** True when the entity's quotes always need the DG's approval (ex. Vemat Westchase / Lagos). */
+export function isAlwaysValidated(
+  entity: string | null | undefined,
+  settings: Pick<ApprovalSettings, "always_validate_entities"> | null | undefined,
+): boolean {
+  return !!entity && !!settings?.always_validate_entities?.includes(entity);
+}
+
+/** True when this user is the DG (the e-mail configured as manager_email). */
+export function isDgUser(
+  email: string | null | undefined,
+  settings: Pick<ApprovalSettings, "manager_email"> | null | undefined,
+): boolean {
+  return !!email && !!settings?.manager_email && email.toLowerCase() === settings.manager_email.toLowerCase();
+}
+
 export function docNeedsValidation(
   doc: DocApprovalInput,
-  settings: Pick<ApprovalSettings, "amount_threshold" | "discount_threshold">,
+  settings: Pick<ApprovalSettings, "amount_threshold" | "discount_threshold"> & Partial<Pick<ApprovalSettings, "always_validate_entities">>,
+  entity?: string | null,
 ): { needsValidation: boolean; reasons: string[] } {
   const reasons: string[] = [];
+  if (isAlwaysValidated(entity, settings)) {
+    reasons.push("DG approval is mandatory for every quote of this entity (no threshold)");
+  }
   if (doc.total_amount >= settings.amount_threshold) {
     reasons.push(`amount ${doc.total_amount.toLocaleString("en-GB")} ≥ threshold ${settings.amount_threshold.toLocaleString("en-GB")}`);
   }
@@ -94,7 +116,11 @@ export function docNeedsValidation(
 }
 
 /** True when the doc is locked from being marked as "communicated" to the client. */
-export function isSendBlocked(validation_status: ValidationStatus): boolean {
+export function isSendBlocked(
+  validation_status: ValidationStatus,
+  mandatory = false,
+): boolean {
+  if (mandatory) return validation_status !== "approved";
   return validation_status === "pending" || validation_status === "rejected";
 }
 

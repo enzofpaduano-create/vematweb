@@ -29,7 +29,7 @@ export type Currency = "EUR" | "USD";
 
 export type PdrSource = "phone" | "email" | "visit" | "website" | "social" | "other";
 export type PdrCommStatus = "non_communique" | "en_attente_validation" | "communique";
-export type PdrCommercialStatus = "en_cours" | "gagne" | "perdu" | "sans_suite";
+export type PdrCommercialStatus = "en_cours" | "negociation" | "gagne" | "perdu" | "sans_suite" | "annule";
 
 export const SOURCE_LABEL: Record<PdrSource, string> = {
   phone: "Phone call",
@@ -63,16 +63,20 @@ export const COMM_STATUS_COLOR: Record<PdrCommStatus, string> = {
 
 export const COMMERCIAL_STATUS_LABEL: Record<PdrCommercialStatus, string> = {
   en_cours: "Open",
+  negociation: "Under negotiation",
   gagne: "Won",
   perdu: "Lost",
   sans_suite: "No follow-up",
+  annule: "Cancelled",
 };
 
 export const COMMERCIAL_STATUS_COLOR: Record<PdrCommercialStatus, string> = {
   en_cours: "bg-sky-100 text-sky-700",
+  negociation: "bg-violet-100 text-violet-700",
   gagne: "bg-emerald-100 text-emerald-700",
   perdu: "bg-red-100 text-red-700",
   sans_suite: "bg-zinc-100 text-zinc-600",
+  annule: "bg-zinc-200 text-zinc-600",
 };
 
 /** How many hours before an un-communicated document is flagged red. */

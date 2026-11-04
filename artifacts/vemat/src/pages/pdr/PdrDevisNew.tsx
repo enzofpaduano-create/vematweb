@@ -9,7 +9,10 @@ import {
 } from "./PdrDocumentForm";
 import { supabasePdr } from "@/lib/supabase";
 import { usePdrAuth } from "@/contexts/PdrAuthContext";
-import { createDocument, rememberParts, type PdrItem } from "@/lib/pdrDocuments";
+import { createDocument, rememberParts, type PdrItem, type PdrSource } from "@/lib/pdrDocuments";
+import { getClient } from "@/lib/clients";
+import { getEquipment } from "@/lib/equipments";
+import { addEvent, linkQuote, REQUEST_TYPE_PORTAL, type RegisterRow } from "@/lib/quotationRegister";
 
 type CartLine = { sku?: string; title?: string; brand?: string; quantity?: number; unit_price?: number };
 
@@ -30,6 +33,9 @@ export default function PdrDevisNew() {
   const search = useSearch();
   const { user } = usePdrAuth();
   const fromId = useMemo(() => new URLSearchParams(search).get("from"), [search]);
+  // Devis préparé depuis le registre des demandes (?request=<id>)
+  const requestId = useMemo(() => new URLSearchParams(search).get("request"), [search]);
+  const [request, setRequest] = useState<RegisterRow | null>(null);
 
   const [initial, setInitial] = useState<PdrFormValues>(defaultFormValues);
   const [syncKey, setSyncKey] = useState("new");
@@ -38,6 +44,45 @@ export default function PdrDevisNew() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    if (!requestId) { setRequest(null); return; }
+    let cancelled = false;
+    (async () => {
+      const { data: row } = await supabasePdr.from("quotation_register").select("*").eq("id", requestId).maybeSingle();
+      if (cancelled) return;
+      if (!row) { setError("Request not found in the register."); return; }
+      const r = row as RegisterRow;
+      if (REQUEST_TYPE_PORTAL[r.request_type] !== "pdr") { setError("This request is not a spare-parts request — prepare it in the SAV portal."); return; }
+      if (r.pdr_document_id) { setError(`A quote (${r.quotation_ref}) already exists for ${r.request_id}.`); return; }
+      const [client, equipment] = await Promise.all([
+        getClient(supabasePdr, r.client_id).catch(() => null),
+        r.equipment_id ? getEquipment(supabasePdr, r.equipment_id).catch(() => null) : Promise.resolve(null),
+      ]);
+      if (cancelled) return;
+      const machine = [equipment?.brand, equipment?.model].filter(Boolean).join(" ")
+        + (equipment?.serial_number ? ` s/n ${equipment.serial_number}` : "");
+      setRequest(r);
+      setSourceId(null);
+      setInitial({
+        ...defaultFormValues(),
+        company: client?.name ?? r.client_name,
+        address: [client?.address, client?.city, client?.country].filter(Boolean).join("\n"),
+        name: r.contact_name ?? client?.contact_name ?? "",
+        email: r.contact_email ?? client?.contact_email ?? "",
+        phone: client?.contact_phone ?? "",
+        machine: machine.trim(),
+        currency: "USD",
+        notes: `Request ${r.request_id}${r.request_details ? ` — ${r.request_details}` : ""}`,
+        source: (r.received_via as PdrSource | null) ?? "",
+        clientId: r.client_id,
+        equipmentId: r.equipment_id,
+      });
+      setSyncKey(`request-${r.id}`);
+    })();
+    return () => { cancelled = true; };
+  }, [requestId]);
+
+  useEffect(() => {
+    if (requestId) return;
     if (!fromId) {
       setInitial(defaultFormValues());
       setSourceId(null);
@@ -74,7 +119,7 @@ export default function PdrDevisNew() {
       setSyncKey(`from-${data.id}`);
     })();
     return () => { cancelled = true; };
-  }, [fromId]);
+  }, [fromId, requestId]);
 
   async function handleSubmit(values: PdrFormValues) {
     setSaving(true);
@@ -86,10 +131,16 @@ export default function PdrDevisNew() {
         parent_id: null,
         source_form_devis_id: sourceId,
         ...payload,
+        ...(request ? { issuing_entity: request.entity } : {}),
         logistics: {},
         status: "brouillon",
         created_by: user?.id ?? null,
       });
+      if (request) {
+        // Le numéro officiel DE26… est attribué par la base : on le rattache à la demande.
+        await linkQuote(supabasePdr, request, doc.id);
+        await addEvent(supabasePdr, request.id, "status", `Quote ${doc.reference} created`, user?.email ?? null).catch(() => {});
+      }
       if (sourceId) await supabasePdr.from("form_devis").update({ status: "traite" }).eq("id", sourceId);
       await rememberParts(payload.items, values.currency);
       navigate(`/espace-pdr/document/${doc.id}`);
@@ -109,7 +160,7 @@ export default function PdrDevisNew() {
           <PdrDocumentForm
             initial={initial}
             syncKey={syncKey}
-            title="New offer"
+            title={request ? `New offer — ${request.request_id}` : "New offer"}
             submitLabel="Create offer"
             saving={saving}
             error={error}

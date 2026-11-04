@@ -13,7 +13,7 @@ import {
   type PdrCommStatus, type PdrCommercialStatus,
 } from "@/lib/pdrDocuments";
 import {
-  getApprovalSettings, docNeedsValidation, isSendBlocked,
+  getApprovalSettings, docNeedsValidation, isSendBlocked, isAlwaysValidated, isDgUser,
   requestValidation, approveValidation, rejectValidation, clearValidation,
   VALIDATION_STATUS_LABEL, VALIDATION_STATUS_COLOR,
   type ApprovalSettings,
@@ -147,6 +147,10 @@ export default function PdrDocumentDetail() {
     navigate(`/espace-pdr/document/${doc.id}/convert/${toType}`);
   }
 
+  // Devis Westchase (Lagos) : l'approbation du DG est obligatoire, sans seuil.
+  const mandatoryDg = !!doc && doc.type === "devis" && isAlwaysValidated(doc.issuing_entity, approvalSettings);
+  const canDecide = !mandatoryDg || isDgUser(user?.email, approvalSettings);
+
   async function handleStatus(status: string) {
     if (!doc) return;
     await updateDocument(doc.id, { status });
@@ -156,8 +160,10 @@ export default function PdrDocumentDetail() {
   async function handleCommStatus(next: PdrCommStatus) {
     if (!doc) return;
     // Business rule: cannot mark as 'communique' if validation is pending or rejected.
-    if (next === "communique" && isSendBlocked(doc.validation_status)) {
-      setError("Cannot mark as Sent — this document is waiting for Manager validation.");
+    if (next === "communique" && isSendBlocked(doc.validation_status, mandatoryDg)) {
+      setError(mandatoryDg && doc.validation_status !== "pending" && doc.validation_status !== "rejected"
+        ? "Cannot mark as Sent — this quote must be approved by the DG first."
+        : "Cannot mark as Sent — this document is waiting for Manager validation.");
       return;
     }
     // Business rule for avoirs: cannot mark as 'communique' unless BOTH manager + finance approved.
@@ -165,21 +171,25 @@ export default function PdrDocumentDetail() {
       setError("Cannot mark as Sent — this credit note needs both Manager SAV and Direction Financière approval.");
       return;
     }
-    await updateDocument(doc.id, { communication_status: next });
-    const fresh = await getDocument(doc.id);
-    if (fresh) setDoc(fresh);
+    try {
+      await updateDocument(doc.id, { communication_status: next });
+      const fresh = await getDocument(doc.id);
+      if (fresh) setDoc(fresh);
+    } catch (e) { setError((e as Error).message); }
   }
 
   async function handleCommercialStatus(next: PdrCommercialStatus) {
     if (!doc) return;
-    await updateDocument(doc.id, { commercial_status: next });
-    setDoc({ ...doc, commercial_status: next });
+    try {
+      await updateDocument(doc.id, { commercial_status: next });
+      setDoc({ ...doc, commercial_status: next });
+    } catch (e) { setError((e as Error).message); }
   }
 
   const validationCheck = doc && approvalSettings
-    ? docNeedsValidation(doc, approvalSettings)
+    ? docNeedsValidation(doc, approvalSettings, doc.issuing_entity)
     : { needsValidation: false, reasons: [] };
-  const sendBlocked = doc ? isSendBlocked(doc.validation_status) : false;
+  const sendBlocked = doc ? isSendBlocked(doc.validation_status, mandatoryDg) : false;
 
   async function handleRequestValidation() {
     if (!doc || !approvalSettings) return;
@@ -506,18 +516,23 @@ export default function PdrDocumentDetail() {
                         Requested {doc.validation_requested_at ? new Date(doc.validation_requested_at).toLocaleString("en-GB") : "—"}.
                         Sending to client is blocked until approval.
                       </p>
+                      {!canDecide && (
+                        <p className="text-xs text-amber-700 mb-3">Only the DG ({approvalSettings?.manager_email}) can approve or reject this quote.</p>
+                      )}
                       {!rejectMode && (
                         <div className="flex flex-wrap gap-2">
                           <button
                             onClick={handleApprove}
-                            disabled={busyValidation}
+                            disabled={busyValidation || !canDecide}
+                            title={canDecide ? undefined : "Only the DG can approve this quote"}
                             className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm px-4 py-2.5 rounded-xl disabled:opacity-60"
                           >
                             <ShieldCheck className="w-4 h-4" /> Approve
                           </button>
                           <button
                             onClick={() => setRejectMode(true)}
-                            disabled={busyValidation}
+                            disabled={busyValidation || !canDecide}
+                            title={canDecide ? undefined : "Only the DG can reject this quote"}
                             className="inline-flex items-center gap-2 bg-white border border-red-300 hover:border-red-500 text-red-700 font-bold text-sm px-4 py-2.5 rounded-xl disabled:opacity-60"
                           >
                             <ShieldAlert className="w-4 h-4" /> Reject

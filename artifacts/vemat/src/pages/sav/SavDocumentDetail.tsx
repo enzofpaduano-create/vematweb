@@ -7,10 +7,10 @@ import {
   getSavDocument, getSavChain, getSavChildrenByType, updateSavDocument, canEditSavDocument,
   createPdrRequestFromSav, convertSavDocument, computeSavTotals, partLineTotal,
   DOC_LABEL, DOC_LABEL_SHORT, nextSteps, formatMoney, formatNaira,
-  type SavDocument, type SavDocType,
+  type SavDocument, type SavDocType, type SavCommercialStatus,
 } from "@/lib/savDocuments";
 import {
-  getApprovalSettings, docNeedsValidation, isSendBlocked,
+  getApprovalSettings, docNeedsValidation, isSendBlocked, isAlwaysValidated, isDgUser,
   requestValidation, approveValidation, rejectValidation, clearValidation,
   VALIDATION_STATUS_LABEL, VALIDATION_STATUS_COLOR,
   type ApprovalSettings,
@@ -31,6 +31,11 @@ import { supabaseSav } from "@/lib/supabase";
 import { useSavAuth } from "@/contexts/SavAuthContext";
 import { sendValidationRequestEmail, sendValidationDecisionEmail,
   sendAvoirApprovalRequestEmail, sendAvoirDecisionEmail } from "@/lib/emailService";
+
+const COMMERCIAL_OPTIONS: SavCommercialStatus[] = ["en_cours", "negociation", "gagne", "perdu", "sans_suite", "annule"];
+const COMMERCIAL_LABEL: Record<SavCommercialStatus, string> = {
+  en_cours: "Open", negociation: "Under negotiation", gagne: "Won", perdu: "Lost", sans_suite: "No follow-up", annule: "Cancelled",
+};
 
 const STATUS_OPTIONS = ["brouillon", "envoye", "accepte", "refuse", "en_cours", "termine"];
 const STATUS_LABEL: Record<string, string> = {
@@ -133,22 +138,42 @@ export default function SavDocumentDetail() {
     finally { setPdrLoading(false); }
   }
 
+  // Devis Westchase (Lagos) : l'approbation du DG est obligatoire, sans seuil.
+  const mandatoryDg = !!doc && doc.type === "devis" && isAlwaysValidated(doc.issuing_entity, approvalSettings);
+  const canDecide = !mandatoryDg || isDgUser(user?.email, approvalSettings);
+
   async function handleStatus(status: string) {
     if (!doc) return;
-    if ((status === "envoye" || status === "accepte") && isSendBlocked(doc.validation_status)) {
-      setError("Cannot mark as Sent/Accepted — this document is waiting for Manager validation.");
+    if ((status === "envoye" || status === "accepte") && isSendBlocked(doc.validation_status, mandatoryDg)) {
+      setError(mandatoryDg && doc.validation_status !== "pending" && doc.validation_status !== "rejected"
+        ? "Cannot mark as Sent/Accepted — this quote must be approved by the DG first."
+        : "Cannot mark as Sent/Accepted — this document is waiting for Manager validation.");
       return;
     }
     if ((status === "envoye" || status === "accepte") && doc.type === "avoir" && !canIssueAvoir(doc)) {
       setError("Cannot mark as Sent/Accepted — this credit note needs both Manager SAV and Direction Financière approval.");
       return;
     }
-    await updateSavDocument(doc.id, { status });
-    setDoc({ ...doc, status });
+    try {
+      // Pour un devis, « Sent » alimente aussi le suivi d'envoi du registre (date d'envoi automatique).
+      const patch: Partial<SavDocument> = { status };
+      if (doc.type === "devis" && (status === "envoye" || status === "accepte")) patch.communication_status = "communique";
+      await updateSavDocument(doc.id, patch);
+      const fresh = await getSavDocument(doc.id);
+      setDoc(fresh ?? { ...doc, ...patch });
+    } catch (e) { setError((e as Error).message); }
+  }
+
+  async function handleCommercial(next: SavCommercialStatus) {
+    if (!doc) return;
+    try {
+      await updateSavDocument(doc.id, { commercial_status: next });
+      setDoc({ ...doc, commercial_status: next });
+    } catch (e) { setError((e as Error).message); }
   }
 
   const validationCheck = doc && approvalSettings
-    ? docNeedsValidation({ total_amount: doc.total_amount, parts: doc.parts }, approvalSettings)
+    ? docNeedsValidation({ total_amount: doc.total_amount, parts: doc.parts }, approvalSettings, doc.issuing_entity)
     : { needsValidation: false, reasons: [] };
 
   async function handleRequestValidation() {
@@ -397,6 +422,13 @@ export default function SavDocumentDetail() {
                   <select value={doc.status} onChange={(e) => handleStatus(e.target.value)} className="bg-white border border-zinc-200 rounded-xl px-3 py-2 text-sm font-semibold text-zinc-700 focus:outline-none focus:border-emerald-400">
                     {STATUS_OPTIONS.map((s) => <option key={s} value={s}>{STATUS_LABEL[s] ?? s}</option>)}
                   </select>
+                  {doc.type === "devis" && (
+                    <select value={doc.commercial_status ?? "en_cours"} onChange={(e) => handleCommercial(e.target.value as SavCommercialStatus)}
+                      title="Commercial outcome"
+                      className="bg-white border border-zinc-200 rounded-xl px-3 py-2 text-sm font-semibold text-zinc-700 focus:outline-none focus:border-emerald-400">
+                      {COMMERCIAL_OPTIONS.map((c) => <option key={c} value={c}>{COMMERCIAL_LABEL[c]}</option>)}
+                    </select>
+                  )}
                 </div>
               </div>
 
@@ -705,12 +737,15 @@ export default function SavDocumentDetail() {
                       <p className="text-sm text-zinc-700 mb-3">
                         Requested {doc.validation_requested_at ? new Date(doc.validation_requested_at).toLocaleString("en-GB") : "—"}. Sending is blocked until approval.
                       </p>
+                      {!canDecide && (
+                        <p className="text-xs text-amber-700 mb-3">Only the DG ({approvalSettings?.manager_email}) can approve or reject this quote.</p>
+                      )}
                       {!rejectMode && (
                         <div className="flex flex-wrap gap-2">
-                          <button onClick={handleApprove} disabled={busyValidation} className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm px-4 py-2.5 rounded-xl disabled:opacity-60">
+                          <button onClick={handleApprove} disabled={busyValidation || !canDecide} title={canDecide ? undefined : "Only the DG can approve this quote"} className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm px-4 py-2.5 rounded-xl disabled:opacity-60">
                             <ShieldCheck className="w-4 h-4" /> Approve
                           </button>
-                          <button onClick={() => setRejectMode(true)} disabled={busyValidation} className="inline-flex items-center gap-2 bg-white border border-red-300 hover:border-red-500 text-red-700 font-bold text-sm px-4 py-2.5 rounded-xl disabled:opacity-60">
+                          <button onClick={() => setRejectMode(true)} disabled={busyValidation || !canDecide} title={canDecide ? undefined : "Only the DG can reject this quote"} className="inline-flex items-center gap-2 bg-white border border-red-300 hover:border-red-500 text-red-700 font-bold text-sm px-4 py-2.5 rounded-xl disabled:opacity-60">
                             <ShieldAlert className="w-4 h-4" /> Reject
                           </button>
                           <button onClick={handleClearValidation} disabled={busyValidation} className="text-xs text-zinc-500 hover:text-zinc-800 px-2">Cancel request</button>
