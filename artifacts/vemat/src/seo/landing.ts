@@ -106,7 +106,7 @@ const brandDefs: BrandDef[] = [
     newTitle: { fr: "Grue Terex neuve", en: "New Terex cranes" },
     plural: { fr: "grues Terex", en: "Terex cranes" },
     blurb: {
-      fr: "Les grues Terex Rough Terrain (RT) et les grues à tour (TC) sont réunies depuis 2025 sous la bannière Raimondi Group, qui a repris ces gammes historiques de Terex. Conçues et assemblées en Italie, elles sont destinées aux chantiers les plus exigeants.",
+      fr: "Les grues automotrices lentes Terex Rough Terrain (RT) et les grues à tour (TC) sont réunies depuis 2025 sous la bannière Raimondi Group, qui a repris ces gammes historiques de Terex. Conçues et assemblées en Italie, elles sont destinées aux chantiers les plus exigeants.",
       en: "Terex Rough Terrain (RT) cranes and tower cranes (TC) have been part of the Raimondi Group since 2025, which took over these historic Terex product lines. Designed and assembled in Italy, they are built for the most demanding jobsites.",
     },
     cat: { href: "/grues", label: { fr: "Toutes nos grues", en: "All our cranes" } },
@@ -129,8 +129,8 @@ const brandDefs: BrandDef[] = [
     id: "tadano",
     short: "Tadano",
     slug: { fr: "grue-tadano", en: "tadano-cranes" },
-    newTitle: { fr: "Grue Tadano neuve", en: "New Tadano cranes" },
-    plural: { fr: "grues Tadano", en: "Tadano cranes" },
+    newTitle: { fr: "Grue Tadano Demag neuve", en: "New Tadano Demag cranes" },
+    plural: { fr: "grues Tadano Demag", en: "Tadano Demag cranes" },
     blurb: {
       fr: "Tadano, qui a intégré la marque Demag, est l'un des trois plus grands constructeurs mondiaux de grues mobiles. La gamme AC tout-terrain couvre des capacités de 40 à 500 tonnes, avec des longueurs de flèche jusqu'à 80 mètres.",
       en: "Tadano, which has integrated the Demag brand, is one of the world's three largest mobile crane manufacturers. The AC all-terrain range covers capacities from 40 to 500 tons, with boom lengths up to 80 metres.",
@@ -440,16 +440,37 @@ export function buildContent(page: LandingPage): Content {
   if (brand) {
     const models = modelsOf(brand.id);
     if (models.length) {
-      sections.push({
-        h2: L(`Gamme ${brand.short} au catalogue Vemat`, `${brand.short} range in the Vemat catalogue`),
-        paragraphs: [
-          L(
-            `Le catalogue Vemat présente ${models.length} modèles ${brand.short} (${brand.catalogue.fr}). Ouvrez une fiche pour voir les caractéristiques, puis demandez votre devis.`,
-            `The Vemat catalogue lists ${models.length} ${brand.short} models (${brand.catalogue.en}). Open a model page for its specifications, then request your quote.`,
-          ),
-        ],
-        links: models.map((m) => ({ href: `/produit/${m.key}`, label: `${brand.short} ${m.name}` })),
-      });
+      const link = (m: Model) => ({ href: `/produit/${m.key}`, label: `${brand.short} ${m.name}` });
+      if (brand.id === "terex") {
+        // Les grues automotrices lentes (RT / TRT) passent en premier, les grues à tour ensuite.
+        const rt = models.filter((m) => /^t?rt-/.test(m.key));
+        const tower = models.filter((m) => !/^t?rt-/.test(m.key));
+        sections.push({
+          h2: L("Grues Terex automotrices lentes (Rough Terrain)", "Terex rough terrain cranes (RT)"),
+          paragraphs: [
+            L(
+              `${rt.length} modèles Terex RT et TRT au catalogue Vemat. Ouvrez une fiche pour voir les caractéristiques, puis demandez votre devis.`,
+              `${rt.length} Terex RT and TRT models in the Vemat catalogue. Open a model page for its specifications, then request your quote.`,
+            ),
+          ],
+          links: rt.map(link),
+        });
+        sections.push({
+          h2: L("Grues à tour Terex", "Terex tower cranes"),
+          links: tower.map(link),
+        });
+      } else {
+        sections.push({
+          h2: L(`Gamme ${brand.short} au catalogue Vemat`, `${brand.short} range in the Vemat catalogue`),
+          paragraphs: [
+            L(
+              `Le catalogue Vemat présente ${models.length} modèles ${brand.short} (${brand.catalogue.fr}). Ouvrez une fiche pour voir les caractéristiques, puis demandez votre devis.`,
+              `The Vemat catalogue lists ${models.length} ${brand.short} models (${brand.catalogue.en}). Open a model page for its specifications, then request your quote.`,
+            ),
+          ],
+          links: models.map(link),
+        });
+      }
     }
     sections.push({
       h2: L(`Pourquoi choisir Vemat ${p.in}`, `Why choose Vemat ${p.in}`),
