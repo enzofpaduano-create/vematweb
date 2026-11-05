@@ -1260,7 +1260,7 @@ export const mecalacOfficialContent: Record<string, MecalacOfficialContentItem> 
   },
   "ta9": {
     "sourceUrl": "https://mecalac.com/fr/machine/ta9.html",
-    "descriptionFr": "Le dumper TA9 est conçu pour les projets de grande envergure où la productivité est essentielle, offrant la plus grande charge utile tout en conservant le même niveau de polyvalence, de sécurité et de performances tout-terrain. Conçu pour les chantiers de grande eenvergure, le dumper TA9 est équipé d’un moteur de 55 kW (74 ch) et offre une grande productivité pour le transport de matériaux. Avec une charge utile de 9 000 kg (19,841 lb), le TA9 est désormais proposé exclusivement avec une benne à déversement direct, idéale pour le transport en vrac. Sa transmission hydrostatique permet d’atteindre une vitesse maximale de 25 km/h (15,5 mph), les 4 roues motrices permanentes et l'articulation centrale sont garantes d'une traction efficace même dans les conditions les plus difficiles. Conforme aux dernières normes de sécurité, le dumper TA9 Mecalac est doté d’une caméra avant, d’un inclinomètre, de barrières latérales de protection pour l'opérateur et d’un arceau ROPS repliable pour une sécurité accrue.",
+    "descriptionFr": "Le dumper TA9 est conçu pour les projets de grande envergure où la productivité est essentielle, offrant la plus grande charge utile tout en conservant le même niveau de polyvalence, de sécurité et de performances tout-terrain. Conçu pour les chantiers de grande envergure, le dumper TA9 est équipé d’un moteur de 55 kW (74 ch) et offre une grande productivité pour le transport de matériaux. Avec une charge utile de 9 000 kg (19,841 lb), le TA9 est désormais proposé exclusivement avec une benne à déversement direct, idéale pour le transport en vrac. Sa transmission hydrostatique permet d’atteindre une vitesse maximale de 25 km/h (15,5 mph), les 4 roues motrices permanentes et l'articulation centrale sont garantes d'une traction efficace même dans les conditions les plus difficiles. Conforme aux dernières normes de sécurité, le dumper TA9 Mecalac est doté d’une caméra avant, d’un inclinomètre, de barrières latérales de protection pour l'opérateur et d’un arceau ROPS repliable pour une sécurité accrue.",
     "images": [
       {
         "path": "/images/products/ta9/01-2be6e758ce32.png"
@@ -1464,7 +1464,7 @@ export const mecalacOfficialContent: Record<string, MecalacOfficialContentItem> 
   },
   "6mcr": {
     "sourceUrl": "https://mecalac.com/fr/machine/6mcr-2.html",
-    "descriptionFr": "La pelle-skid 6MCR offre la compacité d'une mini-pelle avec les performances d'une pelle midi, et vous ouvre tout un nouveau monde de possibilités. Depuis plus de 10 ans, les pelles Mecalac MCR accomplissent efficacement toutes sortes de tâches. Nos clients se déplacent à 10 km/h, bénéficient d'une conduite au joystick et profitent d'une compacité imbattable, non seulement à l'arrière mais surtout à l'avant et en hauteur, compacité qui équivaut à celle d'une pelle de 2 tonnes. Notre conception unique est basée sur l'équilibre, la condition sinequanone pour la puissance de levage s'agissant d'un équipement compact. De plus, vous pouvez utiliser nos pelles comme une chargeuse compacte avec toutes ses commandes et ses accessoires, y compris des godets de 0,49m3 (0,64 yd3) qui sont deux fois plus volumineux que ceux des pelles traditionnelles de la même taille. Les pelles MCR de Mecalac vous offrent des avantages en matière de rentabilité qui vous hisseront au-dessus de la concurrence.",
+    "descriptionFr": "La pelle-skid 6MCR offre la compacité d'une mini-pelle avec les performances d'une pelle midi, et vous ouvre tout un nouveau monde de possibilités. Depuis plus de 10 ans, les pelles Mecalac MCR accomplissent efficacement toutes sortes de tâches. Nos clients se déplacent à 10 km/h, bénéficient d'une conduite au joystick et profitent d'une compacité imbattable, non seulement à l'arrière mais surtout à l'avant et en hauteur, compacité qui équivaut à celle d'une pelle de 2 tonnes. Notre conception unique est basée sur l'équilibre, la condition sine qua non pour la puissance de levage s'agissant d'un équipement compact. De plus, vous pouvez utiliser nos pelles comme une chargeuse compacte avec toutes ses commandes et ses accessoires, y compris des godets de 0,49m3 (0,64 yd3) qui sont deux fois plus volumineux que ceux des pelles traditionnelles de la même taille. Les pelles MCR de Mecalac vous offrent des avantages en matière de rentabilité qui vous hisseront au-dessus de la concurrence.",
     "images": [
       {
         "path": "/images/products/6mcr/01-d1d9eb247bc8.png"
@@ -1607,7 +1607,7 @@ export const mecalacOfficialContent: Record<string, MecalacOfficialContentItem> 
   },
   "8mcr": {
     "sourceUrl": "https://mecalac.com/fr/machine/8mcr-2.html",
-    "descriptionFr": "La pelle compacte 8MCR offre un rapport poids/performance imbattable et exceptionnel dans sa catégorie. Depuis plus de 10 ans, les pelles Mecalac MCR accomplissent efficacement toutes sortes de tâches. Nos clients se déplacent à 10 km/h, bénéficient d'une conduite au joystick et profitent d'une compacité imbattable, non seulement à l'arrière mais surtout à l'avant et en hauteur, compacité qui équivaut à celle d'une pelle de 2 tonnes. Notre conception unique est basée sur l'équilibre, la condition sinequanone pour la puissance de levage s'agissant d'un équipement compact. De plus, vous pouvez utiliser nos pelles comme une chargeuse compacte avec toutes ses commandes et ses accessoires, y compris des godets de 0,75m3 (0,98 yd3) qui sont deux fois plus volumineux que ceux des pelles traditionnelles de la même taille. Les pelles MCR de Mecalac vous offrent des avantages en matière de rentabilité qui vous hisseront au-dessus de la concurrence.",
+    "descriptionFr": "La pelle compacte 8MCR offre un rapport poids/performance imbattable et exceptionnel dans sa catégorie. Depuis plus de 10 ans, les pelles Mecalac MCR accomplissent efficacement toutes sortes de tâches. Nos clients se déplacent à 10 km/h, bénéficient d'une conduite au joystick et profitent d'une compacité imbattable, non seulement à l'arrière mais surtout à l'avant et en hauteur, compacité qui équivaut à celle d'une pelle de 2 tonnes. Notre conception unique est basée sur l'équilibre, la condition sine qua non pour la puissance de levage s'agissant d'un équipement compact. De plus, vous pouvez utiliser nos pelles comme une chargeuse compacte avec toutes ses commandes et ses accessoires, y compris des godets de 0,75m3 (0,98 yd3) qui sont deux fois plus volumineux que ceux des pelles traditionnelles de la même taille. Les pelles MCR de Mecalac vous offrent des avantages en matière de rentabilité qui vous hisseront au-dessus de la concurrence.",
     "images": [
       {
         "path": "/images/products/8mcr/01-418645a9a806.png"
@@ -1774,7 +1774,7 @@ export const mecalacOfficialContent: Record<string, MecalacOfficialContentItem> 
   },
   "10mcr": {
     "sourceUrl": "https://mecalac.com/fr/machine/10mcr-2.html",
-    "descriptionFr": "La pelle skid 10mcr atteint le maximum en matière de compacité et de performance dans sa catégorie. Depuis plus de 10 ans, les pelles Mecalac MCR accomplissent efficacement toutes sortes de tâches. Nos clients se déplacent à 10 km/h, bénéficient d'une conduite au joystick et profitent d'une compacité imbattable, non seulement à l'arrière mais surtout à l'avant et en hauteur, compacité qui équivaut à celle d'une pelle de 2 tonnes. Notre conception unique est basée sur l'équilibre, la condition sinequanone pour la puissance de levage s'agissant d'un équipement compact. De plus, vous pouvez utiliser nos pelles comme une chargeuse compacte avec toutes ses commandes et ses accessoires, y compris des godets de 0,75m3 (0,98 yd3) qui sont deux fois plus volumineux que ceux des pelles traditionnelles de la même taille. Les pelles MCR de Mecalac vous offrent des avantages en matière de rentabilité qui vous hisseront au-dessus de la concurrence.",
+    "descriptionFr": "La pelle skid 10mcr atteint le maximum en matière de compacité et de performance dans sa catégorie. Depuis plus de 10 ans, les pelles Mecalac MCR accomplissent efficacement toutes sortes de tâches. Nos clients se déplacent à 10 km/h, bénéficient d'une conduite au joystick et profitent d'une compacité imbattable, non seulement à l'arrière mais surtout à l'avant et en hauteur, compacité qui équivaut à celle d'une pelle de 2 tonnes. Notre conception unique est basée sur l'équilibre, la condition sine qua non pour la puissance de levage s'agissant d'un équipement compact. De plus, vous pouvez utiliser nos pelles comme une chargeuse compacte avec toutes ses commandes et ses accessoires, y compris des godets de 0,75m3 (0,98 yd3) qui sont deux fois plus volumineux que ceux des pelles traditionnelles de la même taille. Les pelles MCR de Mecalac vous offrent des avantages en matière de rentabilité qui vous hisseront au-dessus de la concurrence.",
     "images": [
       {
         "path": "/images/products/10mcr/01-86d2b3bc4e1d.png"
@@ -2518,7 +2518,7 @@ export const mecalacOfficialContent: Record<string, MecalacOfficialContentItem> 
       },
       {
         "title": "Frein de travail automatique",
-        "body": "Vérouillage automatique du frein et du pont lorsque la machine se met à travailler.",
+        "body": "Verrouillage automatique du frein et du pont lorsque la machine se met à travailler.",
         "bullets": [
           "Réduit la fatigue",
           "Améliore la productivité"
@@ -2566,7 +2566,7 @@ export const mecalacOfficialContent: Record<string, MecalacOfficialContentItem> 
         ]
       },
       {
-        "title": "Plus deconfort",
+        "title": "Plus de confort",
         "body": "Sièges Grammer confortables Joysticks ergonomiques, type “MWR” Interface conviviale d’affichage du moniteur et encore plus de possibilités de personnalisation du profil utilisateur Nouveaux ajustements possibles de l'alarme de translation Suppression du blocage manuel de la rotation cabine Commande additionnelle du marche-pied déployable au sol",
         "bullets": [
           "Sièges Grammer confortables",

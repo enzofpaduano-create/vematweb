@@ -8,7 +8,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "JLG",
     "description": {
       "en": "The JLG 1030P gives operators more working room on the platform while keeping the lightweight, low ground pressure advantages needed for sensitive floors. It is well suited to finish work and indoor applications where productivity and operator comfort matter.",
-      "fr": "La JLG 1030P offre plus d espace utile en plateforme tout en conservant les avantages d une machine legere a faible pression au sol pour les surfaces sensibles. Elle convient tres bien aux travaux de finition et aux interventions interieures ou la productivite et le confort operateur comptent vraiment."
+      "fr": "La JLG 1030P offre plus d'espace utile en plateforme tout en conservant les avantages d'une machine légère à faible pression au sol pour les surfaces sensibles. Elle convient très bien aux travaux de finition et aux interventions intérieures où la productivité et le confort opérateur comptent vraiment."
     },
     "features": {
       "en": [],
@@ -67,7 +67,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Mecalac",
     "description": {
       "en": "The Mecalac 10MCR brings together the compactness of a mini excavator and the output of a larger machine, with the added versatility of loader-style work and attachments. It is a strong productivity choice for contractors who need one compact platform to cover many roles on site.",
-      "fr": "Le Mecalac 10MCR reunit la compacite d une mini-pelle et le rendement d une machine plus importante, avec en plus la polyvalence d un travail type chargeuse et de nombreux accessoires. C est un choix de productivite tres fort pour les entreprises qui veulent une seule plateforme compacte capable d assurer plusieurs fonctions sur chantier."
+      "fr": "Le Mecalac 10MCR réunit la compacité d'une mini-pelle et le rendement d'une machine plus importante, avec en plus la polyvalence d'un travail type chargeuse et de nombreux accessoires. C'est un choix de productivité très fort pour les entreprises qui veulent une seule plateforme compacte capable d'assurer plusieurs fonctions sur chantier."
     },
     "features": {
       "fr": [],
@@ -119,7 +119,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "JLG",
     "description": {
       "en": "The JLG 10MSP is made for efficient stock picking and narrow-aisle work, with full-height driveability and zero turning radius. One-hand operation and onboard charging make it a very practical choice for warehouses and logistics environments.",
-      "fr": "La JLG 10MSP est pensee pour la preparation de commandes et le travail en allees etroites, avec deplacement possible a pleine hauteur et rayon de braquage nul. Son pilotage a une main et sa recharge integree en font un choix tres pratique pour les entrepots et environnements logistiques."
+      "fr": "La JLG 10MSP est pensée pour la préparation de commandes et le travail en allées étroites, avec déplacement possible à pleine hauteur et rayon de braquage nul. Son pilotage à une main et sa recharge intégrée en font un choix très pratique pour les entrepôts et environnements logistiques."
     },
     "features": {
       "en": [],
@@ -183,7 +183,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Mecalac",
     "description": {
       "en": "The Mecalac 11MWR is a wheeled excavator designed for fast repositioning, strong tool versatility and efficient urban jobsite performance. It is well suited to roadworks, utilities and contractor fleets that need mobility to matter as much as digging power.",
-      "fr": "Le Mecalac 11MWR est une pelle sur pneus concue pour les repositionnements rapides, la polyvalence d outils et une forte efficacite sur les chantiers urbains. Elle convient tres bien a la voirie, aux reseaux et aux flottes d entreprises pour lesquelles la mobilite compte autant que la puissance de terrassement."
+      "fr": "Le Mecalac 11MWR est une pelle sur pneus conçue pour les repositionnements rapides, la polyvalence d'outils et une forte efficacité sur les chantiers urbains. Elle convient très bien à la voirie, aux réseaux et aux flottes d'entreprises pour lesquelles la mobilité compte autant que la puissance de terrassement."
     },
     "features": {
       "fr": [],
@@ -251,7 +251,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "JLG",
     "description": {
       "en": "The JLG 1230ES is a compact electric vertical lift that replaces ladders and scaffolds with a cleaner, lower-maintenance access solution. Its lightweight design and long runtime make it especially practical for indoor work, freight elevators and repetitive daily tasks.",
-      "fr": "La JLG 1230ES est une nacelle verticale electrique compacte qui remplace efficacement les echelles et les echafaudages par une solution plus propre et plus simple a entretenir. Son faible poids et sa bonne autonomie la rendent particulierement pratique pour les travaux interieurs, les monte-charges et les taches repetitives."
+      "fr": "La JLG 1230ES est une nacelle verticale électrique compacte qui remplace efficacement les échelles et les échafaudages par une solution plus propre et plus simple à entretenir. Son faible poids et sa bonne autonomie la rendent particulièrement pratique pour les travaux intérieurs, les monte-charges et les tâches répétitives."
     },
     "features": {
       "en": [],
@@ -309,7 +309,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "JLG",
     "description": {
       "en": "The JLG 1250AJP is an ultra-boom designed for major height applications where speed, stability and serious jobsite presence are essential. It is a strong fit for heavy construction, industrial shutdowns and large access work that demands fast positioning and confident outreach.",
-      "fr": "La JLG 1250AJP est une ultra-boom concue pour les travaux a tres grande hauteur, ou la rapidite, la stabilite et la capacite de chantier sont essentielles. Elle convient parfaitement aux grands projets de construction, aux arrets industriels et aux interventions d acces qui exigent un positionnement rapide et une portee de confiance."
+      "fr": "La JLG 1250AJP est une ultra-boom conçue pour les travaux à très grande hauteur, où la rapidité, la stabilité et la capacité de chantier sont essentielles. Elle convient parfaitement aux grands projets de construction, aux arrêts industriels et aux interventions d'accès qui exigent un positionnement rapide et une portée de confiance."
     },
     "features": {
       "en": [],
@@ -380,7 +380,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Mecalac",
     "description": {
       "en": "The Mecalac 12MRX is aimed at customers who want the highest productivity within the 12-Series, with more implement speed, stronger axles and greater road performance. It retains the compact multifunction concept of the 12MTX while pushing mobility, traction and output further.",
-      "fr": "Le Mecalac 12MRX s adresse aux clients qui recherchent le plus haut niveau de productivite dans la Serie 12, avec davantage de vitesse d outils, des essieux renforces et de meilleures performances routieres. Il conserve le concept multifonction compact de la 12MTX tout en poussant plus loin la mobilite, la traction et le rendement."
+      "fr": "Le Mecalac 12MRX s'adresse aux clients qui recherchent le plus haut niveau de productivité dans la Série 12, avec davantage de vitesse d'outils, des essieux renforcés et de meilleures performances routières. Il conserve le concept multifonction compact de la 12MTX tout en poussant plus loin la mobilité, la traction et le rendement."
     },
     "features": {
       "fr": [],
@@ -450,7 +450,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Mecalac",
     "description": {
       "en": "The Mecalac 12MSX is the most accessible gateway into the 12-Series, combining the compact DNA of the 12MTX with a strong balance of versatility and profitability. It is a very smart choice for users who want the Mecalac excavator-loader concept in a more economical package without giving up core site flexibility.",
-      "fr": "Le Mecalac 12MSX est la porte d entree la plus accessible vers la Serie 12, en reprenant l ADN compact de la 12MTX avec un excellent equilibre entre polyvalence et rentabilite. C est un choix tres judicieux pour les utilisateurs qui veulent le concept Mecalac pelle-chargeuse dans une version plus economique sans renoncer a l essentiel en chantier."
+      "fr": "Le Mecalac 12MSX est la porte d'entrée la plus accessible vers la Série 12, en reprenant l'ADN compact de la 12MTX avec un excellent équilibre entre polyvalence et rentabilité. C'est un choix très judicieux pour les utilisateurs qui veulent le concept Mecalac pelle-chargeuse dans une version plus économique sans renoncer à l'essentiel en chantier."
     },
     "features": {
       "fr": [],
@@ -517,7 +517,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Mecalac",
     "description": {
       "en": "The Mecalac 12MTX is the flagship multifunction wheel excavator-loader, designed to combine excavator, loader and tool carrier roles in one highly versatile machine. It is especially attractive for urban construction and civil engineering teams that want maximum flexibility from a compact platform.",
-      "fr": "Le Mecalac 12MTX est la pelle-chargeuse sur pneus multifonction emblematique de la marque, concue pour reunir les roles de pelle, chargeuse et porte-outils dans une seule machine tres polyvalente. Elle est particulierement attractive pour les equipes de travaux urbains et de genie civil qui veulent un maximum de flexibilite a partir d une plateforme compacte."
+      "fr": "Le Mecalac 12MTX est la pelle-chargeuse sur pneus multifonction emblématique de la marque, conçue pour réunir les rôles de pelle, chargeuse et porte-outils dans une seule machine très polyvalente. Elle est particulièrement attractive pour les équipes de travaux urbains et de génie civil qui veulent un maximum de flexibilité à partir d'une plateforme compacte."
     },
     "features": {
       "fr": [],
@@ -611,7 +611,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "JLG",
     "description": {
       "en": "The JLG 1500AJP is built for extreme access work where high platform capacity and flexible jib positioning create a real operational advantage. It is especially relevant for large industrial and infrastructure projects that need faster setup and stronger fleet visibility.",
-      "fr": "La JLG 1500AJP est pensee pour les travaux d acces les plus exigeants, ou une forte capacite en plateforme et un jib tres flexible apportent un vrai avantage operationnel. Elle est particulierement pertinente pour les grands projets industriels et d infrastructure qui demandent une mise en place rapide et un meilleur suivi de flotte."
+      "fr": "La JLG 1500AJP est pensée pour les travaux d'accès les plus exigeants, où une forte capacité en plateforme et un jib très flexible apportent un vrai avantage opérationnel. Elle est particulièrement pertinente pour les grands projets industriels et d'infrastructure qui demandent une mise en place rapide et un meilleur suivi de flotte."
     },
     "features": {
       "en": [],
@@ -676,7 +676,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Mecalac",
     "description": {
       "en": "The Mecalac 15MC is a compact crawler excavator built to deliver serious power and reach while staying highly effective in confined work zones. It is a strong option for contractors who want patented Mecalac versatility in a larger, more capable crawler format.",
-      "fr": "Le Mecalac 15MC est une pelle sur chenilles compacte concue pour offrir une vraie puissance et une grande amplitude de travail tout en restant tres efficace dans les zones contraintes. C est une option tres solide pour les entreprises qui veulent la polyvalence Mecalac dans un format chenilles plus puissant et plus ambitieux."
+      "fr": "Le Mecalac 15MC est une pelle sur chenilles compacte conçue pour offrir une vraie puissance et une grande amplitude de travail tout en restant très efficace dans les zones contraintes. C'est une option très solide pour les entreprises qui veulent la polyvalence Mecalac dans un format chenilles plus puissant et plus ambitieux."
     },
     "features": {
       "fr": [],
@@ -741,7 +741,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Mecalac",
     "description": {
       "en": "The Mecalac 15MWR is a wheeled excavator designed for fast repositioning, strong tool versatility and efficient urban jobsite performance. It is well suited to roadworks, utilities and contractor fleets that need mobility to matter as much as digging power.",
-      "fr": "Le Mecalac 15MWR est une pelle sur pneus concue pour les repositionnements rapides, la polyvalence d outils et une forte efficacite sur les chantiers urbains. Elle convient tres bien a la voirie, aux reseaux et aux flottes d entreprises pour lesquelles la mobilite compte autant que la puissance de terrassement."
+      "fr": "Le Mecalac 15MWR est une pelle sur pneus conçue pour les repositionnements rapides, la polyvalence d'outils et une forte efficacité sur les chantiers urbains. Elle convient très bien à la voirie, aux réseaux et aux flottes d'entreprises pour lesquelles la mobilité compte autant que la puissance de terrassement."
     },
     "features": {
       "fr": [],
@@ -830,7 +830,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "JLG",
     "description": {
       "en": "The JLG 20E is a compact mast boom made for tight spaces where simple up-and-over access makes daily work easier. Its small footprint and outdoor capability make it a practical solution for maintenance, fit-out and facility work in constrained areas.",
-      "fr": "La JLG 20E est une nacelle a mat compacte pensee pour les espaces reduits, ou un acces simple en devers facilite vraiment le travail au quotidien. Son faible encombrement et sa capacite a intervenir aussi dehors en font une solution tres pratique pour la maintenance, l amenagement et les interventions techniques en zones contraintes."
+      "fr": "La JLG 20E est une nacelle à mât compacte pensée pour les espaces réduits, où un accès simple en devers facilite vraiment le travail au quotidien. Son faible encombrement et sa capacité à intervenir aussi dehors en font une solution très pratique pour la maintenance, l'aménagement et les interventions techniques en zones contraintes."
     },
     "features": {
       "en": [],
@@ -893,7 +893,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "JLG",
     "description": {
       "en": "The JLG 25AM is a compact vertical personnel lift designed for stable, comfortable access in maintenance and fit-out work. Its rigid mast, maneuverable six-wheel base and long battery duty cycles make it a dependable everyday solution.",
-      "fr": "La JLG 25AM est une nacelle verticale compacte concue pour offrir un acces stable et confortable sur les travaux de maintenance et d amenagement. Son mat rigide, sa base a six roues tres maniable et sa bonne autonomie en font une solution fiable au quotidien."
+      "fr": "La JLG 25AM est une nacelle verticale compacte conçue pour offrir un accès stable et confortable sur les travaux de maintenance et d'aménagement. Son mât rigide, sa base à six roues très maniable et sa bonne autonomie en font une solution fiable au quotidien."
     },
     "features": {
       "en": [],
@@ -949,7 +949,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "JLG",
     "description": {
       "en": "The JLG 26E keeps the compact Toucan concept while extending working flexibility for operators who need more reach in narrow environments. It is a reliable option for mixed maintenance and installation tasks where maneuverability is just as important as access height.",
-      "fr": "La JLG 26E reprend l esprit compact de la gamme Toucan tout en offrant plus de souplesse de travail aux operateurs qui ont besoin de davantage de portee en environnement etroit. C est une option fiable pour les travaux de maintenance et d installation ou la maniabilite compte autant que la hauteur d acces."
+      "fr": "La JLG 26E reprend l'esprit compact de la gamme Toucan tout en offrant plus de souplesse de travail aux opérateurs qui ont besoin de davantage de portée en environnement étroit. C'est une option fiable pour les travaux de maintenance et d'installation où la maniabilité compte autant que la hauteur d'accès."
     },
     "features": {
       "en": [],
@@ -1012,7 +1012,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Mecalac",
     "description": {
       "en": "The Mecalac 3.5MDX combines dumper productivity with a premium focus on operator comfort, visibility and site safety. It is particularly attractive for users who want a more protective and more comfortable transport machine without giving up rugged jobsite performance.",
-      "fr": "Le Mecalac 3.5MDX associe la productivite d un dumper a une attention particuliere portee au confort operateur, a la visibilite et a la securite sur chantier. Il est particulierement attractif pour les utilisateurs qui veulent une machine de transport plus protectrice et plus confortable sans renoncer aux performances sur terrain exigeant."
+      "fr": "Le Mecalac 3.5MDX associe la productivité d'un dumper à une attention particulière portée au confort opérateur, à la visibilité et à la sécurité sur chantier. Il est particulièrement attractif pour les utilisateurs qui veulent une machine de transport plus protectrice et plus confortable sans renoncer aux performances sur terrain exigeant."
     },
     "features": {
       "fr": [],
@@ -1081,7 +1081,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "JLG",
     "description": {
       "en": "The JLG 30AM is a compact vertical personnel lift designed for stable, comfortable access in maintenance and fit-out work. Its rigid mast, maneuverable six-wheel base and long battery duty cycles make it a dependable everyday solution.",
-      "fr": "La JLG 30AM est une nacelle verticale compacte concue pour offrir un acces stable et confortable sur les travaux de maintenance et d amenagement. Son mat rigide, sa base a six roues tres maniable et sa bonne autonomie en font une solution fiable au quotidien."
+      "fr": "La JLG 30AM est une nacelle verticale compacte conçue pour offrir un accès stable et confortable sur les travaux de maintenance et d'aménagement. Son mât rigide, sa base à six roues très maniable et sa bonne autonomie en font une solution fiable au quotidien."
     },
     "features": {
       "en": [],
@@ -1134,7 +1134,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "JLG",
     "description": {
       "en": "The JLG 32E is designed to improve profitability with a cleaner electric architecture and reduced maintenance needs. It is an attractive mast platform for users who want compact access equipment with better battery performance, simpler service and strong everyday efficiency.",
-      "fr": "La JLG 32E est concue pour ameliorer la rentabilite grace a une architecture electrique plus propre et a des besoins de maintenance reduits. C est une plateforme a mat tres interessante pour les utilisateurs qui veulent un acces compact avec une meilleure autonomie, un entretien simplifie et une forte efficacite au quotidien."
+      "fr": "La JLG 32E est conçue pour améliorer la rentabilité grâce à une architecture électrique plus propre et à des besoins de maintenance réduits. C'est une plateforme à mât très intéressante pour les utilisateurs qui veulent un accès compact avec une meilleure autonomie, un entretien simplifie et une forte efficacité au quotidien."
     },
     "features": {
       "en": [],
@@ -1197,7 +1197,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "JLG",
     "description": {
       "en": "The JLG 340AJ is a compact diesel articulating boom built for demanding outdoor work where durability and terrainability matter. It is a practical choice for contractors who want dependable access equipment with lower service complexity and strong day-to-day productivity.",
-      "fr": "La JLG 340AJ est une nacelle articulee diesel compacte concue pour les chantiers exterieurs exigeants, ou la robustesse et la motricite font la difference. C est un choix tres pratique pour les entreprises qui recherchent une machine fiable, simple a entretenir et productive au quotidien."
+      "fr": "La JLG 340AJ est une nacelle articulée diesel compacte conçue pour les chantiers extérieurs exigeants, où la robustesse et la motricité font la différence. C'est un choix très pratique pour les entreprises qui recherchent une machine fiable, simple à entretenir et productive au quotidien."
     },
     "features": {
       "en": [],
@@ -1261,7 +1261,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "JLG",
     "description": {
       "en": "The JLG 38AM is a compact vertical personnel lift designed for stable, comfortable access in maintenance and fit-out work. Its rigid mast, maneuverable six-wheel base and long battery duty cycles make it a dependable everyday solution.",
-      "fr": "La JLG 38AM est une nacelle verticale compacte concue pour offrir un acces stable et confortable sur les travaux de maintenance et d amenagement. Son mat rigide, sa base a six roues tres maniable et sa bonne autonomie en font une solution fiable au quotidien."
+      "fr": "La JLG 38AM est une nacelle verticale compacte conçue pour offrir un accès stable et confortable sur les travaux de maintenance et d'aménagement. Son mât rigide, sa base à six roues très maniable et sa bonne autonomie en font une solution fiable au quotidien."
     },
     "features": {
       "en": [],
@@ -1317,7 +1317,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "JLG",
     "description": {
       "en": "The JLG 450AJ combines strong all-around performance with smoother multifunction operation, making it well suited to busy construction and maintenance sites. Its updated hood design and service access also support faster upkeep and better fleet uptime.",
-      "fr": "La JLG 450AJ combine une vraie polyvalence de chantier avec des mouvements plus fluides, ce qui la rend tres adaptee aux travaux de construction et de maintenance. Son nouveau capot et son acces facilite a la maintenance favorisent aussi une meilleure disponibilite de la machine."
+      "fr": "La JLG 450AJ combine une vraie polyvalence de chantier avec des mouvements plus fluides, ce qui la rend très adaptée aux travaux de construction et de maintenance. Son nouveau capot et son accès facilite à la maintenance favorisent aussi une meilleure disponibilité de la machine."
     },
     "features": {
       "en": [],
@@ -1380,7 +1380,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "JLG",
     "description": {
       "en": "The JLG 450AJ HC3 is designed for teams that need more platform flexibility for workers, tools and materials without sacrificing maneuverability. Its three-zone capacity management and automatic load sensing make it especially relevant for demanding jobsite tasks at height.",
-      "fr": "La JLG 450AJ HC3 s adresse aux equipes qui ont besoin de plus de flexibilite en plateforme pour les operateurs, les outils et les materiaux, sans perdre en maniabilite. Sa gestion de charge en trois zones et son controle automatique de la charge en font une solution tres pertinente pour les travaux exigeants en hauteur."
+      "fr": "La JLG 450AJ HC3 s'adresse aux équipes qui ont besoin de plus de flexibilité en plateforme pour les opérateurs, les outils et les matériaux, sans perdre en maniabilité. Sa gestion de charge en trois zones et son contrôle automatique de la charge en font une solution très pertinente pour les travaux exigeants en hauteur."
     },
     "features": {
       "en": [],
@@ -1439,7 +1439,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "JLG",
     "description": {
       "en": "The JLG 600AJ stands out for its generous work envelope and strong maneuverability in confined outdoor areas. It is a solid option for contractors who need easier access around structures, steelwork and hard-to-reach jobsite positions.",
-      "fr": "La JLG 600AJ se distingue par son enveloppe de travail genereuse et sa tres bonne maniabilite dans les zones exterieures restreintes. C est une option solide pour les entreprises qui doivent acceder plus facilement autour des structures, charpentes et zones difficiles a atteindre."
+      "fr": "La JLG 600AJ se distingue par son enveloppe de travail généreuse et sa très bonne maniabilité dans les zones extérieures restreintes. C'est une option solide pour les entreprises qui doivent accéder plus facilement autour des structures, charpentes et zones difficiles à atteindre."
     },
     "features": {
       "en": [],
@@ -1503,7 +1503,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "JLG",
     "description": {
       "en": "The JLG 600AJ HC3 adds high-capacity platform flexibility to a larger articulating boom, helping crews work more efficiently with people, tools and materials at height. Its smart load management and operator-focused alerts support safer, smoother operation on demanding jobs.",
-      "fr": "La JLG 600AJ HC3 apporte la flexibilite d une plateforme haute capacite a une nacelle articulee de plus grande taille, pour aider les equipes a travailler plus efficacement avec operateurs, outils et materiaux en hauteur. Sa gestion intelligente de la charge et ses alertes pensees pour l operateur favorisent un travail plus serein sur les chantiers exigeants."
+      "fr": "La JLG 600AJ HC3 apporte la flexibilité d'une plateforme haute capacité à une nacelle articulée de plus grande taille, pour aider les équipes à travailler plus efficacement avec opérateurs, outils et matériaux en hauteur. Sa gestion intelligente de la charge et ses alertes pensées pour l'opérateur favorisent un travail plus serein sur les chantiers exigeants."
     },
     "features": {
       "en": [],
@@ -1562,7 +1562,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Mecalac",
     "description": {
       "en": "The Mecalac 6MCR brings together the compactness of a mini excavator and the output of a larger machine, with the added versatility of loader-style work and attachments. It is a strong productivity choice for contractors who need one compact platform to cover many roles on site.",
-      "fr": "Le Mecalac 6MCR reunit la compacite d une mini-pelle et le rendement d une machine plus importante, avec en plus la polyvalence d un travail type chargeuse et de nombreux accessoires. C est un choix de productivite tres fort pour les entreprises qui veulent une seule plateforme compacte capable d assurer plusieurs fonctions sur chantier."
+      "fr": "Le Mecalac 6MCR réunit la compacité d'une mini-pelle et le rendement d'une machine plus importante, avec en plus la polyvalence d'un travail type chargeuse et de nombreux accessoires. C'est un choix de productivité très fort pour les entreprises qui veulent une seule plateforme compacte capable d'assurer plusieurs fonctions sur chantier."
     },
     "features": {
       "fr": [],
@@ -1641,7 +1641,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Mecalac",
     "description": {
       "en": "The Mecalac 6MDX combines dumper productivity with a premium focus on operator comfort, visibility and site safety. It is particularly attractive for users who want a more protective and more comfortable transport machine without giving up rugged jobsite performance.",
-      "fr": "Le Mecalac 6MDX associe la productivite d un dumper a une attention particuliere portee au confort operateur, a la visibilite et a la securite sur chantier. Il est particulierement attractif pour les utilisateurs qui veulent une machine de transport plus protectrice et plus confortable sans renoncer aux performances sur terrain exigeant."
+      "fr": "Le Mecalac 6MDX associe la productivité d'un dumper à une attention particulière portée au confort opérateur, à la visibilité et à la sécurité sur chantier. Il est particulièrement attractif pour les utilisateurs qui veulent une machine de transport plus protectrice et plus confortable sans renoncer aux performances sur terrain exigeant."
     },
     "features": {
       "fr": [],
@@ -1723,7 +1723,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Mecalac",
     "description": {
       "en": "The Mecalac 7MWR is a wheeled excavator designed for fast repositioning, strong tool versatility and efficient urban jobsite performance. It is well suited to roadworks, utilities and contractor fleets that need mobility to matter as much as digging power.",
-      "fr": "Le Mecalac 7MWR est une pelle sur pneus concue pour les repositionnements rapides, la polyvalence d outils et une forte efficacite sur les chantiers urbains. Elle convient tres bien a la voirie, aux reseaux et aux flottes d entreprises pour lesquelles la mobilite compte autant que la puissance de terrassement."
+      "fr": "Le Mecalac 7MWR est une pelle sur pneus conçue pour les repositionnements rapides, la polyvalence d'outils et une forte efficacité sur les chantiers urbains. Elle convient très bien à la voirie, aux réseaux et aux flottes d'entreprises pour lesquelles la mobilité compte autant que la puissance de terrassement."
     },
     "features": {
       "fr": [],
@@ -1794,7 +1794,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "JLG",
     "description": {
       "en": "The JLG 800AJ is built for operators who need extended articulated access with strong versatility on large outdoor projects. It combines broad jobsite coverage with practical accessory integration and efficient machine management for productive daily use.",
-      "fr": "La JLG 800AJ est pensee pour les exploitants qui ont besoin d un acces articule de grande portee avec une vraie polyvalence sur les grands chantiers exterieurs. Elle combine une large couverture de travail avec des accessoires pratiques et une gestion machine efficace pour une utilisation tres productive."
+      "fr": "La JLG 800AJ est pensée pour les exploitants qui ont besoin d'un accès articule de grande portée avec une vraie polyvalence sur les grands chantiers extérieurs. Elle combine une large couverture de travail avec des accessoires pratiques et une gestion machine efficace pour une utilisation très productive."
     },
     "features": {
       "en": [],
@@ -1853,7 +1853,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "JLG",
     "description": {
       "en": "The JLG 800AJ HC3 is aimed at high-demand applications where crews need more capacity and greater flexibility in the platform. It is particularly attractive for complex jobs that require multiple operators, tools and materials while keeping precise control at height.",
-      "fr": "La JLG 800AJ HC3 vise les applications les plus exigeantes, ou les equipes ont besoin de plus de capacite et de plus de souplesse en plateforme. Elle est particulierement interessante pour les chantiers complexes qui demandent plusieurs operateurs, des outils et des materiaux tout en gardant un controle precis en hauteur."
+      "fr": "La JLG 800AJ HC3 vise les applications les plus exigeantes, où les équipes ont besoin de plus de capacité et de plus de souplesse en plateforme. Elle est particulièrement intéressante pour les chantiers complexes qui demandent plusieurs opérateurs, des outils et des matériaux tout en gardant un contrôle précis en hauteur."
     },
     "features": {
       "en": [],
@@ -1912,7 +1912,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "JLG",
     "description": {
       "en": "The JLG 830P is built for fast low-level access on finish work and sensitive floors, with no setup once in position. Its push-around simplicity and excellent service access make it especially attractive for maintenance teams and rental fleets.",
-      "fr": "La JLG 830P est concue pour un acces rapide en faible hauteur sur les travaux de finition et les sols sensibles, sans temps d installation une fois en place. Sa simplicite de deplacement et son acces maintenance tres pratique la rendent particulierement interessante pour la maintenance et la location."
+      "fr": "La JLG 830P est conçue pour un accès rapide en faible hauteur sur les travaux de finition et les sols sensibles, sans temps d'installation une fois en place. Sa simplicité de déplacement et son accès maintenance très pratique la rendent particulièrement intéressante pour la maintenance et la location."
     },
     "features": {
       "en": [],
@@ -1968,7 +1968,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Mecalac",
     "description": {
       "en": "The Mecalac 8MCR brings together the compactness of a mini excavator and the output of a larger machine, with the added versatility of loader-style work and attachments. It is a strong productivity choice for contractors who need one compact platform to cover many roles on site.",
-      "fr": "Le Mecalac 8MCR reunit la compacite d une mini-pelle et le rendement d une machine plus importante, avec en plus la polyvalence d un travail type chargeuse et de nombreux accessoires. C est un choix de productivite tres fort pour les entreprises qui veulent une seule plateforme compacte capable d assurer plusieurs fonctions sur chantier."
+      "fr": "Le Mecalac 8MCR réunit la compacité d'une mini-pelle et le rendement d'une machine plus importante, avec en plus la polyvalence d'un travail type chargeuse et de nombreux accessoires. C'est un choix de productivité très fort pour les entreprises qui veulent une seule plateforme compacte capable d'assurer plusieurs fonctions sur chantier."
     },
     "features": {
       "fr": [],
@@ -2056,7 +2056,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Mecalac",
     "description": {
       "en": "The Mecalac 9MDX combines dumper productivity with a premium focus on operator comfort, visibility and site safety. It is particularly attractive for users who want a more protective and more comfortable transport machine without giving up rugged jobsite performance.",
-      "fr": "Le Mecalac 9MDX associe la productivite d un dumper a une attention particuliere portee au confort operateur, a la visibilite et a la securite sur chantier. Il est particulierement attractif pour les utilisateurs qui veulent une machine de transport plus protectrice et plus confortable sans renoncer aux performances sur terrain exigeant."
+      "fr": "Le Mecalac 9MDX associe la productivité d'un dumper à une attention particulière portée au confort opérateur, à la visibilité et à la sécurité sur chantier. Il est particulièrement attractif pour les utilisateurs qui veulent une machine de transport plus protectrice et plus confortable sans renoncer aux performances sur terrain exigeant."
     },
     "features": {
       "fr": [],
@@ -2102,7 +2102,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Mecalac",
     "description": {
       "en": "The Mecalac 9MWR is a wheeled excavator designed for fast repositioning, strong tool versatility and efficient urban jobsite performance. It is well suited to roadworks, utilities and contractor fleets that need mobility to matter as much as digging power.",
-      "fr": "Le Mecalac 9MWR est une pelle sur pneus concue pour les repositionnements rapides, la polyvalence d outils et une forte efficacite sur les chantiers urbains. Elle convient tres bien a la voirie, aux reseaux et aux flottes d entreprises pour lesquelles la mobilite compte autant que la puissance de terrassement."
+      "fr": "Le Mecalac 9MWR est une pelle sur pneus conçue pour les repositionnements rapides, la polyvalence d'outils et une forte efficacité sur les chantiers urbains. Elle convient très bien à la voirie, aux réseaux et aux flottes d'entreprises pour lesquelles la mobilité compte autant que la puissance de terrassement."
     },
     "features": {
       "fr": [],
@@ -2167,7 +2167,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Tadano",
     "description": {
       "en": "The Mecalac 9MWR is a wheeled excavator designed for fast repositioning, strong tool versatility and efficient urban jobsite performance. It is well suited to roadworks, utilities and contractor fleets that need mobility to matter as much as digging power.",
-      "fr": "Le Mecalac 9MWR est une pelle sur pneus concue pour les repositionnements rapides, la polyvalence d outils et une forte efficacite sur les chantiers urbains. Elle convient tres bien a la voirie, aux reseaux et aux flottes d entreprises pour lesquelles la mobilite compte autant que la puissance de terrassement."
+      "fr": "Le Mecalac 9MWR est une pelle sur pneus conçue pour les repositionnements rapides, la polyvalence d'outils et une forte efficacité sur les chantiers urbains. Elle convient très bien à la voirie, aux réseaux et aux flottes d'entreprises pour lesquelles la mobilité compte autant que la puissance de terrassement."
     },
     "features": {
       "en": [],
@@ -2220,7 +2220,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Tadano",
     "description": {
       "en": "The Tadano AC 3.045-1 City is purpose-built for low-clearance indoor and dense urban work where conventional cranes quickly reach their limits. Its compact roadable format, Flex Base outriggers and optional zero-emission E-Pack make it especially relevant for constrained, sensitive environments.",
-      "fr": "La Tadano AC 3.045-1 City est concue pour les travaux en interieur a faible hauteur libre et les environnements urbains denses ou les grues conventionnelles atteignent vite leurs limites. Son format routier compact, le Flex Base et l E-Pack zero emission en option la rendent particulierement adaptee aux environnements sensibles et contraints."
+      "fr": "La Tadano AC 3.045-1 City est conçue pour les travaux en intérieur à faible hauteur libre et les environnements urbains denses où les grues conventionnelles atteignent vite leurs limites. Son format routier compact, le Flex Base et l'E-Pack zéro émission en option la rendent particulièrement adaptée aux environnements sensibles et contraints."
     },
     "features": {
       "en": [],
@@ -2276,7 +2276,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Tadano",
     "description": {
       "en": "The Tadano AC 3.055-1 combines long reach, true roadability and quick setup in a highly efficient three-axle package. It is a strong choice for users who want maximum versatility with minimal transport complexity.",
-      "fr": "La Tadano AC 3.055-1 combine grande portee, excellente aptitude routiere et mise en oeuvre rapide dans un format trois essieux tres efficace. C est une solution tres pertinente pour les exploitants qui recherchent un maximum de polyvalence avec une logistique reduite."
+      "fr": "La Tadano AC 3.055-1 combine grande portée, excellente aptitude routière et mise en œuvre rapide dans un format trois essieux très efficace. C'est une solution très pertinente pour les exploitants qui recherchent un maximum de polyvalence avec une logistique réduite."
     },
     "features": {
       "en": [],
@@ -2326,7 +2326,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Tadano",
     "description": {
       "en": "The Tadano AC 3.060-1 stands out with exceptional boom reach for a fully roadable three-axle crane, while remaining easy for one person to handle on site. Its automatic counterweight rigging and Flex Base system help speed up setup and improve jobsite adaptability.",
-      "fr": "La Tadano AC 3.060-1 se distingue par une portee remarquable pour une grue trois essieux pleinement routiere, tout en restant simple a exploiter sur chantier. Son systeme automatique de montage des contrepoids et le Flex Base accelerent la mise en oeuvre et ameliorent l adaptabilite sur site."
+      "fr": "La Tadano AC 3.060-1 se distingue par une portée remarquable pour une grue trois essieux pleinement routière, tout en restant simple à exploiter sur chantier. Son système automatique de montage des contrepoids et le Flex Base accélèrent la mise en œuvre et améliorent l'adaptabilité sur site."
     },
     "features": {
       "en": [],
@@ -2376,7 +2376,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Tadano",
     "description": {
       "en": "The Tadano AC 4.070-2 is a compact taxi crane built to move efficiently between jobs while still delivering class-leading strength on site. IC-1 Plus, Flex Base and the optional E-Pack make it a particularly flexible solution for modern urban and infrastructure work.",
-      "fr": "La Tadano AC 4.070-2 est une taxi grue compacte pensee pour enchaîner efficacement les chantiers tout en offrant une force de levage de premier plan sur site. IC-1 Plus, Flex Base et l E-Pack en option en font une solution tres flexible pour les projets urbains et d infrastructure."
+      "fr": "La Tadano AC 4.070-2 est une taxi grue compacte pensée pour enchaîner efficacement les chantiers tout en offrant une force de levage de premier plan sur site. IC-1 Plus, Flex Base et l'E-Pack en option en font une solution très flexible pour les projets urbains et d'infrastructure."
     },
     "features": {
       "en": [],
@@ -2423,7 +2423,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Tadano",
     "description": {
       "en": "With its long boom and compact four-axle footprint, the Tadano AC 4.070L-1 is designed for jobs that demand extra reach without sacrificing mobility. AML-F, Lift Adjuster and flexible counterweight configurations help improve setup speed, load control and transport efficiency.",
-      "fr": "Avec sa longue fleche et son encombrement compact sur quatre essieux, la Tadano AC 4.070L-1 cible les chantiers qui demandent plus de portee sans perdre en mobilite. AML-F, Lift Adjuster et la modularite des contrepoids ameliorent la rapidite de mise en place, le controle de charge et l efficacite au transport."
+      "fr": "Avec sa longue flèche et son encombrement compact sur quatre essieux, la Tadano AC 4.070L-1 cible les chantiers qui demandent plus de portée sans perdre en mobilité. AML-F, Lift Adjuster et la modularité des contrepoids améliorent la rapidité de mise en place, le contrôle de charge et l'efficacité au transport."
     },
     "features": {
       "en": [],
@@ -2473,7 +2473,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Tadano",
     "description": {
       "en": "The Tadano AC 4.080-1 delivers an excellent mix of reach, transport flexibility and jobsite accessibility in a compact four-axle crane. It works equally well as a main crane or a powerful support crane when steep boom performance matters.",
-      "fr": "La Tadano AC 4.080-1 offre un excellent equilibre entre portee, souplesse de transport et accessibilite sur chantier dans un format compact a quatre essieux. Elle se montre aussi pertinente en grue principale qu en grue d appui puissante lorsque les performances a forte inclinaison comptent vraiment."
+      "fr": "La Tadano AC 4.080-1 offre un excellent équilibre entre portée, souplesse de transport et accessibilité sur chantier dans un format compact à quatre essieux. Elle se montre aussi pertinente en grue principale qu'en grue d'appui puissante lorsque les performances à forte inclinaison comptent vraiment."
     },
     "features": {
       "en": [],
@@ -2526,7 +2526,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Tadano",
     "description": {
       "en": "The Tadano AC 4.100L-1 is built for high performance in confined spaces, with a very compact width and a system length that opens up dense urban and indoor applications. It is a particularly strong option for projects where access is limited but reach cannot be compromised.",
-      "fr": "La Tadano AC 4.100L-1 est concue pour offrir de fortes performances dans les espaces contraints, avec une largeur tres compacte et une longueur de systeme adaptee aux environnements urbains et interieurs. C est une machine particulierement interessante lorsque l acces est limite mais que la portee doit rester au rendez-vous."
+      "fr": "La Tadano AC 4.100L-1 est conçue pour offrir de fortes performances dans les espaces contraints, avec une largeur très compacte et une longueur de système adaptée aux environnements urbains et intérieurs. C'est une machine particulièrement intéressante lorsque l'accès est limité mais que la portée doit rester au rendez-vous."
     },
     "features": {
       "en": [],
@@ -2576,7 +2576,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Tadano",
     "description": {
       "en": "The Tadano AC 4.110-1 brings strong lifting power to a compact four-axle platform, making it a smart fit for projects that need both mobility and serious performance. Its reinforced boom and controlled footprint help it stay effective on demanding jobs with limited space.",
-      "fr": "La Tadano AC 4.110-1 apporte une vraie puissance de levage sur une plateforme compacte a quatre essieux, ideale pour les projets qui demandent a la fois mobilite et performance. Sa fleche renforcee et son encombrement maitrise lui permettent de rester tres efficace sur les chantiers exigeants et contraints."
+      "fr": "La Tadano AC 4.110-1 apporte une vraie puissance de levage sur une plateforme compacte à quatre essieux, idéale pour les projets qui demandent à la fois mobilité et performance. Sa flèche renforcée et son encombrement maîtrisé lui permettent de rester très efficace sur les chantiers exigeants et contraints."
     },
     "features": {
       "en": [],
@@ -2629,7 +2629,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Tadano",
     "description": {
       "en": "The Tadano AC 5.120-1 is a versatile all-rounder built to cover a wide range of lifting scenarios with strong capacity and road-friendly transport behavior. It is a practical choice for fleets looking for one crane that can handle varied day-to-day assignments efficiently.",
-      "fr": "La Tadano AC 5.120-1 est une veritable polyvalente concue pour couvrir un large eventail de levages avec de fortes capacites et un comportement routier tres favorable. C est un choix tres pertinent pour les flottes qui veulent une seule grue capable d assurer efficacement des missions tres variees."
+      "fr": "La Tadano AC 5.120-1 est une véritable polyvalente conçue pour couvrir un large éventail de levages avec de fortes capacités et un comportement routier très favorable. C'est un choix très pertinent pour les flottes qui veulent une seule grue capable d'assurer efficacement des missions très variées."
     },
     "features": {
       "en": [],
@@ -2672,7 +2672,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Tadano",
     "description": {
       "en": "The Tadano AC 5.130-1 focuses on compact dimensions, strong lifting performance and lower operating cost in the five-axle segment. Its single-engine architecture and efficient transport profile make it especially attractive for intensive fleet use.",
-      "fr": "La Tadano AC 5.130-1 mise sur la compacite, de fortes performances de levage et des couts d exploitation reduits dans le segment cinq essieux. Son architecture a moteur unique et son profil de transport efficient la rendent particulierement attractive pour une utilisation intensive en flotte."
+      "fr": "La Tadano AC 5.130-1 mise sur la compacité, de fortes performances de levage et des coûts d'exploitation réduits dans le segment cinq essieux. Son architecture à moteur unique et son profil de transport efficient la rendent particulièrement attractive pour une utilisation intensive en flotte."
     },
     "features": {
       "en": [],
@@ -2722,7 +2722,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Tadano",
     "description": {
       "en": "The Tadano AC 5.140-1 is a powerful all-around crane designed to stay productive across general construction and heavier lifting scenarios. Its strong off-road mobility and versatile jib concept make it a dependable solution for varied site conditions.",
-      "fr": "La Tadano AC 5.140-1 est une grue polyvalente et puissante concue pour rester productive aussi bien en construction generale que sur des levages plus engages. Sa tres bonne mobilite hors route et son concept de flechette polyvalent en font une solution fiable pour des conditions de chantier variees."
+      "fr": "La Tadano AC 5.140-1 est une grue polyvalente et puissante conçue pour rester productive aussi bien en construction générale que sur des levages plus engagés. Sa très bonne mobilité hors route et son concept de fléchette polyvalent en font une solution fiable pour des conditions de chantier variées."
     },
     "features": {
       "en": [],
@@ -2772,7 +2772,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Tadano",
     "description": {
       "en": "The Tadano AC 5.160-1 combines compact overall dimensions with exceptional boom reach, giving contractors strong lifting capability almost anywhere. Its agile steering package and efficient driveline help it access sites that would slow down bulkier cranes.",
-      "fr": "La Tadano AC 5.160-1 associe un encombrement compact a une portee de fleche exceptionnelle, ce qui lui permet d offrir de fortes capacites de levage presque partout. Sa direction agile et sa chaine cinematique efficiente l aident a acceder a des sites ou des grues plus imposantes perdraient en efficacite."
+      "fr": "La Tadano AC 5.160-1 associe un encombrement compact à une portée de flèche exceptionnelle, ce qui lui permet d'offrir de fortes capacités de levage presque partout. Sa direction agile et sa chaîne cinématique efficiente l'aident à accéder à des sites où des grues plus imposantes perdraient en efficacité."
     },
     "features": {
       "en": [],
@@ -2822,7 +2822,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Tadano",
     "description": {
       "en": "The Tadano AC 5.220-1 is built for operators who need high holding power, flexible outrigger positioning and easier transport planning. Its remote control features and reduced logistics burden make it a strong candidate for demanding, high-value lifts.",
-      "fr": "La Tadano AC 5.220-1 s adresse aux exploitants qui recherchent une forte tenue de charge, un calage tres flexible et une logistique simplifiee. Ses fonctions de commande a distance et sa facilite de transport en font une excellente candidate pour les levages exigeants a forte valeur ajoutee."
+      "fr": "La Tadano AC 5.220-1 s'adresse aux exploitants qui recherchent une forte tenue de charge, un calage très flexible et une logistique simplifiée. Ses fonctions de commande à distance et sa facilite de transport en font une excellente candidate pour les levages exigeants à forte valeur ajoutée."
     },
     "features": {
       "en": [],
@@ -2872,7 +2872,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Tadano",
     "description": {
       "en": "The Tadano AC 5.220L-1 combines compact dimensions with exceptional boom reach, making it particularly effective on projects that demand height without oversized logistics. It is a very strong option for users who want reach, transport efficiency and controlled operating cost in one machine.",
-      "fr": "La Tadano AC 5.220L-1 combine compacite et portee exceptionnelle, ce qui la rend tres pertinente sur les projets qui demandent de la hauteur sans logistique surdimensionnee. C est une option tres solide pour les utilisateurs qui veulent reunir portee, efficacite au transport et cout d exploitation maitrise dans une seule machine."
+      "fr": "La Tadano AC 5.220L-1 combine compacité et portée exceptionnelle, ce qui la rend très pertinente sur les projets qui demandent de la hauteur sans logistique surdimensionnée. C'est une option très solide pour les utilisateurs qui veulent réunir portée, efficacité au transport et coût d'exploitation maîtrise dans une seule machine."
     },
     "features": {
       "en": [],
@@ -2922,7 +2922,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Tadano",
     "description": {
       "en": "The Tadano AC 5.250-1 delivers high performance in one of the most compact packages of its class, helping crews move fast between transport and lifting phases. Its maneuverability and efficient single-engine concept support both productivity and lower ownership cost.",
-      "fr": "La Tadano AC 5.250-1 delivre de hautes performances dans l un des formats les plus compacts de sa categorie, ce qui aide les equipes a gagner du temps entre transport et levage. Sa maniabilite et son concept a moteur unique soutiennent a la fois la productivite et la reduction du cout de possession."
+      "fr": "La Tadano AC 5.250-1 délivre de hautes performances dans l'un des formats les plus compacts de sa catégorie, ce qui aide les équipes à gagner du temps entre transport et levage. Sa maniabilité et son concept à moteur unique soutiennent à la fois la productivité et la réduction du coût de possession."
     },
     "features": {
       "en": [],
@@ -2955,7 +2955,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Tadano",
     "description": {
       "en": "The Tadano AC 5.250-2 raises the standard in its class with stronger lifting values, self-rigging extensions and a transport profile that remains highly practical. It also brings flagship Tadano technologies that improve visibility, safety and energy efficiency on real-world jobsites.",
-      "fr": "La Tadano AC 5.250-2 eleve le niveau de sa categorie avec des capacites superieures, des extensions auto-montables et un profil de transport qui reste tres pratique. Elle apporte aussi les technologies phares de Tadano pour ameliorer la visibilite, la securite et l efficacite energetique sur les chantiers reels."
+      "fr": "La Tadano AC 5.250-2 élève le niveau de sa catégorie avec des capacités supérieures, des extensions auto-montables et un profil de transport qui reste très pratique. Elle apporte aussi les technologies phares de Tadano pour améliorer la visibilité, la sécurité et l'efficacité énergétique sur les chantiers réels."
     },
     "features": {
       "en": [],
@@ -3014,7 +3014,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Tadano",
     "description": {
       "en": "The Tadano AC 5.250L-2 is designed for projects that demand exceptional height and urban lifting precision, from obstacle-clearance work to tower crane assembly. Its long boom, self-rigging extensions and flexible transport concept make it a premium long-boom taxi crane.",
-      "fr": "La Tadano AC 5.250L-2 est pensee pour les projets qui exigent une grande hauteur et une vraie precision de levage en environnement urbain, qu il s agisse de franchir des obstacles ou d assembler des grues a tour. Sa longue fleche, ses extensions auto-montables et son concept de transport flexible en font une taxi grue haut de gamme a longue portee."
+      "fr": "La Tadano AC 5.250L-2 est pensée pour les projets qui exigent une grande hauteur et une vraie précision de levage en environnement urbain, qu'il s'agisse de franchir des obstacles ou d'assembler des grues à tour. Sa longue flèche, ses extensions auto-montables et son concept de transport flexible en font une taxi grue haut de gamme à longue portée."
     },
     "features": {
       "en": [],
@@ -3070,7 +3070,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Tadano",
     "description": {
       "en": "The Tadano AC 6.300-1 opens up applications that usually require larger, less agile cranes, thanks to its compact six-axle format and luffing jib capability. It is particularly effective where height, reach and tight jobsite access must all be managed together.",
-      "fr": "La Tadano AC 6.300-1 ouvre des applications normalement reservees a des grues plus grandes et moins agiles, grace a son format compact a six essieux et a sa possibilite de flechette relevable. Elle est particulierement performante lorsque hauteur, portee et acces contraint doivent etre geres simultanement."
+      "fr": "La Tadano AC 6.300-1 ouvre des applications normalement réservées à des grues plus grandes et moins agiles, grâce à son format compact à six essieux et à sa possibilité de fléchette relevable. Elle est particulièrement performante lorsque hauteur, portée et accès contraint doivent être gérés simultanément."
     },
     "features": {
       "en": [],
@@ -3113,7 +3113,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Tadano",
     "description": {
       "en": "The Tadano AC 7.450-1 combines compact dimensions for its class with the lifting strength expected from much larger machines. Its long boom, strong SSL performance and extensive camera coverage make it a compelling crane for high-demand infrastructure and industrial work.",
-      "fr": "La Tadano AC 7.450-1 combine des dimensions compactes pour sa categorie avec un niveau de puissance de levage attendu sur des machines bien plus grandes. Sa longue fleche, ses performances avec SSL et sa couverture camera etendue en font une grue tres attractive pour les projets d infrastructure et industriels exigeants."
+      "fr": "La Tadano AC 7.450-1 combine des dimensions compactes pour sa catégorie avec un niveau de puissance de levage attendu sur des machines bien plus grandes. Sa longue flèche, ses performances avec SSL et sa couverture caméra étendue en font une grue très attractive pour les projets d'infrastructure et industriels exigeants."
     },
     "features": {
       "en": [],
@@ -3163,7 +3163,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Tadano",
     "description": {
       "en": "The Tadano AC 8.500-1 packs exceptional power and flexibility into a surprisingly compact eight-axle crane. Its SSL system, star-shaped outriggers and IC-1 Plus control help maximize lifting capability while keeping setup and jobsite use highly efficient.",
-      "fr": "La Tadano AC 8.500-1 reunit une puissance et une flexibilite exceptionnelles dans une grue huit essieux remarquablement compacte. Son systeme SSL, ses stabilisateurs en etoile et la commande IC-1 Plus permettent de maximiser les performances de levage tout en gardant une exploitation tres efficace sur chantier."
+      "fr": "La Tadano AC 8.500-1 réunit une puissance et une flexibilité exceptionnelles dans une grue huit essieux remarquablement compacte. Son système SSL, ses stabilisateurs en étoile et la commande IC-1 Plus permettent de maximiser les performances de levage tout en gardant une exploitation très efficace sur chantier."
     },
     "features": {
       "en": [],
@@ -3216,7 +3216,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "JLG",
     "description": {
       "en": "The JLG AE1932 sets a new benchmark for all-electric slab scissors with very low maintenance, zero leaks and clean day-to-day operation. Its lithium-ion architecture and smart wheel control make it especially attractive for sensitive floors and high-uptime fleets.",
-      "fr": "La JLG AE1932 fixe un nouveau standard pour les ciseaux electriques de dalle avec tres peu de maintenance, zero fuite et un fonctionnement propre au quotidien. Son architecture lithium-ion et sa gestion intelligente des roues la rendent particulierement attractive pour les sols sensibles et les flottes qui visent une forte disponibilite."
+      "fr": "La JLG AE1932 fixe un nouveau standard pour les ciseaux électriques de dalle avec très peu de maintenance, zéro fuite et un fonctionnement propre au quotidien. Son architecture lithium-ion et sa gestion intelligente des roues la rendent particulièrement attractive pour les sols sensibles et les flottes qui visent une forte disponibilité."
     },
     "features": {
       "en": [],
@@ -3294,7 +3294,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Mecalac",
     "description": {
       "en": "The Mecalac AS1000 is a swing loader built to combine visibility, compactness and very efficient loading cycles on constrained jobsites. Its rigid chassis and four-wheel steering make it especially effective for urban works, landscaping and precise material handling.",
-      "fr": "Le Mecalac AS1000 est une chargeuse Swing concue pour combiner visibilite, compacite et cycles de chargement tres efficaces sur les chantiers contraints. Son chassis rigide et ses quatre roues directrices la rendent particulierement efficace pour les travaux urbains, les espaces verts et les manutentions precises."
+      "fr": "Le Mecalac AS1000 est une chargeuse Swing conçue pour combiner visibilité, compacité et cycles de chargement très efficaces sur les chantiers contraints. Son châssis rigide et ses quatre roues directrices la rendent particulièrement efficace pour les travaux urbains, les espaces verts et les manutentions précises."
     },
     "features": {
       "fr": [],
@@ -3351,7 +3351,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Mecalac",
     "description": {
       "en": "The Mecalac AS1600 is a swing loader built to combine visibility, compactness and very efficient loading cycles on constrained jobsites. Its rigid chassis and four-wheel steering make it especially effective for urban works, landscaping and precise material handling.",
-      "fr": "Le Mecalac AS1600 est une chargeuse Swing concue pour combiner visibilite, compacite et cycles de chargement tres efficaces sur les chantiers contraints. Son chassis rigide et ses quatre roues directrices la rendent particulierement efficace pour les travaux urbains, les espaces verts et les manutentions precises."
+      "fr": "Le Mecalac AS1600 est une chargeuse Swing conçue pour combiner visibilité, compacité et cycles de chargement très efficaces sur les chantiers contraints. Son châssis rigide et ses quatre roues directrices la rendent particulièrement efficace pour les travaux urbains, les espaces verts et les manutentions précises."
     },
     "features": {
       "fr": [],
@@ -3398,7 +3398,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Mecalac",
     "description": {
       "en": "The Mecalac AS600 is a swing loader built to combine visibility, compactness and very efficient loading cycles on constrained jobsites. Its rigid chassis and four-wheel steering make it especially effective for urban works, landscaping and precise material handling.",
-      "fr": "Le Mecalac AS600 est une chargeuse Swing concue pour combiner visibilite, compacite et cycles de chargement tres efficaces sur les chantiers contraints. Son chassis rigide et ses quatre roues directrices la rendent particulierement efficace pour les travaux urbains, les espaces verts et les manutentions precises."
+      "fr": "Le Mecalac AS600 est une chargeuse Swing conçue pour combiner visibilité, compacité et cycles de chargement très efficaces sur les chantiers contraints. Son châssis rigide et ses quatre roues directrices la rendent particulièrement efficace pour les travaux urbains, les espaces verts et les manutentions précises."
     },
     "features": {
       "fr": [],
@@ -3463,7 +3463,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Mecalac",
     "description": {
       "en": "The Mecalac AS750 is a swing loader built to combine visibility, compactness and very efficient loading cycles on constrained jobsites. Its rigid chassis and four-wheel steering make it especially effective for urban works, landscaping and precise material handling.",
-      "fr": "Le Mecalac AS750 est une chargeuse Swing concue pour combiner visibilite, compacite et cycles de chargement tres efficaces sur les chantiers contraints. Son chassis rigide et ses quatre roues directrices la rendent particulierement efficace pour les travaux urbains, les espaces verts et les manutentions precises."
+      "fr": "Le Mecalac AS750 est une chargeuse Swing conçue pour combiner visibilité, compacité et cycles de chargement très efficaces sur les chantiers contraints. Son châssis rigide et ses quatre roues directrices la rendent particulièrement efficace pour les travaux urbains, les espaces verts et les manutentions précises."
     },
     "features": {
       "fr": [],
@@ -3520,7 +3520,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Mecalac",
     "description": {
       "en": "The Mecalac AS850 is a swing loader built to combine visibility, compactness and very efficient loading cycles on constrained jobsites. Its rigid chassis and four-wheel steering make it especially effective for urban works, landscaping and precise material handling.",
-      "fr": "Le Mecalac AS850 est une chargeuse Swing concue pour combiner visibilite, compacite et cycles de chargement tres efficaces sur les chantiers contraints. Son chassis rigide et ses quatre roues directrices la rendent particulierement efficace pour les travaux urbains, les espaces verts et les manutentions precises."
+      "fr": "Le Mecalac AS850 est une chargeuse Swing conçue pour combiner visibilité, compacité et cycles de chargement très efficaces sur les chantiers contraints. Son châssis rigide et ses quatre roues directrices la rendent particulièrement efficace pour les travaux urbains, les espaces verts et les manutentions précises."
     },
     "features": {
       "fr": [],
@@ -3574,7 +3574,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Mecalac",
     "description": {
       "en": "The Mecalac AS900tele adds telescopic reach to the Swing loader concept, giving operators more flexibility for pallet handling and precise loading in tight spaces. It is a very practical machine for sites that need compactness without giving up handling range.",
-      "fr": "Le Mecalac AS900tele ajoute une portee telescopique au concept de chargeuse Swing, pour offrir davantage de souplesse en manutention de palettes et en chargement precis dans les espaces etroits. C est une machine tres pratique pour les sites qui veulent de la compacite sans renoncer a la portee de manutention."
+      "fr": "Le Mecalac AS900tele ajoute une portée télescopique au concept de chargeuse Swing, pour offrir davantage de souplesse en manutention de palettes et en chargement précis dans les espaces étroits. C'est une machine très pratique pour les sites qui veulent de la compacité sans renoncer à la portée de manutention."
     },
     "features": {
       "fr": [],
@@ -3625,7 +3625,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Mecalac",
     "description": {
       "en": "The Mecalac AX1000 is a monoboom loader designed for operators who value excellent visibility, secure attachment handling and straightforward day-to-day control. It is a dependable solution for rental fleets and contractors working on medium-duty construction and material movement tasks.",
-      "fr": "Le Mecalac AX1000 est une chargeuse a bras monobloc pensee pour les operateurs qui recherchent une excellente visibilite, une manipulation sure des accessoires et une prise en main simple au quotidien. C est une solution fiable pour les loueurs et entreprises intervenant sur des chantiers de difficulte moyenne et des manutentions regulieres."
+      "fr": "Le Mecalac AX1000 est une chargeuse à bras monobloc pensée pour les opérateurs qui recherchent une excellente visibilité, une manipulation sûre des accessoires et une prise en main simple au quotidien. C'est une solution fiable pour les loueurs et entreprises intervenant sur des chantiers de difficulté moyenne et des manutentions régulières."
     },
     "features": {
       "fr": [],
@@ -3666,7 +3666,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Mecalac",
     "description": {
       "en": "The Mecalac AX850 is a monoboom loader designed for operators who value excellent visibility, secure attachment handling and straightforward day-to-day control. It is a dependable solution for rental fleets and contractors working on medium-duty construction and material movement tasks.",
-      "fr": "Le Mecalac AX850 est une chargeuse a bras monobloc pensee pour les operateurs qui recherchent une excellente visibilite, une manipulation sure des accessoires et une prise en main simple au quotidien. C est une solution fiable pour les loueurs et entreprises intervenant sur des chantiers de difficulte moyenne et des manutentions regulieres."
+      "fr": "Le Mecalac AX850 est une chargeuse à bras monobloc pensée pour les opérateurs qui recherchent une excellente visibilité, une manipulation sûre des accessoires et une prise en main simple au quotidien. C'est une solution fiable pour les loueurs et entreprises intervenant sur des chantiers de difficulté moyenne et des manutentions régulières."
     },
     "features": {
       "fr": [],
@@ -3710,7 +3710,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Tadano",
     "description": {
       "en": "The Mecalac AX850 is a monoboom loader designed for operators who value excellent visibility, secure attachment handling and straightforward day-to-day control. It is a dependable solution for rental fleets and contractors working on medium-duty construction and material movement tasks.",
-      "fr": "Le Mecalac AX850 est une chargeuse a bras monobloc pensee pour les operateurs qui recherchent une excellente visibilite, une manipulation sure des accessoires et une prise en main simple au quotidien. C est une solution fiable pour les loueurs et entreprises intervenant sur des chantiers de difficulte moyenne et des manutentions regulieres."
+      "fr": "Le Mecalac AX850 est une chargeuse à bras monobloc pensée pour les opérateurs qui recherchent une excellente visibilité, une manipulation sûre des accessoires et une prise en main simple au quotidien. C'est une solution fiable pour les loueurs et entreprises intervenant sur des chantiers de difficulté moyenne et des manutentions régulières."
     },
     "features": {
       "en": [],
@@ -3750,7 +3750,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Tadano",
     "description": {
       "en": "The Tadano CC 38.650-1 is designed for high lifting performance with a strong economic case on infrastructure and wind projects. Features such as the Split Tray, optional Flex Frame and Boom Booster help crews adapt the crane efficiently to changing site demands.",
-      "fr": "La Tadano CC 38.650-1 est concue pour offrir de fortes performances de levage avec une vraie logique economique sur les projets d infrastructure et d eolien. Le Split Tray, le Flex Frame en option et le Boom Booster permettent d adapter efficacement la machine aux besoins changeants du chantier."
+      "fr": "La Tadano CC 38.650-1 est conçue pour offrir de fortes performances de levage avec une vraie logique économique sur les projets d'infrastructure et d'éolien. Le Split Tray, le Flex Frame en option et le Boom Booster permettent d'adapter efficacement la machine aux besoins changeants du chantier."
     },
     "features": {
       "en": [],
@@ -3804,7 +3804,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Tadano",
     "description": {
       "en": "The Tadano CC 68.1250-1 delivers outstanding lifting capacity across a wide range of configurations, especially where luffing jib work is critical. Its powerful Quadro drive, shared counterweight concept and assembly safety features make it a premium heavy-lift solution.",
-      "fr": "La Tadano CC 68.1250-1 offre des capacites de levage remarquables sur une large plage de configurations, en particulier lorsque le travail avec flechette relevable est determinant. Son Quadro drive puissant, son concept de contrepoids communs et ses dispositifs de securite au montage en font une solution premium pour le levage lourd."
+      "fr": "La Tadano CC 68.1250-1 offre des capacités de levage remarquables sur une large plage de configurations, en particulier lorsque le travail avec fléchette relevable est déterminant. Son Quadro drive puissant, son concept de contrepoids communs et ses dispositifs de sécurité au montage en font une solution premium pour le levage lourd."
     },
     "features": {
       "en": [],
@@ -3849,7 +3849,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Tadano",
     "description": {
       "en": "The Tadano CC 78.1250-1 is built for maximum efficiency in the heaviest lifting environments, combining major capacity with advanced control, transport optimization and improved sustainability. It is a flagship crawler crane for demanding projects where precision, safety and productivity must move together.",
-      "fr": "La Tadano CC 78.1250-1 est concue pour une efficacite maximale dans les environnements de levage les plus exigeants, en reunissant forte capacite, commandes evoluees, transport optimise et meilleure durabilite. C est une grue phare pour les projets ou precision, securite et productivite doivent avancer ensemble."
+      "fr": "La Tadano CC 78.1250-1 est conçue pour une efficacité maximale dans les environnements de levage les plus exigeants, en réunissant forte capacité, commandes évoluées, transport optimisé et meilleure durabilité. C'est une grue phare pour les projets où précision, sécurité et productivité doivent avancer ensemble."
     },
     "features": {
       "en": [],
@@ -3889,7 +3889,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Tadano",
     "description": {
       "en": "The Tadano CC 88.1600-1 sits at the extreme end of crawler crane performance, pairing huge capacity with transport, erection and maintenance solutions designed to stay manageable in the real world. Its Boom Booster and high hook height make it a reference machine for very large lifting campaigns.",
-      "fr": "La Tadano CC 88.1600-1 se place au sommet des performances en grue sur chenilles, avec une capacite enorme mais aussi des solutions de transport, montage et maintenance pensees pour rester gerables sur le terrain. Son Boom Booster et sa tres grande hauteur sous crochet en font une machine de reference pour les campagnes de levage hors norme."
+      "fr": "La Tadano CC 88.1600-1 se place au sommet des performances en grue sur chenilles, avec une capacité énorme mais aussi des solutions de transport, montage et maintenance pensées pour rester gérables sur le terrain. Son Boom Booster et sa très grande hauteur sous crochet en font une machine de référence pour les campagnes de levage hors norme."
     },
     "features": {
       "en": [],
@@ -3938,7 +3938,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Terex",
     "description": {
       "en": "The Terex CDK 100-16 Derrick is built to support demanding luffing applications where controlled geometry and dependable high-level lifting assistance are required. It is a valuable specialist crane for complex site setups and advanced tower crane configurations.",
-      "fr": "La Terex CDK 100-16 Derrick est concue pour accompagner les applications a fleche relevable exigeantes ou une geometrie maitrisee et une assistance fiable aux levages en hauteur sont necessaires. C est une grue specialisee precieuse pour les montages complexes et les configurations avancees de grues a tour."
+      "fr": "La Terex CDK 100-16 Derrick est conçue pour accompagner les applications à flèche relevable exigeantes où une géométrie maîtrisée et une assistance fiable aux levages en hauteur sont nécessaires. C'est une grue spécialisée précieuse pour les montages complexes et les configurations avancées de grues à tour."
     },
     "features": {
       "en": [
@@ -3975,7 +3975,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Terex",
     "description": {
       "en": "The Terex CTL 140-10 is a luffing jib tower crane well suited to dense urban construction where controlled slewing space matters as much as lifting capacity. It helps contractors work efficiently when plot lines and neighboring structures leave little margin.",
-      "fr": "La Terex CTL 140-10 est une grue a tour a fleche relevable bien adaptee aux chantiers urbains denses ou la maitrise de l encombrement en rotation compte autant que la capacite de levage. Elle aide les entreprises a travailler efficacement lorsque les limites de parcelle et les constructions voisines laissent peu de marge."
+      "fr": "La Terex CTL 140-10 est une grue à tour à flèche relevable bien adaptée aux chantiers urbains denses où la maîtrise de l'encombrement en rotation compte autant que la capacité de levage. Elle aide les entreprises à travailler efficacement lorsque les limites de parcelle et les constructions voisines laissent peu de marge."
     },
     "features": {
       "en": [
@@ -4023,7 +4023,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Terex",
     "description": {
       "en": "The Terex CTL 1600-66 sits at the top end of the luffing jib range for projects that demand very high lifting capacity in restricted footprints. It is particularly relevant for landmark towers, major infrastructure and heavy industrial construction.",
-      "fr": "La Terex CTL 1600-66 se place au sommet de la gamme des grues a fleche relevable pour les projets qui exigent une tres forte capacite de levage dans des emprises restreintes. Elle est particulierement pertinente pour les tours emblématiques, les grandes infrastructures et la construction industrielle lourde."
+      "fr": "La Terex CTL 1600-66 se place au sommet de la gamme des grues à flèche relevable pour les projets qui exigent une très forte capacité de levage dans des emprises restreintes. Elle est particulièrement pertinente pour les tours emblématiques, les grandes infrastructures et la construction industrielle lourde."
     },
     "features": {
       "en": [
@@ -4080,7 +4080,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Terex",
     "description": {
       "en": "The Terex CTL 180-16 brings more lifting capability to urban luffing applications while preserving the tight-site advantages of this crane type. It is a strong fit for projects that need more capacity without giving up dense-city compatibility.",
-      "fr": "La Terex CTL 180-16 apporte davantage de capacite aux applications urbaines a fleche relevable tout en conservant les avantages de ce type de grue sur les sites contraints. Elle convient tres bien aux projets qui demandent plus de puissance sans renoncer a la compatibilite avec les environnements denses."
+      "fr": "La Terex CTL 180-16 apporte davantage de capacité aux applications urbaines à flèche relevable tout en conservant les avantages de ce type de grue sur les sites contraints. Elle convient très bien aux projets qui demandent plus de puissance sans renoncer à la compatibilité avec les environnements denses."
     },
     "features": {
       "en": [
@@ -4127,7 +4127,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Terex",
     "description": {
       "en": "The Terex CTL 260A-18 is built for tighter urban jobs that still require serious lifting capability and precise placement. Its luffing jib architecture supports efficient operation where crane overlap and restricted swing space are major concerns.",
-      "fr": "La Terex CTL 260A-18 est concue pour les chantiers urbains contraints qui demandent pourtant une vraie capacite de levage et une mise en place precise. Son architecture a fleche relevable favorise une exploitation efficace lorsque le recouvrement des grues et l espace de rotation limite deviennent des enjeux majeurs."
+      "fr": "La Terex CTL 260A-18 est conçue pour les chantiers urbains contraints qui demandent pourtant une vraie capacité de levage et une mise en place précise. Son architecture à flèche relevable favorise une exploitation efficace lorsque le recouvrement des grues et l'espace de rotation limité deviennent des enjeux majeurs."
     },
     "features": {
       "en": [
@@ -4172,7 +4172,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Terex",
     "description": {
       "en": "The Terex CTL 282-18 offers a balanced combination of luffing-jib control, lifting strength and site integration for demanding urban construction. It is particularly effective where accuracy and controlled working envelopes are essential.",
-      "fr": "La Terex CTL 282-18 offre un bon equilibre entre maitrise d une fleche relevable, puissance de levage et integration sur chantier pour les projets urbains exigeants. Elle est particulierement performante lorsque la precision et la maitrise de l enveloppe de travail sont essentielles."
+      "fr": "La Terex CTL 282-18 offre un bon équilibre entre maîtrise d'une flèche relevable, puissance de levage et intégration sur chantier pour les projets urbains exigeants. Elle est particulièrement performante lorsque la précision et la maîtrise de l'enveloppe de travail sont essentielles."
     },
     "features": {
       "en": [
@@ -4229,7 +4229,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Terex",
     "description": {
       "en": "The Terex CTL 340-24 is a high-capacity luffing jib crane designed for projects that need stronger lifting performance in dense or obstructed environments. It helps keep heavy lifting productive where flat-top or hammerhead solutions would be harder to integrate.",
-      "fr": "La Terex CTL 340-24 est une grue a fleche relevable de forte capacite concue pour les projets qui exigent plus de puissance de levage dans des environnements denses ou encombrés. Elle permet de maintenir la productivite sur des levages lourds la ou des solutions flat-top ou marteau s integreraient plus difficilement."
+      "fr": "La Terex CTL 340-24 est une grue à flèche relevable de forte capacité conçue pour les projets qui exigent plus de puissance de levage dans des environnements denses où encombrés. Elle permet de maintenir la productivité sur des levages lourds là où des solutions flat-top où marteau s'intégreraient plus difficilement."
     },
     "features": {
       "en": [
@@ -4292,7 +4292,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Terex",
     "description": {
       "en": "The Terex CTL 430-24 combines high luffing-jib capacity with the site management advantages needed on complex urban and high-rise projects. It is a solid option for contractors balancing power, precision and limited working space.",
-      "fr": "La Terex CTL 430-24 associe une forte capacite de grue a fleche relevable avec les avantages de gestion de chantier necessaires aux projets urbains complexes et aux immeubles de grande hauteur. C est une option solide pour les entreprises qui doivent concilier puissance, precision et espace de travail limite."
+      "fr": "La Terex CTL 430-24 associe une forte capacité de grue à flèche relevable avec les avantages de gestion de chantier nécessaires aux projets urbains complexes et aux immeubles de grande hauteur. C'est une option solide pour les entreprises qui doivent concilier puissance, précision et espace de travail limité."
     },
     "features": {
       "en": [
@@ -4341,7 +4341,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Terex",
     "description": {
       "en": "The Terex CTL 650F-45 is a heavy-capacity luffing jib crane created for major building and infrastructure work in constrained environments. It gives contractors the lifting strength they need while keeping crane behavior more manageable in dense site layouts.",
-      "fr": "La Terex CTL 650F-45 est une grue a fleche relevable de forte capacite destinee aux grands projets de batiment et d infrastructure en environnement contraint. Elle apporte aux entreprises la puissance de levage necessaire tout en gardant un comportement plus facile a maitriser sur les implantations denses."
+      "fr": "La Terex CTL 650F-45 est une grue à flèche relevable de forte capacité destinée aux grands projets de bâtiment et d'infrastructure en environnement contraint. Elle apporte aux entreprises la puissance de levage nécessaire tout en gardant un comportement plus facile à maîtriser sur les implantations denses."
     },
     "features": {
       "en": [
@@ -4389,7 +4389,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Terex",
     "description": {
       "en": "The Terex CTL 702-32 is designed for demanding high-capacity urban lifting where controlled jib movement and strong tip performance are essential. It gives major projects a luffing solution suited to dense layouts and intensive lifting programs.",
-      "fr": "La Terex CTL 702-32 est concue pour les levages urbains exigeants de grande capacite, la ou la maitrise du mouvement de fleche et de bonnes performances en bout sont essentielles. Elle apporte aux grands projets une solution a fleche relevable adaptee aux implantations denses et aux programmes de levage intensifs."
+      "fr": "La Terex CTL 702-32 est conçue pour les levages urbains exigeants de grande capacité, là où la maîtrise du mouvement de flèche et de bonnes performances en bout sont essentielles. Elle apporte aux grands projets une solution à flèche relevable adaptée aux implantations denses et aux programmes de levage intensifs."
     },
     "features": {
       "en": [
@@ -4454,7 +4454,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Terex",
     "description": {
       "en": "The Terex CTL 712-45 belongs to the Excellence in the Sky range and is built to deliver stronger control, safety and efficiency on demanding construction sites. It is aimed at projects where lifting intensity and operational discipline must remain consistently high.",
-      "fr": "La Terex CTL 712-45 fait partie de la gamme Excellence in the Sky et a ete developpee pour offrir un niveau superieur de controle, de securite et d efficacite sur les chantiers exigeants. Elle cible les projets ou l intensite des levages et la rigueur d exploitation doivent rester elevees en permanence."
+      "fr": "La Terex CTL 712-45 fait partie de la gamme Excellence in the Sky et a été développée pour offrir un niveau supérieur de contrôle, de sécurité et d'efficacité sur les chantiers exigeants. Elle cible les projets où l'intensité des levages et la rigueur d'exploitation doivent rester élevées en permanence."
     },
     "features": {
       "en": [
@@ -4511,7 +4511,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Terex",
     "description": {
       "en": "The Terex CTLH 192-12 uses hydraulic luffing technology to minimize in-service and out-of-service radius, making it especially valuable on dense urban sites. It is a smart choice where surrounding buildings, tight boundaries and multiple cranes constrain the project layout.",
-      "fr": "La Terex CTLH 192-12 utilise une technologie de fleche relevable hydraulique pour reduire au minimum les rayons en service et hors service, ce qui la rend particulierement precieuse sur les sites urbains denses. C est un choix tres pertinent lorsque les batiments voisins, les limites de parcelle et la presence de plusieurs grues contraignent fortement l implantation."
+      "fr": "La Terex CTLH 192-12 utilise une technologie de flèche relevable hydraulique pour réduire au minimum les rayons en service et hors service, ce qui la rend particulièrement précieuse sur les sites urbains denses. C'est un choix très pertinent lorsque les bâtiments voisins, les limites de parcelle et la présence de plusieurs grues contraignent fortement l'implantation."
     },
     "features": {
       "en": [
@@ -4596,7 +4596,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Terex",
     "description": {
       "en": "The Terex CTT 132-6 delivers a balanced mix of reach and lifting capability for residential, commercial and mixed-use construction. Its flat-top design supports easier multi-crane coordination and efficient site planning.",
-      "fr": "La Terex CTT 132-6 offre un bon equilibre entre portee et capacite pour les projets residentiels, tertiaires et mixtes. Son design flat-top facilite la coordination multi-grues et une planification de chantier plus efficace."
+      "fr": "La Terex CTT 132-6 offre un bon équilibre entre portée et capacité pour les projets résidentiels, tertiaires et mixtes. Son design flat-top facilite la coordination multi-grues et une planification de chantier plus efficace."
     },
     "features": {
       "en": [
@@ -4655,7 +4655,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Terex",
     "description": {
       "en": "The Terex CTT 152-6 is a versatile flat-top tower crane designed for projects that need solid performance, straightforward integration and reliable site productivity. It is well suited to contractors looking for flexibility without unnecessary complexity.",
-      "fr": "La Terex CTT 152-6 est une grue a tour flat-top polyvalente concue pour les projets qui demandent de bonnes performances, une integration simple et une productivite reguliere sur chantier. Elle convient tres bien aux entreprises qui recherchent de la souplesse sans complexite inutile."
+      "fr": "La Terex CTT 152-6 est une grue à tour flat-top polyvalente conçue pour les projets qui demandent de bonnes performances, une intégration simple et une productivité régulière sur chantier. Elle convient très bien aux entreprises qui recherchent de la souplesse sans complexité inutile."
     },
     "features": {
       "en": [
@@ -4715,7 +4715,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Terex",
     "description": {
       "en": "The Terex CTT 172-8 adds stronger lifting capability to the flat-top concept while preserving efficient site coordination and clean crane interference management. It is a strong fit for growing project scale without overcomplicating installation.",
-      "fr": "La Terex CTT 172-8 apporte une capacite de levage superieure au concept flat-top tout en conservant une bonne coordination sur site et une gestion simplifiee des interactions entre grues. C est une machine bien adaptee aux projets qui montent en taille sans complexifier l installation."
+      "fr": "La Terex CTT 172-8 apporte une capacité de levage supérieure au concept flat-top tout en conservant une bonne coordination sur site et une gestion simplifiée des interactions entre grues. C'est une machine bien adaptée aux projets qui montent en taille sans complexifier l'installation."
     },
     "features": {
       "en": [
@@ -4783,7 +4783,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Terex",
     "description": {
       "en": "The Terex CTT 202-10 is built around versatility, with expanded chassis, jib and tower configuration options that help adapt the crane to a wider range of jobsites. It is a flexible flat-top solution for contractors who value configuration freedom.",
-      "fr": "La Terex CTT 202-10 est pensee pour la polyvalence, avec davantage d options de chassis, de fleche et de configuration de mat afin d adapter la grue a un plus grand nombre de chantiers. C est une solution flat-top tres flexible pour les entreprises qui veulent une vraie liberte de configuration."
+      "fr": "La Terex CTT 202-10 est pensée pour la polyvalence, avec davantage d'options de châssis, de flèche et de configuration de mât afin d'adapter la grue à un plus grand nombre de chantiers. C'est une solution flat-top très flexible pour les entreprises qui veulent une vraie liberté de configuration."
     },
     "features": {
       "en": [
@@ -4848,7 +4848,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Terex",
     "description": {
       "en": "The Terex CTT 222-10 expands configuration flexibility to help contractors match the crane more precisely to jobsite constraints and project phases. It is a strong flat-top choice for teams that want versatility and efficient crane planning.",
-      "fr": "La Terex CTT 222-10 etend encore la flexibilite de configuration afin de mieux adapter la grue aux contraintes du site et aux differentes phases du projet. C est un tres bon choix flat-top pour les equipes qui recherchent polyvalence et planification efficace."
+      "fr": "La Terex CTT 222-10 étend encore la flexibilité de configuration afin de mieux adapter la grue aux contraintes du site et aux différentes phases du projet. C'est un très bon choix flat-top pour les équipes qui recherchent polyvalence et planification efficace."
     },
     "features": {
       "en": [
@@ -4909,7 +4909,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Terex",
     "description": {
       "en": "The Terex CTT 231-12 brings higher lifting capability to the flat-top range while preserving easy integration on multi-crane sites. It is well positioned for contractors handling larger structural and commercial projects.",
-      "fr": "La Terex CTT 231-12 apporte une capacite de levage plus elevee a la gamme flat-top tout en conservant une integration simple sur les chantiers multi-grues. Elle est particulierement adaptee aux entreprises qui travaillent sur des projets structurels et tertiaires de plus grande ampleur."
+      "fr": "La Terex CTT 231-12 apporte une capacité de levage plus élevée à la gamme flat-top tout en conservant une intégration simple sur les chantiers multi-grues. Elle est particulièrement adaptée aux entreprises qui travaillent sur des projets structurels et tertiaires de plus grande ampleur."
     },
     "features": {
       "en": [
@@ -4954,7 +4954,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Terex",
     "description": {
       "en": "The Terex CTT 292-12 focuses on site adaptability, with chassis, jib and tower combinations that increase deployment flexibility. It is a valuable option for projects where the same crane platform must answer different layout constraints.",
-      "fr": "La Terex CTT 292-12 met l accent sur l adaptabilite au chantier, avec des combinaisons de chassis, de fleche et de mat qui augmentent la souplesse de deploiement. C est une option tres utile lorsque la meme plateforme doit repondre a des implantations tres differentes."
+      "fr": "La Terex CTT 292-12 met l'accent sur l'adaptabilité au chantier, avec des combinaisons de châssis, de flèche et de mât qui augmentent la souplesse de déploiement. C'est une option très utile lorsque la même plateforme doit répondre à des implantations très différentes."
     },
     "features": {
       "en": [
@@ -5025,7 +5025,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Terex",
     "description": {
       "en": "The Terex CTT 332-16 is a high-capacity flat-top tower crane designed for larger building programs that need strong lifting performance and efficient multi-crane coordination. It offers a confident step up in project scale while preserving site integration advantages.",
-      "fr": "La Terex CTT 332-16 est une grue a tour flat-top de forte capacite concue pour les programmes de construction plus importants qui exigent de bonnes performances de levage et une coordination multi-grues efficace. Elle permet de changer d echelle tout en conservant les avantages d integration du concept flat-top."
+      "fr": "La Terex CTT 332-16 est une grue à tour flat-top de forte capacité conçue pour les programmes de construction plus importants qui exigent de bonnes performances de levage et une coordination multi-grues efficace. Elle permet de changer d'échelle tout en conservant les avantages d'intégration du concept flat-top."
     },
     "features": {
       "en": [
@@ -5080,7 +5080,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Terex",
     "description": {
       "en": "The Terex CTT 392-16 combines high flat-top performance with more advanced control and efficiency technologies, making it especially attractive for demanding building sites. It is aimed at teams that want stronger lifting capability with a more modern operating experience.",
-      "fr": "La Terex CTT 392-16 combine de hautes performances en flat-top avec des technologies de commande et d efficacite plus avancees, ce qui la rend tres interessante pour les chantiers exigeants. Elle s adresse aux equipes qui recherchent une capacite superieure avec une experience d exploitation plus moderne."
+      "fr": "La Terex CTT 392-16 combine de hautes performances en flat-top avec des technologies de commande et d'efficacité plus avancées, ce qui la rend très intéressante pour les chantiers exigeants. Elle s'adresse aux équipes qui recherchent une capacité supérieure avec une expérience d'exploitation plus moderne."
     },
     "features": {
       "en": [
@@ -5133,7 +5133,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Terex",
     "description": {
       "en": "The Terex CTT 472-20 extends jib reach and improves load charts over previous cranes with similar top capacity, giving contractors more usable performance on site. It is a strong flat-top solution for larger structural work and high-output projects.",
-      "fr": "La Terex CTT 472-20 augmente la portee de fleche et ameliore les courbes de charge par rapport aux modeles precedents de capacite comparable, ce qui donne plus de performance utile sur chantier. C est une solution flat-top solide pour les gros ouvrages structurels et les projets a forte cadence."
+      "fr": "La Terex CTT 472-20 augmente la portée de flèche et améliore les courbes de charge par rapport aux modèles précédents de capacité comparable, ce qui donne plus de performance utile sur chantier. C'est une solution flat-top solide pour les gros ouvrages structurels et les projets à forte cadence."
     },
     "features": {
       "en": [
@@ -5199,7 +5199,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Terex",
     "description": {
       "en": "The Terex CTT 561A-20 is designed for major building and infrastructure projects that need high flat-top capacity with efficient site organization. It offers a robust platform for contractors managing heavier components and more complex lifting sequences.",
-      "fr": "La Terex CTT 561A-20 est concue pour les grands projets de batiment et d infrastructure qui demandent une forte capacite flat-top avec une organisation de chantier efficace. Elle offre une plateforme robuste pour les entreprises qui manipulent des elements plus lourds et des sequences de levage plus complexes."
+      "fr": "La Terex CTT 561A-20 est conçue pour les grands projets de bâtiment et d'infrastructure qui demandent une forte capacité flat-top avec une organisation de chantier efficace. Elle offre une plateforme robuste pour les entreprises qui manipulent des éléments plus lourds et des séquences de levage plus complexes."
     },
     "features": {
       "en": [
@@ -5244,7 +5244,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Terex",
     "description": {
       "en": "The Terex CTT 561A-32 pushes the flat-top concept into heavier-duty applications, giving project teams more capacity while keeping planning and coordination manageable. It is particularly relevant for demanding structural and industrial builds.",
-      "fr": "La Terex CTT 561A-32 pousse le concept flat-top vers des applications plus lourdes, en donnant aux equipes projet davantage de capacite tout en gardant une coordination et une planification maitrisees. Elle est particulierement pertinente pour les chantiers structurels et industriels exigeants."
+      "fr": "La Terex CTT 561A-32 pousse le concept flat-top vers des applications plus lourdes, en donnant aux équipes projet davantage de capacité tout en gardant une coordination et une planification maîtrisées. Elle est particulièrement pertinente pour les chantiers structurels et industriels exigeants."
     },
     "features": {
       "en": [
@@ -5289,7 +5289,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Terex",
     "description": {
       "en": "The Terex CTT 722-40 is aimed at very large projects where flat-top architecture, heavy lifting capability and efficient crane coordination must all come together. It gives contractors a major-capacity solution without losing the planning benefits of the flat-top format.",
-      "fr": "La Terex CTT 722-40 vise les tres grands projets ou architecture flat-top, forte capacite de levage et coordination efficace des grues doivent aller de pair. Elle apporte aux entreprises une solution de tres grande capacite sans perdre les avantages de planification du format flat-top."
+      "fr": "La Terex CTT 722-40 vise les très grands projets où architecture flat-top, forte capacité de levage et coordination efficace des grues doivent aller de pair. Elle apporte aux entreprises une solution de très grande capacité sans perdre les avantages de planification du format flat-top."
     },
     "features": {
       "en": [
@@ -5338,7 +5338,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Terex",
     "description": {
       "en": "The Terex CTT 91-5 is a practical flat-top tower crane for general building projects where ease of coordination, site efficiency and reliable daily performance matter. It offers a clean solution for contractors looking for a balanced crane in this class.",
-      "fr": "La Terex CTT 91-5 est une grue a tour flat-top tres pratique pour les projets de construction generale ou la coordination, l efficacite de chantier et la fiabilite quotidienne comptent vraiment. Elle apporte une solution equilibree aux entreprises qui recherchent une machine bien dimensionnee dans cette categorie."
+      "fr": "La Terex CTT 91-5 est une grue à tour flat-top très pratique pour les projets de construction générale où la coordination, l'efficacité de chantier et la fiabilité quotidienne comptent vraiment. Elle apporte une solution équilibrée aux entreprises qui recherchent une machine bien dimensionnée dans cette catégorie."
     },
     "features": {
       "en": [
@@ -5379,7 +5379,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Mecalac",
     "description": {
       "en": "The Mecalac e12 brings the multifunction DNA of the 12MTX into a zero-emission machine tailored to compact urban worksites. It is especially relevant for projects that want Mecalac versatility with quieter operation and a lower environmental footprint.",
-      "fr": "Le Mecalac e12 transpose l ADN multifonction de la 12MTX dans une machine zero emission adaptee aux chantiers urbains compacts. Il est particulierement pertinent pour les projets qui veulent la polyvalence Mecalac avec un fonctionnement plus silencieux et une empreinte environnementale reduite."
+      "fr": "Le Mecalac e12 transpose l'ADN multifonction de la 12MTX dans une machine zéro émission adaptée aux chantiers urbains compacts. Il est particulièrement pertinent pour les projets qui veulent la polyvalence Mecalac avec un fonctionnement plus silencieux et une empreinte environnementale réduite."
     },
     "features": {
       "fr": [],
@@ -5447,7 +5447,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "JLG",
     "description": {
       "en": "The JLG E18MCL is a compact mast lift designed for indoor and outdoor construction tasks where tight access, sensitive flooring and transportability all matter. Familiar controls, good ergonomics and easy service access make it a strong choice for contractors and facility teams.",
-      "fr": "La JLG E18MCL est une nacelle a mat compacte concue pour les travaux interieurs et exterieurs ou l acces etroit, les sols sensibles et la transportabilite sont essentiels. Ses commandes familieres, sa bonne ergonomie et son acces maintenance simple en font un excellent choix pour les entreprises et equipes techniques."
+      "fr": "La JLG E18MCL est une nacelle à mât compacte conçue pour les travaux intérieurs et extérieurs où l'accès étroit, les sols sensibles et la transportabilité sont essentiels. Ses commandes familières, sa bonne ergonomie et son accès maintenance simple en font un excellent choix pour les entreprises et équipes techniques."
     },
     "features": {
       "en": [],
@@ -5512,7 +5512,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "JLG",
     "description": {
       "en": "The JLG EC600SJ is a zero-emission telescopic boom designed for users who need clean, quiet operation without giving up outdoor capability. Its long duty cycles and optional traction support make it especially attractive for demanding sites with indoor-outdoor transitions.",
-      "fr": "La JLG EC600SJ est une nacelle telescopique zero emission concue pour les utilisateurs qui veulent un fonctionnement propre et silencieux sans renoncer aux capacites de chantier exterieur. Ses longs cycles de travail et son aide a la traction en option la rendent tres interessante sur les sites exigeants avec passages interieur-exterieur."
+      "fr": "La JLG EC600SJ est une nacelle télescopique zéro émission conçue pour les utilisateurs qui veulent un fonctionnement propre et silencieux sans renoncer aux capacités de chantier extérieur. Ses longs cycles de travail et son aide à la traction en option la rendent très intéressante sur les sites exigeants avec passages intérieur-extérieur."
     },
     "features": {
       "en": [],
@@ -5577,7 +5577,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "JLG",
     "description": {
       "en": "The JLG EC600SJP adds the flexibility of a rotating jib to a quiet, zero-emission telescopic platform, making access easier in tighter or more complex elevated positions. It is a strong choice for sites that need precision, autonomy and reduced environmental impact.",
-      "fr": "La JLG EC600SJP ajoute la flexibilite d un jib rotatif a une plateforme telescopique silencieuse et zero emission, pour acceder plus facilement aux positions en hauteur les plus contraignantes. C est un excellent choix pour les chantiers qui recherchent precision, autonomie et impact environnemental reduit."
+      "fr": "La JLG EC600SJP ajoute la flexibilité d'un jib rotatif à une plateforme télescopique silencieuse et zéro émission, pour accéder plus facilement aux positions en hauteur les plus contraignantes. C'est un excellent choix pour les chantiers qui recherchent précision, autonomie et impact environnemental réduit."
     },
     "features": {
       "en": [],
@@ -5642,7 +5642,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "JLG",
     "description": {
       "en": "The JLG EcoLift 50 is a simple low-level access solution for teams that want a safer, quieter and more ergonomic alternative to ladders. Its stored-power lift system and battery-free design keep maintenance low and uptime high in daily facility and fit-out work.",
-      "fr": "La JLG EcoLift 50 est une solution d acces en faible hauteur tres simple pour les equipes qui veulent une alternative plus sure, plus silencieuse et plus ergonomique aux echelles. Son systeme de levage a energie stockee et son fonctionnement sans batterie reduisent fortement la maintenance et favorisent une excellente disponibilite au quotidien."
+      "fr": "La JLG EcoLift 50 est une solution d'accès en faible hauteur très simple pour les équipes qui veulent une alternative plus sûre, plus silencieuse et plus ergonomique aux échelles. Son système de levage à énergie stockée et son fonctionnement sans batterie réduisent fortement la maintenance et favorisent une excellente disponibilité au quotidien."
     },
     "features": {
       "en": [],
@@ -5706,7 +5706,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Mecalac",
     "description": {
       "en": "The Mecalac eMDX brings zero-emission transport capability to the dumper segment while keeping the productivity, safety and reliability expected from the MDX line. It is a smart choice for urban and sensitive jobsites that need cleaner material movement without compromising daily output.",
-      "fr": "Le Mecalac eMDX apporte le zero emission au segment des dumpers tout en conservant la productivite, la securite et la fiabilite attendues de la ligne MDX. C est un choix tres pertinent pour les chantiers urbains et sensibles qui veulent un transport de materiaux plus propre sans compromettre le rendement quotidien."
+      "fr": "Le Mecalac eMDX apporte le zéro émission au segment des dumpers tout en conservant la productivité, la sécurité et la fiabilité attendues de la ligne MDX. C'est un choix très pertinent pour les chantiers urbains et sensibles qui veulent un transport de matériaux plus propre sans compromettre le rendement quotidien."
     },
     "features": {
       "fr": [],
@@ -5756,7 +5756,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "JLG",
     "description": {
       "en": "The JLG ERT2669 brings electric rough-terrain scissor performance to sites that need large platforms, drive-at-height capability and lower service complexity. It is especially relevant for projects that want strong outdoor productivity with reduced noise and emissions.",
-      "fr": "La JLG ERT2669 apporte la performance d un ciseau tout-terrain electrique aux chantiers qui ont besoin de grandes plateformes, du deplacement a hauteur et d une maintenance simplifiee. Elle est particulierement pertinente pour les projets qui veulent une forte productivite exterieure avec moins de bruit et moins d emissions."
+      "fr": "La JLG ERT2669 apporte la performance d'un ciseau tout-terrain électrique aux chantiers qui ont besoin de grandes plateformes, du déplacement à hauteur et d'une maintenance simplifiée. Elle est particulièrement pertinente pour les projets qui veulent une forte productivité extérieure avec moins de bruit et moins d'émissions."
     },
     "features": {
       "en": [],
@@ -5825,7 +5825,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "JLG",
     "description": {
       "en": "The JLG ERT3369 brings electric rough-terrain scissor performance to sites that need large platforms, drive-at-height capability and lower service complexity. It is especially relevant for projects that want strong outdoor productivity with reduced noise and emissions.",
-      "fr": "La JLG ERT3369 apporte la performance d un ciseau tout-terrain electrique aux chantiers qui ont besoin de grandes plateformes, du deplacement a hauteur et d une maintenance simplifiee. Elle est particulierement pertinente pour les projets qui veulent une forte productivite exterieure avec moins de bruit et moins d emissions."
+      "fr": "La JLG ERT3369 apporte la performance d'un ciseau tout-terrain électrique aux chantiers qui ont besoin de grandes plateformes, du déplacement à hauteur et d'une maintenance simplifiée. Elle est particulièrement pertinente pour les projets qui veulent une forte productivité extérieure avec moins de bruit et moins d'émissions."
     },
     "features": {
       "en": [],
@@ -5894,7 +5894,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "JLG",
     "description": {
       "en": "The JLG ERT4069 brings electric rough-terrain scissor performance to sites that need large platforms, drive-at-height capability and lower service complexity. It is especially relevant for projects that want strong outdoor productivity with reduced noise and emissions.",
-      "fr": "La JLG ERT4069 apporte la performance d un ciseau tout-terrain electrique aux chantiers qui ont besoin de grandes plateformes, du deplacement a hauteur et d une maintenance simplifiee. Elle est particulierement pertinente pour les projets qui veulent une forte productivite exterieure avec moins de bruit et moins d emissions."
+      "fr": "La JLG ERT4069 apporte la performance d'un ciseau tout-terrain électrique aux chantiers qui ont besoin de grandes plateformes, du déplacement à hauteur et d'une maintenance simplifiée. Elle est particulièrement pertinente pour les projets qui veulent une forte productivité extérieure avec moins de bruit et moins d'émissions."
     },
     "features": {
       "en": [],
@@ -5963,7 +5963,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Mecalac",
     "description": {
       "en": "The Mecalac eS1000 brings zero-emission operation to the Swing loader range while keeping the compactness, versatility and precision that make the concept so effective on urban sites. It is especially attractive for projects working around noise, emissions and access constraints.",
-      "fr": "Le Mecalac eS1000 apporte le zero emission a la gamme Swing tout en conservant la compacite, la polyvalence et la precision qui font la force du concept sur les chantiers urbains. Il est particulierement attractif pour les projets confrontes a des contraintes de bruit, d emissions et d acces."
+      "fr": "Le Mecalac eS1000 apporte le zéro émission à la gamme Swing tout en conservant la compacité, la polyvalence et la précision qui font la force du concept sur les chantiers urbains. Il est particulièrement attractif pour les projets confrontés à des contraintes de bruit, d'émissions et d'accès."
     },
     "features": {
       "fr": [],
@@ -6026,7 +6026,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "JLG",
     "description": {
       "en": "The JLG ES1330M is a micro-sized electric scissor lift built for very tight indoor spaces where compactness and clean operation are essential. Its zero turning radius and leak containment make it particularly well suited to sensitive environments such as fit-out zones and technical rooms.",
-      "fr": "La JLG ES1330M est une nacelle ciseaux electrique micro-format concue pour les espaces interieurs tres restreints, ou compacite et proprete d utilisation sont essentielles. Son rayon de braquage nul et son systeme de retention des fluides la rendent particulierement adaptee aux environnements sensibles comme les zones de finition et locaux techniques."
+      "fr": "La JLG ES1330M est une nacelle ciseaux électrique micro-format conçue pour les espaces intérieurs très restreints, où compacité et propreté d'utilisation sont essentielles. Son rayon de braquage nul et son système de rétention des fluides la rendent particulièrement adaptée aux environnements sensibles comme les zones de finition et locaux techniques."
     },
     "features": {
       "en": [],
@@ -6093,7 +6093,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "JLG",
     "description": {
       "en": "The JLG ES1530M keeps the micro-sized scissor concept while adding electric drive and simplified hydraulics for better uptime. It is a strong option for users who need compact indoor access equipment that stays maneuverable, clean and easy to service.",
-      "fr": "La JLG ES1530M reprend l esprit des ciseaux micro-format en y ajoutant une transmission electrique et une hydraulique simplifiee pour gagner en disponibilite. C est une option tres solide pour les utilisateurs qui veulent un acces interieur compact, maniable, propre et simple a entretenir."
+      "fr": "La JLG ES1530M reprend l'esprit des ciseaux micro-format en y ajoutant une transmission électrique et une hydraulique simplifiée pour gagner en disponibilité. C'est une option très solide pour les utilisateurs qui veulent un accès intérieur compact, maniable, propre et simple à entretenir."
     },
     "features": {
       "en": [],
@@ -6161,7 +6161,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "JLG",
     "description": {
       "en": "The JLG ES1932 is an electric slab scissor designed to run longer, move easily through standard access points and simplify fleet service. It is well suited to contractors and facility teams that want dependable indoor productivity with lower daily operating constraints.",
-      "fr": "La JLG ES1932 est une nacelle ciseaux electrique de dalle concue pour travailler plus longtemps, passer facilement par les acces standards et simplifier l entretien de flotte. Elle convient tres bien aux entreprises et equipes techniques qui recherchent une productivite interieure fiable avec moins de contraintes au quotidien."
+      "fr": "La JLG ES1932 est une nacelle ciseaux électrique de dalle conçue pour travailler plus longtemps, passer facilement par les accès standards et simplifier l'entretien de flotte. Elle convient très bien aux entreprises et équipes techniques qui recherchent une productivité intérieure fiable avec moins de contraintes au quotidien."
     },
     "features": {
       "en": [],
@@ -6233,7 +6233,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "JLG",
     "description": {
       "en": "The JLG ES2632 is an electric slab scissor designed to run longer, move easily through standard access points and simplify fleet service. It is well suited to contractors and facility teams that want dependable indoor productivity with lower daily operating constraints.",
-      "fr": "La JLG ES2632 est une nacelle ciseaux electrique de dalle concue pour travailler plus longtemps, passer facilement par les acces standards et simplifier l entretien de flotte. Elle convient tres bien aux entreprises et equipes techniques qui recherchent une productivite interieure fiable avec moins de contraintes au quotidien."
+      "fr": "La JLG ES2632 est une nacelle ciseaux électrique de dalle conçue pour travailler plus longtemps, passer facilement par les accès standards et simplifier l'entretien de flotte. Elle convient très bien aux entreprises et équipes techniques qui recherchent une productivité intérieure fiable avec moins de contraintes au quotidien."
     },
     "features": {
       "en": [],
@@ -6307,7 +6307,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Mecalac",
     "description": {
       "en": "The Mecalac eS900tele brings zero-emission operation to the Swing loader range while keeping the compactness, versatility and precision that make the concept so effective on urban sites. It is especially attractive for projects working around noise, emissions and access constraints.",
-      "fr": "Le Mecalac eS900tele apporte le zero emission a la gamme Swing tout en conservant la compacite, la polyvalence et la precision qui font la force du concept sur les chantiers urbains. Il est particulierement attractif pour les projets confrontes a des contraintes de bruit, d emissions et d acces."
+      "fr": "Le Mecalac eS900tele apporte le zéro émission à la gamme Swing tout en conservant la compacité, la polyvalence et la précision qui font la force du concept sur les chantiers urbains. Il est particulièrement attractif pour les projets confrontés à des contraintes de bruit, d'émissions et d'accès."
     },
     "features": {
       "fr": [],
@@ -6376,7 +6376,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "JLG",
     "description": {
       "en": "The JLG ET350 offers the same practical towable format with the added benefit of quieter, cleaner electric operation. It is a smart option for users who need efficient access equipment for noise-sensitive areas, indoor work or mixed-use sites.",
-      "fr": "La JLG ET350 reprend le format remorquable tres pratique en y ajoutant les avantages d un fonctionnement electrique plus silencieux et plus propre. C est une option tres pertinente pour les utilisateurs qui interviennent en zones sensibles au bruit, en interieur ou sur des sites mixtes."
+      "fr": "La JLG ET350 reprend le format remorquable très pratique en y ajoutant les avantages d'un fonctionnement électrique plus silencieux et plus propre. C'est une option très pertinente pour les utilisateurs qui interviennent en zones sensibles au bruit, en intérieur ou sur des sites mixtes."
     },
     "features": {
       "en": [],
@@ -6443,7 +6443,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "JLG",
     "description": {
       "en": "The JLG ET500J combines towable convenience with quieter electric operation for sites where flexibility and low disturbance matter. It is a strong solution for mixed indoor-outdoor access work that calls for simple logistics and efficient daily use.",
-      "fr": "La JLG ET500J associe la praticite du remorquable a un fonctionnement electrique plus silencieux pour les sites ou la flexibilite et la faible nuisance sont importantes. C est une solution solide pour les travaux d acces mixtes interieur-exterieur qui demandent une logistique simple et une utilisation efficace au quotidien."
+      "fr": "La JLG ET500J associe la praticité du remorquable à un fonctionnement électrique plus silencieux pour les sites où la flexibilité et la faible nuisance sont importantes. C'est une solution solide pour les travaux d'accès mixtes intérieur-extérieur qui demandent une logistique simple et une utilisation efficace au quotidien."
     },
     "features": {
       "en": [],
@@ -6514,7 +6514,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Terex",
     "description": {
       "en": "The Terex FC 6.24H is a compact flat-top tower crane suited to smaller projects that still require clean site integration and straightforward operation. Its flat-top architecture helps simplify crane coordination and installation on tighter jobsites.",
-      "fr": "La Terex FC 6.24H est une grue a tour flat-top compacte adaptee aux projets de petite taille qui demandent malgre tout une integration propre sur chantier et une exploitation simple. Son architecture flat-top facilite la coordination avec les autres grues et l installation sur les sites plus contraints."
+      "fr": "La Terex FC 6.24H est une grue à tour flat-top compacte adaptée aux projets de petite taille qui demandent malgré tout une intégration propre sur chantier et une exploitation simple. Son architecture flat-top facilite la coordination avec les autres grues et l'installation sur les sites plus contraints."
     },
     "features": {
       "en": [
@@ -6643,7 +6643,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Tadano",
     "description": {
       "en": "Built for very heavy lifting, the Tadano GR-1450EX combines high capacity, advanced outrigger management and lower transport complexity. Its self-removable counterweight and outrigger boxes make it especially relevant for major projects with tight logistics constraints.",
-      "fr": "Concue pour les levages tres lourds, la Tadano GR-1450EX associe forte capacite, gestion avancee du calage et couts de transport mieux maitrises. Ses contrepoids et boites de stabilisateurs auto-deposables en font une machine particulierement pertinente pour les grands chantiers a forte contrainte logistique."
+      "fr": "Conçue pour les levages très lourds, la Tadano GR-1450EX associe forte capacité, gestion avancée du calage et coûts de transport mieux maîtrisés. Ses contrepoids et boîtes de stabilisateurs auto-déposables en font une machine particulièrement pertinente pour les grands chantiers à forte contrainte logistique."
     },
     "features": {
       "en": [],
@@ -6694,7 +6694,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Tadano",
     "description": {
       "en": "Compact and easy to deploy, the Tadano GR-300EX is well suited to jobs that demand precision, visibility and fast setup. HELLO-NET and the AML-C system help operators monitor the crane more effectively, optimize asymmetric outrigger setups and work with greater confidence.",
-      "fr": "Compacte et facile a exploiter, la Tadano GR-300EX est ideale pour les interventions ou la precision, la visibilite et la rapidite de mise en place sont essentielles. HELLO-NET et le systeme AML-C aident l'operateur a mieux suivre la machine, optimiser le calage asymetrique et travailler avec plus de serenite."
+      "fr": "Compacte et facile à exploiter, la Tadano GR-300EX est idéale pour les interventions où la précision, la visibilité et la rapidité de mise en place sont essentielles. HELLO-NET et le système AML-C aident l'opérateur à mieux suivre la machine, optimiser le calage asymétrique et travailler avec plus de sérénité."
     },
     "features": {
       "en": [],
@@ -6741,7 +6741,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Tadano",
     "description": {
       "en": "The Tadano GR-500EXL is designed for users who want a balanced mix of lifting capacity, longer reach and smarter machine monitoring. HELLO-NET, AML-C and ECO Mode support smoother operation, better outrigger management and lower day-to-day operating costs.",
-      "fr": "La Tadano GR-500EXL s'adresse aux chantiers qui recherchent un bon equilibre entre capacite, portee et supervision intelligente de la machine. HELLO-NET, AML-C et l'ECO Mode favorisent une exploitation plus fluide, un meilleur travail sur stabilisateurs et des couts d'utilisation mieux maitrises."
+      "fr": "La Tadano GR-500EXL s'adresse aux chantiers qui recherchent un bon équilibre entre capacité, portée et supervision intelligente de la machine. HELLO-NET, AML-C et l'ECO Mode favorisent une exploitation plus fluide, un meilleur travail sur stabilisateurs et des coûts d'utilisation mieux maîtrisés."
     },
     "features": {
       "en": [],
@@ -6788,7 +6788,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Tadano",
     "description": {
       "en": "The Tadano GR-500EXS combines a compact rough-terrain format with advanced monitoring and fuel-saving systems. HELLO-NET, AML-C and ECO Mode help improve fleet visibility, support efficient setup and keep operating costs under control.",
-      "fr": "La Tadano GR-500EXS combine un format rough terrain compact avec des systemes avances de supervision et d'economie de carburant. HELLO-NET, AML-C et l'ECO Mode ameliorent la visibilite sur le parc, facilitent la mise en oeuvre et aident a contenir les couts d'exploitation."
+      "fr": "La Tadano GR-500EXS combine un format rough terrain compact avec des systèmes avancés de supervision et d'économie de carburant. HELLO-NET, AML-C et l'ECO Mode améliorent la visibilité sur le parc, facilitent la mise en œuvre et aident à contenir les coûts d'exploitation."
     },
     "features": {
       "en": [],
@@ -6838,7 +6838,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Tadano",
     "description": {
       "en": "The Tadano GR-600EX offers a strong balance of lifting performance, monitoring intelligence and operating efficiency. HELLO-NET, AML-C and ECO Mode give teams better control over crane setup, machine tracking and fuel consumption on demanding sites.",
-      "fr": "La Tadano GR-600EX offre un excellent compromis entre performance de levage, intelligence de supervision et efficacite d'exploitation. HELLO-NET, AML-C et l'ECO Mode donnent aux equipes un meilleur controle du calage, du suivi machine et de la consommation sur les chantiers exigeants."
+      "fr": "La Tadano GR-600EX offre un excellent compromis entre performance de levage, intelligence de supervision et efficacité d'exploitation. HELLO-NET, AML-C et l'ECO Mode donnent aux équipes un meilleur contrôle du calage, du suivi machine et de la consommation sur les chantiers exigeants."
     },
     "features": {
       "en": [],
@@ -6885,7 +6885,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Tadano",
     "description": {
       "en": "The Tadano GR-700EX-4 makes a strong statement in the 70-tonne class with an unusually long boom for its category and a design that remains easy to transport. It is a compelling option for projects that need reach, strength and simpler logistics in one package.",
-      "fr": "La Tadano GR-700EX-4 se distingue dans la classe des 70 tonnes par une fleche exceptionnellement longue pour sa categorie et un format qui reste simple a transporter. C'est une solution tres attractive pour les chantiers qui veulent a la fois portee, puissance et logistique maitrisee."
+      "fr": "La Tadano GR-700EX-4 se distingue dans la classe des 70 tonnes par une flèche exceptionnellement longue pour sa catégorie et un format qui reste simple à transporter. C'est une solution très attractive pour les chantiers qui veulent à la fois portée, puissance et logistique maîtrisée."
     },
     "features": {
       "en": [],
@@ -6934,7 +6934,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Tadano",
     "description": {
       "en": "The Tadano GR-800EX is built for operators who need high lifting performance with smarter monitoring and better fuel discipline. HELLO-NET, AML-C and ECO Mode help improve jobsite efficiency while keeping crane management and running costs under control.",
-      "fr": "La Tadano GR-800EX s'adresse aux exploitations qui recherchent une forte performance de levage avec plus d'intelligence de suivi et une meilleure maitrise carburant. HELLO-NET, AML-C et l'ECO Mode permettent d'ameliorer l'efficacite sur chantier tout en gardant la gestion de la grue et les couts sous controle."
+      "fr": "La Tadano GR-800EX s'adresse aux exploitations qui recherchent une forte performance de levage avec plus d'intelligence de suivi et une meilleure maîtrise carburant. HELLO-NET, AML-C et l'ECO Mode permettent d'améliorer l'efficacité sur chantier tout en gardant la gestion de la grue et les coûts sous contrôle."
     },
     "features": {
       "en": [],
@@ -6981,7 +6981,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Tadano",
     "description": {
       "en": "The Tadano GR-900EX-4 builds on a proven platform with a modern redesign and a Smart Counterweight system that significantly improves working radius. It is a high-end choice for demanding lifts, offering more flexibility without adding unnecessary complexity.",
-      "fr": "La Tadano GR-900EX-4 repose sur une base eprouvee modernisee avec un systeme Smart Counterweight qui ameliore sensiblement le rayon de travail. C'est une solution haut de gamme pour les levages exigeants, avec plus de souplesse sans complexifier l'exploitation."
+      "fr": "La Tadano GR-900EX-4 repose sur une base éprouvée modernisée avec un système Smart Counterweight qui améliore sensiblement le rayon de travail. C'est une solution haut de gamme pour les levages exigeants, avec plus de souplesse sans complexifier l'exploitation."
     },
     "features": {
       "en": [],
@@ -7026,7 +7026,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Tadano",
     "description": {
       "en": "The Tadano GT-300EL-3 combines road mobility, operator comfort and trusted Tadano control systems in a highly practical truck crane package. It is a dependable choice for users who want to move quickly between jobs without giving up lifting precision.",
-      "fr": "La Tadano GT-300EL-3 combine mobilite routiere, confort de conduite et systemes de controle Tadano reconnus dans un format de grue sur porteur tres pratique. C est un choix fiable pour les utilisateurs qui veulent enchainer rapidement les chantiers sans renoncer a la precision de levage."
+      "fr": "La Tadano GT-300EL-3 combine mobilité routière, confort de conduite et systèmes de contrôle Tadano reconnus dans un format de grue sur porteur très pratique. C'est un choix fiable pour les utilisateurs qui veulent enchaîner rapidement les chantiers sans renoncer à la précision de levage."
     },
     "features": {
       "en": [],
@@ -7073,7 +7073,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Tadano",
     "description": {
       "en": "The Tadano GT-600EL-3 is designed for operators who want stronger truck crane capacity while keeping excellent roadability and day-to-day usability. Its full-width cab and Tadano control ecosystem support both driver comfort and confident lifting operations.",
-      "fr": "La Tadano GT-600EL-3 vise les exploitants qui recherchent une capacite superieure en grue sur porteur tout en conservant une excellente aptitude routiere et une vraie simplicite d usage au quotidien. Sa cabine pleine largeur et l ecosysteme de controle Tadano favorisent a la fois le confort conducteur et la serenite en levage."
+      "fr": "La Tadano GT-600EL-3 vise les exploitants qui recherchent une capacité supérieure en grue sur porteur tout en conservant une excellente aptitude routière et une vraie simplicité d'usage au quotidien. Sa cabine pleine largeur et l'écosystème de contrôle Tadano favorisent à la fois le confort conducteur et la sérénité en levage."
     },
     "features": {
       "en": [],
@@ -7120,7 +7120,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Tadano",
     "description": {
       "en": "The Tadano GT-750EL-3 brings high truck crane capacity together with strong road mobility and a fully integrated Tadano operating environment. It is particularly well suited to fleets that value transport efficiency, operator familiarity and consistent performance from site to site.",
-      "fr": "La Tadano GT-750EL-3 associe une forte capacite de grue sur porteur a une bonne mobilite routiere et a un environnement d exploitation integralement Tadano. Elle convient particulierement aux flottes qui privilegient l efficacite au transport, la prise en main operateur et une performance constante d un chantier a l autre."
+      "fr": "La Tadano GT-750EL-3 associe une forte capacité de grue sur porteur à une bonne mobilité routière et à un environnement d'exploitation intégralement Tadano. Elle convient particulièrement aux flottes qui privilégient l'efficacité au transport, la prise en main opérateur et une performance constante d'un chantier à l'autre."
     },
     "features": {
       "en": [],
@@ -7167,7 +7167,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Tadano",
     "description": {
       "en": "The Tadano GTC-2000 closes a key gap in teleboom crawler capacity while adding strong adaptability for restricted and complex jobsites. Its adjustable track width and flexible boom extension concept make it particularly relevant for bridge works, structural construction and space-constrained projects.",
-      "fr": "La Tadano GTC-2000 comble un maillon important dans les capacites de grues sur chenilles telescopiques tout en apportant une grande adaptabilite aux chantiers complexes et contraints. Sa largeur de chenilles ajustable et son concept d extensions flexibles la rendent particulierement pertinente pour les ponts, la construction structurelle et les projets ou l espace est compte."
+      "fr": "La Tadano GTC-2000 comble un maillon important dans les capacités de grues sur chenilles télescopiques tout en apportant une grande adaptabilité aux chantiers complexes et contraints. Sa largeur de chenilles ajustable et son concept d'extensions flexibles la rendent particulièrement pertinente pour les ponts, la construction structurelle et les projets où l'espace est compté."
     },
     "features": {
       "en": [],
@@ -7231,7 +7231,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Tadano",
     "description": {
       "en": "The Tadano GTC-700 is a highly versatile telescopic crawler crane that performs well in lifting, foundation, pick-and-carry and out-of-level applications. It is a strong multi-role machine for contractors who need one platform to cover very different site conditions.",
-      "fr": "La Tadano GTC-700 est une grue sur chenilles a fleche telescopique tres polyvalente, performante en levage, fondations, pick-and-carry et travail hors niveau. C est une machine multi-usage tres interessante pour les entreprises qui veulent couvrir des conditions de chantier tres differentes avec une seule plateforme."
+      "fr": "La Tadano GTC-700 est une grue sur chenilles à flèche télescopique très polyvalente, performante en levage, fondations, pick-and-carry et travail hors niveau. C'est une machine multi-usage très intéressante pour les entreprises qui veulent couvrir des conditions de chantier très différentes avec une seule plateforme."
     },
     "features": {
       "en": [],
@@ -7283,7 +7283,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Tadano",
     "description": {
       "en": "The Tadano GTC-900 pushes versatility further with a longer boom and strong adaptability across lifting, foundation and pick-and-carry work. It is designed for teams that need one crawler crane to stay productive in both standard and more challenging operating conditions.",
-      "fr": "La Tadano GTC-900 pousse encore plus loin la polyvalence avec une fleche plus longue et une vraie aptitude aux levages, fondations et operations pick-and-carry. Elle s adresse aux equipes qui veulent une seule grue sur chenilles capable de rester productive aussi bien dans des conditions standards que plus exigeantes."
+      "fr": "La Tadano GTC-900 pousse encore plus loin la polyvalence avec une flèche plus longue et une vraie aptitude aux levages, fondations et opérations pick-and-carry. Elle s'adresse aux équipes qui veulent une seule grue sur chenilles capable de rester productive aussi bien dans des conditions standards que plus exigeantes."
     },
     "features": {
       "en": [],
@@ -7339,7 +7339,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "JLG",
     "description": {
       "en": "The JLG H340AJ Hybrid delivers diesel-like terrain performance with lower fuel use, reduced noise and fewer emissions. It is an excellent fit for companies that want one machine capable of moving confidently between outdoor jobsites and more sensitive working environments.",
-      "fr": "La JLG H340AJ Hybrid offre des performances de terrain proches d une diesel, avec moins de carburant, moins de bruit et moins d emissions. Elle est ideale pour les entreprises qui veulent une seule machine capable de passer sereinement des chantiers exterieurs aux environnements plus sensibles."
+      "fr": "La JLG H340AJ Hybrid offre des performances de terrain proches d'une diesel, avec moins de carburant, moins de bruit et moins d'émissions. Elle est idéale pour les entreprises qui veulent une seule machine capable de passer sereinement des chantiers extérieurs aux environnements plus sensibles."
     },
     "features": {
       "en": [],
@@ -7399,7 +7399,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "JLG",
     "description": {
       "en": "The JLG H600SJ combines environmentally conscious operation with the site versatility needed for more demanding outdoor work. It helps fleets reduce fuel consumption and disturbance while keeping the productivity expected from a larger telescopic boom.",
-      "fr": "La JLG H600SJ combine un fonctionnement plus responsable avec la polyvalence de chantier necessaire aux travaux exterieurs les plus exigeants. Elle aide les flottes a reduire consommation et nuisances tout en conservant la productivite attendue d une grande nacelle telescopique."
+      "fr": "La JLG H600SJ combine un fonctionnement plus responsable avec la polyvalence de chantier nécessaire aux travaux extérieurs les plus exigeants. Elle aide les flottes à réduire consommation et nuisances tout en conservant la productivité attendue d'une grande nacelle télescopique."
     },
     "features": {
       "en": [],
@@ -7464,7 +7464,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "JLG",
     "description": {
       "en": "The JLG H600SJP brings hybrid efficiency together with the extra access flexibility of a rotating jib, which is valuable on congested or awkward elevated work areas. It is particularly well suited to projects that demand strong outreach with lower noise and emissions.",
-      "fr": "La JLG H600SJP associe l efficacite hybride a la flexibilite supplementaire d un jib rotatif, tres utile dans les zones de travail en hauteur encombrees ou difficiles. Elle est particulierement adaptee aux projets qui demandent une forte portee avec moins de bruit et moins d emissions."
+      "fr": "La JLG H600SJP associe l'efficacité hybride à la flexibilité supplémentaire d'un jib rotatif, très utile dans les zones de travail en hauteur encombrées ou difficiles. Elle est particulièrement adaptée aux projets qui demandent une forte portée avec moins de bruit et moins d'émissions."
     },
     "features": {
       "en": [],
@@ -7535,7 +7535,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Magni",
     "description": {
       "en": "The Magni HTH 10.10 is built to move heavy and bulky loads safely while keeping the attachment versatility expected from the HTH range. It is a strong fit for industrial yards, precast operations, ports and other applications where very high lifting capacity is a priority.",
-      "fr": "Le Magni HTH 10.10 est concu pour deplacer en toute securite des charges lourdes et volumineuses tout en conservant la polyvalence d accessoires attendue de la gamme HTH. C est une machine tres adaptee aux sites industriels, au prefabrique, aux zones portuaires et aux applications ou la tres grande capacite de levage est prioritaire."
+      "fr": "Le Magni HTH 10.10 est conçu pour déplacer en toute sécurité des charges lourdes et volumineuses tout en conservant la polyvalence d'accessoires attendue de la gamme HTH. C'est une machine très adaptée aux sites industriels, au préfabriqué, aux zones portuaires et aux applications où la très grande capacité de levage est prioritaire."
     },
     "features": {
       "en": [],
@@ -7560,7 +7560,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Magni",
     "description": {
       "en": "The Magni HTH 12.10 is built to move heavy and bulky loads safely while keeping the attachment versatility expected from the HTH range. It is a strong fit for industrial yards, precast operations, ports and other applications where very high lifting capacity is a priority.",
-      "fr": "Le Magni HTH 12.10 est concu pour deplacer en toute securite des charges lourdes et volumineuses tout en conservant la polyvalence d accessoires attendue de la gamme HTH. C est une machine tres adaptee aux sites industriels, au prefabrique, aux zones portuaires et aux applications ou la tres grande capacite de levage est prioritaire."
+      "fr": "Le Magni HTH 12.10 est conçu pour déplacer en toute sécurité des charges lourdes et volumineuses tout en conservant la polyvalence d'accessoires attendue de la gamme HTH. C'est une machine très adaptée aux sites industriels, au préfabriqué, aux zones portuaires et aux applications où la très grande capacité de levage est prioritaire."
     },
     "features": {
       "en": [],
@@ -7585,7 +7585,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Magni",
     "description": {
       "en": "The Magni HTH 16.10 is built to move heavy and bulky loads safely while keeping the attachment versatility expected from the HTH range. It is a strong fit for industrial yards, precast operations, ports and other applications where very high lifting capacity is a priority.",
-      "fr": "Le Magni HTH 16.10 est concu pour deplacer en toute securite des charges lourdes et volumineuses tout en conservant la polyvalence d accessoires attendue de la gamme HTH. C est une machine tres adaptee aux sites industriels, au prefabrique, aux zones portuaires et aux applications ou la tres grande capacite de levage est prioritaire."
+      "fr": "Le Magni HTH 16.10 est conçu pour déplacer en toute sécurité des charges lourdes et volumineuses tout en conservant la polyvalence d'accessoires attendue de la gamme HTH. C'est une machine très adaptée aux sites industriels, au préfabriqué, aux zones portuaires et aux applications où la très grande capacité de levage est prioritaire."
     },
     "features": {
       "en": [],
@@ -7610,7 +7610,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Magni",
     "description": {
       "en": "The Magni HTH 20.10 is built to move heavy and bulky loads safely while keeping the attachment versatility expected from the HTH range. It is a strong fit for industrial yards, precast operations, ports and other applications where very high lifting capacity is a priority.",
-      "fr": "Le Magni HTH 20.10 est concu pour deplacer en toute securite des charges lourdes et volumineuses tout en conservant la polyvalence d accessoires attendue de la gamme HTH. C est une machine tres adaptee aux sites industriels, au prefabrique, aux zones portuaires et aux applications ou la tres grande capacite de levage est prioritaire."
+      "fr": "Le Magni HTH 20.10 est conçu pour déplacer en toute sécurité des charges lourdes et volumineuses tout en conservant la polyvalence d'accessoires attendue de la gamme HTH. C'est une machine très adaptée aux sites industriels, au préfabriqué, aux zones portuaires et aux applications où la très grande capacité de levage est prioritaire."
     },
     "features": {
       "en": [],
@@ -7635,7 +7635,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Magni",
     "description": {
       "en": "The Magni HTH 25.11 is built to move heavy and bulky loads safely while keeping the attachment versatility expected from the HTH range. It is a strong fit for industrial yards, precast operations, ports and other applications where very high lifting capacity is a priority.",
-      "fr": "Le Magni HTH 25.11 est concu pour deplacer en toute securite des charges lourdes et volumineuses tout en conservant la polyvalence d accessoires attendue de la gamme HTH. C est une machine tres adaptee aux sites industriels, au prefabrique, aux zones portuaires et aux applications ou la tres grande capacite de levage est prioritaire."
+      "fr": "Le Magni HTH 25.11 est conçu pour déplacer en toute sécurité des charges lourdes et volumineuses tout en conservant la polyvalence d'accessoires attendue de la gamme HTH. C'est une machine très adaptée aux sites industriels, au préfabriqué, aux zones portuaires et aux applications où la très grande capacité de levage est prioritaire."
     },
     "features": {
       "en": [],
@@ -7660,7 +7660,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Magni",
     "description": {
       "en": "The Magni HTH 27.11 is built to move heavy and bulky loads safely while keeping the attachment versatility expected from the HTH range. It is a strong fit for industrial yards, precast operations, ports and other applications where very high lifting capacity is a priority.",
-      "fr": "Le Magni HTH 27.11 est concu pour deplacer en toute securite des charges lourdes et volumineuses tout en conservant la polyvalence d accessoires attendue de la gamme HTH. C est une machine tres adaptee aux sites industriels, au prefabrique, aux zones portuaires et aux applications ou la tres grande capacite de levage est prioritaire."
+      "fr": "Le Magni HTH 27.11 est conçu pour déplacer en toute sécurité des charges lourdes et volumineuses tout en conservant la polyvalence d'accessoires attendue de la gamme HTH. C'est une machine très adaptée aux sites industriels, au préfabriqué, aux zones portuaires et aux applications où la très grande capacité de levage est prioritaire."
     },
     "features": {
       "en": [],
@@ -7685,7 +7685,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Magni",
     "description": {
       "en": "The Magni HTH 35.12 is built to move heavy and bulky loads safely while keeping the attachment versatility expected from the HTH range. It is a strong fit for industrial yards, precast operations, ports and other applications where very high lifting capacity is a priority.",
-      "fr": "Le Magni HTH 35.12 est concu pour deplacer en toute securite des charges lourdes et volumineuses tout en conservant la polyvalence d accessoires attendue de la gamme HTH. C est une machine tres adaptee aux sites industriels, au prefabrique, aux zones portuaires et aux applications ou la tres grande capacite de levage est prioritaire."
+      "fr": "Le Magni HTH 35.12 est conçu pour déplacer en toute sécurité des charges lourdes et volumineuses tout en conservant la polyvalence d'accessoires attendue de la gamme HTH. C'est une machine très adaptée aux sites industriels, au préfabriqué, aux zones portuaires et aux applications où la très grande capacité de levage est prioritaire."
     },
     "features": {
       "en": [],
@@ -7710,7 +7710,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Magni",
     "description": {
       "en": "The Magni HTH 50.14 is built to move heavy and bulky loads safely while keeping the attachment versatility expected from the HTH range. It is a strong fit for industrial yards, precast operations, ports and other applications where very high lifting capacity is a priority.",
-      "fr": "Le Magni HTH 50.14 est concu pour deplacer en toute securite des charges lourdes et volumineuses tout en conservant la polyvalence d accessoires attendue de la gamme HTH. C est une machine tres adaptee aux sites industriels, au prefabrique, aux zones portuaires et aux applications ou la tres grande capacite de levage est prioritaire."
+      "fr": "Le Magni HTH 50.14 est conçu pour déplacer en toute sécurité des charges lourdes et volumineuses tout en conservant la polyvalence d'accessoires attendue de la gamme HTH. C'est une machine très adaptée aux sites industriels, au préfabriqué, aux zones portuaires et aux applications où la très grande capacité de levage est prioritaire."
     },
     "features": {
       "en": [],
@@ -7735,7 +7735,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Mecalac",
     "description": {
       "en": "The Mecalac MBR71 is a roller compactor designed for asphalt, maintenance and landscaping applications where balance, maneuverability and operator comfort matter. Its optional trailer and hydraulic breaker also make it a versatile choice for compact repair and finishing work.",
-      "fr": "Le Mecalac MBR71 est un compacteur a rouleaux concu pour l asphalte, la maintenance et l amenagement paysager, ou l equilibre, la maniabilite et le confort operateur sont essentiels. Sa remorque et son marteau hydraulique en option en font aussi un choix polyvalent pour les travaux de reparation et de finition compacts."
+      "fr": "Le Mecalac MBR71 est un compacteur à rouleaux conçu pour l'asphalte, la maintenance et l'aménagement paysager, où l'équilibre, la maniabilité et le confort opérateur sont essentiels. Sa remorque et son marteau hydraulique en option en font aussi un choix polyvalent pour les travaux de réparation et de finition compacts."
     },
     "features": {
       "fr": [],
@@ -7793,7 +7793,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Mecalac",
     "description": {
       "en": "The Mecalac MCL2 is a compact loader designed to stay agile on all types of terrain while delivering the productivity expected from larger machines. Its comfortable operator station and compact footprint make it a strong fit for landscaping, municipal work and tight construction sites.",
-      "fr": "Le Mecalac MCL2 est une chargeuse compacte concue pour rester agile sur tous les terrains tout en offrant la productivite attendue de machines plus grandes. Son poste de conduite confortable et son format compact en font une solution tres pertinente pour les espaces verts, les travaux municipaux et les chantiers exigus."
+      "fr": "Le Mecalac MCL2 est une chargeuse compacte conçue pour rester agile sur tous les terrains tout en offrant la productivité attendue de machines plus grandes. Son poste de conduite confortable et son format compact en font une solution très pertinente pour les espaces verts, les travaux municipaux et les chantiers exigus."
     },
     "features": {
       "fr": [],
@@ -7849,7 +7849,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Mecalac",
     "description": {
       "en": "The Mecalac MCL4+ is a compact loader designed to stay agile on all types of terrain while delivering the productivity expected from larger machines. Its comfortable operator station and compact footprint make it a strong fit for landscaping, municipal work and tight construction sites.",
-      "fr": "Le Mecalac MCL4+ est une chargeuse compacte concue pour rester agile sur tous les terrains tout en offrant la productivite attendue de machines plus grandes. Son poste de conduite confortable et son format compact en font une solution tres pertinente pour les espaces verts, les travaux municipaux et les chantiers exigus."
+      "fr": "Le Mecalac MCL4+ est une chargeuse compacte conçue pour rester agile sur tous les terrains tout en offrant la productivité attendue de machines plus grandes. Son poste de conduite confortable et son format compact en font une solution très pertinente pour les espaces verts, les travaux municipaux et les chantiers exigus."
     },
     "features": {
       "fr": [],
@@ -7914,7 +7914,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Mecalac",
     "description": {
       "en": "The Mecalac MCL6+ is a compact loader designed to stay agile on all types of terrain while delivering the productivity expected from larger machines. Its comfortable operator station and compact footprint make it a strong fit for landscaping, municipal work and tight construction sites.",
-      "fr": "Le Mecalac MCL6+ est une chargeuse compacte concue pour rester agile sur tous les terrains tout en offrant la productivite attendue de machines plus grandes. Son poste de conduite confortable et son format compact en font une solution tres pertinente pour les espaces verts, les travaux municipaux et les chantiers exigus."
+      "fr": "Le Mecalac MCL6+ est une chargeuse compacte conçue pour rester agile sur tous les terrains tout en offrant la productivité attendue de machines plus grandes. Son poste de conduite confortable et son format compact en font une solution très pertinente pour les espaces verts, les travaux municipaux et les chantiers exigus."
     },
     "features": {
       "fr": [],
@@ -7955,7 +7955,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Mecalac",
     "description": {
       "en": "The Mecalac MCL8 is a compact loader designed to stay agile on all types of terrain while delivering the productivity expected from larger machines. Its comfortable operator station and compact footprint make it a strong fit for landscaping, municipal work and tight construction sites.",
-      "fr": "Le Mecalac MCL8 est une chargeuse compacte concue pour rester agile sur tous les terrains tout en offrant la productivite attendue de machines plus grandes. Son poste de conduite confortable et son format compact en font une solution tres pertinente pour les espaces verts, les travaux municipaux et les chantiers exigus."
+      "fr": "Le Mecalac MCL8 est une chargeuse compacte conçue pour rester agile sur tous les terrains tout en offrant la productivité attendue de machines plus grandes. Son poste de conduite confortable et son format compact en font une solution très pertinente pour les espaces verts, les travaux municipaux et les chantiers exigus."
     },
     "features": {
       "fr": [],
@@ -8014,7 +8014,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Mecalac",
     "description": {
       "en": "The Mecalac Revotruck 6 rethinks site transport with its rotating cab concept, helping operators keep their attention on the work area and obstacles around them. It is a standout dumper for projects that value safety, visibility and smarter material movement on rough terrain.",
-      "fr": "Le Mecalac Revotruck 6 repense le transport sur chantier avec son concept de cabine rotative, qui aide l operateur a garder son attention sur la zone de travail et les obstacles autour de lui. C est un dumper tres differenciant pour les projets qui valorisent securite, visibilite et transport de materiaux plus intelligent sur terrain difficile."
+      "fr": "Le Mecalac Revotruck 6 repense le transport sur chantier avec son concept de cabine rotative, qui aide l'opérateur à garder son attention sur la zone de travail et les obstacles autour de lui. C'est un dumper très différenciant pour les projets qui valorisent sécurité, visibilité et transport de matériaux plus intelligent sur terrain difficile."
     },
     "features": {
       "fr": [],
@@ -8063,7 +8063,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Mecalac",
     "description": {
       "en": "The Mecalac Revotruck 9 rethinks site transport with its rotating cab concept, helping operators keep their attention on the work area and obstacles around them. It is a standout dumper for projects that value safety, visibility and smarter material movement on rough terrain.",
-      "fr": "Le Mecalac Revotruck 9 repense le transport sur chantier avec son concept de cabine rotative, qui aide l operateur a garder son attention sur la zone de travail et les obstacles autour de lui. C est un dumper tres differenciant pour les projets qui valorisent securite, visibilite et transport de materiaux plus intelligent sur terrain difficile."
+      "fr": "Le Mecalac Revotruck 9 repense le transport sur chantier avec son concept de cabine rotative, qui aide l'opérateur à garder son attention sur la zone de travail et les obstacles autour de lui. C'est un dumper très différenciant pour les projets qui valorisent sécurité, visibilité et transport de matériaux plus intelligent sur terrain difficile."
     },
     "features": {
       "fr": [],
@@ -8267,7 +8267,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "JLG",
     "description": {
       "en": "The JLG RT2669 is an engine-powered rough-terrain scissor built to carry more people and tools efficiently across demanding outdoor jobsites. Its large platform, drive-at-height capability and practical service approach make it a dependable workhorse for daily site productivity.",
-      "fr": "La JLG RT2669 est une nacelle ciseaux tout-terrain motorisee concue pour transporter plus d operateurs et d outils efficacement sur les chantiers exterieurs exigeants. Sa grande plateforme, le deplacement a hauteur et son approche maintenance tres pratique en font une vraie machine de production au quotidien."
+      "fr": "La JLG RT2669 est une nacelle ciseaux tout-terrain motorisée conçue pour transporter plus d'opérateurs et d'outils efficacement sur les chantiers extérieurs exigeants. Sa grande plateforme, le déplacement à hauteur et son approche maintenance très pratique en font une vraie machine de production au quotidien."
     },
     "features": {
       "en": [],
@@ -8336,7 +8336,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "JLG",
     "description": {
       "en": "The JLG RT3369 is an engine-powered rough-terrain scissor built to carry more people and tools efficiently across demanding outdoor jobsites. Its large platform, drive-at-height capability and practical service approach make it a dependable workhorse for daily site productivity.",
-      "fr": "La JLG RT3369 est une nacelle ciseaux tout-terrain motorisee concue pour transporter plus d operateurs et d outils efficacement sur les chantiers exterieurs exigeants. Sa grande plateforme, le deplacement a hauteur et son approche maintenance tres pratique en font une vraie machine de production au quotidien."
+      "fr": "La JLG RT3369 est une nacelle ciseaux tout-terrain motorisée conçue pour transporter plus d'opérateurs et d'outils efficacement sur les chantiers extérieurs exigeants. Sa grande plateforme, le déplacement à hauteur et son approche maintenance très pratique en font une vraie machine de production au quotidien."
     },
     "features": {
       "en": [],
@@ -8405,7 +8405,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Magni",
     "description": {
       "en": "The Magni RTH 5.18 is a compact rotating telehandler aimed at construction sites and rental fleets that need a multifunctional machine with broad attachment compatibility. Its rotating concept and RFID-based attachment recognition make it especially attractive for varied day-to-day lifting tasks.",
-      "fr": "Le Magni RTH 5.18 est un telescopique rotatif compact destine aux chantiers et aux flottes de location qui recherchent une machine multifonction compatible avec de nombreux accessoires. Son concept rotatif et la reconnaissance d outils par RFID le rendent particulierement interessant pour des levages tres varies au quotidien."
+      "fr": "Le Magni RTH 5.18 est un télescopique rotatif compact destiné aux chantiers et aux flottes de location qui recherchent une machine multifonction compatible avec de nombreux accessoires. Son concept rotatif et la reconnaissance d'outils par RFID le rendent particulièrement intéressant pour des levages très variés au quotidien."
     },
     "features": {
       "en": [],
@@ -8426,7 +8426,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Magni",
     "description": {
       "en": "The Magni RTH 5.21 is a compact rotating telehandler aimed at construction sites and rental fleets that need a multifunctional machine with broad attachment compatibility. Its rotating concept and RFID-based attachment recognition make it especially attractive for varied day-to-day lifting tasks.",
-      "fr": "Le Magni RTH 5.21 est un telescopique rotatif compact destine aux chantiers et aux flottes de location qui recherchent une machine multifonction compatible avec de nombreux accessoires. Son concept rotatif et la reconnaissance d outils par RFID le rendent particulierement interessant pour des levages tres varies au quotidien."
+      "fr": "Le Magni RTH 5.21 est un télescopique rotatif compact destiné aux chantiers et aux flottes de location qui recherchent une machine multifonction compatible avec de nombreux accessoires. Son concept rotatif et la reconnaissance d'outils par RFID le rendent particulièrement intéressant pour des levages très variés au quotidien."
     },
     "features": {
       "en": [],
@@ -8451,7 +8451,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Magni",
     "description": {
       "en": "The Magni RTH 5.23 is a compact rotating telehandler aimed at construction sites and rental fleets that need a multifunctional machine with broad attachment compatibility. Its rotating concept and RFID-based attachment recognition make it especially attractive for varied day-to-day lifting tasks.",
-      "fr": "Le Magni RTH 5.23 est un telescopique rotatif compact destine aux chantiers et aux flottes de location qui recherchent une machine multifonction compatible avec de nombreux accessoires. Son concept rotatif et la reconnaissance d outils par RFID le rendent particulierement interessant pour des levages tres varies au quotidien."
+      "fr": "Le Magni RTH 5.23 est un télescopique rotatif compact destiné aux chantiers et aux flottes de location qui recherchent une machine multifonction compatible avec de nombreux accessoires. Son concept rotatif et la reconnaissance d'outils par RFID le rendent particulièrement intéressant pour des levages très variés au quotidien."
     },
     "features": {
       "en": [],
@@ -8472,7 +8472,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Magni",
     "description": {
       "en": "The Magni RTH 5.25 is a compact rotating telehandler aimed at construction sites and rental fleets that need a multifunctional machine with broad attachment compatibility. Its rotating concept and RFID-based attachment recognition make it especially attractive for varied day-to-day lifting tasks.",
-      "fr": "Le Magni RTH 5.25 est un telescopique rotatif compact destine aux chantiers et aux flottes de location qui recherchent une machine multifonction compatible avec de nombreux accessoires. Son concept rotatif et la reconnaissance d outils par RFID le rendent particulierement interessant pour des levages tres varies au quotidien."
+      "fr": "Le Magni RTH 5.25 est un télescopique rotatif compact destiné aux chantiers et aux flottes de location qui recherchent une machine multifonction compatible avec de nombreux accessoires. Son concept rotatif et la reconnaissance d'outils par RFID le rendent particulièrement intéressant pour des levages très variés au quotidien."
     },
     "features": {
       "en": [],
@@ -8493,7 +8493,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Magni",
     "description": {
       "en": "The Magni RTH 6.22 brings the versatility of the rotating range to contractors who need a balanced machine for lifting, handling and attachment-led applications. It is well suited to both project work and rental use where productivity and adaptability have to go together.",
-      "fr": "Le Magni RTH 6.22 apporte toute la polyvalence de la gamme rotative aux entreprises qui recherchent une machine equilibree pour le levage, la manutention et les applications avec accessoires. Il convient tres bien aux chantiers comme a la location, lorsque productivite et adaptabilite doivent aller de pair."
+      "fr": "Le Magni RTH 6.22 apporte toute la polyvalence de la gamme rotative aux entreprises qui recherchent une machine équilibrée pour le levage, la manutention et les applications avec accessoires. Il convient très bien aux chantiers comme à la location, lorsque productivité et adaptabilité doivent aller de pair."
     },
     "features": {
       "en": [],
@@ -8514,7 +8514,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Magni",
     "description": {
       "en": "The Magni RTH 6.22 EC retains the multifunction strengths of the rotating RTH family in a configuration tailored to specific site needs. It combines broad attachment compatibility, RFID recognition and strong day-to-day versatility for construction and rental applications.",
-      "fr": "Le Magni RTH 6.22 EC conserve les points forts multifonctions de la famille RTH dans une configuration adaptee a des besoins de chantier specifiques. Il combine une large compatibilite d accessoires, la reconnaissance RFID et une grande polyvalence au quotidien pour la construction comme pour la location."
+      "fr": "Le Magni RTH 6.22 EC conserve les points forts multifonctions de la famille RTH dans une configuration adaptée à des besoins de chantier spécifiques. Il combine une large compatibilité d'accessoires, la reconnaissance RFID et une grande polyvalence au quotidien pour la construction comme pour la location."
     },
     "features": {
       "en": [],
@@ -8535,7 +8535,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Magni",
     "description": {
       "en": "The Magni RTH 6.22 TC retains the multifunction strengths of the rotating RTH family in a configuration tailored to specific site needs. It combines broad attachment compatibility, RFID recognition and strong day-to-day versatility for construction and rental applications.",
-      "fr": "Le Magni RTH 6.22 TC conserve les points forts multifonctions de la famille RTH dans une configuration adaptee a des besoins de chantier specifiques. Il combine une large compatibilite d accessoires, la reconnaissance RFID et une grande polyvalence au quotidien pour la construction comme pour la location."
+      "fr": "Le Magni RTH 6.22 TC conserve les points forts multifonctions de la famille RTH dans une configuration adaptée à des besoins de chantier spécifiques. Il combine une large compatibilité d'accessoires, la reconnaissance RFID et une grande polyvalence au quotidien pour la construction comme pour la location."
     },
     "features": {
       "en": [],
@@ -8556,7 +8556,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Magni",
     "description": {
       "en": "The Magni RTH 6.26 brings the versatility of the rotating range to contractors who need a balanced machine for lifting, handling and attachment-led applications. It is well suited to both project work and rental use where productivity and adaptability have to go together.",
-      "fr": "Le Magni RTH 6.26 apporte toute la polyvalence de la gamme rotative aux entreprises qui recherchent une machine equilibree pour le levage, la manutention et les applications avec accessoires. Il convient tres bien aux chantiers comme a la location, lorsque productivite et adaptabilite doivent aller de pair."
+      "fr": "Le Magni RTH 6.26 apporte toute la polyvalence de la gamme rotative aux entreprises qui recherchent une machine équilibrée pour le levage, la manutention et les applications avec accessoires. Il convient très bien aux chantiers comme à la location, lorsque productivité et adaptabilité doivent aller de pair."
     },
     "features": {
       "en": [],
@@ -8577,7 +8577,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Magni",
     "description": {
       "en": "The Magni RTH 6.26 EC retains the multifunction strengths of the rotating RTH family in a configuration tailored to specific site needs. It combines broad attachment compatibility, RFID recognition and strong day-to-day versatility for construction and rental applications.",
-      "fr": "Le Magni RTH 6.26 EC conserve les points forts multifonctions de la famille RTH dans une configuration adaptee a des besoins de chantier specifiques. Il combine une large compatibilite d accessoires, la reconnaissance RFID et une grande polyvalence au quotidien pour la construction comme pour la location."
+      "fr": "Le Magni RTH 6.26 EC conserve les points forts multifonctions de la famille RTH dans une configuration adaptée à des besoins de chantier spécifiques. Il combine une large compatibilité d'accessoires, la reconnaissance RFID et une grande polyvalence au quotidien pour la construction comme pour la location."
     },
     "features": {
       "en": [],
@@ -8598,7 +8598,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Magni",
     "description": {
       "en": "The Magni RTH 6.26 TC retains the multifunction strengths of the rotating RTH family in a configuration tailored to specific site needs. It combines broad attachment compatibility, RFID recognition and strong day-to-day versatility for construction and rental applications.",
-      "fr": "Le Magni RTH 6.26 TC conserve les points forts multifonctions de la famille RTH dans une configuration adaptee a des besoins de chantier specifiques. Il combine une large compatibilite d accessoires, la reconnaissance RFID et une grande polyvalence au quotidien pour la construction comme pour la location."
+      "fr": "Le Magni RTH 6.26 TC conserve les points forts multifonctions de la famille RTH dans une configuration adaptée à des besoins de chantier spécifiques. Il combine une large compatibilité d'accessoires, la reconnaissance RFID et une grande polyvalence au quotidien pour la construction comme pour la location."
     },
     "features": {
       "en": [],
@@ -8623,7 +8623,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Magni",
     "description": {
       "en": "The Magni RTH 6.31 brings the versatility of the rotating range to contractors who need a balanced machine for lifting, handling and attachment-led applications. It is well suited to both project work and rental use where productivity and adaptability have to go together.",
-      "fr": "Le Magni RTH 6.31 apporte toute la polyvalence de la gamme rotative aux entreprises qui recherchent une machine equilibree pour le levage, la manutention et les applications avec accessoires. Il convient tres bien aux chantiers comme a la location, lorsque productivite et adaptabilite doivent aller de pair."
+      "fr": "Le Magni RTH 6.31 apporte toute la polyvalence de la gamme rotative aux entreprises qui recherchent une machine équilibrée pour le levage, la manutention et les applications avec accessoires. Il convient très bien aux chantiers comme à la location, lorsque productivité et adaptabilité doivent aller de pair."
     },
     "features": {
       "en": [],
@@ -8644,7 +8644,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Magni",
     "description": {
       "en": "The Magni RTH 6.31 EC retains the multifunction strengths of the rotating RTH family in a configuration tailored to specific site needs. It combines broad attachment compatibility, RFID recognition and strong day-to-day versatility for construction and rental applications.",
-      "fr": "Le Magni RTH 6.31 EC conserve les points forts multifonctions de la famille RTH dans une configuration adaptee a des besoins de chantier specifiques. Il combine une large compatibilite d accessoires, la reconnaissance RFID et une grande polyvalence au quotidien pour la construction comme pour la location."
+      "fr": "Le Magni RTH 6.31 EC conserve les points forts multifonctions de la famille RTH dans une configuration adaptée à des besoins de chantier spécifiques. Il combine une large compatibilité d'accessoires, la reconnaissance RFID et une grande polyvalence au quotidien pour la construction comme pour la location."
     },
     "features": {
       "en": [],
@@ -8665,7 +8665,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Magni",
     "description": {
       "en": "The Magni RTH 6.31 TC retains the multifunction strengths of the rotating RTH family in a configuration tailored to specific site needs. It combines broad attachment compatibility, RFID recognition and strong day-to-day versatility for construction and rental applications.",
-      "fr": "Le Magni RTH 6.31 TC conserve les points forts multifonctions de la famille RTH dans une configuration adaptee a des besoins de chantier specifiques. Il combine une large compatibilite d accessoires, la reconnaissance RFID et une grande polyvalence au quotidien pour la construction comme pour la location."
+      "fr": "Le Magni RTH 6.31 TC conserve les points forts multifonctions de la famille RTH dans une configuration adaptée à des besoins de chantier spécifiques. Il combine une large compatibilité d'accessoires, la reconnaissance RFID et une grande polyvalence au quotidien pour la construction comme pour la location."
     },
     "features": {
       "en": [],
@@ -8686,7 +8686,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Magni",
     "description": {
       "en": "The Magni RTH 8.27 is a higher-capacity rotating telehandler designed for demanding lifting programs where reach, flexibility and strong load handling all matter. It is particularly attractive for complex sites that want the efficiency of one machine able to cover many roles.",
-      "fr": "Le Magni RTH 8.27 est un telescopique rotatif de plus forte capacite concu pour les programmes de levage exigeants, ou portee, flexibilite et aptitude aux charges importantes sont essentielles. Il est particulierement attractif pour les chantiers complexes qui veulent l efficacite d une seule machine capable de couvrir plusieurs roles."
+      "fr": "Le Magni RTH 8.27 est un télescopique rotatif de plus forte capacité conçu pour les programmes de levage exigeants, où portée, flexibilité et aptitude aux charges importantes sont essentielles. Il est particulièrement attractif pour les chantiers complexes qui veulent l'efficacité d'une seule machine capable de couvrir plusieurs rôles."
     },
     "features": {
       "en": [],
@@ -8711,7 +8711,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Magni",
     "description": {
       "en": "The Magni RTH 8.27 TC retains the multifunction strengths of the rotating RTH family in a configuration tailored to specific site needs. It combines broad attachment compatibility, RFID recognition and strong day-to-day versatility for construction and rental applications.",
-      "fr": "Le Magni RTH 8.27 TC conserve les points forts multifonctions de la famille RTH dans une configuration adaptee a des besoins de chantier specifiques. Il combine une large compatibilite d accessoires, la reconnaissance RFID et une grande polyvalence au quotidien pour la construction comme pour la location."
+      "fr": "Le Magni RTH 8.27 TC conserve les points forts multifonctions de la famille RTH dans une configuration adaptée à des besoins de chantier spécifiques. Il combine une large compatibilité d'accessoires, la reconnaissance RFID et une grande polyvalence au quotidien pour la construction comme pour la location."
     },
     "features": {
       "en": [],
@@ -8736,7 +8736,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Magni",
     "description": {
       "en": "The Magni RTH 8.35 is a higher-capacity rotating telehandler designed for demanding lifting programs where reach, flexibility and strong load handling all matter. It is particularly attractive for complex sites that want the efficiency of one machine able to cover many roles.",
-      "fr": "Le Magni RTH 8.35 est un telescopique rotatif de plus forte capacite concu pour les programmes de levage exigeants, ou portee, flexibilite et aptitude aux charges importantes sont essentielles. Il est particulierement attractif pour les chantiers complexes qui veulent l efficacite d une seule machine capable de couvrir plusieurs roles."
+      "fr": "Le Magni RTH 8.35 est un télescopique rotatif de plus forte capacité conçu pour les programmes de levage exigeants, où portée, flexibilité et aptitude aux charges importantes sont essentielles. Il est particulièrement attractif pour les chantiers complexes qui veulent l'efficacité d'une seule machine capable de couvrir plusieurs rôles."
     },
     "features": {
       "en": [],
@@ -8761,7 +8761,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Terex",
     "description": {
       "en": "The Terex SK 415-20 is a hammerhead tower crane designed for large projects that need long jib coverage, high productivity and a familiar structural format. It is a strong solution for contractors who value classic hammerhead efficiency on major sites.",
-      "fr": "La Terex SK 415-20 est une grue a tour a tete marteau concue pour les grands projets qui demandent une large couverture de fleche, une forte productivite et un format structurel familier. C est une solution solide pour les entreprises qui privilegient l efficacite du concept marteau sur les chantiers de grande envergure."
+      "fr": "La Terex SK 415-20 est une grue à tour à tête marteau conçue pour les grands projets qui demandent une large couverture de flèche, une forte productivité et un format structurel familier. C'est une solution solide pour les entreprises qui privilégient l'efficacité du concept marteau sur les chantiers de grande envergure."
     },
     "features": {
       "en": [
@@ -8806,7 +8806,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Terex",
     "description": {
       "en": "The Terex SK 575-32 brings major hammerhead lifting capability to projects that require strong structural handling and broad site coverage. It is especially well suited to contractors working on large-scale building and infrastructure programs.",
-      "fr": "La Terex SK 575-32 apporte une capacite de levage importante en configuration tete marteau pour les projets qui demandent une forte aptitude structurelle et une large couverture de chantier. Elle convient particulierement aux entreprises engagees sur de grands programmes de batiment et d infrastructure."
+      "fr": "La Terex SK 575-32 apporte une capacité de levage importante en configuration tête marteau pour les projets qui demandent une forte aptitude structurelle et une large couverture de chantier. Elle convient particulièrement aux entreprises engagées sur de grands programmes de bâtiment et d'infrastructure."
     },
     "features": {
       "en": [
@@ -8851,7 +8851,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "JLG",
     "description": {
       "en": "The JLG T350 is a compact towable boom that makes access work simple for teams who need fast deployment and easy transport between jobs. Its self-leveling outriggers and intuitive controls make it especially practical for maintenance, light construction and rental applications.",
-      "fr": "La JLG T350 est une nacelle remorquable compacte qui simplifie les travaux d acces pour les equipes qui veulent une mise en oeuvre rapide et un transport facile entre les chantiers. Ses stabilisateurs auto-nivelants et ses commandes intuitives la rendent particulierement pratique pour la maintenance, les travaux legers et la location."
+      "fr": "La JLG T350 est une nacelle remorquable compacte qui simplifie les travaux d'accès pour les équipes qui veulent une mise en œuvre rapide et un transport facile entre les chantiers. Ses stabilisateurs auto-nivelants et ses commandes intuitives la rendent particulièrement pratique pour la maintenance, les travaux légers et la location."
     },
     "features": {
       "en": [],
@@ -8922,7 +8922,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "JLG",
     "description": {
       "en": "The JLG T500J gives users more towable reach while keeping setup simple and transport easy from one project to the next. It is well suited to contractors and rental fleets looking for a versatile access solution with quick stabilization and straightforward controls.",
-      "fr": "La JLG T500J offre davantage de portee dans un format remorquable qui reste simple a installer et facile a deplacer d un chantier a l autre. Elle convient tres bien aux entreprises et aux loueurs qui recherchent une solution d acces polyvalente avec stabilisation rapide et commandes faciles a prendre en main."
+      "fr": "La JLG T500J offre davantage de portée dans un format remorquable qui reste simple à installer et facile à déplacer d'un chantier à l'autre. Elle convient très bien aux entreprises et aux loueurs qui recherchent une solution d'accès polyvalente avec stabilisation rapide et commandes faciles à prendre en main."
     },
     "features": {
       "en": [],
@@ -8993,7 +8993,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Mecalac",
     "description": {
       "en": "The Mecalac TA1 is a highly compact site dumper made for the tightest jobsites, where agility, easy operation and precise discharge all matter. It is a very practical option for small-scale construction, landscaping and urban material transport.",
-      "fr": "Le Mecalac TA1 est un dumper de chantier tres compact concu pour les environnements les plus exigus, ou agilite, simplicite d utilisation et precision de deversement sont essentielles. C est une option tres pratique pour les petits chantiers, les espaces verts et le transport de materiaux en environnement urbain."
+      "fr": "Le Mecalac TA1 est un dumper de chantier très compact conçu pour les environnements les plus exigus, où agilité, simplicité d'utilisation et précision de déversement sont essentielles. C'est une option très pratique pour les petits chantiers, les espaces verts et le transport de matériaux en environnement urbain."
     },
     "features": {
       "fr": [],
@@ -9044,7 +9044,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Mecalac",
     "description": {
       "en": "The Mecalac TA2 is a highly compact site dumper made for the tightest jobsites, where agility, easy operation and precise discharge all matter. It is a very practical option for small-scale construction, landscaping and urban material transport.",
-      "fr": "Le Mecalac TA2 est un dumper de chantier tres compact concu pour les environnements les plus exigus, ou agilite, simplicite d utilisation et precision de deversement sont essentielles. C est une option tres pratique pour les petits chantiers, les espaces verts et le transport de materiaux en environnement urbain."
+      "fr": "Le Mecalac TA2 est un dumper de chantier très compact conçu pour les environnements les plus exigus, où agilité, simplicité d'utilisation et précision de déversement sont essentielles. C'est une option très pratique pour les petits chantiers, les espaces verts et le transport de matériaux en environnement urbain."
     },
     "features": {
       "fr": [],
@@ -9116,7 +9116,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Mecalac",
     "description": {
       "en": "The Mecalac TA3 is designed for small to medium jobsites that need a compact dumper with confident all-terrain mobility and accurate material placement. Its hydrostatic transmission and easy controls make it especially attractive for operators who want productivity with fast familiarization.",
-      "fr": "Le Mecalac TA3 est concu pour les petits et moyens chantiers qui ont besoin d un dumper compact avec une vraie mobilite tout-terrain et un deversement precis. Sa transmission hydrostatique et ses commandes simples le rendent particulierement attractif pour les operateurs qui veulent de la productivite avec une prise en main rapide."
+      "fr": "Le Mecalac TA3 est conçu pour les petits et moyens chantiers qui ont besoin d'un dumper compact avec une vraie mobilité tout-terrain et un déversement précis. Sa transmission hydrostatique et ses commandes simples le rendent particulièrement attractif pour les opérateurs qui veulent de la productivité avec une prise en main rapide."
     },
     "features": {
       "fr": [],
@@ -9200,7 +9200,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Mecalac",
     "description": {
       "en": "The Mecalac TA3.5 is designed for small to medium jobsites that need a compact dumper with confident all-terrain mobility and accurate material placement. Its hydrostatic transmission and easy controls make it especially attractive for operators who want productivity with fast familiarization.",
-      "fr": "Le Mecalac TA3.5 est concu pour les petits et moyens chantiers qui ont besoin d un dumper compact avec une vraie mobilite tout-terrain et un deversement precis. Sa transmission hydrostatique et ses commandes simples le rendent particulierement attractif pour les operateurs qui veulent de la productivite avec une prise en main rapide."
+      "fr": "Le Mecalac TA3.5 est conçu pour les petits et moyens chantiers qui ont besoin d'un dumper compact avec une vraie mobilité tout-terrain et un déversement précis. Sa transmission hydrostatique et ses commandes simples le rendent particulièrement attractif pour les opérateurs qui veulent de la productivité avec une prise en main rapide."
     },
     "features": {
       "fr": [],
@@ -9263,7 +9263,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Mecalac",
     "description": {
       "en": "The Mecalac TA6 is built for medium to large jobsites that need greater payload, strong traction and safer transport over rough ground. It is a versatile dumper for contractors who want efficient bulk movement with modern safety equipment and reliable site mobility.",
-      "fr": "Le Mecalac TA6 est concu pour les chantiers moyens a importants qui ont besoin d une charge utile plus elevee, d une forte traction et d un transport plus sur sur terrain difficile. C est un dumper polyvalent pour les entreprises qui veulent un transport de materiaux efficace, avec des equipements de securite modernes et une vraie mobilite de chantier."
+      "fr": "Le Mecalac TA6 est conçu pour les chantiers moyens à importants qui ont besoin d'une charge utile plus élevée, d'une forte traction et d'un transport plus sur sur terrain difficile. C'est un dumper polyvalent pour les entreprises qui veulent un transport de matériaux efficace, avec des équipements de sécurité modernes et une vraie mobilité de chantier."
     },
     "features": {
       "fr": [],
@@ -9326,7 +9326,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Mecalac",
     "description": {
       "en": "The Mecalac TA9 is built for medium to large jobsites that need greater payload, strong traction and safer transport over rough ground. It is a versatile dumper for contractors who want efficient bulk movement with modern safety equipment and reliable site mobility.",
-      "fr": "Le Mecalac TA9 est concu pour les chantiers moyens a importants qui ont besoin d une charge utile plus elevee, d une forte traction et d un transport plus sur sur terrain difficile. C est un dumper polyvalent pour les entreprises qui veulent un transport de materiaux efficace, avec des equipements de securite modernes et une vraie mobilite de chantier."
+      "fr": "Le Mecalac TA9 est conçu pour les chantiers moyens à importants qui ont besoin d'une charge utile plus élevée, d'une forte traction et d'un transport plus sur sur terrain difficile. C'est un dumper polyvalent pour les entreprises qui veulent un transport de matériaux efficace, avec des équipements de sécurité modernes et une vraie mobilité de chantier."
     },
     "features": {
       "fr": [],
@@ -9377,7 +9377,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Magni",
     "description": {
       "en": "The Magni TH 3,5.7 is a compact fixed telehandler designed for construction and logistics sites where maneuverability and versatility are key. Its compact dimensions make it especially attractive for everyday handling work in tighter operating areas.",
-      "fr": "Le Magni TH 3,5.7 est un chariot telescopique fixe compact concu pour les chantiers de construction et de logistique ou la maniabilite et la polyvalence sont essentielles. Son faible encombrement le rend particulierement interessant pour les manutentions quotidiennes dans les zones les plus contraintes."
+      "fr": "Le Magni TH 3,5.7 est un chariot télescopique fixe compact conçu pour les chantiers de construction et de logistique où la maniabilité et la polyvalence sont essentielles. Son faible encombrement le rend particulièrement intéressant pour les manutentions quotidiennes dans les zones les plus contraintes."
     },
     "features": {
       "en": [],
@@ -9402,7 +9402,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Magni",
     "description": {
       "en": "The Magni TH 3,5.9 is a compact fixed telehandler designed for construction and logistics sites where maneuverability and versatility are key. Its compact dimensions make it especially attractive for everyday handling work in tighter operating areas.",
-      "fr": "Le Magni TH 3,5.9 est un chariot telescopique fixe compact concu pour les chantiers de construction et de logistique ou la maniabilite et la polyvalence sont essentielles. Son faible encombrement le rend particulierement interessant pour les manutentions quotidiennes dans les zones les plus contraintes."
+      "fr": "Le Magni TH 3,5.9 est un chariot télescopique fixe compact conçu pour les chantiers de construction et de logistique où la maniabilité et la polyvalence sont essentielles. Son faible encombrement le rend particulièrement intéressant pour les manutentions quotidiennes dans les zones les plus contraintes."
     },
     "features": {
       "en": [],
@@ -9427,7 +9427,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Magni",
     "description": {
       "en": "The Magni TH 3.6 is a compact fixed telehandler designed for construction and logistics sites where maneuverability and versatility are key. Its compact dimensions make it especially attractive for everyday handling work in tighter operating areas.",
-      "fr": "Le Magni TH 3.6 est un chariot telescopique fixe compact concu pour les chantiers de construction et de logistique ou la maniabilite et la polyvalence sont essentielles. Son faible encombrement le rend particulierement interessant pour les manutentions quotidiennes dans les zones les plus contraintes."
+      "fr": "Le Magni TH 3.6 est un chariot télescopique fixe compact conçu pour les chantiers de construction et de logistique où la maniabilité et la polyvalence sont essentielles. Son faible encombrement le rend particulièrement intéressant pour les manutentions quotidiennes dans les zones les plus contraintes."
     },
     "features": {
       "en": [],
@@ -9452,7 +9452,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Magni",
     "description": {
       "en": "The Magni TH 3.6 e brings fully electric power to a compact fixed telehandler format built for construction and logistics. It is a smart choice for users who need versatility, tight-space maneuverability and lower noise and emissions.",
-      "fr": "Le Magni TH 3.6 e apporte une motorisation 100 % electrique a un chariot telescopique fixe compact concu pour la construction et la logistique. C est un choix tres pertinent pour les utilisateurs qui recherchent polyvalence, maniabilite en espace reduit et baisse des nuisances sonores et des emissions."
+      "fr": "Le Magni TH 3.6 e apporte une motorisation 100 % électrique à un chariot télescopique fixe compact conçu pour la construction et la logistique. C'est un choix très pertinent pour les utilisateurs qui recherchent polyvalence, maniabilité en espace réduit et baisse des nuisances sonores et des émissions."
     },
     "features": {
       "en": [],
@@ -9477,7 +9477,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Magni",
     "description": {
       "en": "The Magni TH 4.15 S adds greater reach and all-round site flexibility to the compact fixed telehandler segment. It is well suited to contractors who want a practical handling solution for construction, industrial and day-to-day material movement tasks.",
-      "fr": "Le Magni TH 4.15 S apporte davantage de portee et de flexibilite de chantier au segment des telescopiques fixes compacts. Il convient tres bien aux entreprises qui recherchent une solution de manutention pratique pour la construction, l industrie et les deplacements de materiaux au quotidien."
+      "fr": "Le Magni TH 4.15 S apporte davantage de portée et de flexibilité de chantier au segment des télescopiques fixes compacts. Il convient très bien aux entreprises qui recherchent une solution de manutention pratique pour la construction, l'industrie et les déplacements de matériaux au quotidien."
     },
     "features": {
       "en": [],
@@ -9502,7 +9502,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Magni",
     "description": {
       "en": "The Magni TH 4.15 SP adds greater reach and all-round site flexibility to the compact fixed telehandler segment. It is well suited to contractors who want a practical handling solution for construction, industrial and day-to-day material movement tasks.",
-      "fr": "Le Magni TH 4.15 SP apporte davantage de portee et de flexibilite de chantier au segment des telescopiques fixes compacts. Il convient tres bien aux entreprises qui recherchent une solution de manutention pratique pour la construction, l industrie et les deplacements de materiaux au quotidien."
+      "fr": "Le Magni TH 4.15 SP apporte davantage de portée et de flexibilité de chantier au segment des télescopiques fixes compacts. Il convient très bien aux entreprises qui recherchent une solution de manutention pratique pour la construction, l'industrie et les déplacements de matériaux au quotidien."
     },
     "features": {
       "en": [],
@@ -9527,7 +9527,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Magni",
     "description": {
       "en": "The Magni TH 4.19 S adds greater reach and all-round site flexibility to the compact fixed telehandler segment. It is well suited to contractors who want a practical handling solution for construction, industrial and day-to-day material movement tasks.",
-      "fr": "Le Magni TH 4.19 S apporte davantage de portee et de flexibilite de chantier au segment des telescopiques fixes compacts. Il convient tres bien aux entreprises qui recherchent une solution de manutention pratique pour la construction, l industrie et les deplacements de materiaux au quotidien."
+      "fr": "Le Magni TH 4.19 S apporte davantage de portée et de flexibilité de chantier au segment des télescopiques fixes compacts. Il convient très bien aux entreprises qui recherchent une solution de manutention pratique pour la construction, l'industrie et les déplacements de matériaux au quotidien."
     },
     "features": {
       "en": [],
@@ -9552,7 +9552,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Magni",
     "description": {
       "en": "The Magni TH 4.19 SP adds greater reach and all-round site flexibility to the compact fixed telehandler segment. It is well suited to contractors who want a practical handling solution for construction, industrial and day-to-day material movement tasks.",
-      "fr": "Le Magni TH 4.19 SP apporte davantage de portee et de flexibilite de chantier au segment des telescopiques fixes compacts. Il convient tres bien aux entreprises qui recherchent une solution de manutention pratique pour la construction, l industrie et les deplacements de materiaux au quotidien."
+      "fr": "Le Magni TH 4.19 SP apporte davantage de portée et de flexibilité de chantier au segment des télescopiques fixes compacts. Il convient très bien aux entreprises qui recherchent une solution de manutention pratique pour la construction, l'industrie et les déplacements de matériaux au quotidien."
     },
     "features": {
       "en": [],
@@ -9577,7 +9577,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Magni",
     "description": {
       "en": "The Magni TH 4,5.19 P is a high-performance fixed telehandler developed for demanding jobsites that need precision, stability and broad attachment versatility. It is particularly relevant for operators handling heavy materials on rough terrain with high daily productivity expectations.",
-      "fr": "Le Magni TH 4,5.19 P est un telescopique fixe haute performance developpe pour les chantiers exigeants qui demandent precision, stabilite et grande polyvalence d accessoires. Il est particulierement pertinent pour les exploitants qui manutentionnent des charges importantes sur terrain difficile avec une forte exigence de productivite."
+      "fr": "Le Magni TH 4,5.19 P est un télescopique fixe haute performance développé pour les chantiers exigeants qui demandent précision, stabilité et grande polyvalence d'accessoires. Il est particulièrement pertinent pour les exploitants qui manutentionnent des charges importantes sur terrain difficile avec une forte exigence de productivité."
     },
     "features": {
       "en": [],
@@ -9598,7 +9598,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Magni",
     "description": {
       "en": "The Magni TH 5.5.19 P is a high-performance fixed telehandler developed for demanding jobsites that need precision, stability and broad attachment versatility. It is particularly relevant for operators handling heavy materials on rough terrain with high daily productivity expectations.",
-      "fr": "Le Magni TH 5.5.19 P est un telescopique fixe haute performance developpe pour les chantiers exigeants qui demandent precision, stabilite et grande polyvalence d accessoires. Il est particulierement pertinent pour les exploitants qui manutentionnent des charges importantes sur terrain difficile avec une forte exigence de productivite."
+      "fr": "Le Magni TH 5.5.19 P est un télescopique fixe haute performance développé pour les chantiers exigeants qui demandent précision, stabilité et grande polyvalence d'accessoires. Il est particulièrement pertinent pour les exploitants qui manutentionnent des charges importantes sur terrain difficile avec une forte exigence de productivité."
     },
     "features": {
       "en": [],
@@ -9623,7 +9623,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Magni",
     "description": {
       "en": "The Magni TH 5.5.24 P is a high-performance fixed telehandler developed for demanding jobsites that need precision, stability and broad attachment versatility. It is particularly relevant for operators handling heavy materials on rough terrain with high daily productivity expectations.",
-      "fr": "Le Magni TH 5.5.24 P est un telescopique fixe haute performance developpe pour les chantiers exigeants qui demandent precision, stabilite et grande polyvalence d accessoires. Il est particulierement pertinent pour les exploitants qui manutentionnent des charges importantes sur terrain difficile avec une forte exigence de productivite."
+      "fr": "Le Magni TH 5.5.24 P est un télescopique fixe haute performance développé pour les chantiers exigeants qui demandent précision, stabilité et grande polyvalence d'accessoires. Il est particulièrement pertinent pour les exploitants qui manutentionnent des charges importantes sur terrain difficile avec une forte exigence de productivité."
     },
     "features": {
       "en": [],
@@ -9648,7 +9648,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Magni",
     "description": {
       "en": "The Magni TH 5.8 P is a high-performance fixed telehandler developed for demanding jobsites that need precision, stability and broad attachment versatility. It is particularly relevant for operators handling heavy materials on rough terrain with high daily productivity expectations.",
-      "fr": "Le Magni TH 5.8 P est un telescopique fixe haute performance developpe pour les chantiers exigeants qui demandent precision, stabilite et grande polyvalence d accessoires. Il est particulierement pertinent pour les exploitants qui manutentionnent des charges importantes sur terrain difficile avec une forte exigence de productivite."
+      "fr": "Le Magni TH 5.8 P est un télescopique fixe haute performance développé pour les chantiers exigeants qui demandent précision, stabilité et grande polyvalence d'accessoires. Il est particulièrement pertinent pour les exploitants qui manutentionnent des charges importantes sur terrain difficile avec une forte exigence de productivité."
     },
     "features": {
       "en": [],
@@ -9669,7 +9669,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Magni",
     "description": {
       "en": "The Magni TH 6.20 P is a high-performance fixed telehandler developed for demanding jobsites that need precision, stability and broad attachment versatility. It is particularly relevant for operators handling heavy materials on rough terrain with high daily productivity expectations.",
-      "fr": "Le Magni TH 6.20 P est un telescopique fixe haute performance developpe pour les chantiers exigeants qui demandent precision, stabilite et grande polyvalence d accessoires. Il est particulierement pertinent pour les exploitants qui manutentionnent des charges importantes sur terrain difficile avec une forte exigence de productivite."
+      "fr": "Le Magni TH 6.20 P est un télescopique fixe haute performance développé pour les chantiers exigeants qui demandent précision, stabilité et grande polyvalence d'accessoires. Il est particulièrement pertinent pour les exploitants qui manutentionnent des charges importantes sur terrain difficile avec une forte exigence de productivité."
     },
     "features": {
       "en": [],
@@ -9694,7 +9694,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Magni",
     "description": {
       "en": "The Magni TH 7.10 P is a high-performance fixed telehandler developed for demanding jobsites that need precision, stability and broad attachment versatility. It is particularly relevant for operators handling heavy materials on rough terrain with high daily productivity expectations.",
-      "fr": "Le Magni TH 7.10 P est un telescopique fixe haute performance developpe pour les chantiers exigeants qui demandent precision, stabilite et grande polyvalence d accessoires. Il est particulierement pertinent pour les exploitants qui manutentionnent des charges importantes sur terrain difficile avec une forte exigence de productivite."
+      "fr": "Le Magni TH 7.10 P est un télescopique fixe haute performance développé pour les chantiers exigeants qui demandent précision, stabilité et grande polyvalence d'accessoires. Il est particulièrement pertinent pour les exploitants qui manutentionnent des charges importantes sur terrain difficile avec une forte exigence de productivité."
     },
     "features": {
       "en": [],
@@ -9715,7 +9715,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Mecalac",
     "description": {
       "en": "The Mecalac TLB830 is a backhoe loader built for roadworks, utilities and versatile construction tasks where fast transfers and all-round capability matter. Its strong visibility, easy controls and practical loader-excavator balance make it a valuable all-in-one site machine.",
-      "fr": "Le Mecalac TLB830 est une chargeuse-pelleteuse concue pour la voirie, les reseaux et les travaux polyvalents de construction, ou les deplacements rapides et la polyvalence sont essentiels. Sa bonne visibilite, ses commandes faciles et son equilibre chargeur-pelle en font une machine de chantier tout-en-un tres precieuse."
+      "fr": "Le Mecalac TLB830 est une chargeuse-pelleteuse conçue pour la voirie, les réseaux et les travaux polyvalents de construction, où les déplacements rapides et la polyvalence sont essentiels. Sa bonne visibilité, ses commandes faciles et son équilibre chargeur-pelle en font une machine de chantier tout-en-un très précieuse."
     },
     "features": {
       "fr": [],
@@ -9757,7 +9757,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Mecalac",
     "description": {
       "en": "The Mecalac TLB870 is a backhoe loader built for roadworks, utilities and versatile construction tasks where fast transfers and all-round capability matter. Its strong visibility, easy controls and practical loader-excavator balance make it a valuable all-in-one site machine.",
-      "fr": "Le Mecalac TLB870 est une chargeuse-pelleteuse concue pour la voirie, les reseaux et les travaux polyvalents de construction, ou les deplacements rapides et la polyvalence sont essentiels. Sa bonne visibilite, ses commandes faciles et son equilibre chargeur-pelle en font une machine de chantier tout-en-un tres precieuse."
+      "fr": "Le Mecalac TLB870 est une chargeuse-pelleteuse conçue pour la voirie, les réseaux et les travaux polyvalents de construction, où les déplacements rapides et la polyvalence sont essentiels. Sa bonne visibilité, ses commandes faciles et son équilibre chargeur-pelle en font une machine de chantier tout-en-un très précieuse."
     },
     "features": {
       "fr": [],
@@ -9815,7 +9815,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Mecalac",
     "description": {
       "en": "The Mecalac TLB880 is a backhoe loader built for roadworks, utilities and versatile construction tasks where fast transfers and all-round capability matter. Its strong visibility, easy controls and practical loader-excavator balance make it a valuable all-in-one site machine.",
-      "fr": "Le Mecalac TLB880 est une chargeuse-pelleteuse concue pour la voirie, les reseaux et les travaux polyvalents de construction, ou les deplacements rapides et la polyvalence sont essentiels. Sa bonne visibilite, ses commandes faciles et son equilibre chargeur-pelle en font une machine de chantier tout-en-un tres precieuse."
+      "fr": "Le Mecalac TLB880 est une chargeuse-pelleteuse conçue pour la voirie, les réseaux et les travaux polyvalents de construction, où les déplacements rapides et la polyvalence sont essentiels. Sa bonne visibilité, ses commandes faciles et son équilibre chargeur-pelle en font une machine de chantier tout-en-un très précieuse."
     },
     "features": {
       "fr": [],
@@ -9891,7 +9891,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Mecalac",
     "description": {
       "en": "The Mecalac TLB890 is a backhoe loader built for roadworks, utilities and versatile construction tasks where fast transfers and all-round capability matter. Its strong visibility, easy controls and practical loader-excavator balance make it a valuable all-in-one site machine.",
-      "fr": "Le Mecalac TLB890 est une chargeuse-pelleteuse concue pour la voirie, les reseaux et les travaux polyvalents de construction, ou les deplacements rapides et la polyvalence sont essentiels. Sa bonne visibilite, ses commandes faciles et son equilibre chargeur-pelle en font une machine de chantier tout-en-un tres precieuse."
+      "fr": "Le Mecalac TLB890 est une chargeuse-pelleteuse conçue pour la voirie, les réseaux et les travaux polyvalents de construction, où les déplacements rapides et la polyvalence sont essentiels. Sa bonne visibilité, ses commandes faciles et son équilibre chargeur-pelle en font une machine de chantier tout-en-un très précieuse."
     },
     "features": {
       "fr": [],
@@ -9964,7 +9964,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "Mecalac",
     "description": {
       "en": "The Mecalac TLB990 is a backhoe loader built for roadworks, utilities and versatile construction tasks where fast transfers and all-round capability matter. Its strong visibility, easy controls and practical loader-excavator balance make it a valuable all-in-one site machine.",
-      "fr": "Le Mecalac TLB990 est une chargeuse-pelleteuse concue pour la voirie, les reseaux et les travaux polyvalents de construction, ou les deplacements rapides et la polyvalence sont essentiels. Sa bonne visibilite, ses commandes faciles et son equilibre chargeur-pelle en font une machine de chantier tout-en-un tres precieuse."
+      "fr": "Le Mecalac TLB990 est une chargeuse-pelleteuse conçue pour la voirie, les réseaux et les travaux polyvalents de construction, où les déplacements rapides et la polyvalence sont essentiels. Sa bonne visibilité, ses commandes faciles et son équilibre chargeur-pelle en font une machine de chantier tout-en-un très précieuse."
     },
     "features": {
       "fr": [],
@@ -10533,7 +10533,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "JLG",
     "description": {
       "en": "The JLG X1000AJ is a high-reach compact crawler boom designed for projects that need serious up-and-over access without sacrificing transportability. Its self-leveling outriggers, compact stowed form and dual indoor-outdoor power approach make it a standout solution for complex access work.",
-      "fr": "La JLG X1000AJ est une nacelle sur chenilles compacte de grande portee concue pour les projets qui demandent un acces en hauteur et en devers tres important sans perdre en transportabilite. Ses stabilisateurs auto-nivelants, son format compact replie et sa double logique d usage interieur-exterieur en font une solution de premier plan pour les acces complexes."
+      "fr": "La JLG X1000AJ est une nacelle sur chenilles compacte de grande portée conçue pour les projets qui demandent un accès en hauteur et en devers très important sans perdre en transportabilité. Ses stabilisateurs auto-nivelants, son format compact replié et sa double logique d'usage intérieur-extérieur en font une solution de premier plan pour les accès complexes."
     },
     "features": {
       "en": [],
@@ -10605,7 +10605,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "JLG",
     "description": {
       "en": "The JLG X430AJ is a compact crawler boom designed to deliver strong horizontal outreach in places where weight, access and environmental impact must stay under control. Its lithium-ion power and transport-friendly design make it a very flexible solution for complex indoor-outdoor work.",
-      "fr": "La JLG X430AJ est une nacelle sur chenilles compacte concue pour offrir une forte portee horizontale dans les zones ou le poids, l acces et l impact environnemental doivent rester maitrises. Son alimentation lithium-ion et sa conception facile a transporter en font une solution tres flexible pour les travaux complexes en interieur comme en exterieur."
+      "fr": "La JLG X430AJ est une nacelle sur chenilles compacte conçue pour offrir une forte portée horizontale dans les zones où le poids, l'accès et l'impact environnemental doivent rester maîtrisés. Son alimentation lithium-ion et sa conception facile à transporter en font une solution très flexible pour les travaux complexes en intérieur comme en extérieur."
     },
     "features": {
       "en": [],
@@ -10668,7 +10668,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "JLG",
     "description": {
       "en": "The JLG X500AJ is a compact articulated crawler boom built to reach more places while remaining easy to transport and use on uneven surfaces. It is a strong choice for contractors who need precise access performance in tight or difficult environments.",
-      "fr": "La JLG X500AJ est une nacelle articulee sur chenilles compacte concue pour acceder a davantage de zones tout en restant facile a transporter et efficace sur surfaces irregulieres. C est un excellent choix pour les entreprises qui ont besoin d une machine precise dans les environnements etroits ou difficiles."
+      "fr": "La JLG X500AJ est une nacelle articulée sur chenilles compacte conçue pour accéder à davantage de zones tout en restant facile à transporter et efficace sur surfaces irrégulières. C'est un excellent choix pour les entreprises qui ont besoin d'une machine précise dans les environnements étroits ou difficiles."
     },
     "features": {
       "en": [],
@@ -10743,7 +10743,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "JLG",
     "description": {
       "en": "The JLG X540AJ combines a narrow tracked chassis with strong slope capability and a choice of cleaner power options, making it highly adaptable on sensitive or constrained sites. It is especially attractive for users who need serious access performance without giving up compactness.",
-      "fr": "La JLG X540AJ associe un chassis etroit sur chenilles, une bonne aptitude aux pentes et plusieurs solutions d energie plus propres, ce qui la rend tres adaptable sur les sites sensibles ou contraints. Elle est particulierement interessante pour les utilisateurs qui veulent de vraies performances d acces sans renoncer a la compacite."
+      "fr": "La JLG X540AJ associe un châssis étroit sur chenilles, une bonne aptitude aux pentes et plusieurs solutions d'énergie plus propres, ce qui la rend très adaptable sur les sites sensibles ou contraints. Elle est particulièrement intéressante pour les utilisateurs qui veulent de vraies performances d'accès sans renoncer à la compacité."
     },
     "features": {
       "en": [],
@@ -10799,7 +10799,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "JLG",
     "description": {
       "en": "The JLG X600AJ is a compact crawler boom that balances doorway access, auto-leveling capability and confident work on uneven ground. It is a practical solution for teams that need versatile access performance across mixed indoor and outdoor conditions.",
-      "fr": "La JLG X600AJ est une nacelle sur chenilles compacte qui combine passage en acces reduit, mise a niveau automatique et travail serein sur terrain irregulier. C est une solution tres pratique pour les equipes qui ont besoin d une machine polyvalente en interieur comme en exterieur."
+      "fr": "La JLG X600AJ est une nacelle sur chenilles compacte qui combine passage en accès réduit, mise à niveau automatique et travail serein sur terrain irrégulier. C'est une solution très pratique pour les équipes qui ont besoin d'une machine polyvalente en intérieur comme en extérieur."
     },
     "features": {
       "en": [],
@@ -10862,7 +10862,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "JLG",
     "description": {
       "en": "The JLG X660SJ is built for faster straight-boom access with compact crawler mobility, strong platform performance and useful position memory functions. It is well suited to demanding jobs where speed of setup, repeatability and access in tight spaces all matter.",
-      "fr": "La JLG X660SJ est concue pour offrir un acces rapide en fleche droite avec la mobilite d une chenille compacte, une plateforme performante et des fonctions memoire tres utiles. Elle convient tres bien aux chantiers exigeants ou la rapidite de mise en place, la repetabilite et l acces en espace restreint sont essentiels."
+      "fr": "La JLG X660SJ est conçue pour offrir un accès rapide en flèche droite avec la mobilité d'une chenille compacte, une plateforme performante et des fonctions mémoire très utiles. Elle convient très bien aux chantiers exigeants où la rapidité de mise en place, la répétabilité et l'accès en espace restreint sont essentiels."
     },
     "features": {
       "en": [],
@@ -10923,7 +10923,7 @@ const baseProductDetails: Record<string, ProductDetail> = {
     "brand": "JLG",
     "description": {
       "en": "The JLG X770AJ is a compact articulated crawler boom built to reach more places while remaining easy to transport and use on uneven surfaces. It is a strong choice for contractors who need precise access performance in tight or difficult environments.",
-      "fr": "La JLG X770AJ est une nacelle articulee sur chenilles compacte concue pour acceder a davantage de zones tout en restant facile a transporter et efficace sur surfaces irregulieres. C est un excellent choix pour les entreprises qui ont besoin d une machine precise dans les environnements etroits ou difficiles."
+      "fr": "La JLG X770AJ est une nacelle articulée sur chenilles compacte conçue pour accéder à davantage de zones tout en restant facile à transporter et efficace sur surfaces irrégulières. C'est un excellent choix pour les entreprises qui ont besoin d'une machine précise dans les environnements étroits ou difficiles."
     },
     "features": {
       "en": [],

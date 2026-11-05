@@ -101,7 +101,7 @@ export const blogPosts: BlogPost[] = [
       en: "Mecalac 3.5MDX: Safety and Comfort Redefined for Urban Dumpers"
     },
     excerpt: {
-      fr: "Découvrez pourquoi le dumper cabiné Mecalac 3.5MDX est devenu la référence pour les chantiers de centre-ville.",
+      fr: "Découvrez pourquoi le dumper à cabine Mecalac 3.5MDX est devenu la référence pour les chantiers de centre-ville.",
       en: "Discover why the Mecalac 3.5MDX cabbed dumper has become the benchmark for city center jobsites."
     },
     content: {
