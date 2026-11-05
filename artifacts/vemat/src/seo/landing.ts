@@ -89,8 +89,11 @@ type BrandDef = {
   id: "terex" | "jlg" | "tadano" | "magni" | "mecalac" | "fuchs";
   short: string;
   slug: T;
-  /** « Grue Terex neuve » / « New Terex cranes » */
+  /** « Grue Terex » / « Terex cranes » (utilisé avec « au Maroc » / « in Nigeria ») */
   newTitle: T;
+  /** Nom de marque dans les titres (« Tadano Demag ») et type de machine en anglais */
+  titleName: string;
+  enNoun: string;
   /** « grues Terex » / « Terex cranes » */
   plural: T;
   blurb: T;
@@ -103,7 +106,9 @@ const brandDefs: BrandDef[] = [
     id: "terex",
     short: "Terex",
     slug: { fr: "grue-terex", en: "terex-cranes" },
-    newTitle: { fr: "Grue Terex neuve", en: "New Terex cranes" },
+    newTitle: { fr: "Grue Terex", en: "Terex cranes" },
+    titleName: "Terex",
+    enNoun: "cranes",
     plural: { fr: "grues Terex", en: "Terex cranes" },
     blurb: {
       fr: "Les grues automotrices lentes Terex Rough Terrain (RT) et les grues à tour (TC) sont réunies depuis 2025 sous la bannière Raimondi Group, qui a repris ces gammes historiques de Terex. Conçues et assemblées en Italie, elles sont destinées aux chantiers les plus exigeants.",
@@ -116,7 +121,9 @@ const brandDefs: BrandDef[] = [
     id: "jlg",
     short: "JLG",
     slug: { fr: "nacelle-jlg", en: "jlg-aerial-work-platforms" },
-    newTitle: { fr: "Nacelle JLG neuve", en: "New JLG aerial work platforms" },
+    newTitle: { fr: "Nacelle JLG", en: "JLG aerial work platforms" },
+    titleName: "JLG",
+    enNoun: "aerial work platforms",
     plural: { fr: "nacelles JLG", en: "JLG aerial work platforms" },
     blurb: {
       fr: "Leader mondial des nacelles élévatrices, JLG conçoit des plateformes à flèche (motorisées, électriques, hybrides), des nacelles ciseaux, des plateformes verticales basses et des préparateurs de commandes mobiles (Stock Pickers). Elles servent à la maintenance industrielle, à la construction et à la logistique.",
@@ -129,7 +136,9 @@ const brandDefs: BrandDef[] = [
     id: "tadano",
     short: "Tadano",
     slug: { fr: "grue-tadano", en: "tadano-cranes" },
-    newTitle: { fr: "Grue Tadano Demag neuve", en: "New Tadano Demag cranes" },
+    newTitle: { fr: "Grue Tadano Demag", en: "Tadano Demag cranes" },
+    titleName: "Tadano Demag",
+    enNoun: "cranes",
     plural: { fr: "grues Tadano Demag", en: "Tadano Demag cranes" },
     blurb: {
       fr: "Tadano, qui a intégré la marque Demag, est l'un des trois plus grands constructeurs mondiaux de grues mobiles. La gamme AC tout-terrain couvre des capacités de 40 à 500 tonnes, avec des longueurs de flèche jusqu'à 80 mètres.",
@@ -142,7 +151,9 @@ const brandDefs: BrandDef[] = [
     id: "magni",
     short: "Magni",
     slug: { fr: "chariot-telescopique-magni", en: "magni-telehandlers" },
-    newTitle: { fr: "Chariot télescopique Magni neuf", en: "New Magni telehandlers" },
+    newTitle: { fr: "Chariot télescopique Magni", en: "Magni telehandlers" },
+    titleName: "Magni",
+    enNoun: "telehandlers",
     plural: { fr: "chariots télescopiques Magni", en: "Magni telehandlers" },
     blurb: {
       fr: "Spécialiste italien des chariots télescopiques rotatifs (RTH), fixes (TH) et grandes capacités (HTH), Magni équipe les chantiers les plus exigeants avec des machines pouvant lever jusqu'à 51 tonnes et atteindre 51 mètres de hauteur.",
@@ -155,7 +166,9 @@ const brandDefs: BrandDef[] = [
     id: "mecalac",
     short: "Mecalac",
     slug: { fr: "engins-chantier-mecalac", en: "mecalac-construction-equipment" },
-    newTitle: { fr: "Engins de chantier Mecalac neufs", en: "New Mecalac construction equipment" },
+    newTitle: { fr: "Engins de chantier Mecalac", en: "Mecalac construction equipment" },
+    titleName: "Mecalac",
+    enNoun: "construction equipment",
     plural: { fr: "engins Mecalac", en: "Mecalac equipment" },
     blurb: {
       fr: "Constructeur français reconnu pour ses pelles, chargeuses, chargeuses-pelleteuses, dumpers et compacteurs, Mecalac conçoit des machines polyvalentes, optimisées pour les environnements urbains et les chantiers de génie civil.",
@@ -168,7 +181,9 @@ const brandDefs: BrandDef[] = [
     id: "fuchs",
     short: "Terex Fuchs",
     slug: { fr: "pelle-de-manutention-terex-fuchs", en: "terex-fuchs-material-handlers" },
-    newTitle: { fr: "Pelle de manutention Terex Fuchs neuve", en: "New Terex Fuchs material handlers" },
+    newTitle: { fr: "Pelle de manutention Terex Fuchs", en: "Terex Fuchs material handlers" },
+    titleName: "Terex Fuchs",
+    enNoun: "material handlers",
     plural: { fr: "pelles de manutention Terex Fuchs", en: "Terex Fuchs material handlers" },
     blurb: {
       fr: "Terex Fuchs conçoit des pelles de manutention spécialisées pour la ferraille, le recyclage, les vracs, les applications portuaires et les opérations forestières, en versions diesel, électriques ou hybrides selon les modèles.",
@@ -357,11 +372,11 @@ function faqFor(page: LandingPage): { q: string; a: string }[] {
         ),
       },
       {
-        q: tr(lang, `Peut-on acheter du matériel ${b.short} neuf ${p.in} ?`, `Can I buy new ${b.short} equipment ${p.in}?`),
+        q: tr(lang, `Peut-on acheter du matériel ${b.short} ${p.in} ?`, `Can I buy ${b.short} equipment ${p.in}?`),
         a: tr(
           lang,
-          `Oui, Vemat Group vend du matériel ${b.short} neuf (${b.catalogue.fr}). Pour connaître les modèles et leur disponibilité ${p.in}, envoyez une demande de devis : notre équipe vous répond directement.`,
-          `Yes, Vemat Group sells new ${b.short} equipment (${b.catalogue.en}). To find out about models and availability ${p.in}, send a quote request and our team will reply directly.`,
+          `Oui, Vemat Group vend du matériel ${b.short} (${b.catalogue.fr}). Pour connaître les modèles et leur disponibilité ${p.in}, envoyez une demande de devis : notre équipe vous répond directement.`,
+          `Yes, Vemat Group sells ${b.short} equipment (${b.catalogue.en}). To find out about models and availability ${p.in}, send a quote request and our team will reply directly.`,
         ),
       },
       {
@@ -384,11 +399,11 @@ function faqFor(page: LandingPage): { q: string; a: string }[] {
   }
   return [
     {
-      q: tr(lang, `Où acheter une grue neuve ${p.in} ?`, `Where can I buy a new crane ${p.in}?`),
+      q: tr(lang, `Où acheter une grue ${p.in} ?`, `Where can I buy a crane ${p.in}?`),
       a: tr(
         lang,
-        `Vemat Group, distributeur officiel Terex, Tadano, JLG, Magni et Mecalac, vend des grues, des nacelles, des chariots télescopiques et des engins de construction neufs. Envoyez une demande de devis pour connaître les modèles et la disponibilité ${p.in}.`,
-        `Vemat Group, official distributor of Terex, Tadano, JLG, Magni and Mecalac, sells new cranes, aerial work platforms, telehandlers and construction equipment. Send a quote request to find out about models and availability ${p.in}.`,
+        `Vemat Group, distributeur officiel Terex, Tadano, JLG, Magni et Mecalac, vend des grues, des nacelles, des chariots télescopiques et des engins de construction. Envoyez une demande de devis pour connaître les modèles et la disponibilité ${p.in}.`,
+        `Vemat Group, official distributor of Terex, Tadano, JLG, Magni and Mecalac, sells cranes, aerial work platforms, telehandlers and construction equipment. Send a quote request to find out about models and availability ${p.in}.`,
       ),
     },
     {
@@ -439,40 +454,45 @@ export function buildContent(page: LandingPage): Content {
       158,
     );
   } else {
-    h1 = L(`Grue neuve, nacelle et chariot télescopique ${p.in}`, `New cranes, aerial work platforms and telehandlers ${p.in}`);
+    h1 = L(`Grue, nacelle et chariot télescopique ${p.in}`, `Cranes, aerial work platforms and telehandlers ${p.in}`);
     description = pick(
       [
         L(
-          `Vemat Group, distributeur officiel Terex, Tadano, JLG, Magni et Mecalac ${p.in} : grues neuves, nacelles, chariots télescopiques, pièces détachées et SAV.`,
-          `Vemat Group, official distributor of Terex, Tadano, JLG, Magni and Mecalac ${p.in}: new cranes, aerial work platforms, telehandlers, spare parts and service.`,
+          `Vemat Group, distributeur officiel Terex, Tadano, JLG, Magni et Mecalac ${p.in} : grues, nacelles, chariots télescopiques, pièces détachées et SAV.`,
+          `Vemat Group, official distributor of Terex, Tadano, JLG, Magni and Mecalac ${p.in}: cranes, aerial work platforms, telehandlers, spare parts and service.`,
         ),
         L(
-          `Distributeur officiel Terex, Tadano, JLG, Magni, Mecalac ${p.in} : grues neuves, nacelles, chariots télescopiques, pièces et SAV.`,
-          `Official Terex, Tadano, JLG, Magni, Mecalac distributor ${p.in}: new cranes, aerial work platforms, telehandlers, parts and service.`,
+          `Distributeur officiel Terex, Tadano, JLG, Magni, Mecalac ${p.in} : grues, nacelles, chariots télescopiques, pièces et SAV.`,
+          `Official Terex, Tadano, JLG, Magni, Mecalac distributor ${p.in}: cranes, aerial work platforms, telehandlers, parts and service.`,
         ),
-        L(`Grues neuves, nacelles, chariots télescopiques ${p.in} : Vemat Group, distributeur officiel.`, `New cranes, platforms and telehandlers ${p.in}: Vemat Group, official distributor.`),
+        L(`Grues, nacelles, chariots télescopiques ${p.in} : Vemat Group, distributeur officiel.`, `Cranes, platforms and telehandlers ${p.in}: Vemat Group, official distributor.`),
       ],
       158,
     );
   }
   const dist = L("Distributeur officiel", "Official distributor");
-  title = pick([`${h1} | ${dist} | Vemat Group`, `${h1} | ${dist}`, `${h1} | Vemat Group`, h1], 66);
+  // Le titre reprend la recherche telle qu'on la tape (« Grue Terex Maroc », « JLG Nigeria: aerial work platforms »).
+  const placeName = page.country ? (page.country.id === "eau" ? "UAE" : page.country.name[lang]) : L("Afrique", "Africa");
+  const kw = brand
+    ? L(`${brand.newTitle.fr} ${placeName}`, `${brand.titleName} ${placeName}: ${brand.enNoun}`)
+    : L(`Grue, nacelle, chariot télescopique ${placeName}`, `Cranes, aerial work platforms, telehandlers ${placeName}`);
+  title = pick([`${kw} | ${dist} | Vemat Group`, `${kw} | ${dist}`, `${kw} | Vemat Group`, kw], 66);
 
   /* ---- introduction ---- */
   const intro: string[] = [];
   if (brand) {
     intro.push(
       L(
-        `Vemat Group est distributeur officiel ${brand.short} et vous accompagne ${p.in} : vente de matériel neuf ${brand.short}, pièces détachées et service après-vente. ${officeLine(page)}`,
-        `Vemat Group is an official ${brand.short} distributor and supports you ${p.in}: sales of new ${brand.short} equipment, spare parts and after-sales service. ${officeLine(page)}`,
+        `Vemat Group est distributeur officiel ${brand.short} et vous accompagne ${p.in} : vente de matériel ${brand.short}, pièces détachées et service après-vente. ${officeLine(page)}`,
+        `Vemat Group is an official ${brand.short} distributor and supports you ${p.in}: sales of ${brand.short} equipment, spare parts and after-sales service. ${officeLine(page)}`,
       ),
     );
     intro.push(brand.blurb[lang]);
   } else {
     intro.push(
       L(
-        `Vemat Group distribue officiellement Terex, Tadano, JLG, Magni et Mecalac : grues, nacelles élévatrices, chariots télescopiques et engins de construction neufs, avec pièces détachées et service après-vente. ${officeLine(page)}`,
-        `Vemat Group is the official distributor of Terex, Tadano, JLG, Magni and Mecalac: new cranes, aerial work platforms, telehandlers and construction equipment, with spare parts and after-sales service. ${officeLine(page)}`,
+        `Vemat Group distribue officiellement Terex, Tadano, JLG, Magni et Mecalac : grues, nacelles élévatrices, chariots télescopiques et engins de construction, avec pièces détachées et service après-vente. ${officeLine(page)}`,
+        `Vemat Group is the official distributor of Terex, Tadano, JLG, Magni and Mecalac: cranes, aerial work platforms, telehandlers and construction equipment, with spare parts and after-sales service. ${officeLine(page)}`,
       ),
     );
   }
@@ -531,7 +551,7 @@ export function buildContent(page: LandingPage): Content {
   } else {
     const country = page.country!;
     sections.push({
-      h2: L(`Nos machines neuves ${p.in}`, `Our new machines ${p.in}`),
+      h2: L(`Nos machines ${p.in}`, `Our machines ${p.in}`),
       paragraphs: [
         L(
           `Choisissez une marque pour découvrir sa gamme et demander un devis ${p.in}.`,
