@@ -242,6 +242,24 @@ export default function ProductPage() {
   const { t, lang } = useLang();
   useScrollTop();
 
+  // Fiche inconnue (ancienne URL, faute de frappe) : ne pas la faire indexer par Google.
+  useEffect(() => {
+    if (product) return;
+    let meta = document.querySelector('meta[name="robots"]') as HTMLMetaElement | null;
+    const created = !meta;
+    if (!meta) {
+      meta = document.createElement("meta");
+      meta.name = "robots";
+      document.head.appendChild(meta);
+    }
+    const previous = meta.content;
+    meta.content = "noindex";
+    return () => {
+      if (created) meta?.remove();
+      else if (meta) meta.content = previous;
+    };
+  }, [product]);
+
   if (!product) {
     return (
       <div className="min-h-screen pt-48 pb-24 container mx-auto px-4 md:px-6 text-center">
