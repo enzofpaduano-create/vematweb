@@ -207,6 +207,49 @@ export function modelsOf(brand: BrandDef["id"]): Model[] {
   return modelCache[brand] || [];
 }
 
+/* ------------------------------------------------- Groupes de modèles par marque */
+
+// Les modèles sont présentés par famille, les plus recherchées d'abord ; le dernier groupe récupère le reste.
+type Group = { h2: T; test: (key: string) => boolean; priority?: string[] };
+const brandGroups: Partial<Record<BrandDef["id"], Group[]>> = {
+  terex: [
+    { h2: { fr: "Grues Terex automotrices lentes (Rough Terrain)", en: "Terex rough terrain cranes (RT)" }, test: (k) => /^t?rt-/.test(k) },
+    { h2: { fr: "Grues à tour Terex", en: "Terex tower cranes" }, test: () => true },
+  ],
+  tadano: [
+    { h2: { fr: "Grues tout-terrain Tadano Demag (AC)", en: "Tadano Demag all-terrain cranes (AC)" }, test: (k) => /^ac-/.test(k) },
+    { h2: { fr: "Grues automotrices lentes Tadano (Rough Terrain, GR)", en: "Tadano rough terrain cranes (GR)" }, test: (k) => /^gr-/.test(k) },
+    { h2: { fr: "Grues sur chenilles Tadano Demag (CC, GTC)", en: "Tadano Demag crawler cranes (CC, GTC)" }, test: (k) => /^(cc|gtc)-/.test(k) },
+    { h2: { fr: "Grues sur porteur Tadano (GT)", en: "Tadano truck cranes (GT)" }, test: () => true },
+  ],
+  jlg: [
+    {
+      h2: { fr: "Nacelles à flèche JLG (boom lifts)", en: "JLG boom lifts" },
+      test: (k) => /(aj|sj)/.test(k) || /^e?t\d{3}j?$/.test(k),
+      priority: ["600aj", "800aj", "450aj", "1250ajp", "1500ajp", "h600sj", "x660sj", "x770aj", "x1000aj"],
+    },
+    { h2: { fr: "Nacelles ciseaux JLG", en: "JLG scissor lifts" }, test: (k) => /^(es|ae|rt|ert)\d/.test(k) },
+    { h2: { fr: "Plateformes verticales, préparateurs de commandes et autres", en: "Vertical platforms, order pickers and more" }, test: () => true },
+  ],
+};
+
+function groupModels(id: BrandDef["id"], models: Model[]): { h2: T; models: Model[] }[] {
+  const defs = brandGroups[id];
+  if (!defs) return [];
+  const left = [...models];
+  const out: { h2: T; models: Model[] }[] = [];
+  for (const g of defs) {
+    const mine = left.filter((m) => g.test(m.key));
+    for (const m of mine) left.splice(left.indexOf(m), 1);
+    if (g.priority) {
+      const rank = (k: string) => (g.priority!.indexOf(k) === -1 ? 999 : g.priority!.indexOf(k));
+      mine.sort((a, b) => rank(a.key) - rank(b.key));
+    }
+    if (mine.length) out.push({ h2: g.h2, models: mine });
+  }
+  return out;
+}
+
 /* ------------------------------------------------------------------ Pages */
 
 export type LandingPage = {
@@ -441,23 +484,22 @@ export function buildContent(page: LandingPage): Content {
     const models = modelsOf(brand.id);
     if (models.length) {
       const link = (m: Model) => ({ href: `/produit/${m.key}`, label: `${brand.short} ${m.name}` });
-      if (brand.id === "terex") {
-        // Les grues automotrices lentes (RT / TRT) passent en premier, les grues à tour ensuite.
-        const rt = models.filter((m) => /^t?rt-/.test(m.key));
-        const tower = models.filter((m) => !/^t?rt-/.test(m.key));
-        sections.push({
-          h2: L("Grues Terex automotrices lentes (Rough Terrain)", "Terex rough terrain cranes (RT)"),
-          paragraphs: [
-            L(
-              `${rt.length} modèles Terex RT et TRT au catalogue Vemat. Ouvrez une fiche pour voir les caractéristiques, puis demandez votre devis.`,
-              `${rt.length} Terex RT and TRT models in the Vemat catalogue. Open a model page for its specifications, then request your quote.`,
-            ),
-          ],
-          links: rt.map(link),
-        });
-        sections.push({
-          h2: L("Grues à tour Terex", "Terex tower cranes"),
-          links: tower.map(link),
+      const grouped = groupModels(brand.id, models);
+      if (grouped.length) {
+        grouped.forEach((g, i) => {
+          sections.push({
+            h2: g.h2[lang],
+            paragraphs:
+              i === 0
+                ? [
+                    L(
+                      `${models.length} modèles ${brand.short} au catalogue Vemat. Ouvrez une fiche pour voir les caractéristiques, puis demandez votre devis.`,
+                      `${models.length} ${brand.short} models in the Vemat catalogue. Open a model page for its specifications, then request your quote.`,
+                    ),
+                  ]
+                : undefined,
+            links: g.models.map(link),
+          });
         });
       } else {
         sections.push({
