@@ -69,6 +69,7 @@ import SavDocumentEdit from "@/pages/sav/SavDocumentEdit";
 import SavSettings from "@/pages/sav/SavSettings";
 
 // Formulaires publics
+import SeoLanding from "@/pages/SeoLanding";
 import DemandeDevis from "@/pages/DemandeDevis";
 import DemandeIntervention from "@/pages/DemandeIntervention";
 
@@ -140,6 +141,7 @@ function Router() {
               <Route path="/a-propos" component={APropos} />
               <Route path="/contact" component={Contact} />
               <Route path="/produit/:slug" component={ProductPage} />
+              <Route path="/:slug" component={SeoLanding} />
               <Route component={NotFound} />
             </Switch>
           </main>

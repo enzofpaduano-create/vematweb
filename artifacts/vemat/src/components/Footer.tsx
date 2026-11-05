@@ -2,10 +2,13 @@ import { Link } from "wouter";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
 import { brands } from "../data/brands";
 import { useLang } from "@/i18n/I18nProvider";
+import { landingPages } from "@/seo/landing";
 import vematLogo from "@/assets/vemat-logo.png";
 
 export function Footer() {
-  const { t } = useLang();
+  const { t, lang } = useLang();
+  const countryLinks = landingPages.filter((p) => p.kind === "country");
+  const brandLinks = landingPages.filter((p) => p.kind === "brand-region" && p.lang === lang);
   return (
     <footer className="bg-zinc-950 text-white pt-32 pb-12 relative overflow-hidden">
       {/* Decorative Gradient */}
@@ -88,6 +91,30 @@ export function Footer() {
             </ul>
           </div>
         </div>
+
+        <nav aria-label={lang === "fr" ? "Nos solutions par pays" : "Our solutions by country"} className="border-t border-zinc-900 pt-10 pb-12">
+          <h4 className="text-xs font-black uppercase tracking-[0.3em] text-accent mb-6">
+            {lang === "fr" ? "Nos solutions par pays et par marque" : "Our solutions by country and brand"}
+          </h4>
+          <ul className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-zinc-400 mb-6">
+            {brandLinks.map((p) => (
+              <li key={p.slug}>
+                <Link href={`/${p.slug}`} className="hover:text-white transition-colors">
+                  {p.brand!.newTitle[lang]} {lang === "fr" ? "en Afrique" : "in Africa"}
+                </Link>
+              </li>
+            ))}
+          </ul>
+          <ul className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-zinc-500">
+            {countryLinks.map((p) => (
+              <li key={p.slug}>
+                <Link href={`/${p.slug}`} className="hover:text-white transition-colors">
+                  {p.country!.name[lang]}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
 
         <div className="border-t border-zinc-900 pt-12 flex flex-col md:flex-row items-center justify-between gap-10">
           <p className="text-zinc-500 text-[11px] font-bold uppercase tracking-widest">

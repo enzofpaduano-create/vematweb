@@ -24,7 +24,7 @@ function setCanonical(href: string) {
 
 export function useSEO(title: string, description: string) {
   useEffect(() => {
-    const fullTitle = `${title} | Vemat Group`;
+    const fullTitle = title.includes("Vemat") ? title : `${title} | Vemat Group`;
     const url = `${SITE}${window.location.pathname}`;
     document.title = fullTitle;
     setMeta("name", "description", description);
