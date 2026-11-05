@@ -3947,9 +3947,9 @@ const baseProductDetails: Record<string, ProductDetail> = {
         "Max capacity: 16 t (17.6 USt)"
       ],
       "fr": [
-        "Max jib length: 30.3 m (99 ft)",
-        "Capacity at max length: 3.2 t (3.5 USt)",
-        "Max capacity: 16 t (17.6 USt)"
+        "Longueur de flèche max. : 30,3 m (99 ft)",
+        "Capacité en bout de flèche max. : 3,2 t (3,5 USt)",
+        "Capacité max. : 16 t (17,6 USt)"
       ]
     },
     "images": [
@@ -3984,9 +3984,9 @@ const baseProductDetails: Record<string, ProductDetail> = {
         "Max capacity: 10 t (11 USt)"
       ],
       "fr": [
-        "Max jib length: 50 m (165 ft)",
-        "Capacity at max length: 1.8 t (2 USt)",
-        "Max capacity: 10 t (11 USt)"
+        "Longueur de flèche max. : 50 m (165 ft)",
+        "Capacité en bout de flèche max. : 1,8 t (2 USt)",
+        "Capacité max. : 10 t (11 USt)"
       ]
     },
     "images": [
@@ -4035,10 +4035,10 @@ const baseProductDetails: Record<string, ProductDetail> = {
         "Terex Power Match"
       ],
       "fr": [
-        "Max jib length: 75 m (246 ft)",
-        "Capacity at max length: 16 t (17.6 USt)",
-        "Max capacity: 66 t (72.8 USt)",
-        "T-Torque slewing technology",
+        "Longueur de flèche max. : 75 m (246 ft)",
+        "Capacité en bout de flèche max. : 16 t (17,6 USt)",
+        "Capacité max. : 66 t (72,8 USt)",
+        "Technologie d'orientation T-Torque",
         "Terex Power Plus (TPP)",
         "Terex Power Match"
       ]
@@ -4089,9 +4089,9 @@ const baseProductDetails: Record<string, ProductDetail> = {
         "Max capacity: 16 t (17.6 USt)"
       ],
       "fr": [
-        "Max jib length: 55 m (180 ft)",
-        "Capacity at max length: 2 t (2.2 USt)",
-        "Max capacity: 16 t (17.6 USt)"
+        "Longueur de flèche max. : 55 m (180 ft)",
+        "Capacité en bout de flèche max. : 2 t (2,2 USt)",
+        "Capacité max. : 16 t (17,6 USt)"
       ]
     },
     "images": [
@@ -4136,9 +4136,9 @@ const baseProductDetails: Record<string, ProductDetail> = {
         "Max capacity: 18 t (19.8 USt)"
       ],
       "fr": [
-        "Max jib length: 60 m (197 ft)",
-        "Capacity at max length: 2.15 t (2.37 USt)",
-        "Max capacity: 18 t (19.8 USt)"
+        "Longueur de flèche max. : 60 m (197 ft)",
+        "Capacité en bout de flèche max. : 2,15 t (2,37 USt)",
+        "Capacité max. : 18 t (19,8 USt)"
       ]
     },
     "images": [
@@ -4181,9 +4181,9 @@ const baseProductDetails: Record<string, ProductDetail> = {
         "Max capacity: 18 t (19.8 USt)"
       ],
       "fr": [
-        "Max jib length: 60 m (197 ft)",
-        "Capacity at max length: 3.02 t (3.33 USt)",
-        "Max capacity: 18 t (19.8 USt)"
+        "Longueur de flèche max. : 60 m (197 ft)",
+        "Capacité en bout de flèche max. : 3,02 t (3,33 USt)",
+        "Capacité max. : 18 t (19,8 USt)"
       ]
     },
     "images": [
@@ -4238,9 +4238,9 @@ const baseProductDetails: Record<string, ProductDetail> = {
         "Max capacity: 24 t (26.5 USt)"
       ],
       "fr": [
-        "Max jib length: 60 m (197 ft)",
-        "Capacity at max length: 4 t (4.4 USt)",
-        "Max capacity: 24 t (26.5 USt)"
+        "Longueur de flèche max. : 60 m (197 ft)",
+        "Capacité en bout de flèche max. : 4 t (4,4 USt)",
+        "Capacité max. : 24 t (26,5 USt)"
       ]
     },
     "images": [
@@ -4301,9 +4301,9 @@ const baseProductDetails: Record<string, ProductDetail> = {
         "Max capacity: 24 t (26.5 USt)"
       ],
       "fr": [
-        "Max jib length: 60 m (197 ft)",
-        "Capacity at max length: 5.5 t (6.1 USt)",
-        "Max capacity: 24 t (26.5 USt)"
+        "Longueur de flèche max. : 60 m (197 ft)",
+        "Capacité en bout de flèche max. : 5,5 t (6,1 USt)",
+        "Capacité max. : 24 t (26,5 USt)"
       ]
     },
     "images": [
@@ -4350,9 +4350,9 @@ const baseProductDetails: Record<string, ProductDetail> = {
         "Max capacity: 45 t (49.6 USt)"
       ],
       "fr": [
-        "Max jib length: 65 m (223 ft)",
-        "Capacity at max length: 7 t (7.1 USt)",
-        "Max capacity: 45 t (49.6 USt)"
+        "Longueur de flèche max. : 65 m (223 ft)",
+        "Capacité en bout de flèche max. : 7 t (7,1 USt)",
+        "Capacité max. : 45 t (49,6 USt)"
       ]
     },
     "images": [
@@ -4398,9 +4398,9 @@ const baseProductDetails: Record<string, ProductDetail> = {
         "Max capacity: 32 t (35 USt)"
       ],
       "fr": [
-        "Max jib length: 70 m (230 ft)",
-        "Capacity at max length: 6.02 t (6.64 USt)",
-        "Max capacity: 32 t (35 USt)"
+        "Longueur de flèche max. : 70 m (230 ft)",
+        "Capacité en bout de flèche max. : 6,02 t (6,64 USt)",
+        "Capacité max. : 32 t (35 USt)"
       ]
     },
     "images": [
@@ -4463,9 +4463,9 @@ const baseProductDetails: Record<string, ProductDetail> = {
         "Max capacity: 45 t (49.6 USt)"
       ],
       "fr": [
-        "Max jib length: 70 m (230 ft)",
-        "Capacity at max length: 5,80 t (6.39 USt)",
-        "Max capacity: 45 t (49.6 USt)"
+        "Longueur de flèche max. : 70 m (230 ft)",
+        "Capacité en bout de flèche max. : 5,80 t (6,39 USt)",
+        "Capacité max. : 45 t (49,6 USt)"
       ]
     },
     "images": [
@@ -4525,14 +4525,14 @@ const baseProductDetails: Record<string, ProductDetail> = {
         "Max capacity: 12 t (13.2 USt)"
       ],
       "fr": [
-        "High versatility in terms of tower mast, chassis and jib lengths",
-        "Featuring the new control system that brings easy and quick setup, Terex Power Plus (TPP) and Power Match functions",
-        "New cabin with outstanding visibility and comfort",
-        "T-Torque slewing technology with customizable setting",
-        "Ready for the T-Link Telematics Platform and Anti-Collision / Zoning systems",
-        "Max jib length: 55 m (180 ft)",
-        "Capacity at max length: 2.35 t (2.59 USt)",
-        "Max capacity: 12 t (13.2 USt)"
+        "Grande polyvalence pour les mâts de tour, les châssis et les longueurs de flèche",
+        "Nouveau système de commande offrant une configuration simple et rapide, avec les fonctions Terex Power Plus (TPP) et Power Match",
+        "Nouvelle cabine offrant une visibilité et un confort remarquables",
+        "Technologie d'orientation T-Torque avec réglage personnalisable",
+        "Compatible avec la plateforme télématique T-Link et les systèmes anti-collision / zonage",
+        "Longueur de flèche max. : 55 m (180 ft)",
+        "Capacité en bout de flèche max. : 2,35 t (2,59 USt)",
+        "Capacité max. : 12 t (13,2 USt)"
       ]
     },
     "images": [
@@ -4606,10 +4606,10 @@ const baseProductDetails: Record<string, ProductDetail> = {
         "T-Torque slewing technology"
       ],
       "fr": [
-        "Max jib length: 60 m (196.9 ft)",
-        "Capacity at max length: 1.4 t (1.5 USt)",
-        "Max capacity: 6 t (6.6 USt)",
-        "T-Torque slewing technology"
+        "Longueur de flèche max. : 60 m (196,9 ft)",
+        "Capacité en bout de flèche max. : 1,4 t (1,5 USt)",
+        "Capacité max. : 6 t (6,6 USt)",
+        "Technologie d'orientation T-Torque"
       ]
     },
     "images": [
@@ -4668,13 +4668,13 @@ const baseProductDetails: Record<string, ProductDetail> = {
         "Ready for the T-Link telematics system"
       ],
       "fr": [
-        "Max jib length: 25-60 m (82-197 ft) on 5 m increments",
-        "Capacity at max length: 1.91 t (2.11 USt)",
-        "Max capacity: 6 t (6.6 USt)",
-        "T-Torque slewing technology",
-        "New S-Pace cabin with outstanding visibility and comfort",
-        "Featuring the new control system that brings easy and quick setup, Terex Power Plus (TPP) and Power match functions",
-        "Ready for the T-Link telematics system"
+        "Longueur de flèche max. : 25-60 m (82-197 ft) par paliers de 5 m",
+        "Capacité en bout de flèche max. : 1,91 t (2,11 USt)",
+        "Capacité max. : 6 t (6,6 USt)",
+        "Technologie d'orientation T-Torque",
+        "Nouvelle cabine S-Pace offrant une visibilité et un confort remarquables",
+        "Nouveau système de commande offrant une configuration simple et rapide, avec les fonctions Terex Power Plus (TPP) et Power Match",
+        "Compatible avec le système télématique T-Link"
       ]
     },
     "images": [
@@ -4725,10 +4725,10 @@ const baseProductDetails: Record<string, ProductDetail> = {
         "T-Torque slewing technology"
       ],
       "fr": [
-        "Max jib length: 65 m (213 ft)",
-        "Capacity at max length: 1.71 t (1.88 USt)",
-        "Max capacity: 8 t (8.8 USt)",
-        "T-Torque slewing technology"
+        "Longueur de flèche max. : 65 m (213 ft)",
+        "Capacité en bout de flèche max. : 1,71 t (1,88 USt)",
+        "Capacité max. : 8 t (8,8 USt)",
+        "Technologie d'orientation T-Torque"
       ]
     },
     "images": [
@@ -4794,11 +4794,11 @@ const baseProductDetails: Record<string, ProductDetail> = {
         "Ready for the T-Link telematics system"
       ],
       "fr": [
-        "High versatility in terms of tower mast, chassis and jib lengths",
-        "Featuring the new control system that brings easy and quick setup, Terex Power Plus (TPP) and Power match functions",
-        "T-Torque slewing technology",
-        "New cabin with outstanding visibility and comfort",
-        "Ready for the T-Link telematics system"
+        "Grande polyvalence pour les mâts de tour, les châssis et les longueurs de flèche",
+        "Nouveau système de commande offrant une configuration simple et rapide, avec les fonctions Terex Power Plus (TPP) et Power Match",
+        "Technologie d'orientation T-Torque",
+        "Nouvelle cabine offrant une visibilité et un confort remarquables",
+        "Compatible avec le système télématique T-Link"
       ]
     },
     "images": [
@@ -4859,11 +4859,11 @@ const baseProductDetails: Record<string, ProductDetail> = {
         "Ready for the T-Link telematics system"
       ],
       "fr": [
-        "High versatility in terms of tower mast, chassis and jib lengths",
-        "Featuring the new control system that brings easy and quick setup, Terex Power Plus (TPP) and Power match functions",
-        "T-Torque slewing technology",
-        "New cabin with outstanding visibility and comfort",
-        "Ready for the T-Link telematics system"
+        "Grande polyvalence pour les mâts de tour, les châssis et les longueurs de flèche",
+        "Nouveau système de commande offrant une configuration simple et rapide, avec les fonctions Terex Power Plus (TPP) et Power Match",
+        "Technologie d'orientation T-Torque",
+        "Nouvelle cabine offrant une visibilité et un confort remarquables",
+        "Compatible avec le système télématique T-Link"
       ]
     },
     "images": [
@@ -4918,9 +4918,9 @@ const baseProductDetails: Record<string, ProductDetail> = {
         "Max capacity: 12 t (13.2 USt)"
       ],
       "fr": [
-        "Max jib length: 70 m (230 ft)",
-        "Capacity at max length: 2.1 t (2.3 USt)",
-        "Max capacity: 12 t (13.2 USt)"
+        "Longueur de flèche max. : 70 m (230 ft)",
+        "Capacité en bout de flèche max. : 2,1 t (2,3 USt)",
+        "Capacité max. : 12 t (13,2 USt)"
       ]
     },
     "images": [
@@ -4965,11 +4965,11 @@ const baseProductDetails: Record<string, ProductDetail> = {
         "Ready for the T-Link telematics system"
       ],
       "fr": [
-        "High versatility in terms of tower mast, chassis and jib lengths",
-        "Featuring the new control system that brings easy and quick setup, Terex Power Plus (TPP) and Power match functions",
-        "T-Torque slewing technology",
-        "New cabin with outstanding visibility and comfort",
-        "Ready for the T-Link telematics system"
+        "Grande polyvalence pour les mâts de tour, les châssis et les longueurs de flèche",
+        "Nouveau système de commande offrant une configuration simple et rapide, avec les fonctions Terex Power Plus (TPP) et Power Match",
+        "Technologie d'orientation T-Torque",
+        "Nouvelle cabine offrant une visibilité et un confort remarquables",
+        "Compatible avec le système télématique T-Link"
       ]
     },
     "images": [
@@ -5035,10 +5035,10 @@ const baseProductDetails: Record<string, ProductDetail> = {
         "T-Torque slewing technology"
       ],
       "fr": [
-        "Max jib length: 75 m (246 ft)",
-        "Capacity at max length: 3 t (3.3 USt)",
-        "Max capacity: 16 t (17.6 USt)",
-        "T-Torque slewing technology"
+        "Longueur de flèche max. : 75 m (246 ft)",
+        "Capacité en bout de flèche max. : 3 t (3,3 USt)",
+        "Capacité max. : 16 t (17,6 USt)",
+        "Technologie d'orientation T-Torque"
       ]
     },
     "images": [
@@ -5089,9 +5089,9 @@ const baseProductDetails: Record<string, ProductDetail> = {
         "Max capacity: 16 t (17.6 USt)"
       ],
       "fr": [
-        "Max jib length: 75 m (246 ft)",
-        "Capacity at max length: 3,52 t (3.88 USt)",
-        "Max capacity: 16 t (17.6 USt)"
+        "Longueur de flèche max. : 75 m (246 ft)",
+        "Capacité en bout de flèche max. : 3,52 t (3,88 USt)",
+        "Capacité max. : 16 t (17,6 USt)"
       ]
     },
     "images": [
@@ -5142,9 +5142,9 @@ const baseProductDetails: Record<string, ProductDetail> = {
         "Max capacity: 20 t (22 USt)"
       ],
       "fr": [
-        "Max jib length: 80 m (262 ft)",
-        "Capacity at max length: 4 t (4.4 USt)",
-        "Max capacity: 20 t (22 USt)"
+        "Longueur de flèche max. : 80 m (262 ft)",
+        "Capacité en bout de flèche max. : 4 t (4,4 USt)",
+        "Capacité max. : 20 t (22 USt)"
       ]
     },
     "images": [
@@ -5208,9 +5208,9 @@ const baseProductDetails: Record<string, ProductDetail> = {
         "Max capacity: 20 t (22 USt)"
       ],
       "fr": [
-        "Max jib length: 84 m (275.6 ft)",
-        "Capacity at max length: 2.2 t (2.4 USt)",
-        "Max capacity: 20 t (22 USt)"
+        "Longueur de flèche max. : 84 m (275,6 ft)",
+        "Capacité en bout de flèche max. : 2,2 t (2,4 USt)",
+        "Capacité max. : 20 t (22 USt)"
       ]
     },
     "images": [
@@ -5253,9 +5253,9 @@ const baseProductDetails: Record<string, ProductDetail> = {
         "Max capacity: 32 t (35.3 USt)"
       ],
       "fr": [
-        "Max jib length: 84 m (275.6 ft)",
-        "Capacity at max length: 1.5 t (1.66 USt)",
-        "Max capacity: 32 t (35.3 USt)"
+        "Longueur de flèche max. : 84 m (275,6 ft)",
+        "Capacité en bout de flèche max. : 1,5 t (1,66 USt)",
+        "Capacité max. : 32 t (35,3 USt)"
       ]
     },
     "images": [
@@ -5298,9 +5298,9 @@ const baseProductDetails: Record<string, ProductDetail> = {
         "Max capacity: 40 t (88,200 lbs)"
       ],
       "fr": [
-        "Max jib length: 85 m (279 ft)",
-        "Capacity at max length: 4.65 t (10,300 lbs)",
-        "Max capacity: 40 t (88,200 lbs)"
+        "Longueur de flèche max. : 85 m (279 ft)",
+        "Capacité en bout de flèche max. : 4,65 t (10,300 lbs)",
+        "Capacité max. : 40 t (88,200 lbs)"
       ]
     },
     "images": [
@@ -5347,9 +5347,9 @@ const baseProductDetails: Record<string, ProductDetail> = {
         "Max capacity: 5 t (5.5 USt)"
       ],
       "fr": [
-        "Max jib length: 50 m (164 ft)",
-        "Capacity at max length: 1.40 t (1.54 USt)",
-        "Max capacity: 5 t (5.5 USt)"
+        "Longueur de flèche max. : 50 m (164 ft)",
+        "Capacité en bout de flèche max. : 1,40 t (1,54 USt)",
+        "Capacité max. : 5 t (5,5 USt)"
       ]
     },
     "images": [
@@ -6523,9 +6523,9 @@ const baseProductDetails: Record<string, ProductDetail> = {
         "Max capacity: 1.5 t (1.65 USt)"
       ],
       "fr": [
-        "Max jib length: 24 m (78.7 ft)",
-        "Capacity at max length: 0.6 t (0.66 USt)",
-        "Max capacity: 1.5 t (1.65 USt)"
+        "Longueur de flèche max. : 24 m (78,7 ft)",
+        "Capacité en bout de flèche max. : 0,6 t (0,66 USt)",
+        "Capacité max. : 1,5 t (1,65 USt)"
       ]
     },
     "images": [
@@ -8770,9 +8770,9 @@ const baseProductDetails: Record<string, ProductDetail> = {
         "Max capacity: 20 t (22 USt)"
       ],
       "fr": [
-        "Max jib length: 80 m (262.4 ft)",
-        "Capacity at max length: 2.3 t (2.5 USt)",
-        "Max capacity: 20 t (22 USt)"
+        "Longueur de flèche max. : 80 m (262,4 ft)",
+        "Capacité en bout de flèche max. : 2,3 t (2,5 USt)",
+        "Capacité max. : 20 t (22 USt)"
       ]
     },
     "images": [
@@ -8815,9 +8815,9 @@ const baseProductDetails: Record<string, ProductDetail> = {
         "Max capacity: 32 t (35.3 USt)"
       ],
       "fr": [
-        "Max jib length: 80 m (262.4 ft)",
-        "Capacity at max length: 4.1 t (4.5 USt)",
-        "Max capacity: 32 t (35.3 USt)"
+        "Longueur de flèche max. : 80 m (262,4 ft)",
+        "Capacité en bout de flèche max. : 4,1 t (4,5 USt)",
+        "Capacité max. : 32 t (35,3 USt)"
       ]
     },
     "images": [
