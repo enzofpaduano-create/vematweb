@@ -1,5 +1,5 @@
 import type { Request, Response, NextFunction } from "express";
-import { getSupabaseServer, isSupabaseConfigured } from "../lib/supabaseServer";
+import { getSupabaseServer, getSupabaseForUser, isSupabaseConfigured } from "../lib/supabaseServer";
 
 /**
  * Express middleware: only allow DG, Manager, or Technicien.
@@ -53,8 +53,10 @@ export async function requireCatalogueAccess(
   const userId = userData.user.id;
   const email = userData.user.email;
 
-  // 2. Check role: try profiles (DG / Manager) first, then technicians table
-  const { data: profile } = await supabase
+  // 2. Check role: try profiles (DG / Manager) first, then technicians table.
+  // Les lectures se font avec le jeton de l'utilisateur : la RLS limite chacun à sa propre ligne.
+  const userClient = getSupabaseForUser(token);
+  const { data: profile } = await userClient
     .from("profiles")
     .select("role")
     .eq("id", userId)
@@ -66,7 +68,7 @@ export async function requireCatalogueAccess(
     return;
   }
 
-  const { data: tech } = await supabase
+  const { data: tech } = await userClient
     .from("technicians")
     .select("id")
     .eq("user_id", userId)

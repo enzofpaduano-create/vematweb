@@ -5,10 +5,21 @@ import router from "./routes";
 import { logger } from "./lib/logger";
 
 const app: Express = express();
-const allowedOrigins = (process.env.CORS_ORIGIN || "")
+
+// Cloud Run place un proxy devant l'application : sans ceci, req.ip serait
+// l'adresse du proxy et la limitation par IP s'appliquerait à tous les visiteurs.
+app.set("trust proxy", 1);
+
+const DEFAULT_ORIGINS = ["https://www.vematgroup.com", "https://vematgroup.com"];
+const configuredOrigins = (process.env.CORS_ORIGIN || "")
   .split(",")
   .map((origin) => origin.trim())
   .filter(Boolean);
+if (configuredOrigins.length === 0) {
+  logger.warn("CORS_ORIGIN non défini : seules les origines vematgroup.com par défaut sont autorisées.");
+}
+const allowedOrigins = configuredOrigins.length > 0 ? configuredOrigins : DEFAULT_ORIGINS;
+const isDev = process.env.NODE_ENV !== "production";
 
 app.use(
   pinoHttp({
@@ -32,7 +43,8 @@ app.use(
 app.use(
   cors({
     origin(origin, callback) {
-      if (!origin || allowedOrigins.length === 0 || allowedOrigins.includes(origin)) {
+      const isLocal = isDev && /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin ?? "");
+      if (!origin || isLocal || allowedOrigins.includes(origin)) {
         callback(null, true);
         return;
       }

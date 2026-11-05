@@ -51,6 +51,19 @@ export function isSafeEmail(value: unknown): value is string {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed);
 }
 
+// Destinataires autorisés pour le type « validation » : domaines de la société uniquement
+// (évite d'utiliser l'API comme relais d'e-mails vers n'importe quelle adresse).
+const ALLOWED_DOMAINS = (process.env.MAIL_ALLOWED_DOMAINS || "vematgroup.com")
+  .split(",")
+  .map((d) => d.trim().toLowerCase())
+  .filter(Boolean);
+
+export function isAllowedRecipient(value: unknown): value is string {
+  if (!isSafeEmail(value)) return false;
+  const domain = value.trim().toLowerCase().split("@").pop() ?? "";
+  return ALLOWED_DOMAINS.includes(domain);
+}
+
 let cachedTransport: Transporter | null = null;
 
 function getTransport(): Transporter | null {
@@ -93,7 +106,7 @@ export async function sendFormNotification(params: {
 
   const from = process.env.MAIL_FROM || process.env.SMTP_USER!;
   let to = RECIPIENTS[params.type];
-  if (params.type === "validation" && params.toOverride && isSafeEmail(params.toOverride)) {
+  if (params.type === "validation" && params.toOverride && isAllowedRecipient(params.toOverride)) {
     to = [params.toOverride, MASTER];
   }
 

@@ -1,9 +1,13 @@
 import { Router } from "express";
 import { generateVematChatReply } from "../lib/vematChat";
+import { createRateLimiter } from "../lib/rateLimit";
 
 const chatRouter = Router();
 
-chatRouter.post("/chat", async (req, res, next) => {
+// L'assistant appelle un modèle payant : 20 messages par minute et par IP.
+const chatLimiter = createRateLimiter({ windowMs: 60_000, max: 20 });
+
+chatRouter.post("/chat", chatLimiter, async (req, res, next) => {
   try {
     const rawLang = req.body?.lang;
     const rawMessages = req.body?.messages;

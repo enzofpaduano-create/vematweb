@@ -30,6 +30,20 @@ export function getSupabaseServer(): SupabaseClient {
   return client;
 }
 
+/**
+ * Client agissant au nom de l'utilisateur (son jeton dans l'en-tête Authorization) :
+ * les règles RLS s'appliquent à lui. À utiliser pour lire profiles / technicians.
+ */
+export function getSupabaseForUser(token: string): SupabaseClient {
+  if (!url || !anonKey) {
+    throw new Error("SUPABASE_URL and SUPABASE_ANON_KEY are required");
+  }
+  return createClient(url, anonKey, {
+    auth: { autoRefreshToken: false, persistSession: false },
+    global: { headers: { Authorization: `Bearer ${token}` } },
+  });
+}
+
 export function isSupabaseConfigured(): boolean {
   return Boolean(url && anonKey);
 }

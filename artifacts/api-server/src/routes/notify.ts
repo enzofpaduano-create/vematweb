@@ -1,5 +1,6 @@
 import { Router, type IRouter } from "express";
-import { isNotifyType, isSafeEmail, sendFormNotification } from "../lib/mailer";
+import { isNotifyType, isAllowedRecipient, sendFormNotification } from "../lib/mailer";
+import { createRateLimiter } from "../lib/rateLimit";
 
 const router: IRouter = Router();
 
@@ -8,26 +9,10 @@ const MAX_BODY = 20_000;
 const MAX_REPLYTO = 320;
 
 // Limite anti-abus simple, par IP (best-effort, en mémoire / par instance).
-const WINDOW_MS = 60_000;
-const MAX_PER_WINDOW = 10;
-const hits = new Map<string, number[]>();
+const limiter = createRateLimiter({ windowMs: 60_000, max: 10 });
 
-function rateLimited(ip: string): boolean {
-  const now = Date.now();
-  const recent = (hits.get(ip) ?? []).filter((t) => now - t < WINDOW_MS);
-  recent.push(now);
-  hits.set(ip, recent);
-  return recent.length > MAX_PER_WINDOW;
-}
-
-router.post("/notify", async (req, res, next) => {
+router.post("/notify", limiter, async (req, res, next) => {
   try {
-    const ip = req.ip ?? "unknown";
-    if (rateLimited(ip)) {
-      res.status(429).json({ error: "Too many requests" });
-      return;
-    }
-
     const { type, subject, body, replyTo, toOverride } = req.body ?? {};
 
     if (!isNotifyType(type)) {
@@ -52,7 +37,7 @@ router.post("/notify", async (req, res, next) => {
           ? replyTo
           : undefined,
       // Only honored for type='validation' inside the mailer.
-      toOverride: type === "validation" && isSafeEmail(toOverride) ? toOverride : undefined,
+      toOverride: type === "validation" && isAllowedRecipient(toOverride) ? toOverride : undefined,
     });
 
     res.json({ ok: true, sent: result.sent });
