@@ -18,7 +18,10 @@ export function Navbar() {
   }, []);
 
   const isHome = location === "/";
-  const isScrolled = scrolled || !isHome;
+  // L'accueil commence désormais sur un fond blanc (animation au scroll) :
+  // la barre reste en version pleine, lisible, sur toutes les pages.
+  const LIGHT_HOME_HERO = true;
+  const isScrolled = scrolled || !isHome || LIGHT_HOME_HERO;
 
   // Main navigation = product/info pages only. Action shortcuts (devis, pièces
   // détachées, SAV) live in the right-hand action area for clarity.

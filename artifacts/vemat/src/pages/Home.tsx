@@ -3,7 +3,7 @@ import { Link } from "wouter";
 import { ArrowRight, Globe, ShieldCheck, HardHat, MapPin, FileText, Wrench } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useSEO, useScrollTop } from "@/hooks/use-seo";
-import { HeroSection } from "@/components/HeroSection";
+import { ScrollHero } from "@/components/ScrollHero";
 import { CategoryCard } from "@/components/CategoryCard";
 import { ServiceCard } from "@/components/ServiceCard";
 import { BrandStrip } from "@/components/BrandStrip";
@@ -12,7 +12,6 @@ import { SectionHeader } from "@/components/SectionHeader";
 import { OfficesSection } from "@/components/OfficesSection";
 import { categories } from "@/data/categories";
 import { useLang } from "@/i18n/I18nProvider";
-import { heroSlides } from "@/data/heroSlides";
 import { BlogTicker } from "@/components/BlogTicker";
 
 import africanImg from "@/assets/images/african-presence.png";
@@ -31,14 +30,11 @@ export default function Home() {
 
   return (
     <div className="min-h-screen">
-      <HeroSection
+      <ScrollHero
+        eyebrow={t("home.heroEyebrow")}
         title={t("home.heroTitle")}
         subtitle={t("home.heroSubtitle")}
-        images={heroSlides}
-        intervalMs={5000}
-        eyebrow={t("home.heroEyebrow")}
-        primaryCta={{ label: t("home.heroPrimary"), href: "/grues" }}
-        secondaryCta={{ label: t("home.heroSecondary"), href: "/contact" }}
+        cta={{ label: t("home.heroPrimary"), href: "/grues" }}
       />
 
       <BlogTicker />

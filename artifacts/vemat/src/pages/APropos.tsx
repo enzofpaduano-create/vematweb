@@ -3,6 +3,7 @@ import { SectionHeader } from "@/components/SectionHeader";
 import { CTASection } from "@/components/CTASection";
 import { BrandCard } from "@/components/BrandCard";
 import { OfficesSection } from "@/components/OfficesSection";
+import { FieldGallery } from "@/components/FieldGallery";
 import { useLang } from "@/i18n/I18nProvider";
 import { brands } from "@/data/brands";
 import { motion } from "framer-motion";
@@ -97,6 +98,12 @@ export default function APropos() {
           </div>
         </div>
       </section>
+
+      <FieldGallery
+        eyebrow={t("apropos.galleryEyebrow")}
+        title={t("apropos.galleryTitle")}
+        subtitle={t("apropos.gallerySub")}
+      />
 
       {/* President's Word - Refined */}
       <section className="py-24 md:py-32 bg-zinc-950 relative overflow-hidden">

@@ -22,7 +22,7 @@ export const translations = {
     },
     home: {
       heroEyebrow: "Vemat Group · Depuis 2008",
-      heroTitle: "La puissance qui équipe l'Afrique.",
+      heroTitle: "La puissance qui élève l'Afrique.",
       heroSubtitle: "Distributeur exclusif des leaders mondiaux du levage, de la manutention et de la construction. Présents au Maroc, au Nigeria, en Mauritanie et aux Émirats Arabes Unis.",
       heroPrimary: "Découvrir nos équipements",
       heroSecondary: "Contacter un expert",
@@ -198,6 +198,9 @@ export const translations = {
       ctaBtn: "Demander un devis",
     },
     apropos: {
+      galleryEyebrow: "Sur le terrain",
+      galleryTitle: "Nos machines en action",
+      gallerySub: "Livraisons, mises en service et chantiers de nos clients au Maroc et en Afrique.",
       title: "L'excellence industrielle en Afrique",
       sub: "Vemat Group s'impose comme le partenaire privilégié des acteurs de la construction, de l'industrie lourde et de l'énergie sur le continent.",
       missionTitle: "Notre Mission",
@@ -1016,7 +1019,7 @@ export const translations = {
     },
     home: {
       heroEyebrow: "Vemat Group · Since 2008",
-      heroTitle: "The power that equips Africa.",
+      heroTitle: "The power that lifts Africa.",
       heroSubtitle: "Exclusive distributor of the world's leading lifting, handling and construction equipment. Operating in Morocco, Nigeria, Mauritania and the United Arab Emirates.",
       heroPrimary: "Discover our equipment",
       heroSecondary: "Contact an expert",
@@ -1192,6 +1195,9 @@ export const translations = {
       ctaBtn: "Request a quote",
     },
     apropos: {
+      galleryEyebrow: "In the field",
+      galleryTitle: "Our machines in action",
+      gallerySub: "Deliveries, commissioning and customer job sites in Morocco and across Africa.",
       title: "Industrial excellence in Africa",
       sub: "Vemat Group has established itself as the preferred partner of construction, heavy industry and energy stakeholders across the continent.",
       missionTitle: "Our Mission",
