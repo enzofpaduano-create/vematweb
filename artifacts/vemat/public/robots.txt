@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /espace-pdr/
+Disallow: /espace-sav/
+Disallow: /espace-technicien/
+Disallow: /admin
+
+Sitemap: https://www.vematgroup.com/sitemap.xml

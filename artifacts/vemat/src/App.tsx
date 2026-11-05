@@ -26,7 +26,6 @@ import PiecesDeRechange from "@/pages/PiecesDeRechange";
 import Blog from "@/pages/Blog";
 import Article from "@/pages/Article";
 import ProductPage from "@/pages/ProductPage";
-import Admin from "@/pages/Admin";
 import NotFound from "@/pages/not-found";
 
 // Portail d'entrée
@@ -141,7 +140,6 @@ function Router() {
               <Route path="/a-propos" component={APropos} />
               <Route path="/contact" component={Contact} />
               <Route path="/produit/:slug" component={ProductPage} />
-              <Route path="/admin" component={Admin} />
               <Route component={NotFound} />
             </Switch>
           </main>
