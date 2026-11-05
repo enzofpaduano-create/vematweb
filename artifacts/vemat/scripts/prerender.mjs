@@ -1,7 +1,7 @@
 // Pré-rendu : après `vite build`, écrit un dist/public/<slug>/index.html par page d'atterrissage SEO,
 // avec title, description, canonical, balises de partage, JSON-LD et le texte de la page déjà dans le HTML.
 // Google lit ainsi le contenu sans exécuter de JavaScript ; React reprend la main au chargement.
-import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
+import { readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { loadSeo } from "./load-seo.mjs";
@@ -41,9 +41,9 @@ for (const page of landingPages) {
   html = replaceOnce(html, /<\/head>/, `    ${head}\n  </head>`, "head");
   html = replaceOnce(html, /<div id="root"><\/div>/, `<div id="root">${contentToHtml(ct)}</div>`, "root");
 
-  const dir = resolve(dist, page.slug);
-  mkdirSync(dir, { recursive: true });
-  writeFileSync(resolve(dir, "index.html"), html);
+  // <slug>.html (et non <slug>/index.html) : Cloudflare Pages sert alors /<slug> directement,
+  // sans redirection vers /<slug>/, ce qui reste cohérent avec la balise canonique.
+  writeFileSync(resolve(dist, `${page.slug}.html`), html);
   count++;
 }
 await close();
