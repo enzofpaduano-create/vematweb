@@ -19,7 +19,7 @@ function valuesFromDoc(d: SavDocument): SavFormValues {
     travelKm: d.travel_km, travelKmRate: d.travel_km_rate, travelHours: d.travel_hours, travelHourRate: d.travel_hour_rate,
     travelMeals: d.travel_meals, travelHotel: d.travel_hotel, travelOther: d.travel_other,
     parts: d.parts ?? [],
-    currency: d.currency, applyVat: d.apply_vat, vatRate: d.vat_rate,
+    letterhead: d.letterhead, currency: d.currency, applyVat: d.apply_vat, vatRate: d.vat_rate,
     customsNaira: d.customs_naira, customsLabel: d.customs_label ?? "CUSTOMS CLEARING and DELIVERY",
     paymentMode: d.payment_mode,
     paymentTerms: d.payment_terms ?? "", validity: d.validity ?? "", deliveryTerms: d.delivery_terms ?? "",

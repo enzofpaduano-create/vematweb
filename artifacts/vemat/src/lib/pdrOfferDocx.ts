@@ -19,6 +19,7 @@ import { saveAs } from "file-saver";
 import JSZip from "jszip";
 import letterheadUrl from "@/assets/pdr/letterhead.png";
 import { WC_BANK, WC_HEADER_MARGIN, westchaseHeader, westchaseFooter } from "@/lib/westchaseBrand";
+import { buildCasablancaDocxBlob, pdrToCb } from "@/lib/casablancaDoc";
 import {
   computeTotals, lineDiscountedUnit, lineTotal, DOC_LABEL_SHORT,
   type PdrDocument, type PdrDocType, type Currency,
@@ -75,6 +76,7 @@ const TOT_TABLE_W = TOT_COLS.reduce((a, b) => a + b, 0);
 const BANK: Record<Currency, string[]> = {
   EUR: [...WC_BANK.EUR],
   USD: [...WC_BANK.USD],
+  MAD: [],   // pas de bloc bancaire sur un document MAD
 };
 const BANK_NAIRA = [...WC_BANK.NAIRA];
 
@@ -99,7 +101,7 @@ function num(n: number, currency?: Currency): string {
     .toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })
     .replace(/,/g, " ");
 }
-function sym(c: Currency): string { return c === "EUR" ? "€" : "$"; }
+function sym(c: Currency): string { return c === "EUR" ? "€" : c === "MAD" ? "MAD" : "$"; }
 function fmtDate(iso: string): string {
   const d = new Date(iso);
   return `${String(d.getDate()).padStart(2, "0")}/${String(d.getMonth() + 1).padStart(2, "0")}/${d.getFullYear()}`;
@@ -289,6 +291,7 @@ async function loadLetterhead(): Promise<Uint8Array> {
 }
 
 export async function buildPdrDocxBlob(doc: PdrDocument, letterhead?: Uint8Array): Promise<Blob> {
+  if (doc.letterhead === "casablanca") return buildCasablancaDocxBlob(pdrToCb(doc));
   const imgBytes = letterhead ?? await loadLetterhead();
   const t = computeTotals(doc);
   const commercial = showCommercial(doc.type);

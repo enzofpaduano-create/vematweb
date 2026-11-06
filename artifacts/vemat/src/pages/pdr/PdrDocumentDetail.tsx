@@ -1082,11 +1082,11 @@ export default function PdrDocumentDetail() {
                     {genPdf ? <Loader2 className="w-4 h-4 animate-spin" /> : <FileText className="w-4 h-4" />}
                     Download PDF
                   </button>
-                  <button onClick={handleExcel} disabled={busy}
+                  {doc.letterhead !== "casablanca" && <button onClick={handleExcel} disabled={busy}
                     className="inline-flex items-center gap-2 bg-white border border-zinc-200 hover:border-sky-300 text-zinc-800 font-bold text-sm px-4 py-2.5 rounded-xl transition-colors disabled:opacity-60">
                     {genXlsx ? <Loader2 className="w-4 h-4 animate-spin" /> : <FileDown className="w-4 h-4" />}
                     Download Excel (.xlsx)
-                  </button>
+                  </button>}
                   <button onClick={handleWord} disabled={busy}
                     className="inline-flex items-center gap-2 bg-white border border-zinc-200 hover:border-sky-300 text-zinc-800 font-bold text-sm px-4 py-2.5 rounded-xl transition-colors disabled:opacity-60">
                     {genWord ? <Loader2 className="w-4 h-4 animate-spin" /> : <FileDown className="w-4 h-4" />}
@@ -1104,7 +1104,7 @@ export default function PdrDocumentDetail() {
                   File: <span className="font-mono text-zinc-500">{doc.reference} - {doc.client_company || doc.client_name || "Client"}</span>
                   {" "}(.pdf / .xlsx / .docx)
                   {chain.length > 1 && " · ZIP folders: Offers, PO, DN, Invoices…"}
-                  {" · Excel = Westchase offer template (max 8 lines)"}
+                  {doc.letterhead === "casablanca" ? " · En-tête Vemat Casablanca (Word / PDF)" : " · Excel = Westchase offer template (max 8 lines)"}
                 </p>
               </section>
 

@@ -1,3 +1,4 @@
+import { LETTERHEADS, MA_DEFAULT_VAT, type Letterhead } from "@/lib/letterhead";
 import { useEffect, useMemo, useState } from "react";
 import { Plus, Trash2, Save, AlertTriangle, Link2, Unlink } from "lucide-react";
 import {
@@ -22,6 +23,7 @@ export interface SavFormValues {
   travelKm: number; travelKmRate: number; travelHours: number; travelHourRate: number;
   travelMeals: number; travelHotel: number; travelOther: number;
   parts: SavPart[];
+  letterhead: Letterhead;
   currency: Currency; applyVat: boolean; vatRate: number; customsNaira: number; customsLabel: string;
   paymentMode: PaymentMode;
   paymentTerms: string; validity: string; deliveryTerms: string; incotermsNote: string; notes: string;
@@ -47,7 +49,7 @@ export const defaultFormValues = (): SavFormValues => ({
   travelKm: 0, travelKmRate: 0, travelHours: 0, travelHourRate: 0,
   travelMeals: 0, travelHotel: 0, travelOther: 0,
   parts: [],
-  currency: "EUR", applyVat: false, vatRate: 7.5, customsNaira: 0, customsLabel: "CUSTOMS CLEARING and DELIVERY",
+  letterhead: "westchase", currency: "EUR", applyVat: false, vatRate: 7.5, customsNaira: 0, customsLabel: "CUSTOMS CLEARING and DELIVERY",
   paymentMode: "advance",
   paymentTerms: "Advance payment", validity: "30 Days", deliveryTerms: "", incotermsNote: "", notes: "",
   clientId: null, equipmentId: null, overrideBlock: false,
@@ -65,7 +67,7 @@ export function formToPayload(v: SavFormValues) {
     travel_km: v.travelKm, travel_km_rate: v.travelKmRate, travel_hours: v.travelHours, travel_hour_rate: v.travelHourRate,
     travel_meals: v.travelMeals, travel_hotel: v.travelHotel, travel_other: v.travelOther,
     parts: v.parts.filter((p) => p.designation.trim() !== "" || p.reference.trim() !== ""),
-    currency: v.currency, apply_vat: v.applyVat, vat_rate: v.vatRate,
+    currency: v.currency, letterhead: v.letterhead, apply_vat: v.applyVat, vat_rate: v.vatRate,
     customs_naira: v.customsNaira, customs_label: v.customsNaira > 0 ? v.customsLabel : null,
     payment_mode: v.paymentMode,
     payment_terms: v.paymentTerms || null, validity: v.validity || null,
@@ -166,6 +168,23 @@ export function SavDocumentForm({ initial, syncKey, title, submitLabel, saving, 
     });
     return () => { cancelled = true; };
   }, [syncKey]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  /** Changement d'en-tête : propose les réglages usuels de l'entité (modifiables ensuite). */
+  const changeLetterhead = (lh: Letterhead) =>
+    setV((prev) => {
+      if (prev.letterhead === lh) return prev;
+      if (lh === "casablanca") {
+        return { ...prev, letterhead: lh, currency: "MAD", applyVat: true, vatRate: MA_DEFAULT_VAT, customsNaira: 0,
+          paymentTerms: prev.paymentTerms === "Advance payment" ? "" : prev.paymentTerms,
+          validity: prev.validity === "30 Days" ? "30 jours" : prev.validity };
+      }
+      return { ...prev, letterhead: lh,
+        currency: prev.currency === "MAD" ? "EUR" : prev.currency,
+        applyVat: prev.vatRate === MA_DEFAULT_VAT && prev.applyVat ? false : prev.applyVat,
+        vatRate: prev.vatRate === MA_DEFAULT_VAT ? 7.5 : prev.vatRate,
+        paymentTerms: prev.paymentTerms || "Advance payment",
+        validity: prev.validity === "30 jours" ? "30 Days" : (prev.validity || "30 Days") };
+    });
 
   const totals = computeSavTotals({
     labour_mode: v.labourMode, labour_days: v.labourDays, labour_daily_rate: v.labourDailyRate, labour_fixed_amount: v.labourFixed,
@@ -338,14 +357,26 @@ export function SavDocumentForm({ initial, syncKey, title, submitLabel, saving, 
       {/* Options: currency, VAT, payment mode, customs */}
       <section className="bg-white rounded-2xl border border-zinc-200 p-6 mb-5">
         <h2 className="font-black text-zinc-950 mb-4">Options</h2>
+        <div className="mb-5">
+          <label className={lbl}>Letterhead (en-tête du document)</label>
+          <div className="inline-flex flex-wrap rounded-xl border border-zinc-200 overflow-hidden">
+            {LETTERHEADS.map((l) => (
+              <button key={l.id} type="button" onClick={() => changeLetterhead(l.id)}
+                className={`px-4 py-2 text-sm font-bold transition-colors ${v.letterhead === l.id ? "bg-emerald-600 text-white" : "bg-white text-zinc-600 hover:bg-zinc-50"}`}>
+                {l.label}
+              </button>
+            ))}
+          </div>
+          <p className="text-xs text-zinc-400 mt-1.5">{LETTERHEADS.find((l) => l.id === v.letterhead)?.hint}</p>
+        </div>
         <div className="flex flex-wrap items-end gap-6">
           <div>
             <label className={lbl}>Currency</label>
             <div className="inline-flex rounded-xl border border-zinc-200 overflow-hidden">
-              {(["EUR", "USD"] as Currency[]).map((c) => (
+              {(["EUR", "USD", "MAD"] as Currency[]).map((c) => (
                 <button key={c} type="button" onClick={() => set("currency", c)}
                   className={`px-4 py-2 text-sm font-bold transition-colors ${v.currency === c ? "bg-emerald-600 text-white" : "bg-white text-zinc-600 hover:bg-zinc-50"}`}>
-                  {c === "EUR" ? "€ EUR" : "$ USD"}
+                  {c === "EUR" ? "€ EUR" : c === "MAD" ? "MAD" : "$ USD"}
                 </button>
               ))}
             </div>
@@ -365,7 +396,7 @@ export function SavDocumentForm({ initial, syncKey, title, submitLabel, saving, 
             <input type="checkbox" checked={v.applyVat} onChange={(e) => set("applyVat", e.target.checked)} className="w-4 h-4 accent-emerald-600" />
             <span className="text-sm font-semibold text-zinc-700">Apply VAT</span>
           </label>
-          {v.applyVat && <div><label className={lbl}>VAT %</label><input className={`${ic} w-24`} type="number" step="0.5" value={v.vatRate} onChange={(e) => set("vatRate", Number(e.target.value))} /></div>}
+          {v.applyVat && <div><label className={lbl}>VAT % (modifiable)</label><input className={`${ic} w-24`} type="number" step="0.5" value={v.vatRate} onChange={(e) => set("vatRate", Number(e.target.value))} /></div>}
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4 pt-4 border-t border-zinc-100">
           <div><label className={lbl}>Customs amount ₦ (0 if none)</label>{numField(v.customsNaira, (n) => set("customsNaira", n))}</div>

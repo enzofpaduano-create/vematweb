@@ -9,10 +9,11 @@
  * Chaîne : Offer → PO → Invoice (paiement d'avance) | → Delivery Note → Invoice
  */
 
+import { normalizeLetterhead, type Letterhead } from "./letterhead";
 import { supabaseSav } from "@/lib/supabase";
 
 export type SavDocType = "devis" | "bon_commande" | "bon_livraison" | "facture" | "avoir";
-export type Currency = "EUR" | "USD";
+export type Currency = "EUR" | "USD" | "MAD";
 export type LabourMode = "daily" | "fixed";
 export type PaymentMode = "advance" | "after";
 // Suivi commercial (même vocabulaire que le portail PDR) — ajouté pour le registre des devis.
@@ -121,6 +122,8 @@ export interface SavDocument {
   accounting_note: string | null;
   // Inter-company flows (Hassan Phase 7)
   issuing_entity: string;
+  /** En-tête du document : « westchase » (défaut) ou « casablanca ». */
+  letterhead: Letterhead;
   client_entity_id: string | null;
   // Suivi d'envoi et issue commerciale (registre des devis)
   communication_status?: SavCommStatus;
@@ -237,7 +240,7 @@ export function computeSavTotals(d: TotalsInput): SavTotals {
   };
 }
 
-export function currencySymbol(c: Currency): string { return c === "EUR" ? "€" : "$"; }
+export function currencySymbol(c: Currency): string { return c === "EUR" ? "€" : c === "MAD" ? "MAD" : "$"; }
 export function formatAmount(amount: number, symbol: string): string {
   return `${(Number(amount) || 0).toLocaleString("en-GB", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ${symbol}`;
 }
@@ -277,6 +280,7 @@ export async function listSavDocuments(): Promise<SavDocument[]> {
 function normalize(d: Record<string, unknown>): SavDocument {
   const doc = { ...(d as unknown as SavDocument), parts: Array.isArray(d.parts) ? (d.parts as SavPart[]) : [] };
   doc.issuing_entity = (doc.issuing_entity ?? "casablanca") as string;
+  doc.letterhead = normalizeLetterhead(doc.letterhead);
   doc.client_entity_id = (doc.client_entity_id ?? null) as string | null;
   return doc;
 }
@@ -316,7 +320,7 @@ export type NewSavDocument =
     | "avoir_finance_status" | "avoir_finance_decided_at" | "avoir_finance_decided_by" | "avoir_finance_note"
     | "accounting_status" | "accounting_ready_at" | "accounting_ready_by"
     | "accounting_transferred_at" | "accounting_transferred_by" | "accounting_note"
-    | "issuing_entity" | "client_entity_id"
+    | "issuing_entity" | "client_entity_id" | "letterhead"
   >
   & Partial<Pick<SavDocument,
       | "reference" | "total_amount" | "client_id" | "equipment_id"
@@ -327,7 +331,7 @@ export type NewSavDocument =
       | "avoir_finance_status" | "avoir_finance_decided_at" | "avoir_finance_decided_by" | "avoir_finance_note"
       | "accounting_status" | "accounting_ready_at" | "accounting_ready_by"
       | "accounting_transferred_at" | "accounting_transferred_by" | "accounting_note"
-      | "issuing_entity" | "client_entity_id"
+      | "issuing_entity" | "client_entity_id" | "letterhead"
     >>;
 
 export async function createSavDocument(input: NewSavDocument): Promise<SavDocument> {

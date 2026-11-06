@@ -1,14 +1,16 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { AlertTriangle, Download, Loader2, Plus, RefreshCw, Search, X } from "lucide-react";
+import { AlertTriangle, Download, LayoutDashboard, Loader2, Plus, RefreshCw, Search, Table2, X } from "lucide-react";
 import {
   listRegister, computeRegisterKpis, exportRegisterXlsx,
   REQUEST_TYPE_LABEL, PRIORITY_LABEL, PRIORITY_COLOR, STAGE_LABEL, STAGE_COLOR, GM_LABEL, COMMERCIAL_LABEL,
-  OPEN_STAGES, blockingReason,
+  OPEN_STAGES, blockingReason, needsChase,
   type RegisterRow, type RegisterStage, type RequestType, type RequestPriority,
 } from "@/lib/quotationRegister";
 import { INPUT_CLS, type RegisterPortal } from "./registerContext";
 import { NewRequestDialog } from "./NewRequestDialog";
 import { RequestPanel } from "./RequestPanel";
+import { FollowUpPanel } from "./FollowUpPanel";
+import { RegisterInsightsView } from "./RegisterInsightsView";
 
 // ── Blocs de colonnes (mêmes 7 blocs que le fichier Excel d'origine) ─────────
 
@@ -68,8 +70,9 @@ function Tile({ label, value, sub, tone }: { label: string; value: React.ReactNo
 export function RegisterKpiTiles({ rows }: { rows: RegisterRow[] }) {
   const k = useMemo(() => computeRegisterKpis(rows), [rows]);
   const pipe = Object.entries(k.pipeline);
+  const chase = useMemo(() => rows.filter((r) => needsChase(r)).length, [rows]);
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-7 gap-3">
+    <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-8 gap-3">
       <Tile label="Requests" value={k.total} />
       <Tile label="To be costed" value={k.toCost} tone={k.toCost > 0 ? "warn" : undefined} sub="not yet at the DG" />
       <Tile label="Waiting for DG" value={k.pendingDg} tone={k.pendingDg > 0 ? "warn" : undefined} />
@@ -78,6 +81,7 @@ export function RegisterKpiTiles({ rows }: { rows: RegisterRow[] }) {
         sub={pipe.length === 0 ? "no amount yet" : pipe.map(([c, v]) => `${v.toLocaleString("en-GB", { maximumFractionDigits: 0 })} ${c}`).join(" · ")}
       />
       <Tile label="Won" value={k.won} tone="good" sub={k.conversion != null ? `${k.conversion}% of quotes sent` : undefined} />
+      <Tile label="To follow up" value={chase} tone={chase > 0 ? "warn" : undefined} sub="sent 7+ days ago, no answer" />
       <Tile label="Blocked" value={k.blocked} tone={k.blocked > 0 ? "bad" : undefined} sub="information missing / revision" />
       <Tile label="Overdue" value={k.overdue} tone={k.overdue > 0 ? "bad" : undefined} sub={k.avgDaysToSend != null ? `avg. ${k.avgDaysToSend} d to send` : "2+ days, not sent"} />
     </div>
@@ -159,6 +163,8 @@ export default function RegisterView({ ctx }: { ctx: RegisterPortal }) {
   const [owner, setOwner] = useState("all");
   const [onlyBlocked, setOnlyBlocked] = useState(false);
   const [onlyOverdue, setOnlyOverdue] = useState(false);
+  const [onlyChase, setOnlyChase] = useState(false);
+  const [view, setView] = useState<"table" | "dashboard">("table");
   const [hidden, setHidden] = useState<Set<BlockKey>>(new Set());
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [showNew, setShowNew] = useState(false);
@@ -186,6 +192,7 @@ export default function RegisterView({ ctx }: { ctx: RegisterPortal }) {
       if (stage !== "all" && stage !== "open" && r.stage !== stage) return false;
       if (onlyBlocked && !r.is_blocked) return false;
       if (onlyOverdue && !r.is_overdue) return false;
+      if (onlyChase && !needsChase(r)) return false;
       if (q) {
         const hay = [r.request_id, r.client_name, r.quotation_ref, r.equipment, r.serial_number, r.location_site, r.po_wo_no, r.remarks, r.missing_info]
           .filter(Boolean).join(" ").toLowerCase();
@@ -193,14 +200,14 @@ export default function RegisterView({ ctx }: { ctx: RegisterPortal }) {
       }
       return true;
     });
-  }, [rows, query, type, stage, priority, client, owner, onlyBlocked, onlyOverdue]);
+  }, [rows, query, type, stage, priority, client, owner, onlyBlocked, onlyOverdue, onlyChase]);
 
   const selected = useMemo(() => (rows ?? []).find((r) => r.id === selectedId) ?? null, [rows, selectedId]);
-  const filtersActive = query || type !== "all" || stage !== "all" || priority !== "all" || client !== "all" || owner !== "all" || onlyBlocked || onlyOverdue;
+  const filtersActive = query || type !== "all" || stage !== "all" || priority !== "all" || client !== "all" || owner !== "all" || onlyBlocked || onlyOverdue || onlyChase;
 
   function resetFilters() {
     setQuery(""); setType("all"); setStage("all"); setPriority("all"); setClient("all"); setOwner("all");
-    setOnlyBlocked(false); setOnlyOverdue(false);
+    setOnlyBlocked(false); setOnlyOverdue(false); setOnlyChase(false);
   }
   function toggleBlock(b: BlockKey) {
     setHidden((prev) => { const n = new Set(prev); if (n.has(b)) n.delete(b); else n.add(b); return n; });
@@ -219,6 +226,16 @@ export default function RegisterView({ ctx }: { ctx: RegisterPortal }) {
           <p className="text-sm text-zinc-500">Vemat Westchase · every quote request, from intake to the client's answer. Shared by the PDR and SAV portals.</p>
         </div>
         <div className="flex items-center gap-2">
+          <div className="inline-flex rounded-xl border border-zinc-200 bg-white p-0.5" role="tablist" aria-label="View">
+            <button role="tab" aria-selected={view === "table"} onClick={() => setView("table")}
+              className={`inline-flex items-center gap-1.5 text-xs font-bold rounded-lg px-3 py-1.5 ${view === "table" ? "bg-zinc-900 text-white" : "text-zinc-600 hover:bg-zinc-50"}`}>
+              <Table2 className="w-3.5 h-3.5" /> Table
+            </button>
+            <button role="tab" aria-selected={view === "dashboard"} onClick={() => setView("dashboard")}
+              className={`inline-flex items-center gap-1.5 text-xs font-bold rounded-lg px-3 py-1.5 ${view === "dashboard" ? "bg-zinc-900 text-white" : "text-zinc-600 hover:bg-zinc-50"}`}>
+              <LayoutDashboard className="w-3.5 h-3.5" /> Dashboard
+            </button>
+          </div>
           <button onClick={() => void load()} className="p-2 rounded-lg border border-zinc-200 bg-white hover:bg-zinc-50" title="Refresh" aria-label="Refresh">
             <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
           </button>
@@ -239,6 +256,11 @@ export default function RegisterView({ ctx }: { ctx: RegisterPortal }) {
       ) : (
         <>
           <RegisterKpiTiles rows={rows} />
+
+          {view === "dashboard" ? (
+            <RegisterInsightsView rows={rows} />
+          ) : (<>
+          <FollowUpPanel ctx={ctx} rows={rows} onChanged={() => void load()} />
 
           {/* Filtres */}
           <div className="mt-5 mb-3 flex flex-wrap items-center gap-2">
@@ -275,6 +297,9 @@ export default function RegisterView({ ctx }: { ctx: RegisterPortal }) {
             <label className="inline-flex items-center gap-1.5 text-xs font-semibold text-zinc-600 px-2">
               <input type="checkbox" checked={onlyOverdue} onChange={(e) => setOnlyOverdue(e.target.checked)} /> Overdue
             </label>
+            <label className="inline-flex items-center gap-1.5 text-xs font-semibold text-zinc-600 px-2">
+              <input type="checkbox" checked={onlyChase} onChange={(e) => setOnlyChase(e.target.checked)} /> To follow up
+            </label>
             {filtersActive && (
               <button onClick={resetFilters} className="inline-flex items-center gap-1 text-xs font-bold text-zinc-500 hover:text-zinc-900"><X className="w-3 h-3" /> Clear</button>
             )}
@@ -293,6 +318,7 @@ export default function RegisterView({ ctx }: { ctx: RegisterPortal }) {
           </div>
 
           <RegisterTable rows={filtered} hidden={hidden} onOpen={(r) => setSelectedId(r.id)} selectedId={selectedId} />
+          </>)}
         </>
       )}
 

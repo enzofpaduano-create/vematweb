@@ -10,6 +10,7 @@
  * ligne, TVA 7,5% optionnelle.
  */
 
+import { normalizeLetterhead, type Letterhead } from "./letterhead";
 import { supabasePdr } from "@/lib/supabase";
 
 export type PdrDocType =
@@ -21,7 +22,7 @@ export type PdrDocType =
   | "facture"
   | "avoir";
 
-export type Currency = "EUR" | "USD";
+export type Currency = "EUR" | "USD" | "MAD";
 
 // ── Tracking (Hassan's spec 08/2026) ────────────────────────────────────────
 // Every document tracks where the request came in, who owns it, and its
@@ -172,6 +173,8 @@ export interface PdrDocument {
   accounting_note: string | null;
   // Inter-company flows (Hassan Phase 7)
   issuing_entity: string;
+  /** En-tête du document : « westchase » (défaut) ou « casablanca ». */
+  letterhead: Letterhead;
   client_entity_id: string | null;
 }
 
@@ -257,7 +260,7 @@ export function computeTotals(doc: {
 }
 
 export function currencySymbol(c: Currency): string {
-  return c === "EUR" ? "€" : "$";
+  return c === "EUR" ? "€" : c === "MAD" ? "MAD" : "$";
 }
 export function formatAmount(amount: number, symbol: string): string {
   return `${(Number(amount) || 0).toLocaleString("en-GB", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ${symbol}`;
@@ -330,6 +333,7 @@ function normalizeDoc(doc: PdrDocument | null): PdrDocument | null {
     accounting_transferred_by: doc.accounting_transferred_by ?? null,
     accounting_note: doc.accounting_note ?? null,
     issuing_entity: doc.issuing_entity ?? "casablanca",
+    letterhead: normalizeLetterhead(doc.letterhead),
     client_entity_id: doc.client_entity_id ?? null,
   };
 }
@@ -506,7 +510,7 @@ export type NewDocumentInput =
     | "avoir_finance_status" | "avoir_finance_decided_at" | "avoir_finance_decided_by" | "avoir_finance_note"
     | "accounting_status" | "accounting_ready_at" | "accounting_ready_by"
     | "accounting_transferred_at" | "accounting_transferred_by" | "accounting_note"
-    | "issuing_entity" | "client_entity_id"
+    | "issuing_entity" | "client_entity_id" | "letterhead"
   >
   & Partial<Pick<PdrDocument,
       | "reference"
@@ -519,7 +523,7 @@ export type NewDocumentInput =
       | "avoir_finance_status" | "avoir_finance_decided_at" | "avoir_finance_decided_by" | "avoir_finance_note"
       | "accounting_status" | "accounting_ready_at" | "accounting_ready_by"
       | "accounting_transferred_at" | "accounting_transferred_by" | "accounting_note"
-      | "issuing_entity" | "client_entity_id"
+      | "issuing_entity" | "client_entity_id" | "letterhead"
     >>;
 
 export async function createDocument(input: NewDocumentInput): Promise<PdrDocument> {
@@ -608,6 +612,7 @@ export async function convertDocument(
     machine: parent.machine,
     client_code: parent.client_code,
     currency: parent.currency,
+    letterhead: parent.letterhead,
     items: parent.items,
     apply_vat: parent.apply_vat,
     vat_rate: parent.vat_rate,

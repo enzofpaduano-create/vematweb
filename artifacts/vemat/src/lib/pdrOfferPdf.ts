@@ -11,6 +11,7 @@ import {
   computeTotals, lineDiscountedUnit, lineTotal, DOC_LABEL,
   type PdrDocument, type Currency,
 } from "@/lib/pdrDocuments";
+import { buildCasablancaPdf, pdrToCb } from "@/lib/casablancaDoc";
 import { docxFileName } from "@/lib/pdrOfferDocx";
 
 const TITLE: Record<PdrDocument["type"], string> = {
@@ -30,7 +31,7 @@ function num(n: number, currency?: Currency): string {
   }
   return v.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).replace(/,/g, " ");
 }
-function sym(c: Currency): string { return c === "EUR" ? "€" : "$"; }
+function sym(c: Currency): string { return c === "EUR" ? "€" : c === "MAD" ? "MAD" : "$"; }
 function fmtDate(iso: string): string {
   const d = new Date(iso);
   return `${String(d.getDate()).padStart(2, "0")}/${String(d.getMonth() + 1).padStart(2, "0")}/${d.getFullYear()}`;
@@ -53,6 +54,7 @@ async function loadLetterheadDataUrl(): Promise<string | null> {
 }
 
 export async function buildPdrPdf(doc: PdrDocument): Promise<jsPDF> {
+  if (doc.letterhead === "casablanca") return buildCasablancaPdf(pdrToCb(doc));
   const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
   const pageW = pdf.internal.pageSize.getWidth();
   const marginL = 14;
@@ -163,10 +165,10 @@ export async function buildPdrPdf(doc: PdrDocument): Promise<jsPDF> {
   }
   if (t.hasCustoms) {
     y += 2;
-    pdf.text(`TOTAL  ${num(t.nairaSubtotal)} ₦`, right, y, { align: "right" }); y += 5;
+    pdf.text(`TOTAL  ${num(t.nairaSubtotal)} NGN`, right, y, { align: "right" }); y += 5;
     if (doc.apply_vat) {
-      pdf.text(`VAT ${doc.vat_rate}%  ${num(t.nairaVat)} ₦`, right, y, { align: "right" }); y += 5;
-      pdf.text(`TOTAL w/ VAT  ${num(t.nairaTotal)} ₦`, right, y, { align: "right" }); y += 5;
+      pdf.text(`VAT ${doc.vat_rate}%  ${num(t.nairaVat)} NGN`, right, y, { align: "right" }); y += 5;
+      pdf.text(`TOTAL w/ VAT  ${num(t.nairaTotal)} NGN`, right, y, { align: "right" }); y += 5;
     }
   }
 

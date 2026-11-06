@@ -33,6 +33,7 @@ const BANK: Record<Currency, { account: string; number: string; bank: string; sw
     swift: "",
     sort: "",
   },
+  MAD: { account: "", number: "", bank: "", swift: "", sort: "" },
   EUR: {
     account: "WESTCHASE OIL AND GAS LTD - VEMAT",
     number: "EUR ACCOUNT NO : 1309288049",
@@ -172,6 +173,7 @@ function fillOffreDisplay(ws: ExcelJS.Worksheet, doc: PdrDocument): void {
 }
 
 export async function buildPdrXlsxBlob(doc: PdrDocument): Promise<Blob> {
+  if (doc.letterhead === "casablanca") throw new Error("Le modèle Excel est réservé à l'en-tête Vemat Westchase. Utilisez Word ou PDF pour Vemat Casablanca.");
   if (doc.items.length > MAX_ITEM_ROWS) {
     throw new Error(
       `Excel template supports max ${MAX_ITEM_ROWS} lines (found ${doc.items.length}). Use Word/PDF, or split the offer.`,

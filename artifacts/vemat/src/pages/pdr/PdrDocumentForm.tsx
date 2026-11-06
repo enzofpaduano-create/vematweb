@@ -2,6 +2,7 @@
  * Formulaire partagé création / édition d'un document PDR (offre et suivants).
  */
 
+import { LETTERHEADS, MA_DEFAULT_VAT, normalizeLetterhead, type Letterhead } from "@/lib/letterhead";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { History, Plus, Save, Trash2, AlertTriangle, Link2, Unlink } from "lucide-react";
 import {
@@ -29,6 +30,7 @@ export interface PdrFormValues {
   name: string;
   email: string;
   phone: string;
+  letterhead: Letterhead;
   currency: Currency;
   applyVat: boolean;
   vatRate: number;
@@ -65,6 +67,7 @@ export const defaultFormValues = (): PdrFormValues => {
     name: "",
     email: "",
     phone: "",
+    letterhead: "westchase",
     currency: "EUR",
     applyVat: false,
     vatRate: 7.5,
@@ -94,6 +97,7 @@ export function valuesFromDocument(doc: PdrDocument): PdrFormValues {
     name: doc.client_name ?? "",
     email: doc.client_email ?? "",
     phone: doc.client_phone ?? "",
+    letterhead: normalizeLetterhead(doc.letterhead),
     currency: doc.currency,
     applyVat: doc.apply_vat,
     vatRate: doc.vat_rate,
@@ -127,6 +131,7 @@ export function formToPayload(v: PdrFormValues) {
     machine: v.machine || null,
     client_code: v.clientCode || null,
     currency: v.currency,
+    letterhead: v.letterhead,
     items: clean,
     apply_vat: v.applyVat,
     vat_rate: v.vatRate,
@@ -274,6 +279,35 @@ export function PdrDocumentForm({
     setSuggestRow(null);
     setSuggestions([]);
   };
+
+  /** Changement d'en-tête : propose les réglages usuels de l'entité (modifiables ensuite). */
+  const changeLetterhead = (lh: Letterhead) =>
+    setV((prev) => {
+      if (prev.letterhead === lh) return prev;
+      if (lh === "casablanca") {
+        return {
+          ...prev,
+          letterhead: lh,
+          currency: "MAD",
+          applyVat: true,
+          vatRate: MA_DEFAULT_VAT,
+          customsNaira: 0,
+          paymentTerms: prev.paymentTerms === "Advance payment" ? "" : prev.paymentTerms,
+          validity: prev.validity === "30 Days" ? "30 jours" : prev.validity,
+          deliveryTerms: prev.deliveryTerms === "CIF, Port Harcourt" ? "" : prev.deliveryTerms,
+        };
+      }
+      return {
+        ...prev,
+        letterhead: lh,
+        currency: prev.currency === "MAD" ? "EUR" : prev.currency,
+        applyVat: prev.vatRate === MA_DEFAULT_VAT && prev.applyVat ? false : prev.applyVat,
+        vatRate: prev.vatRate === MA_DEFAULT_VAT ? 7.5 : prev.vatRate,
+        paymentTerms: prev.paymentTerms || "Advance payment",
+        validity: prev.validity === "30 jours" ? "30 Days" : (prev.validity || "30 Days"),
+        deliveryTerms: prev.deliveryTerms || "CIF, Port Harcourt",
+      };
+    });
 
   const totals = computeTotals({
     items: v.items,
@@ -428,14 +462,26 @@ export function PdrDocumentForm({
 
       <section className="bg-white rounded-2xl border border-zinc-200 p-6 mb-5">
         <h2 className="font-black text-zinc-950 mb-4">Options</h2>
+        <div className="mb-5">
+          <label className={lbl}>Letterhead (en-tête du document)</label>
+          <div className="inline-flex flex-wrap rounded-xl border border-zinc-200 overflow-hidden">
+            {LETTERHEADS.map((l) => (
+              <button key={l.id} type="button" onClick={() => changeLetterhead(l.id)}
+                className={`px-4 py-2 text-sm font-bold transition-colors ${v.letterhead === l.id ? "bg-sky-600 text-white" : "bg-white text-zinc-600 hover:bg-zinc-50"}`}>
+                {l.label}
+              </button>
+            ))}
+          </div>
+          <p className="text-xs text-zinc-400 mt-1.5">{LETTERHEADS.find((l) => l.id === v.letterhead)?.hint}</p>
+        </div>
         <div className="flex flex-wrap items-end gap-6">
           <div>
             <label className={lbl}>Currency (parts)</label>
             <div className="inline-flex rounded-xl border border-zinc-200 overflow-hidden">
-              {(["EUR", "USD"] as Currency[]).map((c) => (
+              {(["EUR", "USD", "MAD"] as Currency[]).map((c) => (
                 <button key={c} type="button" onClick={() => set("currency", c)}
                   className={`px-4 py-2 text-sm font-bold transition-colors ${v.currency === c ? "bg-sky-600 text-white" : "bg-white text-zinc-600 hover:bg-zinc-50"}`}>
-                  {c === "EUR" ? "€ EUR" : "$ USD"}
+                  {c === "EUR" ? "€ EUR" : c === "MAD" ? "MAD" : "$ USD"}
                 </button>
               ))}
             </div>
@@ -445,7 +491,7 @@ export function PdrDocumentForm({
             <span className="text-sm font-semibold text-zinc-700">Apply VAT</span>
           </label>
           {v.applyVat && (
-            <div><label className={lbl}>VAT rate %</label><input className={`${ic} w-24`} type="number" step="0.5" value={v.vatRate} onChange={(e) => set("vatRate", Number(e.target.value))} /></div>
+            <div><label className={lbl}>VAT rate % (modifiable)</label><input className={`${ic} w-24`} type="number" step="0.5" min="0" value={v.vatRate} onChange={(e) => set("vatRate", Number(e.target.value))} /></div>
           )}
         </div>
       </section>

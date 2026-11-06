@@ -218,7 +218,7 @@ export default function PdrClients() {
                         </td>
                         <td className="px-4 py-3 text-zinc-600 font-semibold">{PAYMENT_TERMS_LABEL[c.payment_terms]}</td>
                         <td className="px-4 py-3 text-right font-semibold text-zinc-900 tabular-nums">
-                          {c.credit_limit > 0 ? `${c.credit_limit.toLocaleString("en-GB")} ${c.currency === "EUR" ? "€" : "$"}` : "—"}
+                          {c.credit_limit > 0 ? `${c.credit_limit.toLocaleString("en-GB")} ${c.currency === "EUR" ? "€" : c.currency === "MAD" ? "MAD" : "$"}` : "—"}
                         </td>
                         <td className="px-4 py-3">
                           <span className={`text-[10px] font-black uppercase tracking-wide px-2 py-1 rounded ${CLIENT_STATUS_COLOR[c.status]}`}>

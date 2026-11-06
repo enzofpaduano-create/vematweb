@@ -217,14 +217,14 @@ export async function sendValidationRequestEmail(params: {
   reference: string | null;
   clientName: string;
   totalAmount: number;
-  currency: "EUR" | "USD";
+  currency: "EUR" | "USD" | "MAD";
   reasons: string[];
   requestedBy?: string;      // agent / user email who submitted
   managerEmail: string;      // recipient
   docUrl?: string;           // direct link to the doc detail page
   note?: string;
 }) {
-  const cur = params.currency === "EUR" ? "€" : "$";
+  const cur = params.currency === "EUR" ? "€" : params.currency === "MAD" ? "MAD" : "$";
   const subject = `[VALIDATION ${params.portal}] ${params.reference ?? ""} — ${params.clientName} (${params.totalAmount.toLocaleString("en-GB")} ${cur})`;
   const body = `
 Validation request — ${params.portal} portal
@@ -285,13 +285,13 @@ export async function sendAvoirApprovalRequestEmail(params: {
   reference: string | null;
   clientName: string;
   totalAmount: number;
-  currency: "EUR" | "USD";
+  currency: "EUR" | "USD" | "MAD";
   reason: string;              // required — motif de l'avoir
   requestedBy?: string;
   approverEmail: string;       // manager_email or finance_email depending on stage
   docUrl?: string;
 }) {
-  const cur = params.currency === "EUR" ? "€" : "$";
+  const cur = params.currency === "EUR" ? "€" : params.currency === "MAD" ? "MAD" : "$";
   const stageLabel = params.stage === "manager" ? "Manager SAV" : "Direction Financière";
   const subject = `[CREDIT NOTE — ${stageLabel}] ${params.reference ?? ""} — ${params.clientName} (${params.totalAmount.toLocaleString("en-GB")} ${cur})`;
   const body = `

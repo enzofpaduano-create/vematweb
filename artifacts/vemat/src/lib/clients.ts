@@ -8,7 +8,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 
 export type PaymentTerms = "comptant" | "30j" | "60j" | "lcr";
 export type ClientStatus = "actif" | "bloque" | "litige";
-export type Currency = "EUR" | "USD";
+export type Currency = "EUR" | "USD" | "MAD";
 
 export const PAYMENT_TERMS_LABEL: Record<PaymentTerms, string> = {
   comptant: "Cash",

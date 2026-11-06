@@ -328,6 +328,134 @@ export function computeRegisterKpis(rows: RegisterRow[]): RegisterKpis {
   };
 }
 
+// ── Relances de devis ───────────────────────────────────────────────────────
+
+/** Un devis envoyé sans réponse depuis ce nombre de jours doit être relancé. */
+export const CHASE_AFTER_DAYS = 7;
+
+function daysSince(iso: string | null | undefined, now = new Date()): number | null {
+  if (!iso) return null;
+  const t = new Date(iso).getTime();
+  if (Number.isNaN(t)) return null;
+  return Math.floor((now.getTime() - t) / 86_400_000);
+}
+
+/** Jours d'attente depuis l'envoi du devis au client (null si pas encore envoyé). */
+export function daysWaiting(r: RegisterRow, now = new Date()): number | null {
+  return daysSince(r.sent_to_client_at, now);
+}
+
+/**
+ * À relancer : devis envoyé, client sans réponse (ni gagné, ni perdu), envoyé depuis
+ * CHASE_AFTER_DAYS jours ou plus, et aucune prochaine relance déjà planifiée dans le futur.
+ */
+export function needsChase(r: RegisterRow, now = new Date()): boolean {
+  if (!PIPELINE_STAGES.includes(r.stage) || r.closed_at) return false;
+  const waited = daysWaiting(r, now);
+  if (waited == null || waited < CHASE_AFTER_DAYS) return false;
+  if (r.next_follow_up_at) {
+    const next = new Date(`${r.next_follow_up_at}T23:59:59`).getTime();
+    if (next > now.getTime()) return false;
+  }
+  return true;
+}
+
+/** Brouillon de relance (anglais, ton professionnel). À copier : le portail n'envoie rien. */
+export function chaseDraft(r: RegisterRow, now = new Date()): { subject: string; body: string } {
+  const ref = r.quotation_ref || r.request_id;
+  const waited = daysWaiting(r, now);
+  const greeting = r.contact_name?.trim() ? `Dear ${r.contact_name.trim()},` : "Dear Sir/Madam,";
+  const amount = r.total_quote_amount != null
+    ? ` (${Number(r.total_quote_amount).toLocaleString("en-GB", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ${r.currency ?? ""})`.replace(" )", ")")
+    : "";
+  const machine = r.equipment ? ` for your ${r.equipment}${r.serial_number ? ` (S/N ${r.serial_number})` : ""}` : "";
+  const sentOn = r.sent_to_client_at ? new Date(r.sent_to_client_at).toLocaleDateString("en-GB") : null;
+  const body = [
+    greeting,
+    "",
+    `We sent you our quotation ${ref}${amount}${machine}${sentOn ? ` on ${sentOn}` : ""}${waited != null ? ` (${waited} days ago)` : ""}.`,
+    "",
+    "Could you let us know whether it suits you, or if you need any clarification or an adjustment? We would be glad to help.",
+    "",
+    "Please note that the availability dates are indicative and will be confirmed upon ordering.",
+    "",
+    "Best regards,",
+    "Vemat Westchase LTD",
+  ].join("\n");
+  return { subject: `Follow-up on our quotation ${ref}`, body };
+}
+
+// ── Tableau de bord ─────────────────────────────────────────────────────────
+
+export interface RegisterInsights {
+  byStage: { stage: RegisterStage; count: number }[];
+  funnel: { received: number; quoted: number; sent: number; won: number; lost: number };
+  byClient: { client: string; requests: number; sent: number; won: number; lost: number; pending: Record<string, number> }[];
+  byOwner: { owner: string; requests: number; avgDaysToSend: number | null }[];
+  byMonth: { month: string; count: number }[];
+  chaseCount: number;
+}
+
+export function computeRegisterInsights(rows: RegisterRow[], now = new Date()): RegisterInsights {
+  const stageCount = new Map<RegisterStage, number>();
+  const clients = new Map<string, { requests: number; sent: number; won: number; lost: number; pending: Record<string, number> }>();
+  const owners = new Map<string, { requests: number; days: number; n: number }>();
+  const months = new Map<string, number>();
+  let quoted = 0, sent = 0, won = 0, lost = 0, chase = 0;
+
+  for (const r of rows) {
+    stageCount.set(r.stage, (stageCount.get(r.stage) ?? 0) + 1);
+    if (r.date_prepared || r.quotation_ref || r.total_quote_amount != null) quoted += 1;
+    if (r.sent_to_client_at) sent += 1;
+    if (r.stage === "won") won += 1;
+    if (r.stage === "lost") lost += 1;
+    if (needsChase(r, now)) chase += 1;
+
+    const c = clients.get(r.client_name) ?? { requests: 0, sent: 0, won: 0, lost: 0, pending: {} };
+    c.requests += 1;
+    if (r.sent_to_client_at) c.sent += 1;
+    if (r.stage === "won") c.won += 1;
+    if (r.stage === "lost") c.lost += 1;
+    if (PIPELINE_STAGES.includes(r.stage) && r.total_quote_amount != null) {
+      const cur = r.currency ?? "USD";
+      c.pending[cur] = (c.pending[cur] ?? 0) + Number(r.total_quote_amount);
+    }
+    clients.set(r.client_name, c);
+
+    const o = r.costing_owner?.trim() || "Unassigned";
+    const oo = owners.get(o) ?? { requests: 0, days: 0, n: 0 };
+    oo.requests += 1;
+    if (r.days_to_send != null) { oo.days += r.days_to_send; oo.n += 1; }
+    owners.set(o, oo);
+
+    const m = (r.date_received ?? "").slice(0, 7);
+    if (m) months.set(m, (months.get(m) ?? 0) + 1);
+  }
+
+  const lastMonths: { month: string; count: number }[] = [];
+  for (let i = 5; i >= 0; i--) {
+    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+    lastMonths.push({ month: key, count: months.get(key) ?? 0 });
+  }
+
+  return {
+    byStage: (Object.keys(STAGE_LABEL) as RegisterStage[])
+      .map((stage) => ({ stage, count: stageCount.get(stage) ?? 0 }))
+      .filter((x) => x.count > 0),
+    funnel: { received: rows.length, quoted, sent, won, lost },
+    byClient: [...clients.entries()]
+      .map(([client, v]) => ({ client, ...v }))
+      .sort((a, b) => b.requests - a.requests)
+      .slice(0, 10),
+    byOwner: [...owners.entries()]
+      .map(([owner, v]) => ({ owner, requests: v.requests, avgDaysToSend: v.n ? Math.round((v.days / v.n) * 10) / 10 : null }))
+      .sort((a, b) => b.requests - a.requests),
+    byMonth: lastMonths,
+    chaseCount: chase,
+  };
+}
+
 /** Why is this request not moving? Plain-language sentence for the "blocking point" column. */
 export function blockingReason(r: RegisterRow): string | null {
   if (r.closed_at) return null;

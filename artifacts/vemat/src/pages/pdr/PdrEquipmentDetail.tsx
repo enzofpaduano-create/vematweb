@@ -185,7 +185,7 @@ export default function PdrEquipmentDetail() {
                             <span className="font-mono text-xs text-zinc-500">{h.reference}</span>
                           </div>
                           <div className="text-right shrink-0">
-                            <p className="text-sm font-bold text-zinc-900 tabular-nums">{h.total_amount.toLocaleString("en-GB")} {h.currency === "EUR" ? "€" : "$"}</p>
+                            <p className="text-sm font-bold text-zinc-900 tabular-nums">{h.total_amount.toLocaleString("en-GB")} {h.currency === "EUR" ? "€" : h.currency === "MAD" ? "MAD" : "$"}</p>
                             <p className="text-[11px] text-zinc-400">{new Date(h.created_at).toLocaleDateString("en-GB")}</p>
                           </div>
                         </div>

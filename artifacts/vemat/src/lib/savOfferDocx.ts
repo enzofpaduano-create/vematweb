@@ -11,6 +11,7 @@ import { saveAs } from "file-saver";
 import JSZip from "jszip";
 import letterheadUrl from "@/assets/pdr/letterhead.png";
 import { WC_BANK, WC_HEADER_MARGIN, westchaseHeader, westchaseFooter } from "@/lib/westchaseBrand";
+import { buildCasablancaDocxBlob, savToCb } from "@/lib/casablancaDoc";
 import {
   computeSavTotals, labourTotal, travelTotal, partLineTotal,
   DOC_LABEL_SHORT, DOC_FOLDER,
@@ -35,6 +36,7 @@ const TITLE: Record<SavDocType, string> = {
 const BANK: Record<Currency, string[]> = {
   EUR: [...WC_BANK.EUR],
   USD: [...WC_BANK.USD],
+  MAD: [],   // pas de bloc bancaire sur un document MAD
 };
 const BANK_NAIRA = [...WC_BANK.NAIRA];
 
@@ -43,7 +45,7 @@ function num(n: number, currency?: Currency): string {
   if (currency === "EUR") return v.toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   return v.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).replace(/,/g, " ");
 }
-function sym(c: Currency): string { return c === "EUR" ? "€" : "$"; }
+function sym(c: Currency): string { return c === "EUR" ? "€" : c === "MAD" ? "MAD" : "$"; }
 function fmtDate(iso: string): string {
   const d = new Date(iso);
   return `${String(d.getDate()).padStart(2, "0")}/${String(d.getMonth() + 1).padStart(2, "0")}/${d.getFullYear()}`;
@@ -132,6 +134,7 @@ const isCommercial = (t: SavDocType) => t === "devis" || t === "bon_commande" ||
 const showBank = (t: SavDocType) => t === "devis" || t === "facture";
 
 export async function buildSavDocxBlob(doc: SavDocument, letterhead?: Uint8Array): Promise<Blob> {
+  if (doc.letterhead === "casablanca") return buildCasablancaDocxBlob(savToCb(doc));
   const imgBytes = letterhead ?? await loadLetterhead();
   const t = computeSavTotals(doc);
   const s = sym(doc.currency);
