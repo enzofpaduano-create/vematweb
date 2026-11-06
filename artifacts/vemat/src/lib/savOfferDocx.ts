@@ -1,15 +1,16 @@
 /**
- * Génération Word SAV — même style que le PDR (grille noire, logo Westchase),
+ * Génération Word SAV — même style que le PDR (grille noire, logo Vemat Westchase),
  * avec 3 blocs de facturation : Labour / Travel / Spare parts.
  */
 
 import {
   Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell,
-  Header, Footer, ImageRun, AlignmentType, WidthType, BorderStyle, VerticalAlign,
+  AlignmentType, WidthType, BorderStyle, VerticalAlign,
 } from "docx";
 import { saveAs } from "file-saver";
 import JSZip from "jszip";
 import letterheadUrl from "@/assets/pdr/letterhead.png";
+import { WC_BANK, WC_HEADER_MARGIN, westchaseHeader, westchaseFooter } from "@/lib/westchaseBrand";
 import {
   computeSavTotals, labourTotal, travelTotal, partLineTotal,
   DOC_LABEL_SHORT, DOC_FOLDER,
@@ -32,29 +33,10 @@ const TITLE: Record<SavDocType, string> = {
 };
 
 const BANK: Record<Currency, string[]> = {
-  EUR: [
-    "Account Name: WESTCHASE OIL AND GAS LTD - VEMAT",
-    "Number:  EUR ACCOUNT NO : 1309288049",
-    "BENEFICIARY BANK: PROVIDUS BANK PLC",
-  ],
-  USD: [
-    "Account Name: WESTCHASE OIL AND GAS LTD",
-    "Number:  USD ACCOUNT NO : 5250152975",
-    "BENEFICIARY BANK: FIDELITY BANK PLC",
-    "SWIFT CODE: CITIUS33",
-    "SORT CODE: FIDTNGLA",
-  ],
+  EUR: [...WC_BANK.EUR],
+  USD: [...WC_BANK.USD],
 };
-const BANK_NAIRA = [
-  "Account Name: WESTCHASE OIL AND GAS LTD",
-  "Number:  NAIRA ACCOUNT NO : 5601036918",
-  "BENEFICIARY BANK: FIDELITY BANK PLC",
-];
-const FOOTER_LINES = [
-  "WESTCHASE OIL & GAS – 11, Sumbo Jibowu Ikoyi, Lagos, Lagos, Nigeria",
-  "Tél. : +234 814 315 5517 -  vematwestchase @vematgroup.com",
-  "Vemat Westchase LTD  is an authorized distributor of TEREX RT CRANES, TADANO, JLG, MAGNI, INGERSOLL RAND, and MECALAC  products",
-];
+const BANK_NAIRA = [...WC_BANK.NAIRA];
 
 function num(n: number, currency?: Currency): string {
   const v = Number(n) || 0;
@@ -252,9 +234,9 @@ export async function buildSavDocxBlob(doc: SavDocument, letterhead?: Uint8Array
   const document = new Document({
     styles: { default: { document: { run: { font: FONT, size: 20 } } } },
     sections: [{
-      properties: { page: { size: { width: 11906, height: 16838 }, margin: { top: 2966, right: 424, bottom: 510, left: 709 } } },
-      headers: { default: new Header({ children: [new Paragraph({ children: [new ImageRun({ type: "png", data: imgBytes, transformation: { width: 216, height: 162 } })] })] }) },
-      footers: { default: new Footer({ children: FOOTER_LINES.map((l, i) => new Paragraph({ alignment: AlignmentType.CENTER, children: [run(l, { size: i === 2 ? 12 : 14 })] })) }) },
+      properties: { page: { size: { width: 11906, height: 16838 }, margin: { top: 2966, right: 424, bottom: 510, left: 709, header: WC_HEADER_MARGIN } } },
+      headers: { default: westchaseHeader(imgBytes) },
+      footers: { default: westchaseFooter() },
       children: body,
     }],
   });

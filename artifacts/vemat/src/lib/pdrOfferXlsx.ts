@@ -1,5 +1,5 @@
 /**
- * Fill Westchase Excel offer template (FORMULAIRE → OFFRE).
+ * Fill Vemat Westchase Excel offer template (FORMULAIRE → OFFRE).
  * Source: Westchase_Offer_Template_Formulaire_v2_similaire.xlsx
  */
 
@@ -27,11 +27,11 @@ const ITEM_START = 21; // FORMULAIRE A21…
 
 const BANK: Record<Currency, { account: string; number: string; bank: string; swift: string; sort: string }> = {
   USD: {
-    account: "WESTCHASE OIL AND GAS LTD",
-    number: "USD ACCOUNT NO : 5250152975",
-    bank: "FIDELITY BANK PLC",
-    swift: "CITIUS33",
-    sort: "FIDTNGLA",
+    account: "VEMAT WESTCHASE LTD",
+    number: "USD ACCOUNT NO : 5076001382",
+    bank: "ZENITH BANK PLC",
+    swift: "",
+    sort: "",
   },
   EUR: {
     account: "WESTCHASE OIL AND GAS LTD - VEMAT",

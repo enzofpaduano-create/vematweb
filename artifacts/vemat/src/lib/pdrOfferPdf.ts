@@ -6,6 +6,7 @@ import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
 import { saveAs } from "file-saver";
 import letterheadUrl from "@/assets/pdr/letterhead.png";
+import { WC_FOOTER_TEXT } from "@/lib/westchaseBrand";
 import {
   computeTotals, lineDiscountedUnit, lineTotal, DOC_LABEL,
   type PdrDocument, type Currency,
@@ -58,11 +59,17 @@ export async function buildPdrPdf(doc: PdrDocument): Promise<jsPDF> {
   const marginR = 14;
   let y = 12;
 
+  // En-tête Vemat Westchase : logo rond centré + filet rouge pleine largeur (comme les modèles DE26xxx)
   const logo = await loadLetterheadDataUrl();
   if (logo) {
-    pdf.addImage(logo, "PNG", marginL, y, 42, 32);
-    y += 36;
+    pdf.addImage(logo, "PNG", (pageW - 38) / 2, 3, 38, 38);
   }
+  pdf.setDrawColor(255, 3, 19);
+  pdf.setLineWidth(0.7);
+  pdf.line(0, 42, pageW, 42);
+  pdf.setDrawColor(0);
+  pdf.setLineWidth(0.2);
+  y = 52;
 
   pdf.setFont("helvetica", "bold");
   pdf.setFontSize(12);
@@ -178,12 +185,24 @@ export async function buildPdrPdf(doc: PdrDocument): Promise<jsPDF> {
     pdf.text("Signature / Stamp : ____________________", marginL, y);
   }
 
-  const footerY = pdf.internal.pageSize.getHeight() - 12;
-  pdf.setFontSize(7);
-  pdf.setTextColor(80);
-  pdf.text("WESTCHASE OIL & GAS – 11, Sumbo Jibowu Ikoyi, Lagos, Nigeria", pageW / 2, footerY, { align: "center" });
-  pdf.text("Tél. : +234 814 315 5517  -  vematwestchase@vematgroup.com", pageW / 2, footerY + 3.5, { align: "center" });
+  const footerY = pdf.internal.pageSize.getHeight() - 14;
   pdf.setTextColor(0);
+  pdf.setFontSize(8);
+  pdf.setFont("helvetica", "bold");
+  const l1b = WC_FOOTER_TEXT[0].slice(0, "VEMAT WESTCHASE LTD".length);
+  const l1n = WC_FOOTER_TEXT[0].slice(l1b.length);
+  const wB = pdf.getTextWidth(l1b);
+  pdf.setFont("helvetica", "normal");
+  const wN = pdf.getTextWidth(l1n);
+  const gap = 1;
+  const x0 = (pageW - wB - wN - gap) / 2;
+  pdf.setFont("helvetica", "bold");
+  pdf.text(l1b, x0, footerY);
+  pdf.setFont("helvetica", "normal");
+  pdf.text(l1n, x0 + wB + gap, footerY);
+  pdf.text(WC_FOOTER_TEXT[1], pageW / 2, footerY + 3.6, { align: "center" });
+  pdf.setFontSize(6.5);
+  pdf.text(WC_FOOTER_TEXT[2], pageW / 2, footerY + 7, { align: "center" });
 
   return pdf;
 }

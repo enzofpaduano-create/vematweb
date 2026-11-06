@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { ArrowUpRight, Building2, MapPin, Globe2 } from "lucide-react";
 import { AfricaMap } from "@/components/AfricaMap";
+import { useLocation } from "wouter";
 import { useLang } from "@/i18n/I18nProvider";
 import { offices, ACTIVE_COUNTRY_COUNT } from "@/data/offices";
 
@@ -12,6 +13,18 @@ const iconForType = {
 
 export function OfficesSection() {
   const { t, lang } = useLang();
+  const [location, navigate] = useLocation();
+
+  // Clic sur le logo Vemat Westchase : direction la section « Projet Nigeria » de À propos.
+  const goNigeria = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (location.replace(/\/+$/, "") === "/a-propos") {
+      document.getElementById("nigeria")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      history.replaceState(null, "", "#nigeria");
+    } else {
+      navigate("/a-propos#nigeria");
+    }
+  };
 
   return (
     <section className="relative py-24 md:py-32 bg-white overflow-hidden">
@@ -114,19 +127,24 @@ export function OfficesSection() {
                         {o.description[lang]}
                       </p>
                       {o.partnerName && (
-                        <div className="inline-flex items-center gap-2 mt-2">
+                        <a
+                          href="/a-propos#nigeria"
+                          onClick={goNigeria}
+                          className="inline-flex items-center gap-2 mt-2 group/partner"
+                        >
                           {o.partnerLogo && (
                             <img
                               src={o.partnerLogo}
                               alt={o.partnerName}
-                              className="h-12 w-12 object-contain shrink-0"
+                              className="h-12 w-12 object-contain shrink-0 transition-transform duration-300 group-hover/partner:scale-105"
                               draggable={false}
                             />
                           )}
-                          <span className="text-[9px] font-black uppercase tracking-[0.2em] text-accent">
+                          <span className="inline-flex items-center gap-1 text-[9px] font-black uppercase tracking-[0.2em] text-accent group-hover/partner:text-zinc-950 transition-colors">
                             {o.partnerName}
+                            <ArrowUpRight className="h-3 w-3" />
                           </span>
-                        </div>
+                        </a>
                       )}
                     </div>
                   </div>

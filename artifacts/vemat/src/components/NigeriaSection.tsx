@@ -46,7 +46,7 @@ export function NigeriaSection() {
   const c = copy[lang === "en" ? "en" : "fr"];
 
   return (
-    <section className="py-24 md:py-28 bg-zinc-50">
+    <section id="nigeria" className="py-24 md:py-28 bg-zinc-50 scroll-mt-24">
       <div className="container mx-auto px-4 md:px-6">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
