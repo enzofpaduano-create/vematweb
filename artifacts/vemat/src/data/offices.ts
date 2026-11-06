@@ -1,4 +1,4 @@
-import westchaseLogo from "@/assets/partners/westchase-logo.png";
+import westchaseLogo from "@/assets/partners/vemat-westchase-logo.png";
 
 export type OfficeType = "hq" | "branch" | "partner";
 
@@ -20,24 +20,24 @@ export const offices: Office[] = [
     id: "dubai",
     city: "Dubaï",
     country: { fr: "Émirats Arabes Unis", en: "United Arab Emirates" },
-    type: "branch",
+    type: "hq",
     coords: [55.2708, 25.2048],
-    tagline: { fr: "Branche Vemat", en: "Vemat branch" },
+    tagline: { fr: "Siège social", en: "Headquarters" },
     description: {
-      fr: "Plateforme stratégique pour le sourcing international et les opérations Moyen-Orient.",
-      en: "Strategic platform for international sourcing and Middle East operations.",
+      fr: "Siège social de Vemat Group, plateforme stratégique pour le sourcing international et les opérations Moyen-Orient.",
+      en: "Vemat Group headquarters, strategic platform for international sourcing and Middle East operations.",
     },
   },
   {
     id: "casablanca",
     city: "Casablanca",
     country: { fr: "Maroc", en: "Morocco" },
-    type: "hq",
+    type: "branch",
     coords: [-7.5898, 33.5731],
-    tagline: { fr: "Siège social", en: "Headquarters" },
+    tagline: { fr: "Bureau Vemat", en: "Vemat office" },
     description: {
-      fr: "Quartier général de Vemat Group, centre logistique et technique pour l'ensemble de nos opérations.",
-      en: "Vemat Group headquarters, logistics and technical hub for all our operations.",
+      fr: "Bureau Vemat de Casablanca, centre logistique et technique pour l'ensemble de nos opérations.",
+      en: "Vemat office in Casablanca, logistics and technical hub for all our operations.",
     },
   },
   {
@@ -45,14 +45,13 @@ export const offices: Office[] = [
     city: "Lagos",
     country: { fr: "Nigeria", en: "Nigeria" },
     type: "branch",
-    partnerName: "Westchase Oil & Gas",
-    partnerUrl: "http://westchaseoil.com/index.html",
+    partnerName: "Vemat Westchase LTD",
     partnerLogo: westchaseLogo,
     coords: [3.3792, 6.5244],
-    tagline: { fr: "Branche Vemat", en: "Vemat branch" },
+    tagline: { fr: "Bureau Vemat", en: "Vemat office" },
     description: {
-      fr: "Notre bureau Vemat opérant sous l'enseigne Westchase Oil & Gas, dédié au golfe de Guinée et à l'industrie pétrolière nigériane.",
-      en: "Our Vemat office operating under the Westchase Oil & Gas brand, dedicated to the Gulf of Guinea and Nigerian oil & gas industry.",
+      fr: "Notre bureau Vemat opérant sous l'enseigne Vemat Westchase LTD, dédié au golfe de Guinée et à l'industrie pétrolière nigériane.",
+      en: "Our Vemat office operating under the Vemat Westchase LTD brand, dedicated to the Gulf of Guinea and Nigerian oil & gas industry.",
     },
   },
   {
@@ -60,14 +59,13 @@ export const offices: Office[] = [
     city: "Port Harcourt",
     country: { fr: "Nigeria", en: "Nigeria" },
     type: "branch",
-    partnerName: "Westchase Oil & Gas",
-    partnerUrl: "http://westchaseoil.com/index.html",
+    partnerName: "Vemat Westchase LTD",
     partnerLogo: westchaseLogo,
     coords: [7.0498, 4.8156],
-    tagline: { fr: "Branche Vemat", en: "Vemat branch" },
+    tagline: { fr: "Bureau Vemat", en: "Vemat office" },
     description: {
-      fr: "Bureau Vemat opérant sous l'enseigne Westchase Oil & Gas, au cœur du delta du Niger et de l'industrie pétrolière offshore.",
-      en: "Vemat office operating under the Westchase Oil & Gas brand, at the heart of the Niger Delta and offshore oil & gas industry.",
+      fr: "Bureau Vemat opérant sous l'enseigne Vemat Westchase LTD, au cœur du delta du Niger et de l'industrie pétrolière offshore.",
+      en: "Vemat office operating under the Vemat Westchase LTD brand, at the heart of the Niger Delta and offshore oil & gas industry.",
     },
   },
   {
@@ -76,7 +74,7 @@ export const offices: Office[] = [
     country: { fr: "Mauritanie", en: "Mauritania" },
     type: "branch",
     coords: [-17.0333, 20.9417],
-    tagline: { fr: "Branche Vemat", en: "Vemat branch" },
+    tagline: { fr: "Bureau Vemat", en: "Vemat office" },
     description: {
       fr: "Bureau Vemat dédié à l'Afrique de l'Ouest atlantique, spécialiste du minier.",
       en: "Vemat office serving Atlantic West Africa, specialised in mining.",

@@ -4,6 +4,7 @@ import { CTASection } from "@/components/CTASection";
 import { BrandCard } from "@/components/BrandCard";
 import { OfficesSection } from "@/components/OfficesSection";
 import { FieldGallery } from "@/components/FieldGallery";
+import { NigeriaSection } from "@/components/NigeriaSection";
 import { useLang } from "@/i18n/I18nProvider";
 import { brands } from "@/data/brands";
 import { motion } from "framer-motion";
@@ -157,6 +158,7 @@ export default function APropos() {
 
       {/* Our offices around Africa */}
       <OfficesSection />
+      <NigeriaSection />
 
       {/* Network Section - Refined */}
       <section className="py-32 bg-white">

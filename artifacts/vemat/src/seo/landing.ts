@@ -28,16 +28,16 @@ export type Country = {
 };
 
 const OFFICE_HQ: T = {
-  fr: "Notre siège social est situé à Casablanca : c'est le centre logistique et technique de l'ensemble de nos opérations.",
-  en: "Our headquarters are in Casablanca, the logistics and technical hub for all our operations.",
+  fr: "Notre bureau de Casablanca est le centre logistique et technique de l'ensemble de nos opérations.",
+  en: "Our Casablanca office is the logistics and technical hub for all our operations.",
 };
 const OFFICE_NG: T = {
-  fr: "Nos bureaux de Lagos et de Port Harcourt, qui opèrent sous l'enseigne Westchase Oil & Gas, sont dédiés au golfe de Guinée, au delta du Niger et à l'industrie pétrolière.",
-  en: "Our Lagos and Port Harcourt offices, operating under the Westchase Oil & Gas brand, serve the Gulf of Guinea, the Niger Delta and the oil & gas industry.",
+  fr: "Nos bureaux de Lagos et de Port Harcourt, qui opèrent sous l'enseigne Vemat Westchase LTD, sont dédiés au golfe de Guinée, au delta du Niger et à l'industrie pétrolière.",
+  en: "Our Lagos and Port Harcourt offices, operating under the Vemat Westchase LTD brand, serve the Gulf of Guinea, the Niger Delta and the oil & gas industry.",
 };
 const OFFICE_AE: T = {
-  fr: "Notre branche de Dubaï est une plateforme stratégique pour le sourcing international et les opérations au Moyen-Orient.",
-  en: "Our Dubai branch is a strategic platform for international sourcing and Middle East operations.",
+  fr: "Notre siège social de Dubaï est une plateforme stratégique pour le sourcing international et les opérations au Moyen-Orient.",
+  en: "Our Dubai headquarters is a strategic platform for international sourcing and Middle East operations.",
 };
 const OFFICE_MR: T = {
   fr: "Notre bureau de Nouadhibou est dédié à l'Afrique de l'Ouest atlantique et spécialisé dans le secteur minier.",
@@ -344,8 +344,8 @@ function officeLine(page: LandingPage): string {
   if (page.country) {
     return tr(
       lang,
-      `${page.country.name.fr} fait partie des pays où Vemat Group est présent, avec l'appui de son siège de Casablanca, centre logistique et technique de l'ensemble de ses opérations.`,
-      `${page.country.name.en} is one of the countries where Vemat Group operates, supported by its Casablanca headquarters, the logistics and technical hub for all its operations.`,
+      `${page.country.name.fr} fait partie des pays où Vemat Group est présent, avec l'appui de son bureau de Casablanca, centre logistique et technique de l'ensemble de ses opérations.`,
+      `${page.country.name.en} is one of the countries where Vemat Group operates, supported by its Casablanca office, the logistics and technical hub for all its operations.`,
     );
   }
   return africaOffices[lang];

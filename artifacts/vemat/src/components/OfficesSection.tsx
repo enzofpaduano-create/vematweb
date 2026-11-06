@@ -113,26 +113,20 @@ export function OfficesSection() {
                       <p className="text-xs text-zinc-500 mt-1 leading-snug line-clamp-2">
                         {o.description[lang]}
                       </p>
-                      {o.partnerUrl && (
-                        <a
-                          href={o.partnerUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-2 mt-2 group/partner"
-                        >
+                      {o.partnerName && (
+                        <div className="inline-flex items-center gap-2 mt-2">
                           {o.partnerLogo && (
                             <img
                               src={o.partnerLogo}
-                              alt={o.partnerName ?? ""}
-                              className="h-11 w-auto object-contain shrink-0 transition-transform duration-300 group-hover/partner:scale-105"
+                              alt={o.partnerName}
+                              className="h-12 w-12 object-contain shrink-0"
                               draggable={false}
                             />
                           )}
-                          <span className="inline-flex items-center gap-1 text-[9px] font-black uppercase tracking-[0.2em] text-accent group-hover/partner:text-zinc-950 transition-colors">
+                          <span className="text-[9px] font-black uppercase tracking-[0.2em] text-accent">
                             {o.partnerName}
-                            <ArrowUpRight className="h-3 w-3" />
                           </span>
-                        </a>
+                        </div>
                       )}
                     </div>
                   </div>
