@@ -3,16 +3,37 @@ import { motion, AnimatePresence } from "framer-motion";
 import vematLogo from "@/assets/vemat-logo.png";
 
 const HOLD_MS = 1400; // total time on screen before exit animation
+const SEEN_KEY = "vemat-splash-seen-at";
+const SEEN_TTL_MS = 24 * 60 * 60 * 1000; // une seule fois par visiteur et par 24 h
+
+/** Vrai si l'écran de démarrage a déjà été montré à ce visiteur depuis moins de 24 h. */
+function alreadySeen(): boolean {
+  try {
+    const at = Number(window.localStorage.getItem(SEEN_KEY));
+    return Number.isFinite(at) && at > 0 && Date.now() - at < SEEN_TTL_MS;
+  } catch {
+    return false; // stockage indisponible : on affiche l'écran
+  }
+}
+
+function markSeen() {
+  try {
+    window.localStorage.setItem(SEEN_KEY, String(Date.now()));
+  } catch {
+    /* stockage indisponible : sans conséquence */
+  }
+}
 
 /**
- * Full-screen splash shown on every page load.
+ * Full-screen splash shown once per visitor every 24 h (not on every page load).
  * Big white Vemat logo on black, red accent bar, fades out into the home page.
  */
 export function SplashScreen() {
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(() => !alreadySeen());
 
   useEffect(() => {
     if (!visible) return;
+    markSeen();
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     const t = window.setTimeout(() => setVisible(false), HOLD_MS);
