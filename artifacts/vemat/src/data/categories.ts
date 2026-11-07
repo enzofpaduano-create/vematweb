@@ -1,7 +1,7 @@
-import gruesImg from "@/assets/images/grues.jpg";
-import nacellesImg from "@/assets/images/nacelles.jpg";
-import telescopiquesImg from "@/assets/images/telescopiques.jpg";
-import constructionImg from "@/assets/images/construction.jpg";
+import gruesImg from "@/assets/images/grues.webp";
+import nacellesImg from "@/assets/images/nacelles.webp";
+import telescopiquesImg from "@/assets/images/telescopiques.webp";
+import constructionImg from "@/assets/images/construction.webp";
 
 export const categories = [
   {

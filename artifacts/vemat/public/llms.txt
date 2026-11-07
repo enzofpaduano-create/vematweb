@@ -1,0 +1,40 @@
+# Vemat Group
+
+> Distributeur officiel Terex, JLG, Tadano, Mecalac, Magni et Terex Fuchs : matériel de levage, de manutention et de construction, pièces détachées et service après-vente, au Maroc, en Afrique, au Nigeria et aux Émirats arabes unis.
+
+Site : https://www.vematgroup.com/
+
+## Gammes de matériel
+
+- [Grues](https://www.vematgroup.com/grues): grues mobiles, dont les gammes Terex et Tadano
+- [Nacelles](https://www.vematgroup.com/nacelles): nacelles élévatrices (gamme JLG)
+- [Élévateurs télescopiques](https://www.vematgroup.com/elevateurs-telescopiques): chariots télescopiques fixes, rotatifs et à forte capacité
+- [Construction](https://www.vematgroup.com/construction): engins de chantier (Mecalac) et pelles de manutention (Terex Fuchs)
+
+## Marques par pays
+
+- [Grue Terex Maroc](https://www.vematgroup.com/grue-terex-maroc)
+- [Nacelle JLG Maroc](https://www.vematgroup.com/nacelle-jlg-maroc)
+- [Grue Tadano Maroc](https://www.vematgroup.com/grue-tadano-maroc)
+- [Chariot télescopique Magni Maroc](https://www.vematgroup.com/chariot-telescopique-magni-maroc)
+- [Engins de chantier Mecalac Maroc](https://www.vematgroup.com/engins-chantier-mecalac-maroc)
+- [Terex cranes Nigeria](https://www.vematgroup.com/terex-cranes-nigeria)
+- [Terex cranes UAE](https://www.vematgroup.com/terex-cranes-uae)
+- [Terex cranes Africa](https://www.vematgroup.com/terex-cranes-africa)
+
+## Services
+
+- [Services](https://www.vematgroup.com/services): service après-vente
+- [Pièces de rechange](https://www.vematgroup.com/pieces-de-rechange): pièces détachées
+- [Demande de devis](https://www.vematgroup.com/demande-devis)
+- [Demande d'intervention SAV](https://www.vematgroup.com/demande-intervention)
+
+## À propos et contact
+
+- [À propos](https://www.vematgroup.com/a-propos)
+- [Contact](https://www.vematgroup.com/contact)
+- [Blog](https://www.vematgroup.com/blog)
+
+## Plan du site
+
+- [sitemap.xml](https://www.vematgroup.com/sitemap.xml)

@@ -9,7 +9,7 @@ import { useLang } from "@/i18n/I18nProvider";
 import { brands } from "@/data/brands";
 import { motion } from "framer-motion";
 import { Quote } from "lucide-react";
-import img from "@/assets/images/african-presence.png";
+import img from "@/assets/images/african-presence.webp";
 import domenicoImg from "@/assets/domenico.jpg";
 
 export default function APropos() {

@@ -14,7 +14,7 @@ import { categories } from "@/data/categories";
 import { useLang } from "@/i18n/I18nProvider";
 import { BlogTicker } from "@/components/BlogTicker";
 
-import africanImg from "@/assets/images/african-presence.png";
+import africanImg from "@/assets/images/african-presence.webp";
 
 export default function Home() {
   const { t } = useLang();

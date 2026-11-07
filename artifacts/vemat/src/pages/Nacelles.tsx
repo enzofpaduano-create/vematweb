@@ -8,7 +8,7 @@ import { CheckCircle2 } from "lucide-react";
 import { useLang } from "@/i18n/I18nProvider";
 import { brandsForCategory } from "@/data/brands";
 import { catalog } from "@/data/products";
-import img from "@/assets/images/nacelles.jpg";
+import img from "@/assets/images/nacelles.webp";
 
 const NACELLE_CATEGORIES = [
   {

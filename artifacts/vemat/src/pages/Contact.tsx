@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 import { MapPin, Phone, Mail } from "lucide-react";
 import { CTASection } from "@/components/CTASection";
 import { OfficesSection } from "@/components/OfficesSection";
-import contactHero from "@/assets/images/contact-hero.jpg";
+import contactHero from "@/assets/images/contact-hero.webp";
 
 export default function Contact() {
   const { t } = useLang();

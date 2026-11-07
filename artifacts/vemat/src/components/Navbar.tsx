@@ -198,8 +198,8 @@ export function Navbar() {
 
             <Sheet>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className={`rounded-full transition-colors ${isScrolled ? "text-zinc-950" : "text-white"}`}>
-                  <Menu className="h-6 w-6" />
+                <Button variant="ghost" size="icon" aria-label="Menu" className={`rounded-full transition-colors ${isScrolled ? "text-zinc-950" : "text-white"}`}>
+                  <Menu className="h-6 w-6" aria-hidden="true" />
                 </Button>
               </SheetTrigger>
               <SheetContent side="right" className="bg-white text-zinc-950 border-zinc-100 w-[300px]">
