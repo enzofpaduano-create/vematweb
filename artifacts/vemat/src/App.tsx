@@ -1,3 +1,4 @@
+import { lazy, Suspense } from "react";
 import { Switch, Route, Router as WouterRouter } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -38,6 +39,8 @@ import TechnicienMission from "@/pages/technicien/TechnicienMission";
 import TechnicienHistorique from "@/pages/technicien/TechnicienHistorique";
 import TechnicienCatalogues from "@/pages/technicien/TechnicienCatalogues";
 import TechnicienCatalogue from "@/pages/technicien/TechnicienCatalogue";
+const RapportsHome = lazy(() => import("@/pages/technicien/rapports/RapportsHome"));
+const RapportIntervention = lazy(() => import("@/pages/technicien/rapports/RapportIntervention"));
 
 // Espace PDR (pièces de rechange)
 import PdrLogin from "@/pages/pdr/PdrLogin";
@@ -86,6 +89,12 @@ function Router() {
       <Route path="/espace-technicien/missions" component={TechnicienMissions} />
       <Route path="/espace-technicien/mission/:id" component={TechnicienMission} />
       <Route path="/espace-technicien/historique" component={TechnicienHistorique} />
+      <Route path="/espace-technicien/rapports/intervention/:id">
+        <Suspense fallback={null}><RapportIntervention /></Suspense>
+      </Route>
+      <Route path="/espace-technicien/rapports">
+        <Suspense fallback={null}><RapportsHome /></Suspense>
+      </Route>
       <Route path="/espace-technicien/catalogues/:slug" component={TechnicienCatalogue} />
       <Route path="/espace-technicien/catalogues" component={TechnicienCatalogues} />
 

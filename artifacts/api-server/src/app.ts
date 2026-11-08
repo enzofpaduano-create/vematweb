@@ -53,6 +53,9 @@ app.use(
     },
   }),
 );
+// Les rapports techniciens embarquent des photos (déjà compressées) : limite relevée sur cette seule route.
+// Cloud Run plafonne de toute façon une requête à 32 Mo.
+app.use("/api/reports", express.json({ limit: "28mb" }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

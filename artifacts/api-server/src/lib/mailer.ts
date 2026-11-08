@@ -24,6 +24,7 @@ import { logger } from "./logger";
  *   MAIL_MASTER      (optionnel, défaut vemat@vematgroup.com) — boîte qui reçoit tout
  *   MAIL_TO_PDR      (optionnel, défaut commercial.pdr@vematgroup.com)
  *   MAIL_TO_SAV      (optionnel, défaut vemat.sav@vematgroup.com)
+ *   MAIL_TO_REPORTS  (optionnel, défaut = MAIL_MASTER) — destinataires des rapports techniciens, séparés par des virgules
  */
 
 export type NotifyType = "machines" | "pdr" | "sav" | "validation";
@@ -120,4 +121,39 @@ export async function sendFormNotification(params: {
 
   logger.info({ to, type: params.type }, "Notification email envoyée");
   return { sent: true };
+}
+
+/**
+ * Envoi d'un rapport technicien (PDF + Excel en pièces jointes).
+ * Contrairement aux notifications de formulaire, une absence de configuration SMTP est une ERREUR :
+ * l'application doit conserver le brouillon et ne jamais afficher « envoyé » à tort.
+ *
+ * Destinataires : MAIL_TO_REPORTS (liste séparée par des virgules). À défaut, la boîte master (MAIL_MASTER).
+ */
+export async function sendReportEmail(params: {
+  subject: string;
+  body: string;
+  replyTo?: string;
+  attachments: { filename: string; content: Buffer; contentType: string }[];
+}): Promise<{ to: string[] }> {
+  const transport = getTransport();
+  if (!transport) throw new Error("SMTP non configuré");
+
+  const configured = (process.env.MAIL_TO_REPORTS || "")
+    .split(",")
+    .map((a) => a.trim())
+    .filter((a) => isSafeEmail(a));
+  const to = configured.length ? configured : [MASTER];
+
+  await transport.sendMail({
+    from: process.env.MAIL_FROM || process.env.SMTP_USER!,
+    to: to.join(", "),
+    replyTo: params.replyTo && isSafeEmail(params.replyTo) ? params.replyTo : undefined,
+    subject: params.subject,
+    text: params.body,
+    attachments: params.attachments,
+  });
+
+  logger.info({ to, attachments: params.attachments.map((a) => a.filename) }, "Rapport technicien envoyé");
+  return { to };
 }

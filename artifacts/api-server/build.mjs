@@ -22,6 +22,8 @@ async function buildAll() {
     outdir: distDir,
     outExtension: { ".js": ".mjs" },
     logLevel: "info",
+    // Modèles Excel et logos du module de rapports : intégrés au bundle (base64).
+    loader: { ".xlsx": "base64", ".png": "base64" },
     // Some packages may not be bundleable, so we externalize them, we can add more here as needed.
     // Some of the packages below may not be imported or installed, but we're adding them in case they are in the future.
     // Examples of unbundleable packages:

@@ -1,12 +1,13 @@
 import { useEffect } from "react";
 import { Link, useLocation } from "wouter";
-import { CalendarDays, ClipboardList, LogOut, Wrench, BookOpen } from "lucide-react";
+import { CalendarDays, ClipboardList, LogOut, Wrench, BookOpen, FilePlus2 } from "lucide-react";
 import { useTechnicienAuth } from "@/contexts/TechnicienAuthContext";
 import { useLang } from "@/i18n/I18nProvider";
 import vematLogo from "@/assets/vemat-logo.png";
 
 const NAV = [
   { href: "/espace-technicien/missions", icon: CalendarDays, label: "Mes missions" },
+  { href: "/espace-technicien/rapports", icon: FilePlus2, label: "Rapports" },
   { href: "/espace-technicien/historique", icon: ClipboardList, label: "Historique" },
   { href: "/espace-technicien/catalogues", icon: BookOpen, label: "Catalogues" },
 ];

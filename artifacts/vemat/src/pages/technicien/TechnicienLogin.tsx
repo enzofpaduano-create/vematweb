@@ -20,7 +20,13 @@ export default function TechnicienLogin() {
     const { error: err } = await signIn(email, password);
     setLoading(false);
     if (err) { setError("Email ou mot de passe incorrect."); return; }
-    navigate("/espace-technicien/missions");
+    let dest = "/espace-technicien/missions";
+    try {
+      const back = sessionStorage.getItem("vemat-tech-return");
+      if (back && back.startsWith("/espace-technicien/") && !back.includes("connexion")) dest = back;
+      sessionStorage.removeItem("vemat-tech-return");
+    } catch { /* ignoré */ }
+    navigate(dest);
   };
 
   return (
