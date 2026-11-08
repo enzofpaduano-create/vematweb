@@ -1,0 +1,47 @@
+plugins {
+    id 'com.android.application'
+}
+
+// Les identifiants de signature ne sont JAMAIS dans le dépôt : ils viennent de l'environnement
+// (VEMAT_KEYSTORE, VEMAT_KEYSTORE_PASSWORD, VEMAT_KEY_ALIAS).
+def ksFile = System.getenv("VEMAT_KEYSTORE")
+
+android {
+    namespace 'com.vematgroup.rapports'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.vematgroup.rapports"
+        minSdk 21
+        targetSdk 34
+        versionCode 1
+        versionName "1.0"
+    }
+
+    signingConfigs {
+        release {
+            if (ksFile) {
+                storeFile file(ksFile)
+                storePassword System.getenv("VEMAT_KEYSTORE_PASSWORD")
+                keyAlias System.getenv("VEMAT_KEY_ALIAS")
+                keyPassword System.getenv("VEMAT_KEYSTORE_PASSWORD")
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            if (ksFile) signingConfig signingConfigs.release
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+dependencies {
+    implementation 'com.google.androidbrowserhelper:androidbrowserhelper:2.5.0'
+}

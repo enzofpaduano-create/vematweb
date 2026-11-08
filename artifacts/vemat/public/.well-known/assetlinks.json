@@ -1,0 +1,10 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.vematgroup.rapports",
+      "sha256_cert_fingerprints": ["92:D8:A2:DE:78:5E:A5:E9:3A:DD:67:94:84:22:89:04:81:E6:26:60:40:2F:BE:5B:83:94:94:B6:84:63:27:D3"]
+    }
+  }
+]
