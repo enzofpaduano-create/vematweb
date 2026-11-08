@@ -24,7 +24,7 @@ import { logger } from "./logger";
  *   MAIL_MASTER      (optionnel, défaut vemat@vematgroup.com) — boîte qui reçoit tout
  *   MAIL_TO_PDR      (optionnel, défaut commercial.pdr@vematgroup.com)
  *   MAIL_TO_SAV      (optionnel, défaut vemat.sav@vematgroup.com)
- *   MAIL_TO_REPORTS  (optionnel, défaut = MAIL_MASTER) — destinataires des rapports techniciens, séparés par des virgules
+ *   MAIL_TO_REPORTS  (optionnel, défaut = vemat.sav@vematgroup.com) — destinataires des rapports techniciens, séparés par des virgules
  */
 
 export type NotifyType = "machines" | "pdr" | "sav" | "validation";
@@ -128,7 +128,7 @@ export async function sendFormNotification(params: {
  * Contrairement aux notifications de formulaire, une absence de configuration SMTP est une ERREUR :
  * l'application doit conserver le brouillon et ne jamais afficher « envoyé » à tort.
  *
- * Destinataires : MAIL_TO_REPORTS (liste séparée par des virgules). À défaut, la boîte master (MAIL_MASTER).
+ * Destinataires : MAIL_TO_REPORTS (liste séparée par des virgules). À défaut, la boîte SAV (vemat.sav@).
  */
 export async function sendReportEmail(params: {
   subject: string;
@@ -143,7 +143,7 @@ export async function sendReportEmail(params: {
     .split(",")
     .map((a) => a.trim())
     .filter((a) => isSafeEmail(a));
-  const to = configured.length ? configured : [MASTER];
+  const to = configured.length ? configured : [process.env.MAIL_TO_SAV || "vemat.sav@vematgroup.com"];
 
   await transport.sendMail({
     from: process.env.MAIL_FROM || process.env.SMTP_USER!,
