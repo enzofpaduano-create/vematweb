@@ -3,7 +3,7 @@
  * Les photos sont volumineuses : localStorage (≈5 Mo) serait vite saturé.
  * Un rapport reste sur l'appareil tant qu'il n'est pas envoyé.
  */
-import type { InterventionDraft } from "./types";
+import type { AnyDraft } from "./types";
 
 const DB_NAME = "vemat-rapports";
 const STORE = "drafts";
@@ -30,16 +30,16 @@ async function run<T>(mode: IDBTransactionMode, fn: (s: IDBObjectStore) => IDBRe
   });
 }
 
-export async function saveDraft(d: InterventionDraft): Promise<void> {
+export async function saveDraft(d: AnyDraft): Promise<void> {
   await run("readwrite", (s) => s.put({ ...d, updatedAt: Date.now() }));
 }
 
-export async function getDraft(id: string): Promise<InterventionDraft | undefined> {
-  return run("readonly", (s) => s.get(id) as IDBRequest<InterventionDraft | undefined>);
+export async function getDraft(id: string): Promise<AnyDraft | undefined> {
+  return run("readonly", (s) => s.get(id) as IDBRequest<AnyDraft | undefined>);
 }
 
-export async function listDrafts(): Promise<InterventionDraft[]> {
-  const all = await run("readonly", (s) => s.getAll() as IDBRequest<InterventionDraft[]>);
+export async function listDrafts(): Promise<AnyDraft[]> {
+  const all = await run("readonly", (s) => s.getAll() as IDBRequest<AnyDraft[]>);
   return all.sort((a, b) => b.updatedAt - a.updatedAt);
 }
 

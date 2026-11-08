@@ -1,0 +1,1179 @@
+{
+ "pages": [
+  {
+   "id": "porteur",
+   "title": "Porteur (châssis)",
+   "sections": [
+    {
+     "id": "B8",
+     "title": "1.1 Moteur",
+     "rows": [
+      {
+       "id": "B9",
+       "code": "1.1.1",
+       "label": "Entretien/Vidange"
+      },
+      {
+       "id": "B10",
+       "code": "1.1.2",
+       "label": "Silentblock moteur"
+      },
+      {
+       "id": "B11",
+       "code": "1.1.3",
+       "label": "Puissance"
+      },
+      {
+       "id": "B12",
+       "code": "1.1.4",
+       "label": "Niveau huile"
+      },
+      {
+       "id": "B13",
+       "code": "1.1.5",
+       "label": "Filtre à air"
+      },
+      {
+       "id": "B14",
+       "code": "1.1.6",
+       "label": "Système échappement"
+      },
+      {
+       "id": "B15",
+       "code": "1.1.7",
+       "label": "Joint de culasse"
+      },
+      {
+       "id": "B16",
+       "code": "1.1.8",
+       "label": "Autre joint"
+      },
+      {
+       "id": "B17",
+       "code": "1.1.9",
+       "label": "Turbo"
+      },
+      {
+       "id": "B18",
+       "code": "1.1.10",
+       "label": "Frein échappement"
+      },
+      {
+       "id": "B19",
+       "code": "1.1.11",
+       "label": "État fumée échappement"
+      }
+     ]
+    },
+    {
+     "id": "B20",
+     "title": "1.2 Refroidissement eau",
+     "rows": [
+      {
+       "id": "B21",
+       "code": "1.2.1",
+       "label": "Fuite"
+      },
+      {
+       "id": "B22",
+       "code": "1.2.2",
+       "label": "Niveau liquide de refroidissement"
+      },
+      {
+       "id": "B23",
+       "code": "1.2.3",
+       "label": "Ventilateur/Courroie"
+      },
+      {
+       "id": "B24",
+       "code": "1.2.4",
+       "label": "Radiateur/Durite"
+      },
+      {
+       "id": "B25",
+       "code": "1.2.5",
+       "label": "Température compteur"
+      },
+      {
+       "id": "B26",
+       "code": "1.2.6",
+       "label": "Climatisation"
+      }
+     ]
+    },
+    {
+     "id": "B27",
+     "title": "1.3 Refroidissement huile",
+     "rows": [
+      {
+       "id": "B28",
+       "code": "1.3.1",
+       "label": "Radiateur/Durite"
+      },
+      {
+       "id": "B29",
+       "code": "1.3.2",
+       "label": "Ventilateur/Courroie"
+      },
+      {
+       "id": "B30",
+       "code": "1.3.3",
+       "label": "Jauge température tableau de bord"
+      }
+     ]
+    },
+    {
+     "id": "B31",
+     "title": "1.4 Circuit carburant",
+     "rows": [
+      {
+       "id": "B32",
+       "code": "1.4.1",
+       "label": "Réservoir carburant"
+      },
+      {
+       "id": "B33",
+       "code": "1.4.2",
+       "label": "Filtre/Flexible/Coude"
+      },
+      {
+       "id": "B34",
+       "code": "1.4.3",
+       "label": "Jauge tableau de bord"
+      },
+      {
+       "id": "B35",
+       "code": "1.4.4",
+       "label": "Pompe carburant"
+      }
+     ]
+    },
+    {
+     "id": "B36",
+     "title": "1.5 Circuit électrique",
+     "rows": [
+      {
+       "id": "B37",
+       "code": "1.5.1",
+       "label": "Batterie/Câble/Connection"
+      },
+      {
+       "id": "B38",
+       "code": "1.5.2",
+       "label": "Démarreur/Alternateur"
+      },
+      {
+       "id": "B39",
+       "code": "1.5.3",
+       "label": "Interrupteur tableau de bord"
+      },
+      {
+       "id": "B40",
+       "code": "1.5.4",
+       "label": "Test fonction"
+      },
+      {
+       "id": "B41",
+       "code": "1.5.5",
+       "label": "Horamètre"
+      },
+      {
+       "id": "B42",
+       "code": "1.5.6",
+       "label": "Chauffage/Chauffage additionnel"
+      },
+      {
+       "id": "B43",
+       "code": "1.5.7",
+       "label": "Tachographe"
+      },
+      {
+       "id": "B44",
+       "code": "1.5.8",
+       "label": "Valve étouffoir arrêt d'urgence"
+      },
+      {
+       "id": "B45",
+       "code": "1.5.9",
+       "label": "Arrêt d'urgence"
+      },
+      {
+       "id": "B46",
+       "code": "1.5.10",
+       "label": "Éclairage/Signalisation"
+      }
+     ]
+    },
+    {
+     "id": "B47",
+     "title": "1.6 Circuit hydraulique",
+     "rows": [
+      {
+       "id": "B48",
+       "code": "1.6.1",
+       "label": "Fuite"
+      },
+      {
+       "id": "H8",
+       "code": "1.6.2",
+       "label": "Niveau d'huile"
+      },
+      {
+       "id": "H9",
+       "code": "1.6.3",
+       "label": "Orbitrole"
+      },
+      {
+       "id": "H10",
+       "code": "1.6.4",
+       "label": "Pompe hydraulique"
+      },
+      {
+       "id": "H11",
+       "code": "1.6.5",
+       "label": "Vérin/Valve"
+      },
+      {
+       "id": "H12",
+       "code": "1.6.6",
+       "label": "Filtre"
+      },
+      {
+       "id": "H13",
+       "code": "1.6.7",
+       "label": "Flexible/Durite"
+      }
+     ]
+    },
+    {
+     "id": "H14",
+     "title": "2 Transmission › 2.1 Boîte de vitesse",
+     "rows": [
+      {
+       "id": "H16",
+       "code": "2.1.1",
+       "label": "État"
+      },
+      {
+       "id": "H17",
+       "code": "2.1.2",
+       "label": "Fuite"
+      },
+      {
+       "id": "H18",
+       "code": "2.1.3",
+       "label": "Filtre"
+      },
+      {
+       "id": "H19",
+       "code": "2.1.4",
+       "label": "Niveau d'huile"
+      }
+     ]
+    },
+    {
+     "id": "H20",
+     "title": "2.2 Boîte de transfert/vitesse",
+     "rows": [
+      {
+       "id": "H21",
+       "code": "2.2.1",
+       "label": "État"
+      },
+      {
+       "id": "H22",
+       "code": "2.2.2",
+       "label": "Fuite"
+      },
+      {
+       "id": "H23",
+       "code": "2.2.3",
+       "label": "Niveau d'huile"
+      }
+     ]
+    },
+    {
+     "id": "H24",
+     "title": "2.3 Freinage › 3 Freins",
+     "rows": [
+      {
+       "id": "H26",
+       "code": "3.1",
+       "label": "État visuel"
+      },
+      {
+       "id": "H27",
+       "code": "3.2",
+       "label": "État garniture"
+      },
+      {
+       "id": "H28",
+       "code": "3.3",
+       "label": "État disque/Tambour"
+      }
+     ]
+    },
+    {
+     "id": "H29",
+     "title": "4 Essieux",
+     "rows": [
+      {
+       "id": "H30",
+       "code": "4.1",
+       "label": "Niveau d'huile"
+      },
+      {
+       "id": "H31",
+       "code": "4.2",
+       "label": "Barre réaction"
+      },
+      {
+       "id": "H32",
+       "code": "4.3",
+       "label": "Fuite"
+      },
+      {
+       "id": "H33",
+       "code": "4.4",
+       "label": "Bruit transmission"
+      }
+     ]
+    },
+    {
+     "id": "H34",
+     "title": "5 Suspension",
+     "rows": [
+      {
+       "id": "H35",
+       "code": "5.1",
+       "label": "Vérin de suspension"
+      },
+      {
+       "id": "H36",
+       "code": "5.2",
+       "label": "Fuite"
+      },
+      {
+       "id": "H37",
+       "code": "5.3",
+       "label": "Vis/Connection"
+      },
+      {
+       "id": "H38",
+       "code": "5.4",
+       "label": "État suspension"
+      }
+     ]
+    },
+    {
+     "id": "H39",
+     "title": "6 Circuit pneumatique",
+     "rows": [
+      {
+       "id": "H40",
+       "code": "6.1",
+       "label": "Réservoir pneumatique"
+      },
+      {
+       "id": "H41",
+       "code": "6.2",
+       "label": "Compresseur"
+      },
+      {
+       "id": "H42",
+       "code": "6.3",
+       "label": "Déshydrateur/Filtre"
+      }
+     ]
+    },
+    {
+     "id": "H43",
+     "title": "7 Châssis",
+     "rows": [
+      {
+       "id": "H44",
+       "code": "7.1",
+       "label": "Peinture/Corrosion"
+      },
+      {
+       "id": "H45",
+       "code": "7.2",
+       "label": "Fissure/Déformation"
+      },
+      {
+       "id": "H46",
+       "code": "7.3",
+       "label": "Fixation crochet"
+      },
+      {
+       "id": "H47",
+       "code": "7.4",
+       "label": "Attache remorque"
+      },
+      {
+       "id": "H48",
+       "code": "7.5",
+       "label": "Accessoire"
+      }
+     ]
+    },
+    {
+     "id": "N8",
+     "title": "8 Direction",
+     "rows": [
+      {
+       "id": "N9",
+       "code": "8.1",
+       "label": "Fuite"
+      },
+      {
+       "id": "N10",
+       "code": "8.2",
+       "label": "Conduite tourelle"
+      },
+      {
+       "id": "N11",
+       "code": "8.3",
+       "label": "État hydraulique direction"
+      },
+      {
+       "id": "N12",
+       "code": "a",
+       "label": "Pompe de direction"
+      },
+      {
+       "id": "N13",
+       "code": "b",
+       "label": "Valve,clapet de direction"
+      },
+      {
+       "id": "N14",
+       "code": "c",
+       "label": "Vérin de direction"
+      },
+      {
+       "id": "N15",
+       "code": "d",
+       "label": "Pompe de secours direction"
+      },
+      {
+       "id": "N16",
+       "code": "8.4",
+       "label": "Steering stops"
+      },
+      {
+       "id": "N17",
+       "code": "8.5",
+       "label": "Mode braquage court"
+      },
+      {
+       "id": "N18",
+       "code": "8.6",
+       "label": "Mode éloignement mur"
+      },
+      {
+       "id": "N19",
+       "code": "8.7",
+       "label": "Mode crabe"
+      }
+     ]
+    },
+    {
+     "id": "N20",
+     "title": "9 Stabilisateurs",
+     "rows": [
+      {
+       "id": "N21",
+       "code": "9.1",
+       "label": "Vérin horizontal"
+      },
+      {
+       "id": "N22",
+       "code": "9.2",
+       "label": "Vérin vertical"
+      },
+      {
+       "id": "N23",
+       "code": "9.3",
+       "label": "Boîtier de calage/Écrans"
+      },
+      {
+       "id": "N24",
+       "code": "9.4",
+       "label": "Fissure/Déformation"
+      },
+      {
+       "id": "N25",
+       "code": "9.5",
+       "label": "Fuite"
+      }
+     ]
+    },
+    {
+     "id": "N26",
+     "title": "10 Cabine",
+     "rows": [
+      {
+       "id": "N27",
+       "code": "10.1",
+       "label": "Inventaire cabine"
+      },
+      {
+       "id": "N28",
+       "code": "10.2",
+       "label": "Siège"
+      },
+      {
+       "id": "N29",
+       "code": "10.3",
+       "label": "Chauffage"
+      },
+      {
+       "id": "N30",
+       "code": "10.4",
+       "label": "Marche pied/Barre de sécurité"
+      },
+      {
+       "id": "N31",
+       "code": "10.5",
+       "label": "Essuie glace/Gicleur"
+      },
+      {
+       "id": "N32",
+       "code": "10.6",
+       "label": "État cabine"
+      },
+      {
+       "id": "N33",
+       "code": "10.7",
+       "label": "Écrans"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "superstructure",
+   "title": "Superstructure (tourelle)",
+   "sections": [
+    {
+     "id": "B57",
+     "title": "1.1 Moteur",
+     "rows": [
+      {
+       "id": "B58",
+       "code": "1.1.1",
+       "label": "Entretien/Vidange"
+      },
+      {
+       "id": "B59",
+       "code": "1.1.2",
+       "label": "Silentblock moteur"
+      },
+      {
+       "id": "B60",
+       "code": "1.1.3",
+       "label": "Puissance"
+      },
+      {
+       "id": "B61",
+       "code": "1.1.4",
+       "label": "Niveau d'huile"
+      },
+      {
+       "id": "B62",
+       "code": "1.1.5",
+       "label": "Filtre à air"
+      },
+      {
+       "id": "B63",
+       "code": "1.1.6",
+       "label": "Système d'échappement"
+      },
+      {
+       "id": "B64",
+       "code": "1.1.7",
+       "label": "Joint de culasse"
+      },
+      {
+       "id": "B65",
+       "code": "1.1.8",
+       "label": "Autre joint"
+      },
+      {
+       "id": "B66",
+       "code": "1.1.9",
+       "label": "Turbo"
+      },
+      {
+       "id": "B67",
+       "code": "1.1.10",
+       "label": "Contrôle visuelle fumée échappement"
+      }
+     ]
+    },
+    {
+     "id": "B68",
+     "title": "1.2 Refroidissement eau",
+     "rows": [
+      {
+       "id": "B69",
+       "code": "1.2.1",
+       "label": "Fuite"
+      },
+      {
+       "id": "B70",
+       "code": "1.2.2",
+       "label": "Niveau de liquide de refroidissement"
+      },
+      {
+       "id": "B71",
+       "code": "1.2.3",
+       "label": "Ventilateur/Courroie"
+      },
+      {
+       "id": "B72",
+       "code": "1.2.4",
+       "label": "Radiateur/Flexible/Durite"
+      },
+      {
+       "id": "B73",
+       "code": "1.2.5",
+       "label": "Température eau tableau de bord"
+      },
+      {
+       "id": "B74",
+       "code": "1.2.6",
+       "label": "Climatisation"
+      }
+     ]
+    },
+    {
+     "id": "B75",
+     "title": "1.3 Refroidissement huile",
+     "rows": [
+      {
+       "id": "B76",
+       "code": "1.3.1",
+       "label": "Radiateur/Flexible/Durite"
+      },
+      {
+       "id": "B77",
+       "code": "1.3.2",
+       "label": "Ventilateur/Courroie"
+      },
+      {
+       "id": "B78",
+       "code": "1.3.3",
+       "label": "Température eau tableau de bord"
+      }
+     ]
+    },
+    {
+     "id": "B79",
+     "title": "1.4 Circuit carburant",
+     "rows": [
+      {
+       "id": "B80",
+       "code": "1.4.1",
+       "label": "Réservoir carburant"
+      },
+      {
+       "id": "B81",
+       "code": "1.4.2",
+       "label": "Filtre/Flexible/Durite"
+      },
+      {
+       "id": "B82",
+       "code": "1.4.3",
+       "label": "Jauge tableau de bord"
+      },
+      {
+       "id": "B83",
+       "code": "1.4.4",
+       "label": "Pompe à carburant"
+      }
+     ]
+    },
+    {
+     "id": "B84",
+     "title": "1.5 Circuit électrique",
+     "rows": [
+      {
+       "id": "B85",
+       "code": "1.5.1",
+       "label": "Batterie/Câble/Connection"
+      },
+      {
+       "id": "B86",
+       "code": "1.5.2",
+       "label": "Interrupteur tableau de bord"
+      },
+      {
+       "id": "B87",
+       "code": "1.5.3",
+       "label": "Démarreur/Alternateur"
+      },
+      {
+       "id": "B88",
+       "code": "1.5.4",
+       "label": "Horamètre"
+      },
+      {
+       "id": "B89",
+       "code": "1.5.5",
+       "label": "Éclairage/Signalisation"
+      },
+      {
+       "id": "B90",
+       "code": "1.5.6",
+       "label": "Chauffage/Chauffage additionnel"
+      },
+      {
+       "id": "B91",
+       "code": "1.5.7",
+       "label": "Valve étouffoir arrêt d'urgence"
+      },
+      {
+       "id": "B92",
+       "code": "1.5.8",
+       "label": "Arrêt d'urgence"
+      },
+      {
+       "id": "B93",
+       "code": "1.5.9",
+       "label": "Shunt/Écrans CEC"
+      },
+      {
+       "id": "B94",
+       "code": "1.5.10",
+       "label": "SVE mode manuelle"
+      }
+     ]
+    },
+    {
+     "id": "B95",
+     "title": "1.6 Circuit hydraulique",
+     "rows": [
+      {
+       "id": "B96",
+       "code": "1.6.1",
+       "label": "Vérin de redressement"
+      },
+      {
+       "id": "B97",
+       "code": "1.6.2",
+       "label": "Vérin de télescopage"
+      },
+      {
+       "id": "B98",
+       "code": "1.6.3",
+       "label": "Réducteur d'orientation/Frein"
+      },
+      {
+       "id": "B99",
+       "code": "1.6.4",
+       "label": "Valve/Clapet/Flexible/Durite"
+      },
+      {
+       "id": "B100",
+       "code": "1.6.5",
+       "label": "Pompe hydraulique"
+      },
+      {
+       "id": "B101",
+       "code": "1.6.6",
+       "label": "Filtre"
+      },
+      {
+       "id": "B102",
+       "code": "1.6.7",
+       "label": "Fuite"
+      }
+     ]
+    },
+    {
+     "id": "H57",
+     "title": "1.7 Orientation",
+     "rows": [
+      {
+       "id": "H58",
+       "code": "1.7.1",
+       "label": "Réducteur d'orientation"
+      },
+      {
+       "id": "H59",
+       "code": "1.7.2",
+       "label": "Moteur hydraulique/Accouplement"
+      },
+      {
+       "id": "H60",
+       "code": "1.7.3",
+       "label": "Test freinage d'orientation"
+      },
+      {
+       "id": "H61",
+       "code": "1.7.4",
+       "label": "Test blocage frein d'orientation"
+      },
+      {
+       "id": "H62",
+       "code": "1.7.5",
+       "label": "Contrôle disque frein d'orientation"
+      },
+      {
+       "id": "H63",
+       "code": "1.7.6",
+       "label": "Couronne d'orientation/Jeu roulement"
+      }
+     ]
+    },
+    {
+     "id": "H64",
+     "title": "2 Équipement › 2.1 Flèche principal",
+     "rows": [
+      {
+       "id": "H66",
+       "code": "2.1.1",
+       "label": "Alignement/Patin/Guide"
+      },
+      {
+       "id": "H67",
+       "code": "2.1.2",
+       "label": "Vérin de télescopage"
+      },
+      {
+       "id": "H68",
+       "code": "2.1.3",
+       "label": "Poulie câble de levage/Poulie interne"
+      },
+      {
+       "id": "H69",
+       "code": "2.1.4",
+       "label": "Fin de course crochet"
+      },
+      {
+       "id": "H70",
+       "code": "2.1.5",
+       "label": "Serrage fixation fleche"
+      },
+      {
+       "id": "H71",
+       "code": "2.1.6",
+       "label": "Support vérin"
+      },
+      {
+       "id": "H72",
+       "code": "2.1.7",
+       "label": "Contrôle alignement"
+      }
+     ]
+    },
+    {
+     "id": "H73",
+     "title": "2.2 Flèchette",
+     "rows": [
+      {
+       "id": "H74",
+       "code": "2.2.1",
+       "label": "Fissure/Déformation"
+      },
+      {
+       "id": "H75",
+       "code": "2.2.2",
+       "label": "Montage/Essai"
+      },
+      {
+       "id": "H76",
+       "code": "2.2.3",
+       "label": "Circuit électrique"
+      },
+      {
+       "id": "H77",
+       "code": "2.2.4",
+       "label": "Poulie"
+      },
+      {
+       "id": "H78",
+       "code": "2.2.5",
+       "label": "Accessoire"
+      }
+     ]
+    },
+    {
+     "id": "H79",
+     "title": "3 Superlift",
+     "rows": [
+      {
+       "id": "H80",
+       "code": "3.1",
+       "label": "Fissure/Déformation"
+      },
+      {
+       "id": "H81",
+       "code": "3.2",
+       "label": "Poulie"
+      },
+      {
+       "id": "H82",
+       "code": "3.3",
+       "label": "Enrouleur câble/Frein enrouleur"
+      },
+      {
+       "id": "H83",
+       "code": "3.4",
+       "label": "Système hydraulique"
+      }
+     ]
+    },
+    {
+     "id": "H84",
+     "title": "4 Treuil › 4.1 Treuil 1",
+     "rows": [
+      {
+       "id": "H86",
+       "code": "a",
+       "label": "Réducteur"
+      },
+      {
+       "id": "H87",
+       "code": "b",
+       "label": "Moteur hydraulique/Accouplement"
+      },
+      {
+       "id": "H88",
+       "code": "c",
+       "label": "Frein hydraulique/Mécanique"
+      },
+      {
+       "id": "H89",
+       "code": "d",
+       "label": "Câble de levage"
+      },
+      {
+       "id": "H90",
+       "code": "e",
+       "label": "Tambour"
+      },
+      {
+       "id": "H91",
+       "code": "f",
+       "label": "3 tours mort"
+      },
+      {
+       "id": "H92",
+       "code": "g",
+       "label": "Guide câble"
+      }
+     ]
+    },
+    {
+     "id": "H93",
+     "title": "4.2 Treuil 2",
+     "rows": [
+      {
+       "id": "H94",
+       "code": "a",
+       "label": "Réducteur"
+      },
+      {
+       "id": "H95",
+       "code": "b",
+       "label": "Moteur hydraulique/Accouplement"
+      },
+      {
+       "id": "H96",
+       "code": "c",
+       "label": "Frein hydraulique/Mécanique"
+      },
+      {
+       "id": "H97",
+       "code": "d",
+       "label": "Câble de levage"
+      },
+      {
+       "id": "H98",
+       "code": "e",
+       "label": "Tambour"
+      },
+      {
+       "id": "H99",
+       "code": "f",
+       "label": "3 tours mort"
+      },
+      {
+       "id": "H100",
+       "code": "g",
+       "label": "Guide câble"
+      }
+     ]
+    },
+    {
+     "id": "H101",
+     "title": "4.3 Treuil 3",
+     "rows": [
+      {
+       "id": "H102",
+       "code": "a",
+       "label": "Réducteur"
+      },
+      {
+       "id": "N57",
+       "code": "b",
+       "label": "Moteur hydraulique/Accouplement"
+      },
+      {
+       "id": "N58",
+       "code": "c",
+       "label": "Frein hydraulique/Mécanique"
+      },
+      {
+       "id": "N59",
+       "code": "d",
+       "label": "Câble de levage"
+      },
+      {
+       "id": "N60",
+       "code": "e",
+       "label": "Tambour"
+      },
+      {
+       "id": "N61",
+       "code": "f",
+       "label": "3 tours mort"
+      },
+      {
+       "id": "N62",
+       "code": "g",
+       "label": "Guide câble"
+      }
+     ]
+    },
+    {
+     "id": "N63",
+     "title": "5 Relevage",
+     "rows": [
+      {
+       "id": "N64",
+       "code": "5.1",
+       "label": "Vérin"
+      },
+      {
+       "id": "N65",
+       "code": "5.2",
+       "label": "Fuite vérin"
+      },
+      {
+       "id": "N66",
+       "code": "5.3",
+       "label": "Flexible/Clapet de sécurité"
+      }
+     ]
+    },
+    {
+     "id": "N67",
+     "title": "6 Châssis",
+     "rows": [
+      {
+       "id": "N68",
+       "code": "7.1",
+       "label": "Peinture/Corrosion"
+      },
+      {
+       "id": "N69",
+       "code": "7.2",
+       "label": "Fissure/Déformation"
+      },
+      {
+       "id": "N70",
+       "code": "7.3",
+       "label": "Contre poids/Fixation contre poids"
+      },
+      {
+       "id": "N71",
+       "code": "7.4",
+       "label": "Emplacement roue de secours"
+      },
+      {
+       "id": "N72",
+       "code": "7.5",
+       "label": "Verrouillage tourelle"
+      }
+     ]
+    },
+    {
+     "id": "N73",
+     "title": "7 Crochet",
+     "rows": [
+      {
+       "id": "N74",
+       "code": "7.1",
+       "label": "Test de charge"
+      },
+      {
+       "id": "N75",
+       "code": "7.2",
+       "label": "Fissure/Déformation"
+      },
+      {
+       "id": "N76",
+       "code": "7.3",
+       "label": "Point de fixation"
+      },
+      {
+       "id": "N77",
+       "code": "7.4",
+       "label": "Poulie"
+      }
+     ]
+    },
+    {
+     "id": "N78",
+     "title": "8 Cabine",
+     "rows": [
+      {
+       "id": "N79",
+       "code": "8.1",
+       "label": "Inventaire cabine"
+      },
+      {
+       "id": "N80",
+       "code": "8.2",
+       "label": "Siège"
+      },
+      {
+       "id": "N81",
+       "code": "8.3",
+       "label": "Chauffage"
+      },
+      {
+       "id": "N82",
+       "code": "8.4",
+       "label": "Marche pied/Échelle"
+      },
+      {
+       "id": "N83",
+       "code": "8.5",
+       "label": "Essuie glace/Gicleur"
+      },
+      {
+       "id": "N84",
+       "code": "8.6",
+       "label": "Contrôle fonctionnement interrupteur"
+      },
+      {
+       "id": "N85",
+       "code": "8.7",
+       "label": "CEC"
+      },
+      {
+       "id": "N86",
+       "code": "8.8",
+       "label": "Anémomètre"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

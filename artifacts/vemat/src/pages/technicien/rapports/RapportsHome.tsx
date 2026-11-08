@@ -3,15 +3,26 @@ import { Link, useLocation } from "wouter";
 import { CheckCircle2, ClipboardCheck, Clock, FilePlus2, Loader2, Truck, Trash2 } from "lucide-react";
 import { RapportLayout } from "./RapportLayout";
 import { deleteDraft, listDrafts, saveDraft } from "@/lib/rapports/store";
-import { sendIntervention } from "@/lib/rapports/api";
-import type { InterventionDraft } from "@/lib/rapports/types";
+import { sendDraft } from "@/lib/rapports/api";
+import type { AnyDraft } from "@/lib/rapports/types";
+
+/** Photos et signatures retirées du téléphone une fois le rapport parti (place disque) ; le texte est gardé pour l'historique. */
+function stripped(d: AnyDraft): AnyDraft {
+  return d.kind === "inspection"
+    ? { ...d, data: { ...d.data, photos: [] } }
+    : { ...d, data: { ...d.data, photos: [], signatureTech: null, signatureClient: null } };
+}
+
+const clientOf = (d: AnyDraft) => d.data.client;
+const ficheOf = (d: AnyDraft) => d.data.ficheNo;
+const hrefOf = (d: AnyDraft) => `/espace-technicien/rapports/${d.kind === "inspection" ? "inspection" : "intervention"}/${d.id}`;
 
 const fmtWhen = (t: number) =>
   new Date(t).toLocaleString("fr-FR", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" });
 
 export default function RapportsHome() {
   const [, navigate] = useLocation();
-  const [drafts, setDrafts] = useState<InterventionDraft[] | null>(null);
+  const [drafts, setDrafts] = useState<AnyDraft[] | null>(null);
   const [flushing, setFlushing] = useState(false);
   const busy = useRef(false);
   const justSent = typeof window !== "undefined" && new URLSearchParams(window.location.search).get("envoye") === "1";
@@ -31,9 +42,9 @@ export default function RapportsHome() {
     setFlushing(true);
     try {
       for (const d of (await listDrafts()).filter((x) => x.status === "queued")) {
-        const res = await sendIntervention(d);
+        const res = await sendDraft(d);
         if (res.ok) {
-          await saveDraft({ ...d, status: "sent", sentAt: Date.now(), reportNo: res.reportNo, lastError: undefined, data: { ...d.data, photos: [], signatureTech: null, signatureClient: null } });
+          await saveDraft({ ...stripped(d), status: "sent", sentAt: Date.now(), reportNo: res.reportNo, lastError: undefined });
         } else {
           await saveDraft({ ...d, lastError: res.message, status: res.retry ? "queued" : "draft" });
         }
@@ -74,13 +85,17 @@ export default function RapportsHome() {
         </span>
       </button>
 
-      <div className="w-full rounded-2xl bg-zinc-900 border border-zinc-800 p-5 flex items-center gap-4 text-left mb-6 opacity-60">
-        <ClipboardCheck className="w-8 h-8 shrink-0 text-zinc-400" />
+      <button
+        type="button"
+        onClick={() => navigate(`/espace-technicien/rapports/inspection/${crypto.randomUUID()}`)}
+        className="w-full rounded-2xl bg-zinc-100 text-zinc-900 p-5 flex items-center gap-4 text-left mb-6 active:scale-[0.99] transition-transform"
+      >
+        <ClipboardCheck className="w-8 h-8 shrink-0 text-orange-600" />
         <span>
-          <span className="block text-lg font-black leading-tight text-zinc-300">Rapport d'inspection grue</span>
-          <span className="block text-sm text-zinc-500">Bientôt disponible</span>
+          <span className="block text-lg font-black leading-tight">Rapport d'inspection grue</span>
+          <span className="block text-sm text-zinc-600">Points de contrôle, défauts, jeu couronne, pneus, photos</span>
         </span>
-      </div>
+      </button>
 
       {drafts === null ? (
         <div className="flex justify-center py-10"><Loader2 className="w-6 h-6 animate-spin text-orange-500" /></div>
@@ -94,8 +109,8 @@ export default function RapportsHome() {
               <div className="space-y-2 mb-6">
                 {open.map((d) => (
                   <div key={d.id} className="flex items-stretch gap-2">
-                    <Link href={`/espace-technicien/rapports/intervention/${d.id}`} className="flex-1 min-w-0 rounded-xl bg-zinc-900 border border-zinc-800 p-3.5 hover:border-orange-500/60">
-                      <p className="font-bold truncate">{d.data.ficheNo ? `N° ${d.data.ficheNo} · ` : ""}{d.data.client || "Sans client"}</p>
+                    <Link href={hrefOf(d)} className="flex-1 min-w-0 rounded-xl bg-zinc-900 border border-zinc-800 p-3.5 hover:border-orange-500/60">
+                      <p className="font-bold truncate">{d.kind === "inspection" ? "Inspection · " : ""}{ficheOf(d) ? `N° ${ficheOf(d)} · ` : ""}{clientOf(d) || "Sans client"}</p>
                       <p className="text-xs text-zinc-500 flex items-center gap-1.5 mt-0.5">
                         <Clock className="w-3 h-3" /> {fmtWhen(d.updatedAt)} ·{" "}
                         {d.status === "queued" ? <span className="text-amber-400 font-semibold">En attente d'envoi</span> : "Brouillon"}
@@ -122,8 +137,8 @@ export default function RapportsHome() {
               <div className="space-y-2">
                 {sent.map((d) => (
                   <div key={d.id} className="rounded-xl bg-zinc-900/60 border border-zinc-800 p-3.5">
-                    <p className="font-semibold truncate flex items-center gap-2"><Truck className="w-4 h-4 text-emerald-500 shrink-0" />{d.data.client}</p>
-                    <p className="text-xs text-zinc-500 mt-0.5">Fiche N° {d.reportNo || d.data.ficheNo} · {fmtWhen(d.sentAt ?? d.updatedAt)}</p>
+                    <p className="font-semibold truncate flex items-center gap-2"><Truck className="w-4 h-4 text-emerald-500 shrink-0" />{d.kind === "inspection" ? "Inspection · " : ""}{clientOf(d)}</p>
+                    <p className="text-xs text-zinc-500 mt-0.5">Fiche N° {d.reportNo || ficheOf(d)} · {fmtWhen(d.sentAt ?? d.updatedAt)}</p>
                   </div>
                 ))}
               </div>

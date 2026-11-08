@@ -7,6 +7,10 @@ import { logger } from "../lib/logger";
 import { buildInterventionXlsx } from "../lib/reports/interventionXlsx";
 import { buildInterventionPdf } from "../lib/reports/interventionPdf";
 import { validateInterventionBody } from "../lib/reports/validate";
+import { buildInspectionXlsx } from "../lib/reports/inspectionXlsx";
+import { buildInspectionPdf } from "../lib/reports/inspectionPdf";
+import { validateInspectionBody } from "../lib/reports/validateInspection";
+import { KIND_LABEL } from "../lib/reports/inspectionTypes";
 import { fmtDate, fmtMinutes, totals } from "../lib/reports/time";
 
 const router: IRouter = Router();
@@ -114,6 +118,93 @@ router.post("/reports/intervention", limiter, requireCatalogueAccess, async (req
     res.json({ ok: true, reportNo: report.reportNo });
   } catch (err) {
     logger.error({ err: err instanceof Error ? err.message : String(err) }, "Erreur rapport d'intervention");
+    res.status(500).json({ error: "Erreur serveur" });
+  }
+});
+
+router.post("/reports/inspection", limiter, requireCatalogueAccess, async (req, res) => {
+  const user = req.catalogueUser!;
+  const token = (req.header("authorization") || "").replace(/^Bearer\s+/i, "").trim();
+
+  const parsed = validateInspectionBody(req.body);
+  if (!parsed.ok) {
+    res.status(400).json({ error: parsed.error });
+    return;
+  }
+  const { report, id } = parsed;
+  const db = getSupabaseForUser(token);
+
+  try {
+    // Idempotence : un rapport déjà envoyé n'est jamais renvoyé (reprise après coupure réseau).
+    const { data: existing } = await db.from("inspection_reports").select("status, report_no").eq("id", id).maybeSingle();
+    if (existing?.status === "sent") {
+      res.json({ ok: true, duplicate: true, reportNo: existing.report_no });
+      return;
+    }
+    // Historique sans photos (volumineuses).
+    const { photos, ...light } = report;
+    const fields = {
+      report_no: report.reportNo,
+      technician_name: report.technicien || null,
+      client: report.client,
+      machine_serie: report.serie,
+      photo_count: photos.length,
+      data: light,
+    };
+    const saved = existing
+      ? await db.from("inspection_reports").update({ ...fields, status: "pending", error: null }).eq("id", id)
+      : await db.from("inspection_reports").insert({ id, user_id: user.id, status: "pending", error: null, ...fields });
+    if (saved.error) {
+      logger.error({ err: saved.error.message }, "Enregistrement de l'inspection impossible");
+      res.status(500).json({ error: "Enregistrement du rapport impossible" });
+      return;
+    }
+
+    try {
+      const [pdf, xlsx] = await Promise.all([buildInspectionPdf(report), buildInspectionXlsx(report)]);
+      const base = `Inspection_grue_${report.reportNo}_${safeFile(report.client)}`;
+      const counts = [0, 0, 0, 0];
+      for (const v of Object.values(report.scores)) counts[v - 1]++;
+      const body = [
+        `Rapport d'inspection grue N° ${report.reportNo} (${KIND_LABEL[report.kind]})`,
+        "",
+        `Technicien : ${report.technicien || "—"}`,
+        `Client : ${report.client}`,
+        `Machine : ${[report.type, report.serie].filter(Boolean).join(" / ")}`,
+        report.ot ? `OT : ${report.ot}` : "",
+        report.lieu ? `Lieu : ${report.lieu}` : "",
+        report.date ? `Date : ${fmtDate(report.date)}` : "",
+        "",
+        `Points contrôlés : ${Object.keys(report.scores).length} — 1 bon : ${counts[0]} / 2 moyen : ${counts[1]} / 3 défaut : ${counts[2]} / 4 non contrôlable : ${counts[3]}`,
+        report.defauts.length ? `Défauts listés : ${report.defauts.length}` : "",
+        report.photos.length ? `Photos : ${report.photos.length}` : "",
+        "",
+        "Le rapport complet est en pièces jointes (PDF + Excel).",
+      ]
+        .filter((l, i, a) => l !== "" || a[i - 1] !== "")
+        .join("\n");
+
+      await sendReportEmail({
+        subject: `Inspection grue ${report.reportNo} — ${report.client} (${report.serie})`,
+        body,
+        replyTo: user.email,
+        attachments: [
+          { filename: `${base}.pdf`, content: pdf, contentType: "application/pdf" },
+          { filename: `${base}.xlsx`, content: xlsx, contentType: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" },
+        ],
+      });
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      logger.error({ err: message, id }, "Envoi de l'inspection échoué");
+      await db.from("inspection_reports").update({ status: "failed", error: message.slice(0, 300) }).eq("id", id);
+      res.status(502).json({ error: "Envoi de l'e-mail impossible, le rapport reste sur le téléphone" });
+      return;
+    }
+
+    await db.from("inspection_reports").update({ status: "sent", sent_at: new Date().toISOString(), error: null }).eq("id", id);
+    res.json({ ok: true, reportNo: report.reportNo });
+  } catch (err) {
+    logger.error({ err: err instanceof Error ? err.message : String(err) }, "Erreur rapport d'inspection");
     res.status(500).json({ error: "Erreur serveur" });
   }
 });

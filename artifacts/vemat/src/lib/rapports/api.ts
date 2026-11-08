@@ -1,5 +1,5 @@
 import { supabaseTech } from "@/lib/supabase";
-import type { InterventionDraft } from "./types";
+import type { AnyDraft, InterventionDraft } from "./types";
 
 const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || "").replace(/\/$/, "");
 
@@ -11,7 +11,15 @@ export type SendResult =
  * Envoie le rapport au serveur, qui génère le PDF + l'Excel et les expédie par e-mail.
  * retry = true : le rapport est conservé sur le téléphone pour un nouvel essai (réseau, serveur).
  */
+export async function sendDraft(draft: AnyDraft): Promise<SendResult> {
+  return post(draft.kind === "inspection" ? "inspection" : "intervention", draft);
+}
+
 export async function sendIntervention(draft: InterventionDraft): Promise<SendResult> {
+  return post("intervention", draft);
+}
+
+async function post(route: "intervention" | "inspection", draft: AnyDraft): Promise<SendResult> {
   const { data: sess } = await supabaseTech.auth.getSession();
   const token = sess.session?.access_token;
   if (!token) return { ok: false, retry: true, message: "Session expirée : reconnectez-vous puis renvoyez." };
@@ -24,7 +32,7 @@ export async function sendIntervention(draft: InterventionDraft): Promise<SendRe
   };
 
   try {
-    const res = await fetch(`${API_BASE_URL}/api/reports/intervention`, {
+    const res = await fetch(`${API_BASE_URL}/api/reports/${route}`, {
       method: "POST",
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
       body: JSON.stringify(body),

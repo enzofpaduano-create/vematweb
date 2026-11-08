@@ -41,6 +41,7 @@ import TechnicienCatalogues from "@/pages/technicien/TechnicienCatalogues";
 import TechnicienCatalogue from "@/pages/technicien/TechnicienCatalogue";
 const RapportsHome = lazy(() => import("@/pages/technicien/rapports/RapportsHome"));
 const RapportIntervention = lazy(() => import("@/pages/technicien/rapports/RapportIntervention"));
+const RapportInspection = lazy(() => import("@/pages/technicien/rapports/RapportInspection"));
 
 // Espace PDR (pièces de rechange)
 import PdrLogin from "@/pages/pdr/PdrLogin";
@@ -91,6 +92,9 @@ function Router() {
       <Route path="/espace-technicien/historique" component={TechnicienHistorique} />
       <Route path="/espace-technicien/rapports/intervention/:id">
         <Suspense fallback={null}><RapportIntervention /></Suspense>
+      </Route>
+      <Route path="/espace-technicien/rapports/inspection/:id">
+        <Suspense fallback={null}><RapportInspection /></Suspense>
       </Route>
       <Route path="/espace-technicien/rapports">
         <Suspense fallback={null}><RapportsHome /></Suspense>

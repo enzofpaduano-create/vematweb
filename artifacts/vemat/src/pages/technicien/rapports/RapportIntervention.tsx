@@ -90,7 +90,7 @@ export default function RapportIntervention() {
     loaded.current = true;
     (async () => {
       const existing = await getDraft(id).catch(() => undefined);
-      if (existing) {
+      if (existing?.kind === "intervention") {
         setDraft(existing);
         return;
       }
