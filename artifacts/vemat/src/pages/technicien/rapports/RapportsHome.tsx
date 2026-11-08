@@ -95,7 +95,7 @@ export default function RapportsHome() {
                 {open.map((d) => (
                   <div key={d.id} className="flex items-stretch gap-2">
                     <Link href={`/espace-technicien/rapports/intervention/${d.id}`} className="flex-1 min-w-0 rounded-xl bg-zinc-900 border border-zinc-800 p-3.5 hover:border-orange-500/60">
-                      <p className="font-bold truncate">{d.data.client || "Sans client"}</p>
+                      <p className="font-bold truncate">{d.data.ficheNo ? `N° ${d.data.ficheNo} · ` : ""}{d.data.client || "Sans client"}</p>
                       <p className="text-xs text-zinc-500 flex items-center gap-1.5 mt-0.5">
                         <Clock className="w-3 h-3" /> {fmtWhen(d.updatedAt)} ·{" "}
                         {d.status === "queued" ? <span className="text-amber-400 font-semibold">En attente d'envoi</span> : "Brouillon"}
@@ -123,7 +123,7 @@ export default function RapportsHome() {
                 {sent.map((d) => (
                   <div key={d.id} className="rounded-xl bg-zinc-900/60 border border-zinc-800 p-3.5">
                     <p className="font-semibold truncate flex items-center gap-2"><Truck className="w-4 h-4 text-emerald-500 shrink-0" />{d.data.client}</p>
-                    <p className="text-xs text-zinc-500 mt-0.5">{d.reportNo} · {fmtWhen(d.sentAt ?? d.updatedAt)}</p>
+                    <p className="text-xs text-zinc-500 mt-0.5">Fiche N° {d.reportNo || d.data.ficheNo} · {fmtWhen(d.sentAt ?? d.updatedAt)}</p>
                   </div>
                 ))}
               </div>

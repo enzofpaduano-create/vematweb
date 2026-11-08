@@ -14,13 +14,6 @@ const router: IRouter = Router();
 // 20 envois / minute / IP : largement suffisant pour une équipe, bloque les abus.
 const limiter = createRateLimiter({ windowMs: 60_000, max: 20 });
 
-/** RI-AAAAMMJJ-XXXX (XXXX = début de l'identifiant unique du rapport). */
-function makeReportNo(id: string): string {
-  const d = new Date();
-  const ymd = `${d.getUTCFullYear()}${String(d.getUTCMonth() + 1).padStart(2, "0")}${String(d.getUTCDate()).padStart(2, "0")}`;
-  return `RI-${ymd}-${id.slice(0, 4).toUpperCase()}`;
-}
-
 function safeFile(s: string): string {
   return s.replace(/[^A-Za-z0-9_-]+/g, "_").slice(0, 40) || "rapport";
 }
@@ -29,7 +22,7 @@ router.post("/reports/intervention", limiter, requireCatalogueAccess, async (req
   const user = req.catalogueUser!;
   const token = (req.header("authorization") || "").replace(/^Bearer\s+/i, "").trim();
 
-  const parsed = validateInterventionBody(req.body, makeReportNo);
+  const parsed = validateInterventionBody(req.body);
   if (!parsed.ok) {
     res.status(400).json({ error: parsed.error });
     return;
@@ -48,9 +41,6 @@ router.post("/reports/intervention", limiter, requireCatalogueAccess, async (req
       res.json({ ok: true, duplicate: true, reportNo: existing.report_no });
       return;
     }
-    // Numéro stable entre deux tentatives.
-    if (existing?.report_no) report.reportNo = existing.report_no;
-
     // Données sans photos ni signatures (volumineuses) pour l'historique.
     const { photos, signatureTech: _st, signatureClient: _sc, ...light } = report;
     void _st;
@@ -67,7 +57,7 @@ router.post("/reports/intervention", limiter, requireCatalogueAccess, async (req
       data: light,
     };
     const saved = existing
-      ? await db.from("intervention_reports").update({ status: "pending", error: null, photo_count: photos.length, data: light }).eq("id", id)
+      ? await db.from("intervention_reports").update({ status: "pending", error: null, report_no: report.reportNo, client: report.client, technician_name: report.technicien || null, photo_count: photos.length, data: light }).eq("id", id)
       : await db.from("intervention_reports").insert(row);
     if (saved.error) {
       logger.error({ err: saved.error.message }, "Enregistrement du rapport impossible");

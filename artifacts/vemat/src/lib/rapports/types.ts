@@ -17,6 +17,8 @@ export interface ReportPhoto {
 }
 
 export interface InterventionData {
+  /** N° de fiche du carnet du technicien (numérote le rapport). */
+  ficheNo: string;
   otNo: string;
   client: string;
   chantier: string;
@@ -72,7 +74,7 @@ export const todayIso = (): string => {
 
 export function emptyIntervention(technicien: string, vehicule: string): InterventionData {
   return {
-    otNo: "", client: "", chantier: "", contact: "", tel: "",
+    ficheNo: "", otNo: "", client: "", chantier: "", contact: "", tel: "",
     modele: "", serie: "", comptHr: "", technicien, vehicule,
     nature: "", detail: "",
     rows: [emptyRow(todayIso())],

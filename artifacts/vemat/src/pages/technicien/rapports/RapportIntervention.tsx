@@ -155,6 +155,7 @@ export default function RapportIntervention() {
 
   const validate = (): string[] => {
     const e: string[] = [];
+    if (!data.ficheNo.trim()) e.push("Renseignez le numéro de fiche de votre carnet.");
     if (!data.client.trim()) e.push("Renseignez le client.");
     if (!data.detail.trim()) e.push("Décrivez le détail du travail.");
     data.rows.forEach((r, i) => {
@@ -230,6 +231,9 @@ export default function RapportIntervention() {
       )}
 
       <Section title="Intervention">
+        <Field label="N° de fiche (celui de votre carnet)" required>
+          <input className={`${input} text-xl font-bold tracking-wide`} value={data.ficheNo} onChange={(e) => set("ficheNo", e.target.value)} inputMode="text" autoComplete="off" placeholder="ex. 1042" />
+        </Field>
         <Field label="Client" required><input className={input} value={data.client} onChange={(e) => set("client", e.target.value)} autoComplete="off" /></Field>
         <Field label="Chantier"><input className={input} value={data.chantier} onChange={(e) => set("chantier", e.target.value)} /></Field>
         <div className="grid grid-cols-2 gap-3">

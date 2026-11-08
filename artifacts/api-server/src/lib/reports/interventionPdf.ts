@@ -1,6 +1,8 @@
 import { PDFDocument, StandardFonts, rgb, type PDFFont, type PDFPage, type PDFImage, type RGB } from "pdf-lib";
 import logoVemat from "../../assets/reports/pdf-logo-vemat.png";
 import logoTerex from "../../assets/reports/pdf-logo-terex.png";
+import logoJlg from "../../assets/reports/pdf-logo-jlg.png";
+import logoWestchase from "../../assets/reports/pdf-logo-westchase.png";
 import { decodeDataUrl, fit } from "./image";
 import { MAX_ROWS, type InterventionReport } from "./types";
 import { fmtDate, fmtMinutes, rowTravelMinutes, rowWorkMinutes, totals } from "./time";
@@ -28,7 +30,7 @@ interface Ctx {
   bold: PDFFont;
   page: PDFPage;
   y: number; // curseur (haut du prochain élément)
-  logos: { vemat: PDFImage | null; terex: PDFImage | null };
+  logos: { vemat: PDFImage; west: PDFImage; terex: PDFImage; jlg: PDFImage };
   report: InterventionReport;
 }
 
@@ -107,35 +109,48 @@ async function embedData(doc: PDFDocument, dataUrl: string | null) {
 
 /* ───────── Pages ───────── */
 function brandHeader(c: Ctx, big: boolean) {
-  const lv = c.logos.vemat;
-  const lt = c.logos.terex;
-  const hh = big ? 46 : 26;
-  if (lv) c.page.drawImage(lv, { x: MX, y: TOP - hh, width: hh * (984 / 389), height: hh });
-  if (lt) {
-    const th = big ? 22 : 13;
-    const tw = th * (716 / 121);
-    c.page.drawImage(lt, { x: W - MX - tw, y: TOP - hh / 2 - th / 2 + (big ? -4 : 0), width: tw, height: th });
-    if (big) txt(c, "DISTRIBUTEUR OFFICIEL", W - MX - tw, TOP - hh / 2 + th / 2 + 1, { size: 6.5, bold: true, color: GREY_TXT });
-  }
+  const { vemat, west, terex, jlg } = c.logos;
+  const hh = big ? 46 : 24; // hauteur de la bande d'en-tête
+  const vh = big ? 40 : 21;
+  const vw = vh * (984 / 389);
+  const ww = big ? 46 : 24;
+
+  // Gauche : Vemat × Vemat Westchase
+  c.page.drawImage(vemat, { x: MX, y: TOP - hh / 2 - vh / 2, width: vw, height: vh });
+  txt(c, "×", MX + vw + 8, TOP - hh / 2 - (big ? 6 : 3.5), { size: big ? 17 : 10, bold: true, color: GREY_TXT });
+  c.page.drawImage(west, { x: MX + vw + (big ? 28 : 18), y: TOP - hh / 2 - ww / 2, width: ww, height: ww });
+
+  // Droite : distributeur officiel Terex et JLG
+  const th = big ? 17 : 9.5;
+  const tw = th * (716 / 121);
+  const jh = big ? 17 : 9.5;
+  const jw = jh * (700 / 234);
+  const gap = big ? 16 : 10;
+  const rowY = TOP - hh / 2 - th / 2 - (big ? 5 : 0);
+  c.page.drawImage(terex, { x: W - MX - tw, y: rowY, width: tw, height: th });
+  c.page.drawImage(jlg, { x: W - MX - tw - gap - jw, y: rowY - (jh - th) / 2, width: jw, height: jh });
+  if (big) txt(c, "DISTRIBUTEUR OFFICIEL", W - MX - 150, TOP - 7, { size: 6.5, bold: true, color: GREY_TXT, w: 150, align: "r" });
+
   c.page.drawRectangle({ x: MX, y: TOP - hh - 8, width: CW, height: 2.5, color: ORANGE });
   c.y = TOP - hh - 8 - 2.5 - 10;
 }
 
 function titleBand(c: Ctx) {
-  const h = 50;
+  const h = 54;
   rrect(c, MX, c.y, CW, h, 8, { fill: INK });
   c.page.drawRectangle({ x: MX, y: c.y - h, width: 6, height: h, color: ORANGE });
-  txt(c, "RAPPORT D'INTERVENTION", MX + 20, c.y - 31, { size: 18, bold: true, color: WHITE });
-  txt(c, `N° ${c.report.reportNo}`, MX, c.y - 22, { size: 12, bold: true, color: ORANGE, w: CW - 16, align: "r" });
+  txt(c, "RAPPORT D'INTERVENTION", MX + 20, c.y - 27, { size: 18, bold: true, color: WHITE });
+  txt(c, "FICHE N°", MX, c.y - 16, { size: 7, bold: true, color: rgb(0.8, 0.82, 0.85), w: CW - 16, align: "r" });
+  txt(c, c.report.reportNo, MX, c.y - 33, { size: 17, bold: true, color: ORANGE, w: CW - 16, align: "r" });
   const first = c.report.rows.find((r) => r.date)?.date;
-  if (first) txt(c, fmtDate(first), MX, c.y - 38, { size: 8.5, color: rgb(0.8, 0.82, 0.85), w: CW - 16, align: "r" });
+  if (first) txt(c, `Intervention du ${fmtDate(first)}`, MX + 20, c.y - 44, { size: 8, color: rgb(0.8, 0.82, 0.85) });
   c.y -= h + 14;
 }
 
 function newPage(c: Ctx) {
   c.page = c.doc.addPage([W, H]);
   brandHeader(c, false);
-  txt(c, `Rapport d'intervention N° ${c.report.reportNo}  (suite)`, MX, c.y - 8, { size: 8.5, bold: true, color: GREY_TXT });
+  txt(c, `Rapport d'intervention - fiche N° ${c.report.reportNo}  (suite)`, MX, c.y - 8, { size: 8.5, bold: true, color: GREY_TXT });
   c.y -= 22;
 }
 
@@ -298,9 +313,13 @@ export async function buildInterventionPdf(r: InterventionReport): Promise<Buffe
   doc.setCreator("VEMAT - Rapports techniciens");
   const reg = await doc.embedFont(StandardFonts.Helvetica);
   const bold = await doc.embedFont(StandardFonts.HelveticaBold);
-  const vemat = await doc.embedPng(Buffer.from(logoVemat, "base64"));
-  const terex = await doc.embedPng(Buffer.from(logoTerex, "base64"));
-  const c: Ctx = { doc, reg, bold, page: doc.addPage([W, H]), y: TOP, logos: { vemat, terex }, report: r };
+  const logos = {
+    vemat: await doc.embedPng(Buffer.from(logoVemat, "base64")),
+    west: await doc.embedPng(Buffer.from(logoWestchase, "base64")),
+    terex: await doc.embedPng(Buffer.from(logoTerex, "base64")),
+    jlg: await doc.embedPng(Buffer.from(logoJlg, "base64")),
+  };
+  const c: Ctx = { doc, reg, bold, page: doc.addPage([W, H]), y: TOP, logos, report: r };
 
   brandHeader(c, true);
   titleBand(c);
@@ -357,7 +376,7 @@ export async function buildInterventionPdf(r: InterventionReport): Promise<Buffe
     for (let i = 0; i < r.photos.length; i += perPage) {
       c.page = doc.addPage([W, H]);
       brandHeader(c, false);
-      txt(c, `Photos — Rapport d'intervention N° ${r.reportNo}`, MX, c.y - 10, { size: 11, bold: true });
+      txt(c, `Photos — Rapport d'intervention - fiche N° ${r.reportNo}`, MX, c.y - 10, { size: 11, bold: true });
       c.y -= 26;
       const ch = (c.y - BOTTOM - gap * 2) / 3;
       for (let k = 0; k < perPage && i + k < r.photos.length; k++) {

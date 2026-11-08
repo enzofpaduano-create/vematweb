@@ -16,14 +16,16 @@ export type ValidationResult = { ok: true; report: InterventionReport; id: strin
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
-/** Nettoie et borne les données reçues du téléphone. Le numéro de rapport est fixé par le serveur. */
-export function validateInterventionBody(body: unknown, reportNo: (id: string) => string): ValidationResult {
+/** Nettoie et borne les données reçues du téléphone. Le numéro du rapport est le N° de fiche du carnet du technicien. */
+export function validateInterventionBody(body: unknown): ValidationResult {
   if (!body || typeof body !== "object") return { ok: false, error: "Corps de requête invalide" };
   const b = body as Record<string, unknown>;
 
   const id = typeof b.id === "string" ? b.id.toLowerCase() : "";
   if (!UUID.test(id)) return { ok: false, error: "Identifiant de rapport invalide" };
 
+  const ficheNo = str(b.ficheNo, 40).replace(/[^\p{L}\p{N} ._\/-]/gu, "");
+  if (!ficheNo) return { ok: false, error: "Le numéro de fiche (carnet) est obligatoire" };
   const client = str(b.client, 200);
   const detail = str(b.detail, 6000);
   if (!client) return { ok: false, error: "Le client est obligatoire" };
@@ -53,7 +55,7 @@ export function validateInterventionBody(body: unknown, reportNo: (id: string) =
   }
 
   const report: InterventionReport = {
-    reportNo: reportNo(id),
+    reportNo: ficheNo,
     otNo: str(b.otNo, 60),
     client,
     chantier: str(b.chantier, 200),
