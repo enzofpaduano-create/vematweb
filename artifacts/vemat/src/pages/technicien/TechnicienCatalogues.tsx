@@ -1,22 +1,31 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "wouter";
-import { ArrowRight, AlertCircle, BookOpen, Search, X } from "lucide-react";
+import { ArrowRight, AlertCircle, BookOpen, FolderOpen, Search, X } from "lucide-react";
 import { TechnicienLayout } from "./TechnicienLayout";
 import { supabaseTech } from "@/lib/supabase";
 import { useLang } from "@/i18n/I18nProvider";
 import { listCatalogues, type CatalogueIndexEntry } from "@/lib/cataloguesApi";
+import { listSharedDocuments } from "@/lib/sharedDocuments";
 
 export default function TechnicienCatalogues() {
   const { lang } = useLang();
   const [machines, setMachines] = useState<CatalogueIndexEntry[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [query, setQuery] = useState("");
+  const [docCount, setDocCount] = useState<number | null>(null);
 
   useEffect(() => {
     let cancelled = false;
     listCatalogues(supabaseTech)
       .then((res) => { if (!cancelled) setMachines(res.machines); })
       .catch((e: Error) => { if (!cancelled) setError(e.message || "Erreur"); });
+    return () => { cancelled = true; };
+  }, []);
+
+  // Nombre de documents du dossier partagé (le dossier reste affiché même si la lecture échoue).
+  useEffect(() => {
+    let cancelled = false;
+    listSharedDocuments(supabaseTech).then((d) => { if (!cancelled) setDocCount(d.length); }).catch(() => undefined);
     return () => { cancelled = true; };
   }, []);
 
@@ -61,6 +70,24 @@ export default function TechnicienCatalogues() {
             </div>
           )}
         </div>
+
+        <Link
+          href="/espace-technicien/documents-techniques"
+          className="group flex items-center gap-4 bg-white rounded-2xl border border-zinc-200 p-4 mb-6 max-w-md hover:border-orange-400 hover:shadow-soft transition-all"
+        >
+          <div className="w-12 h-12 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center shrink-0">
+            <FolderOpen className="h-6 w-6" />
+          </div>
+          <div className="min-w-0 flex-1">
+            <p className="font-black text-zinc-950 group-hover:text-orange-500 transition-colors">
+              {lang === "fr" ? "Document technique partagé avec vous" : "Technical documents shared with you"}
+            </p>
+            <p className="text-xs text-zinc-500">
+              {docCount === null ? (lang === "fr" ? "Dossier" : "Folder") : `${docCount} ${lang === "fr" ? (docCount > 1 ? "documents" : "document") : (docCount === 1 ? "document" : "documents")}`}
+            </p>
+          </div>
+          <ArrowRight className="h-5 w-5 text-zinc-300 group-hover:text-orange-500 group-hover:translate-x-1 transition-all" />
+        </Link>
 
         {machines !== null && machines.length > 0 && (
           <div className="relative mb-6 max-w-md">

@@ -49,7 +49,7 @@ export function TechnicienLayout({ children }: { children: React.ReactNode }) {
 
         <nav className="flex-1 px-2 py-3 space-y-0.5">
           {NAV.map(({ href, icon: Icon, label }) => {
-            const active = location.startsWith(href);
+            const active = location.startsWith(href) || (href === "/espace-technicien/catalogues" && location.startsWith("/espace-technicien/documents-techniques"));
             return (
               <Link
                 key={href}

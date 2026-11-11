@@ -38,6 +38,7 @@ import TechnicienMissions from "@/pages/technicien/TechnicienMissions";
 import TechnicienMission from "@/pages/technicien/TechnicienMission";
 import TechnicienHistorique from "@/pages/technicien/TechnicienHistorique";
 import TechnicienCatalogues from "@/pages/technicien/TechnicienCatalogues";
+import TechnicienDocuments from "@/pages/technicien/TechnicienDocuments";
 import TechnicienCatalogue from "@/pages/technicien/TechnicienCatalogue";
 const RapportsHome = lazy(() => import("@/pages/technicien/rapports/RapportsHome"));
 const RapportIntervention = lazy(() => import("@/pages/technicien/rapports/RapportIntervention"));
@@ -71,6 +72,7 @@ import SavRegister from "@/pages/sav/SavRegister";
 import SavDocumentDetail from "@/pages/sav/SavDocumentDetail";
 import SavDocumentEdit from "@/pages/sav/SavDocumentEdit";
 import SavSettings from "@/pages/sav/SavSettings";
+import SavDocsTechniques from "@/pages/sav/SavDocsTechniques";
 
 // Formulaires publics
 import SeoLanding from "@/pages/SeoLanding";
@@ -101,6 +103,7 @@ function Router() {
       </Route>
       <Route path="/espace-technicien/catalogues/:slug" component={TechnicienCatalogue} />
       <Route path="/espace-technicien/catalogues" component={TechnicienCatalogues} />
+      <Route path="/espace-technicien/documents-techniques" component={TechnicienDocuments} />
 
       {/* Espace PDR (pièces de rechange) */}
       <Route path="/espace-pdr/connexion" component={PdrLogin} />
@@ -127,6 +130,7 @@ function Router() {
       <Route path="/espace-sav/documents" component={SavDocuments} />
       <Route path="/espace-sav/offre/nouvelle" component={SavOfferNew} />
       <Route path="/espace-sav/registre" component={SavRegister} />
+      <Route path="/espace-sav/documents-techniques" component={SavDocsTechniques} />
       <Route path="/espace-sav/reglages" component={SavSettings} />
       <Route path="/espace-sav/document/:id/edit" component={SavDocumentEdit} />
       <Route path="/espace-sav/document/:id" component={SavDocumentDetail} />
