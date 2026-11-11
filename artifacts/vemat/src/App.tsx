@@ -39,6 +39,7 @@ import TechnicienMission from "@/pages/technicien/TechnicienMission";
 import TechnicienHistorique from "@/pages/technicien/TechnicienHistorique";
 import TechnicienCatalogues from "@/pages/technicien/TechnicienCatalogues";
 import TechnicienDocuments from "@/pages/technicien/TechnicienDocuments";
+import TechnicienDocumentViewer from "@/pages/technicien/TechnicienDocumentViewer";
 import TechnicienCatalogue from "@/pages/technicien/TechnicienCatalogue";
 const RapportsHome = lazy(() => import("@/pages/technicien/rapports/RapportsHome"));
 const RapportIntervention = lazy(() => import("@/pages/technicien/rapports/RapportIntervention"));
@@ -103,6 +104,7 @@ function Router() {
       </Route>
       <Route path="/espace-technicien/catalogues/:slug" component={TechnicienCatalogue} />
       <Route path="/espace-technicien/catalogues" component={TechnicienCatalogues} />
+      <Route path="/espace-technicien/documents-techniques/:id" component={TechnicienDocumentViewer} />
       <Route path="/espace-technicien/documents-techniques" component={TechnicienDocuments} />
 
       {/* Espace PDR (pièces de rechange) */}

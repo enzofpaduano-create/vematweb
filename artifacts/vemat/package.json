@@ -95,6 +95,7 @@
     "jspdf": "^4.2.1",
     "jspdf-autotable": "^5.0.8",
     "jszip": "^3.10.1",
+    "pdfjs-dist": "4.10.38",
     "pizzip": "^3.2.0",
     "react-simple-maps": "^3.0.0",
     "topojson-client": "^3.1.0",
