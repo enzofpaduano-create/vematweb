@@ -87,11 +87,25 @@ export async function deleteSharedFolder(supabase: SupabaseClient, docs: SharedD
   for (const d of docs) await deleteSharedDocument(supabase, d);
 }
 
-/** Formats consultables dans l'application : PDF et images (un Word ou un Excel doit être converti en PDF avant partage). */
-export const isViewable = (mime: string | null | undefined, fileName: string): boolean =>
-  /^application\/pdf$/i.test(mime ?? "") || /^image\/(png|jpe?g|webp|gif)$/i.test(mime ?? "") || /\.(pdf|png|jpe?g|webp|gif)$/i.test(fileName);
+export type ViewKind = "pdf" | "image" | "tiff" | "text" | "none";
 
-export const isPdf = (d: Pick<SharedDocument, "mime" | "file_name">) => /pdf/i.test(d.mime ?? "") || /\.pdf$/i.test(d.file_name);
+/**
+ * Tout format peut être déposé ; la consultation en lecture seule couvre le PDF, les images (JPG, PNG, WebP, GIF, BMP),
+ * le TIFF (décodé dans l'application) et les fichiers texte. Les autres (Word, Excel, DWG, ZIP…) sont conservés mais
+ * ne peuvent pas être affichés : à convertir en PDF pour que les techniciens les voient.
+ */
+export function viewKind(mime: string | null | undefined, fileName: string): ViewKind {
+  const m = (mime ?? "").toLowerCase();
+  const ext = (fileName.split(".").pop() ?? "").toLowerCase();
+  if (m === "application/pdf" || ext === "pdf") return "pdf";
+  if (/^image\/tiff?$/.test(m) || ext === "tif" || ext === "tiff") return "tiff";
+  if (/^image\/(png|jpe?g|webp|gif|bmp)$/.test(m) || /^(png|jpe?g|webp|gif|bmp)$/.test(ext)) return "image";
+  if (/^text\/(plain|csv)$/.test(m) || /^(txt|csv|log|md)$/.test(ext)) return "text";
+  return "none";
+}
+export const isViewable = (mime: string | null | undefined, fileName: string): boolean => viewKind(mime, fileName) !== "none";
+
+export const isPdf = (d: Pick<SharedDocument, "mime" | "file_name">) => viewKind(d.mime, d.file_name) === "pdf";
 
 /** Lecture seule : le fichier est récupéré en mémoire pour l'affichage, sans lien public ni lien de téléchargement. */
 export async function fetchDocumentBlob(supabase: SupabaseClient, d: SharedDocument): Promise<Blob> {

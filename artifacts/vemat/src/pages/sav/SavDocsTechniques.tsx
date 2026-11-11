@@ -32,11 +32,12 @@ export default function SavDocsTechniques() {
     setError(null);
     setNotes([]);
     const skipped: string[] = [];
+    const notViewable: string[] = [];
     const todo = all.filter((f) => {
       if (isHiddenFile(f.name)) return false; // .DS_Store, Thumbs.db…
-      if (!isViewable(f.type, f.name)) { skipped.push(`« ${f.webkitRelativePath || f.name} » : format non consultable (PDF ou image uniquement, convertissez Word/Excel en PDF)`); return false; }
       if (f.size > MAX_DOC_BYTES) { skipped.push(`« ${f.webkitRelativePath || f.name} » (${fmtSize(f.size)}) : plus de 25 Mo`); return false; }
       if (f.size === 0) { skipped.push(`« ${f.webkitRelativePath || f.name} » : fichier vide`); return false; }
+      if (!isViewable(f.type, f.name)) notViewable.push(f.webkitRelativePath || f.name);
       return true;
     });
     setProgress({ done: 0, total: todo.length });
@@ -59,7 +60,10 @@ export default function SavDocsTechniques() {
     };
     await Promise.all([worker(), worker(), worker()]);
     setProgress(null);
-    setNotes(skipped);
+    const warn = notViewable.length
+      ? [`${notViewable.length} fichier(s) ajouté(s) mais non consultables par les techniciens (formats pris en charge : PDF, images, TIFF, texte) : ${notViewable.slice(0, 5).map((n) => `« ${n} »`).join(", ")}${notViewable.length > 5 ? "…" : ""}. Convertissez-les en PDF pour qu'ils les voient.`]
+      : [];
+    setNotes([...skipped, ...warn]);
     if (skipped.length < all.length) setTitle("");
     if (filesRef.current) filesRef.current.value = "";
     if (dirRef.current) dirRef.current.value = "";
@@ -85,7 +89,7 @@ export default function SavDocsTechniques() {
       <SavLayout>
         <div className="p-6 md:p-8 max-w-3xl">
           <h1 className="text-2xl font-black text-zinc-900">Documents techniques</h1>
-          <p className="text-sm text-zinc-500 mb-6">Dossier « Document technique partagé avec vous », visible par les techniciens dans Catalogues. 25 Mo maximum par fichier, PDF ou images uniquement (un Word ou un Excel est à convertir en PDF). Les techniciens consultent les documents mais ne peuvent pas les télécharger.</p>
+          <p className="text-sm text-zinc-500 mb-6">Dossier « Document technique partagé avec vous », visible par les techniciens dans Catalogues. 25 Mo maximum par fichier, tous formats acceptés. Les techniciens peuvent consulter les PDF, images (JPG, PNG, WebP, GIF, BMP, TIFF) et fichiers texte ; un Word ou un Excel est à convertir en PDF pour être visible. Les techniciens consultent les documents mais ne peuvent pas les télécharger.</p>
 
           <div className="bg-white rounded-xl border border-zinc-200 p-4 mb-6 space-y-3">
             <div>
@@ -120,7 +124,7 @@ export default function SavDocsTechniques() {
           {error && <p className="text-sm text-red-600 flex items-center gap-2 mb-4"><AlertCircle className="h-4 w-4" /> {error}</p>}
           {notes.length > 0 && (
             <div className="text-sm text-amber-800 bg-amber-50 border border-amber-200 rounded-xl p-3 mb-4">
-              <p className="font-bold mb-1">{notes.length} fichier(s) non ajouté(s) :</p>
+              <p className="font-bold mb-1">À noter :</p>
               <ul className="list-disc pl-5 space-y-0.5">{notes.slice(0, 15).map((n) => <li key={n}>{n}</li>)}</ul>
             </div>
           )}

@@ -4,7 +4,7 @@ import { AlertCircle, ArrowLeft, Eye, FileText, Folder, FolderOpen } from "lucid
 import { TechnicienLayout } from "./TechnicienLayout";
 import { supabaseTech } from "@/lib/supabase";
 import { useLang } from "@/i18n/I18nProvider";
-import { fmtSize, groupByFolder, listSharedDocuments, type SharedDocument } from "@/lib/sharedDocuments";
+import { fmtSize, groupByFolder, isViewable, listSharedDocuments, type SharedDocument } from "@/lib/sharedDocuments";
 
 export default function TechnicienDocuments() {
   const { lang } = useLang();
@@ -68,9 +68,13 @@ export default function TechnicienDocuments() {
                           <p className="font-bold text-zinc-900 truncate">{d.title}</p>
                           <p className="text-xs text-zinc-500 truncate">{fmtSize(d.size_bytes)} · {new Date(d.created_at).toLocaleDateString(fr ? "fr-FR" : "en-GB")}</p>
                         </div>
-                        <Link href={`/espace-technicien/documents-techniques/${d.id}`} className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-orange-500 text-white text-sm font-bold">
-                          <Eye className="h-4 w-4" /> {fr ? "Consulter" : "View"}
-                        </Link>
+                        {isViewable(d.mime, d.file_name) ? (
+                          <Link href={`/espace-technicien/documents-techniques/${d.id}`} className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-orange-500 text-white text-sm font-bold">
+                            <Eye className="h-4 w-4" /> {fr ? "Consulter" : "View"}
+                          </Link>
+                        ) : (
+                          <span className="text-xs text-zinc-400 text-right">{fr ? "Aperçu indisponible" : "No preview"}</span>
+                        )}
                       </div>
                     ))}
                   </div>

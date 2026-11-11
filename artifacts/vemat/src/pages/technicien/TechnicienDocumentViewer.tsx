@@ -4,7 +4,7 @@ import { AlertCircle, ArrowLeft, Loader2 } from "lucide-react";
 import { TechnicienLayout } from "./TechnicienLayout";
 import { supabaseTech } from "@/lib/supabase";
 import { useLang } from "@/i18n/I18nProvider";
-import { fetchDocumentBlob, getSharedDocument, isPdf, isViewable, type SharedDocument } from "@/lib/sharedDocuments";
+import { fetchDocumentBlob, getSharedDocument, viewKind, type SharedDocument } from "@/lib/sharedDocuments";
 
 /**
  * Lecture seule : le document est affiché dans l'application (PDF dessiné page par page, image), sans bouton
@@ -20,6 +20,7 @@ export default function TechnicienDocumentViewer() {
   const [error, setError] = useState<string | null>(null);
   const [imgUrl, setImgUrl] = useState<string | null>(null);
   const [pages, setPages] = useState<{ done: number; total: number } | null>(null);
+  const [text, setText] = useState<string | null>(null);
   const host = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -30,13 +31,42 @@ export default function TechnicienDocumentViewer() {
         const d = await getSharedDocument(supabaseTech, id);
         if (cancelled) return;
         setDoc(d);
-        if (!isViewable(d.mime, d.file_name)) {
+        const kind = viewKind(d.mime, d.file_name);
+        if (kind === "none") {
           setError(fr ? "Ce format ne peut pas être consulté dans l'application." : "This format cannot be viewed in the app.");
           return;
         }
         const blob = await fetchDocumentBlob(supabaseTech, d);
         if (cancelled) return;
-        if (!isPdf(d)) {
+        if (kind === "text") {
+          setText((await blob.text()).slice(0, 500_000));
+          return;
+        }
+        if (kind === "tiff") {
+          const UTIF = (await import("utif2")).default;
+          const buf = await blob.arrayBuffer();
+          const ifds = UTIF.decode(buf);
+          if (!ifds.length || !host.current) throw new Error(fr ? "TIFF illisible." : "Unreadable TIFF.");
+          setPages({ done: 0, total: ifds.length });
+          let n = 0;
+          for (const ifd of ifds) {
+            if (cancelled || !host.current) return;
+            UTIF.decodeImage(buf, ifd);
+            const rgba = UTIF.toRGBA8(ifd);
+            const canvas = document.createElement("canvas");
+            canvas.width = ifd.width;
+            canvas.height = ifd.height;
+            canvas.getContext("2d")!.putImageData(new ImageData(new Uint8ClampedArray(rgba), ifd.width, ifd.height), 0, 0);
+            canvas.style.width = "100%";
+            canvas.className = "block bg-white shadow rounded mb-3";
+            canvas.oncontextmenu = (e) => e.preventDefault();
+            host.current.appendChild(canvas);
+            setPages({ done: ++n, total: ifds.length });
+            await new Promise((r) => setTimeout(r, 0));
+          }
+          return;
+        }
+        if (kind === "image") {
           objectUrl = URL.createObjectURL(blob);
           setImgUrl(objectUrl);
           return;
@@ -88,9 +118,10 @@ export default function TechnicienDocumentViewer() {
             <AlertCircle className="h-5 w-5 shrink-0" /> {error}
           </div>
         )}
-        {!error && !imgUrl && (!pages || pages.done < pages.total) && (
+        {!error && !imgUrl && text === null && (!pages || pages.done < pages.total) && (
           <p className="text-xs text-zinc-400 flex items-center gap-2 mb-3"><Loader2 className="h-4 w-4 animate-spin" /> {pages ? `${fr ? "Page" : "Page"} ${pages.done}/${pages.total}` : fr ? "Chargement…" : "Loading…"}</p>
         )}
+        {text !== null && <pre className="whitespace-pre-wrap break-words text-xs bg-white rounded-xl border border-zinc-200 p-4 text-zinc-800">{text}</pre>}
         {imgUrl && <img src={imgUrl} alt={doc?.title ?? ""} draggable={false} className="w-full rounded bg-white shadow pointer-events-none" />}
         <div ref={host} />
       </div>
